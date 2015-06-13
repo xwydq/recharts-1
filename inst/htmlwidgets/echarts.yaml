@@ -1,5 +1,9 @@
 dependencies:
   - name: echarts
-    version: 2.2.3
-    src: htmlwidgets/lib/echarts
-    script: echarts-all.js
+    version: 2.2.7
+    src: "htmlwidgets/lib/echarts"
+    script:
+      - echarts-all.js
+      - ext/params.js
+      - ext/loadGeoJSON.js
+
