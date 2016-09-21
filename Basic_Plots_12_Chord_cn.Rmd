@@ -1,0 +1,210 @@
+---
+title: "基础图类Basic Plots 15 - 和弦图Chord Chart"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+首先，加载`recharts`:
+```{r}
+library(recharts)
+```
+
+# 介绍Introduction
+
+和弦图Chord plot包含2个类型：
+
+- 带缎带的和弦图
+- 无缎带的和弦图
+
+<table id='intro'>
+<tr><td>
+```{r,echo=FALSE}
+grpmtx <- matrix(c(11975, 5871, 8916, 2868, 1951, 10048, 2060, 6171, 8010, 16145,
+                   8090, 8045, 1013, 990, 940, 6907), byrow=TRUE, nrow=4)
+grpmtx <- as.data.frame(grpmtx)
+names(grpmtx) <- paste0('Group', 1:4)
+grpmtx$Name <- paste0('Group', 1:4)
+
+echartr(grpmtx, Name, c(Group1, Group2, Group3, Group4), 
+        type='chord', subtype='ribbon+asc+descsub+hidelab+scaletext') %>% 
+  setTitle('Test Data','chord with ribbon') %>%
+  setTheme('macarons', width=400, height=300)
+```
+</td>
+<td>
+```{r,echo=FALSE}
+echartr(deutsch[deutsch$year==2014,], c(club, player), weight, role, type='chord', 
+        sub='asc+descsub+rotatelab') %>% setTheme('infographic', width=400, height=300) %>% 
+  setTitle('Club Orientation of Deutsch Soccer Team (2014)', 'Chord without ribbon')
+```
+</td></tr>
+</table>
+
+关键是：
+
+- 数据结构
+  - 矩阵模式: 一个数据框，其中一列为节点名，余下的是一个矩阵。将节点名赋值给x, 矩阵赋值给y。
+  - 节点/联结模式：一个节点数据框[x, NA, series, weight]和一个联结数据框[x, x1, relation, value]。用`rbind`将两者合并。如果未提供节点数据框，recharts会基于联结数据框自动构建。相应地，提供[x, x1, series/relation, weight/value]数据框。
+
+# 用法Function Call
+
+```r
+echartr(data, x, <y>, <series>, <z>, <type>, <subtype>)
+```
+
++--------+--------------------------------------------------------------------+
+| 参数   |  要求                                                      |
++========+====================================================================+
+|**data**| 数据框格式的源数据                          |
++--------+--------------------------------------------------------------------+
+| **x**  | 文本型自变量，其他类型转为因子后计算。节点/联结模式下，必须提供`x`列。矩阵模式下，只传入`x`的第一个变量。 |
++--------+--------------------------------------------------------------------+
+| **y**  | 数值型应变量。节点/联结模式下，只传入`y`的第一个变量。矩阵模式下，`y`的所有列都被传入。 |
++--------+--------------------------------------------------------------------+
+| series | 数据系列变量，转为因子后计算。如果提供多个变量，只传入第一个。 |
++--------+--------------------------------------------------------------------+
+|  z     | 时间轴变量，转为因子后计算。如提供多个变量，只传入第一个。 |
++--------+--------------------------------------------------------------------+
+| type   | 'chord'. |
++--------+--------------------------------------------------------------------+
+| subtype| - chord: c("ribbon","scale","scaletext","rotatelab","hidelab","clock","clockwise","asc","desc","ascsub","descsub") | 
+|        |     + ribbon: 带缎带，要求数据结构为双向联结 |
+|        |     + scale: 如带缎带，缎带上显示刻度 |
+|        |     + scaletext: 如带缎带，缎带上显示刻度和刻度文字 |
+|        |     + rotatelab: 旋转标签 |
+|        |     + hidelab: 隐藏标签（默认不隐藏） |
+|        |     + clock/clockwise: 升序为顺时针（默认逆时针） |
+|        |     + asc: 节点升序排列 |
+|        |     + desc:节点降序排列  |
+|        |     + ascsub: 和弦升序排列 |
+|        |     + descsub: 和弦降序排列 |
++--------+--------------------------------------------------------------------+
+
+# 举例Showcase
+
+## 数据准备Data Preparation
+
+
+### 矩阵模式Matrix Mode
+
+```{r}
+grpmtx <- matrix(c(11975, 5871, 8916, 2868, 1951, 10048, 2060, 6171, 8010, 16145,
+                   8090, 8045, 1013, 990, 940, 6907), byrow=TRUE, nrow=4)
+grpmtx <- as.data.frame(grpmtx)
+names(grpmtx) <- paste0('Group', 1:4)
+grpmtx$Name <- paste0('Group', 1:4)
+knitr::kable(grpmtx, align=c('lllll'))
+```
+
+数据框的前四列就是一个矩阵，而最后一列则是名称向量。所以其数据结构符合矩阵模式的要求。
+
+矩阵模式可以转换为节点/联结模式。Matrix[i, j]代表了两个节点(i & j)和一个联结(i -> j)。
+
+### 节点Node/联结link模式
+
+```{r}
+knitr::kable(deutsch[deutsch$year==2014,])
+```
+
+数据框内找不到数值型矩阵结构，所以被识别为节点/联结模式。由于第一、二列么有NA，所以`recharts`会基于所给的数据框构建一个节点数据框。其结构为：
+
+```{r,echo=FALSE}
+nodes <- data.frame(
+  name=c(names(table(deutsch$player)), names(table((deutsch$club)))), 
+  value=c(table(deutsch$player), table(deutsch$club)), series='')
+knitr::kable(nodes, row.names=FALSE)
+```
+
+## 和弦图Chord Chart
+
+### 带缎带的和弦图Chord with Ribbon
+
+设`type`为'chord'，`subtype`为'ribbon'。
+
+```{r}
+echartr(grpmtx, Name, c(Group1, Group2, Group3, Group4), 
+        type='chord', subtype='ribbon + asc + descsub + hidelab + scaletext') %>% 
+  setTitle('Test Data','From d3.js')
+```
+
+### 无缎带的和弦图Chord without Ribbon
+
+#### 单向联结One-direction Relationship
+
+设`type`为'chord'。如果数据结构不包括双向联结，不论是否设置`subtype`为'ribbon'，都无法显示缎带和弦图。
+
+```{r}
+echartr(deutsch[deutsch$year==2014,], c(club, player), weight, role, type='chord', 
+        sub='asc + descsub + rotatelab') %>% 
+  setTitle('Club Orientation of Deutsch Soccer Team (2014)')
+```
+
+#### 双向联结Dual-direction Relationship
+
+如果要显示缎带和弦图，必须将源数据修改为双向联结。
+
+现在，`deutsch14`只有单向联结，这意味着，它只定义了Gotze->Bayern的关系，而没有定义反向的Bayern->Gotze。
+
+```{r}
+knitr::kable(with(deutsch[deutsch$year==2014,], table(player, club)))
+```
+
+我们需要复制source和target列以构建一个矩阵。
+
+```{r}
+deutsch14 <- deutsch[deutsch$year==2014,]
+deutsch14 <- rbind(deutsch14, deutsch14)
+deutsch14[14:26, c('player', 'club')] <- recharts:::exchange(
+    deutsch14[14:26, 'player'], deutsch14[14:26, 'club'])
+knitr::kable(with(deutsch14, table(player, club)))
+```
+
+这样，设置`subtype`为'ribbon'，就能获得缎带和弦图了。
+
+```{r}
+echartr(deutsch14, c(club, player), weight, role, type='chord', 
+        sub='asc + descsub + rotatelab + ribbon') %>% 
+  setTitle('Club Orientation of Deutsch Soccer Team (2014)')
+```
+
+另一个例子基于预置的数据集**mideast**。
+
+```{r}
+mideast <- as.data.frame(mideast, col.names=mideast[1,], stringsAsFactors=FALSE)
+names(mideast) <- mideast[1,]
+mideast <- mideast[2:16,]
+me <- data.table::melt(mideast, id=NA)
+me <- me[!is.na(me$value),]
+me$series <- strsplit(me$value, '/')
+me$value <- sapply(me$series, function(x) as.numeric(x[2]))
+me$series <- sapply(me$series, function(x) x[1])
+names(me) <- c('source', 'target', 'value', 'series')
+str(me)
+```
+
+```{r}
+echartr(me, c(source, target), value, series, type='chord', sub='ribbon')
+```
+
+### 带时间轴的和弦图Chord with Timeline
+
+用`year`列作为时间轴。
+```{r}
+echartr(deutsch, c(club, player), weight, role, z=year, type='chord', 
+        sub='asc + descsub + rotatelab') %>% 
+    setTimeline(show=FALSE, autoPlay=TRUE) %>%
+    setTitle('Club Orientation of Deutsch Soccer Team')
+```
+
+# 其他设定Futher Setup
+
+接下来可以配置控件、添加标注点/标注线，以及美化成图。
+
+参考相关函数，尽情探索吧。

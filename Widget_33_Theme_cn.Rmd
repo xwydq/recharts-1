@@ -1,0 +1,338 @@
+---
+title: "控件Widget 33 - 主题Theme"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+首先，加载`recharts`:
+```{r}
+library(recharts)
+```
+
+# 介绍Introduction
+
+`setTheme`是recharts的主要美工函数，可用来
+
+- 设置预置主题
+- 设置色版
+- 设置其他美工属性
+
+# 用法Function Call
+
+```r
+setTheme(chart, theme = c("asis", "default", "macarons", "infographic",
+  "blue", "dark", "gray", "green", "helianthus", "macarons2", "mint", "red",
+  "roma", "sakura", "shine", "vintage"), palette = "asis", bgColor = NULL,
+  renderAsImage = FALSE, calculable = FALSE, calculableColor = NULL,
+  calculableHolderColor = NULL, animation = TRUE, animationEasing = NULL,
+  animationDuration = NULL, width = NULL, height = NULL, ...)
+```
+
++---------------------+--------------------------------------------------------+
+|   参数              |  要求                                         |
++=====================+========================================================+
+| **chart**           | `echartR`或`echart`创建的Echarts对象.  |
++---------------------+--------------------------------------------------------+
+| theme               | 主题名或主题对象 |
+|                     |               |
+|                     | - 预置的主题      |
+|                     |       + 'default', 'macarons', 'infographic', 'blue', 'dark', |
+|                     | 'gray', 'green', 'helianthus', 'macarons2', 'mint', 'red', 'roma', |
+|                     | 'sakura', 'shine', 'vintage' |
+|                     | - user-defined themes    |
+|                     |       + 主题对象，列表形式，如`list(color=c('#ff7f50',` `'#87cefa',` |
+|                     | `'#da70d6',` `'#32cd32',` `'#6495ed'),` `title=list(x='left',` | 
+|                     | `y='top'),` `legend=list(orient='horizontal'))` |
++---------------------+--------------------------------------------------------+
+| palette             | 色版名或颜色向量。默认为NULL(echarts默认色版).  |
+|                     |            |
+|                     | - 'asis'    |
+|                     |      + 沿用当前echarts对象使用的主题 |
+|                     | - Echarts主题色版  |
+|                     |      + "_default", "_macarons", "_infographic", "_blue", "_dark", "_gray", "_green", "_helianthus", "_macarons2", "_mint", "_red", "_roma", "_sakura", "_shine", "_vintage" |
+|                     | - `RColorBrewer`色版 |
+|                     |      + 'BrBG', 'PiYG', 'PRGn', 'PuOr', 'RdBu', 'RdGy', 'RdYlBu', 'RdYlGn', 'Spectral', 'Accent', 'Dark2', 'Paired', 'Pastel1', 'Pastel2', 'Set1', 'Set2', 'Set3', 'Blues', 'BuGn', 'BuPu', 'GnBu', 'Greens', 'Greys', 'Oranges', 'OrRd', 'PuBu', 'PuBuGn', 'PuRd', 'Purples', 'RdPu', 'Reds', 'YlGn', 'YlGnBu', 'YlOrBr', 'YlOrRd'  |
+|                     | - `ggthemes`色版    |
+|                     |      + 'calc', 'economist', 'economist_white', 'economist_stata', 'excel', 'exel_fill', 'excel_line', 'excel_new', 'few', 'fivethirtyeight', '538', 'manyeyes', 'gdocs', 'pander', 'tableau', 'stata', 'stata1','stata1r','statamono', 'ptol', 'tableau20', 'tableau10medium', 'tableaugray', 'tableauprgy', 'tableaublrd', 'tableaugnor', 'tableaucyclic', 'tableau10light', 'tableaublrd12', 'tableauprgy12', 'tableaugnor12','hc','darkunica', 'solarized', 'solarized_red', 'solarized_yellow', 'solarized_orange', 'solarized_magenta', 'solarized_violet', 'solarized_blue', 'solarized_cyan', 'solarized_green', 'wsj', 'wsj_rgby', 'wsj_red_green', 'wsj_black_green', 'wsj_dem_rep', 'colorblind', 'trafficlight' |
+|                     | - 其他 |
+|                     |      + 'rainbow', 'terrain', 'topo', 'heat', 'cm' |
+|                     |        |
+|                     | **用法**       |
+|                     |        |
+|                     | - 忽略不设，使用函数默认 |
+|                     | - 设`palette=NULL`，使用Echarts默认 |
+|                     | - 设`palette=palette name`，使用上述色版名 |
+|                     | - 设`palette=palette name(number)`限定色版内取色个数 (如`palette='calc(3)'`可随机从'calc'色版取3种颜色) |
+|                     | - 设`palette=c(color1, color2, color3, ...)`定义一个自定义色版，该向量都要用颜色名或十六进制颜色值。用`colors()`查看合法颜色名，用`demo(colors)`查看实际效果.  |
++---------------------+--------------------------------------------------------+
+| bgColor             | 背景颜色名/值，默认透明 ('rgba(0,0,0,0)') |
++---------------------+--------------------------------------------------------+
+| renderAsImage       | 逻辑型。如为TRUE，交互效果被禁用。默认为FALSE. |
++---------------------+--------------------------------------------------------+
+| calculable          | 逻辑型。如为TRUE，启用拖曳重算。默认为FALSE. |
++---------------------+--------------------------------------------------------+
+| calculableColor     | 拖曳重算提示边框颜色，默认为'rgba(255,165,0,0.6)'. |
++---------------------+--------------------------------------------------------+
+|calculableHolderColor| 可计算占位的颜色，默认为'#ccc'. |
++---------------------+--------------------------------------------------------+
+| animation           | 逻辑型。如为TRUE, 起始时显示动画。IE8最好设为FALSE. |
++---------------------+--------------------------------------------------------+
+| animationEasing     | 主要元素的微小移动效果，默认为'ExponentialOut'. 其他选择有 'Linear', 'QuadraticIn', 'QuadraticOut', 'QuadraticInOut', 'CubicIn', 'CubicOut', 'CubicInOut', 'QuarticIn', 'QuarticOut', 'QuarticInOut', 'QuinticIn', 'QuinticOut', 'QuinticInOut', 'SinusoidalIn', 'SinusoidalOut', 'SinusoidalInOut', 'ExponentialIn', 'ExponentialInOut', 'CircularIn', 'CircularOut', 'CircularInOut', 'ElasticIn', 'ElasticOut', 'ElasticInOut', 'BackIn', 'BackOut', 'BackInOut', 'BounceIn', 'BounceOut', 'BounceInOut' |
++---------------------+--------------------------------------------------------+
+| animationDuration   | 多久后进入动画，默认为2000 (ms). |
++---------------------+--------------------------------------------------------+
+| width               | 图的宽度(px)，默认为NULL (自动). |
++---------------------+--------------------------------------------------------+
+| height              | 图的高度(px)，默认为NULL (自动). |
++---------------------+--------------------------------------------------------+
+| ...                 | 省略号 |
++---------------------+--------------------------------------------------------+
+
+## 自定义主题User-defined Theme (UDT)
+
+可以通过<http://echarts.baidu.com/echarts2/doc/example/themeDesigner.html>构建自定义主题。
+
+echarts的自定义主题是一个JS对象。可以用列表形式改写，`setTheme`会把它解析成JSON字符串。
+
+一个典型的JS主题结构：
+```javascript
+{
+    color: ['#ff7f50','#87cefa','#da70d6','#32cd32','#6495ed'], 
+    title: {x: 'left', y: 'top'}, 
+    legend: {orient: 'horizontal'} 
+}
+```
+
+可以写成下述形式：
+```r
+list(
+     color=c('#ff7f50','#87cefa','#da70d6','#32cd32','#6495ed'), 
+     title=list(x='left', y='top'), 
+     legend=list(orient='horizontal')
+)
+```
+
+# 举例Showcase
+
+## 内置主题Pre-installed Themes
+
+### 默认default
+
+```{r}
+g <- echartr(mtcars, wt, mpg, carb, weight=hp, z=am, type='bubble') %>% 
+    setSymbols('circle')
+g
+```
+
+### macarons
+
+```{r}
+g %>% setTheme('macarons')
+```
+
+### infographic
+
+```{r}
+g %>% setTheme('infographic')
+```
+
+### blue
+
+```{r}
+g %>% setTheme('blue')
+```
+
+### dark
+
+```{r}
+g %>% setTheme('dark')
+```
+
+### gray
+
+```{r}
+g %>% setTheme('gray')
+```
+
+### green
+
+```{r}
+g %>% setTheme('green')
+```
+
+### helianthus
+
+```{r}
+g %>% setTheme('helianthus')
+```
+
+### macarons2
+
+```{r}
+g %>% setTheme('macarons2')
+```
+
+### mint
+
+```{r}
+g %>% setTheme('mint')
+```
+
+### red
+
+```{r}
+g %>% setTheme('red')
+```
+
+### roma
+
+```{r}
+g %>% setTheme('roma')
+```
+
+### sakura
+
+```{r}
+g %>% setTheme('sakura')
+```
+
+### shine
+
+```{r}
+g %>% setTheme('shine')
+```
+
+### vintage
+
+```{r}
+g %>% setTheme('vintage')
+```
+
+## 自定义主题User-defined Theme
+
+写一个自定义主题。
+
+```{r}
+udt <- list(
+    backgroundColor="#d5e4eb", grid=list(borderWidth=0),
+    categoryAxis=list(axisLine=list(lineStyle=list(width=2)),
+                      splitLine=list(lineStyle=list(width=1, color='white'))),
+    valueAxis=list(splitLine=list(lineStyle=list(width=1, color='white')),
+                   axisLine=list(lineStyle=list(width=0)))
+)
+g %>% setXAxis(splitLine=list(show=FALSE)) %>% setTheme(udt)
+```
+
+## 色版Palette
+
+### 主题色版Theme Palettes
+
+所有内置主题都带色版。如果你不想套用整个主题，只想要它的色版，可以设置`palette='_theme name'`。记住，要在主题名前加一个下划线"_"。
+
+```{r}
+g %>% setTheme(palette="_dark")
+```
+
+### `RColorBrewer`色版Palettes
+
+可以用`RColorBrewer`色版: 'BrBG', 'PiYG', 'PRGn', 'PuOr', 'RdBu', 'RdGy', 'RdYlBu', 'RdYlGn', 'Spectral', 'Accent', 'Dark2', 'Paired', 'Pastel1', 'Pastel2', 'Set1', 'Set2', 'Set3', 'Blues', 'BuGn', 'BuPu', 'GnBu', 'Greens', 'Greys', 'Oranges', 'OrRd', 'PuBu', 'PuBuGn', 'PuRd', 'Purples', 'RdPu', 'Reds', 'YlGn', 'YlGnBu', 'YlOrBr', 'YlOrRd'.
+
+```{r}
+g %>% setTheme(palette='PRGn')
+```
+
+### `ggthemes`色版Palettes
+
+也可用`ggthemes`色版: 'calc', 'economist', 'economist_white', 'economist_stata', 'excel', 'exel_fill', 'excel_line', 'excel_new', 'few', 'fivethirtyeight', '538', 'manyeyes', 'gdocs', 'pander', 'tableau', 'stata', 'stata1','stata1r','statamono', 'ptol', 'tableau20', 'tableau10medium', 'tableaugray', 'tableauprgy', 'tableaublrd', 'tableaugnor', 'tableaucyclic', 'tableau10light', 'tableaublrd12', 'tableauprgy12', 'tableaugnor12','hc','darkunica', 'solarized','solarized_red', 'solarized_yellow', 'solarized_orange', 'solarized_magenta', 'solarized_violet', 'solarized_blue', 'solarized_cyan', 'solarized_green', 'wsj', 'wsj_rgby', 'wsj_red_green', 'wsj_black_green', 'wsj_dem_rep', 'colorblind', 'trafficlight'.
+
+```{r}
+g %>% setTheme(palette='tableau20')
+```
+
+### 其他色版Other Palettes
+
+还可以用其他色版: 'rainbow', 'terrain', 'topo', 'heat', 'cm'.
+
+```{r}
+g %>% setTheme(palette='terrain')
+```
+
+### 自定义色版User-defined Palettes
+
+也可以自己写一个色版向量，比如：
+
+- c('red', 'yellow', 'green')
+- c('#FF0000', '#FFFF00', '#00FF00')
+
+```{r}
+g %>% setTheme(palette=c(
+    'red', 'yellow', 'orange', 'limegreen', 'cyan', 'violet'))
+```
+
+## 其他美工属性Other Aesthetics
+
+### 背景色`bgColor`
+
+```{r}
+g %>% setTheme(bgColor='darkblue')
+```
+
+### 静态图片`renderAsImage`
+
+禁用交互效果。
+```{r}
+g %>% setTheme(renderAsImage=TRUE)
+```
+
+### 拖曳重算`calculable`
+
+用饼图为例。试着拖走一个扇形。
+
+```{r}
+echartr(mtcars, am, hp, type='ring') %>% 
+    setTheme(calculable=TRUE, calculableColor='yellow', 
+             calculableHolderColor='gold')
+```
+
+### 动画`animation`
+
+```{r}
+g %>% setTheme(animation=TRUE, animationEasing='BounceInOut',
+               animationDuration=500)
+```
+
+### 宽度`width`和高度`height`
+
+```{r}
+g %>% setTheme(width=400, height=300)
+```
+
+# 参考资料
+
+主题theme   
+
+<http://echarts.baidu.com/echarts2/doc/example/theme.html>
+
+背景色backgroundColor   
+
+<http://echarts.baidu.com/echarts2/doc/option.html#title~backgroundColor>
+
+颜色colors   
+
+<http://echarts.baidu.com/echarts2/doc/option.html#title~color>         
+<http://colorbrewer2.org>
+
+其他属性other features   
+
+<http://echarts.baidu.com/echarts2/doc/option.html#title~renderAsImage>    
+<http://echarts.baidu.com/echarts2/doc/option.html#title~calculable>      
+<http://echarts.baidu.com/echarts2/doc/option.html#title~animation>        
+<http://echarts.baidu.com/echarts2/doc/option.html#title~calculableColor>      
+<http://echarts.baidu.com/echarts2/doc/option.html#title~calculableHolderColor>

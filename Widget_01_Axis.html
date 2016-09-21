@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Widget 01 - Axis</title>
+
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/htmlwidgets-0.7/htmlwidgets.js"></script>
+<script src="libs/echarts-2.2.7/echarts-all.js"></script>
+<script src="libs/echarts-2.2.7/ext/params.js"></script>
+<script src="libs/echarts-2.2.7/ext/loadGeoJSON.js"></script>
+<script src="libs/echarts-binding-0.0.5/echarts.js"></script>
+<script src="libs/echarts-module-2.2.7/base.js"></script>
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 70px;
+}
+p code {
+  white-space: inherit;
+}
+.html-widget-static-bound {
+  margin: auto;
+}
+.alert>p {
+  margin-bottom: 10.5px;
+}
+</style>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/default.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="./">recharts</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="./">Home</a></li>
+        <li><a href="index_cn.html">首页</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="https://github.com/madlogos/recharts" title="View Source on Github"><i class="fa fa-github fa-lg"></i></a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</nav><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Widget 01 - Axis</h1>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction"><span class="toc-section-number">1</span> Introduction</a></li>
+<li><a href="#function-call"><span class="toc-section-number">2</span> Function Call</a></li>
+<li><a href="#showcase"><span class="toc-section-number">3</span> Showcase</a><ul>
+<li><a href="#data-preparation"><span class="toc-section-number">3.1</span> Data Preparation</a></li>
+<li><a href="#modification"><span class="toc-section-number">3.2</span> Modification</a></li>
+</ul></li>
+<li><a href="#references"><span class="toc-section-number">4</span> References</a></li>
+</ul>
+</div>
+
+<p>First, you should load <code>recharts</code>:</p>
+<pre class="r"><code>library(recharts)</code></pre>
+<div id="introduction" class="section level1">
+<h1><span class="header-section-number">1</span> Introduction</h1>
+<p>Line, bar, scatter, k and eventRiver charts are based on Cartesian Coordinate System, which calls for x-axis and y-axis. When you generate an Echarts object under Cartesian Coordiante System using <code>echartr</code>, you can then modify the axes by <code>setAxis</code>. The work functions of this family are <code>setXAxis</code>, <code>setYAxis</code>, <code>setX1Axis</code>, <code>setY1Axis</code>.</p>
+</div>
+<div id="function-call" class="section level1">
+<h1><span class="header-section-number">2</span> Function Call</h1>
+<pre class="r"><code>setAxis(chart, series = NULL, which = c(&quot;x&quot;, &quot;y&quot;, &quot;x1&quot;, &quot;y1&quot;),
+  type = c(&quot;value&quot;, &quot;category&quot;, &quot;time&quot;, &quot;log&quot;), show = TRUE,
+  position = c(&quot;bottom&quot;, &quot;top&quot;, &quot;left&quot;, &quot;right&quot;), name = &quot;&quot;,
+  nameLocation = c(&quot;end&quot;, &quot;start&quot;), nameTextStyle = emptyList(),
+  boundaryGap = c(0, 0), min = NULL, max = NULL, scale = TRUE,
+  splitNumber = NULL, axisLine = list(show = TRUE, onZero = FALSE),
+  axisTick = list(show = FALSE), axisLabel = list(show = TRUE),
+  splitLine = list(show = TRUE), splitArea = list(show = FALSE),
+  data = list())
+
+setYAxis(chart, ...)
+
+setY1Axis(chart, ...)
+
+setXAxis(chart, ...)
+
+setX1Axis(chart, ...)</code></pre>
+<table>
+<colgroup>
+<col width="17%" />
+<col width="82%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Arg</th>
+<th align="left">Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><p><strong>chart</strong></p></td>
+<td align="left"><p>Echarts object generated by <code>echartR</code> or <code>echart</code>.</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>series</p></td>
+<td align="left"><p>Which series to be put on this axis. When set NULL, apply to all. Could be:</p>
+<ul>
+<li>series names, in vectors. E.g, c(‘setosa’, ‘virginica’);</li>
+<li>index of series, in vectors. E.g., 1:2 or c(1,3).</li>
+</ul></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>which</p></td>
+<td align="left"><p>Which axis to be modified. Could be one of the following:</p>
+<ul>
+<li>x: primary x-axis</li>
+<li>y: primary y-axis</li>
+<li>x1: secondary x-axis</li>
+<li>y1: secondary y-axis</li>
+</ul></td>
+</tr>
+<tr class="even">
+<td align="left"><p>type</p></td>
+<td align="left"><p>Type of the axis. Could be c(‘time’, ‘value’, ‘category’, ‘log’). Default ‘value’.</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>show</p></td>
+<td align="left"><p>Logical, whether to show this axis. Default TRUE.</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>position</p></td>
+<td align="left"><p>Position of this axis. Could be c(‘bottom’, ‘top’, ‘left’, ‘right’) (default for primary x axis, secondary x axis, primary y axis and secondary y axis, respectively.)</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>name</p></td>
+<td align="left"><p>Name of this axis. Default not set (“”).</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>nameLocation</p></td>
+<td align="left"><p>Location of the axis name. Could be c(‘start’, ‘end’). Default ‘end’.</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>nameTextStyle</p></td>
+<td align="left"><p>Axis name text style. Could be a list of textStyle features. Default following textStyle global settings.</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>boundaryGap</p></td>
+<td align="left"><p>A two-element numeric vector, defining the policy of the space at the two ends of the axis (percents). Deafult c(0, 0).</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>min</p></td>
+<td align="left"><p>The mininum value of the axis. Default NULL (automatic). If a numeric value is set, boundaryGap is disabled.</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>max</p></td>
+<td align="left"><p>The maxinum value of the axis. Default NULL (automatic). If a numeric value is set, boundaryGap is disabled.</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>scale</p></td>
+<td align="left"><p>Logical, for axis of ‘value’, ‘time’, ‘log’ type, to define whether zoom the scale to the range between _min and _max. Default TRUE.</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>splitNumber</p></td>
+<td align="left"><p>Numeric, how many sections to devide the axis. Default NULL, automatically deviding based on algorithms of min and max.</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>axisLine</p></td>
+<td align="left"><p>A list. Default: <code>list(show=TRUE, onZero=FALSE, lineStyle=lineStyle(</code> <code>type='solid', color='#48b', width=2, shadowColor='rgba(0,0,0,0)',</code> <code>shadowBlur=5, shadowOffsetX=3, shadowOffsetY=3))</code></p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>axisTick</p></td>
+<td align="left"><p>A list. Default: <code>list(show=FALSE, inside=FALSE, length=5,</code> <code>lineStyle=lineStyle(color=&quot;#333&quot;, width=1))</code></p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>axisLabel</p></td>
+<td align="left"><p>A list controlling the axis labels. Default <code>list(show=TRUE, rotate=0, margin=8,</code> <code>clickable=FALSE, formatter=NULL,</code> <code>textStyle=list(color=&quot;#333&quot;))</code> <code>formatter</code> could be a sprintf/format string or JS function/expression. <code>axisLabel=list(formatter=&quot;%s cm&quot;)</code> is equal to</p>
+<ul>
+<li><code>axisLabel=list(formatter=JS('function (value) {return value + &quot;cm&quot;;}'))</code> or</li>
+<li><code>axisLabel=list(formatter='{value} cm')</code></li>
+</ul></td>
+</tr>
+<tr class="even">
+<td align="left"><p>splitLine</p></td>
+<td align="left"><p>A list controlling the split lines. Default <code>list(show=TRUE, lineStyle=``lineStyle(color=list(&quot;#ccc&quot;), width=1, type=&quot;solid&quot;))</code></p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>splitArea</p></td>
+<td align="left"><p>A list controlling the split areas. Default <code>list(show=FALSE, onGap=NULL,</code> <code>areaStyle=areaStyle(color= list(&quot;rgba(250,250,250,0.3)&quot;,</code> <code>&quot;rgba(200,200,200,0.3)&quot;) , type=&quot;default&quot;)</code></p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>data</p></td>
+<td align="left"><p>A character vector/list for axis of type ‘category’, to define the text labels shown in this axis. Default NULL. You can even pass in a complicated list with textSytle list: <code>list('Jan', 'Feb', 'Mar',</code> <code>list(value='Apr', textStyle=list(color='red', ...)), 'May', ...)</code></p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>…</p></td>
+<td align="left"><p>Elipsis.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="showcase" class="section level1">
+<h1><span class="header-section-number">3</span> Showcase</h1>
+<div id="data-preparation" class="section level2">
+<h2><span class="header-section-number">3.1</span> Data Preparation</h2>
+<p>Let’s use <code>airquality</code> to generate 4 Echarts objects <code>g1</code> - <code>g4</code>:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left"><strong>timeline</strong></th>
+<th align="left"><strong>mono series</strong></th>
+<th align="left"><strong>multi series</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>no</strong></td>
+<td align="left"><code>g1</code></td>
+<td align="left"><code>g2</code></td>
+</tr>
+<tr class="even">
+<td align="left"><strong>yes</strong></td>
+<td align="left"><code>g3</code></td>
+<td align="left"><code>g4</code></td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>require(data.table)</code></pre>
+<pre><code>## Loading required package: data.table</code></pre>
+<pre class="r"><code>aq &lt;- airquality
+aq$Date &lt;- as.Date(paste(&#39;1973&#39;, aq$Month, aq$Day, sep=&#39;-&#39;))
+g1 &lt;- echartr(aq, Date, Temp, type=&#39;curve&#39;) %&gt;% setToolbox(pos=3)
+g2 &lt;- echartr(aq, Day, Temp, Month, type=&#39;curve&#39;) %&gt;% setToolbox(pos=3)
+g3 &lt;- echartr(aq, Day, Temp, z=Month, type=&#39;curve&#39;) %&gt;% setToolbox(pos=3)
+aq1 &lt;- melt(aq, id=c(&#39;Month&#39;, &#39;Day&#39;), measure=c(&#39;Temp&#39;, &#39;Wind&#39;), 
+            variable=&#39;Param&#39;)
+g4 &lt;- echartr(aq1, Day, value, Param, z=Month, type=&#39;curve&#39;) %&gt;% 
+    setToolbox(pos=3)</code></pre>
+</div>
+<div id="modification" class="section level2">
+<h2><span class="header-section-number">3.2</span> Modification</h2>
+<p>You can change the appearance of the axis: axis title, split number, axis tick labels. Pay attention to <code>formatter</code> in <code>axisLabel</code>: it requires JavaScript, so you can always compose a JS function. Or you can use a sprintf format string.</p>
+<pre class="r"><code>g1 %&gt;% setXAxis(name=&#39;m/d&#39;, splitNumber=20, axisLabel=list(
+    formatter=&#39;%m/%d&#39;, rotate=90)) %&gt;%
+    setYAxis(axisLabel=list(formatter=&#39;{value} °C&#39;)) </code></pre>
+<p>is equivalent to</p>
+<pre class="r"><code>g1 %&gt;% setXAxis(name=&#39;m/d&#39;, splitNumber=20, axisLabel=list(
+       formatter=JS(&#39;function (v) {
+                    return v.getMonth() + 1 + &quot;/&quot; + v.getDate();
+                    }&#39;),
+       rotate=90)) %&gt;%
+       setYAxis(axisLabel=list(formatter=&#39;{value} °C&#39;))</code></pre>
+<table>
+<tr>
+<td>
+<div id="echarts-fc34cd4f628a6f4d33d81fb3ee7c9561a2287142" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-fc34cd4f628a6f4d33d81fb3ee7c9561a2287142">{"x":{"series":[{"type":"line","data":[[105062400000,67],[105148800000,72],[105235200000,74],[105321600000,62],[105408000000,56],[105494400000,66],[105580800000,65],[105667200000,59],[105753600000,61],[105840000000,69],[105926400000,74],[106012800000,69],[106099200000,66],[106185600000,68],[106272000000,58],[106358400000,64],[106444800000,66],[106531200000,57],[106617600000,68],[106704000000,62],[106790400000,59],[106876800000,73],[106963200000,61],[107049600000,61],[107136000000,57],[107222400000,58],[107308800000,57],[107395200000,67],[107481600000,81],[107568000000,79],[107654400000,76],[107740800000,78],[107827200000,74],[107913600000,67],[108000000000,84],[108086400000,85],[108172800000,79],[108259200000,82],[108345600000,87],[108432000000,90],[108518400000,87],[108604800000,93],[108691200000,92],[108777600000,82],[108864000000,80],[108950400000,79],[109036800000,77],[109123200000,72],[109209600000,65],[109296000000,73],[109382400000,76],[109468800000,77],[109555200000,76],[109641600000,76],[109728000000,76],[109814400000,75],[109900800000,78],[109987200000,73],[110073600000,80],[110160000000,77],[110246400000,83],[110332800000,84],[110419200000,85],[110505600000,81],[110592000000,84],[110678400000,83],[110764800000,83],[110851200000,88],[110937600000,92],[111024000000,92],[111110400000,89],[111196800000,82],[111283200000,73],[111369600000,81],[111456000000,91],[111542400000,80],[111628800000,81],[111715200000,82],[111801600000,84],[111888000000,87],[111974400000,85],[112060800000,74],[112147200000,81],[112233600000,82],[112320000000,86],[112406400000,85],[112492800000,82],[112579200000,86],[112665600000,88],[112752000000,86],[112838400000,83],[112924800000,81],[113011200000,81],[113097600000,81],[113184000000,82],[113270400000,86],[113356800000,85],[113443200000,87],[113529600000,89],[113616000000,90],[113702400000,90],[113788800000,92],[113875200000,86],[113961600000,86],[114048000000,82],[114134400000,80],[114220800000,79],[114307200000,77],[114393600000,79],[114480000000,76],[114566400000,78],[114652800000,78],[114739200000,77],[114825600000,72],[114912000000,75],[114998400000,79],[115084800000,81],[115171200000,86],[115257600000,88],[115344000000,97],[115430400000,94],[115516800000,96],[115603200000,94],[115689600000,91],[115776000000,92],[115862400000,93],[115948800000,93],[116035200000,87],[116121600000,84],[116208000000,80],[116294400000,78],[116380800000,75],[116467200000,73],[116553600000,81],[116640000000,76],[116726400000,77],[116812800000,71],[116899200000,71],[116985600000,78],[117072000000,67],[117158400000,76],[117244800000,68],[117331200000,82],[117417600000,64],[117504000000,71],[117590400000,81],[117676800000,69],[117763200000,63],[117849600000,70],[117936000000,77],[118022400000,75],[118108800000,76],[118195200000,68]],"smooth":true}],"yAxis":[{"type":"value","show":true,"position":"left","name":"Temp","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"time","show":true,"position":"bottom","name":"Date","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"line","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["line","bar","tiled","stack"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"center","orient":"vertical"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</td>
+<td>
+<div id="echarts-6120dc21b0751506e8ed58fc1202317294d15547" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-6120dc21b0751506e8ed58fc1202317294d15547">{"x":{"series":[{"type":"line","data":[[105062400000,67],[105148800000,72],[105235200000,74],[105321600000,62],[105408000000,56],[105494400000,66],[105580800000,65],[105667200000,59],[105753600000,61],[105840000000,69],[105926400000,74],[106012800000,69],[106099200000,66],[106185600000,68],[106272000000,58],[106358400000,64],[106444800000,66],[106531200000,57],[106617600000,68],[106704000000,62],[106790400000,59],[106876800000,73],[106963200000,61],[107049600000,61],[107136000000,57],[107222400000,58],[107308800000,57],[107395200000,67],[107481600000,81],[107568000000,79],[107654400000,76],[107740800000,78],[107827200000,74],[107913600000,67],[108000000000,84],[108086400000,85],[108172800000,79],[108259200000,82],[108345600000,87],[108432000000,90],[108518400000,87],[108604800000,93],[108691200000,92],[108777600000,82],[108864000000,80],[108950400000,79],[109036800000,77],[109123200000,72],[109209600000,65],[109296000000,73],[109382400000,76],[109468800000,77],[109555200000,76],[109641600000,76],[109728000000,76],[109814400000,75],[109900800000,78],[109987200000,73],[110073600000,80],[110160000000,77],[110246400000,83],[110332800000,84],[110419200000,85],[110505600000,81],[110592000000,84],[110678400000,83],[110764800000,83],[110851200000,88],[110937600000,92],[111024000000,92],[111110400000,89],[111196800000,82],[111283200000,73],[111369600000,81],[111456000000,91],[111542400000,80],[111628800000,81],[111715200000,82],[111801600000,84],[111888000000,87],[111974400000,85],[112060800000,74],[112147200000,81],[112233600000,82],[112320000000,86],[112406400000,85],[112492800000,82],[112579200000,86],[112665600000,88],[112752000000,86],[112838400000,83],[112924800000,81],[113011200000,81],[113097600000,81],[113184000000,82],[113270400000,86],[113356800000,85],[113443200000,87],[113529600000,89],[113616000000,90],[113702400000,90],[113788800000,92],[113875200000,86],[113961600000,86],[114048000000,82],[114134400000,80],[114220800000,79],[114307200000,77],[114393600000,79],[114480000000,76],[114566400000,78],[114652800000,78],[114739200000,77],[114825600000,72],[114912000000,75],[114998400000,79],[115084800000,81],[115171200000,86],[115257600000,88],[115344000000,97],[115430400000,94],[115516800000,96],[115603200000,94],[115689600000,91],[115776000000,92],[115862400000,93],[115948800000,93],[116035200000,87],[116121600000,84],[116208000000,80],[116294400000,78],[116380800000,75],[116467200000,73],[116553600000,81],[116640000000,76],[116726400000,77],[116812800000,71],[116899200000,71],[116985600000,78],[117072000000,67],[117158400000,76],[117244800000,68],[117331200000,82],[117417600000,64],[117504000000,71],[117590400000,81],[117676800000,69],[117763200000,63],[117849600000,70],[117936000000,77],[118022400000,75],[118108800000,76],[118195200000,68]],"smooth":true}],"yAxis":[{"type":"value","show":true,"position":"left","name":"Temp","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true,"formatter":"{value} °C"},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"time","show":true,"position":"bottom","name":"m/d","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true,"formatter":"function(x) {var monthNames = ['January', 'February', 'March',\n                        'April', 'May', 'June', 'July', 'August', 'September',\n                        'October', 'November', 'December'];var weekNames = ['Monday', 'Tuesday', 'Wednesday',\n                        'Thursday', 'Friday', 'Saturday', 'Sunday'];return  x.getMonth() + 1 + '/' + x.getDate();}","rotate":90},"splitLine":{"show":true},"splitArea":{"show":false},"splitNumber":20}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"line","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["line","bar","tiled","stack"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"center","orient":"vertical"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"}},"evals":["xAxis.0.axisLabel.formatter"],"jsHooks":[]}</script>
+</td>
+</tr>
+</table>
+<p>You can set series 2-4 (June-August) to secondary y-axis…</p>
+<pre class="r"><code>g2 %&gt;% setY1Axis(series=2:4, name=&#39;Summer Temp&#39;)</code></pre>
+<table>
+<tr>
+<td>
+<div id="echarts-1ff4a1b31376da3033573018b40376b73911a069" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-1ff4a1b31376da3033573018b40376b73911a069">{"x":{"series":[{"name":"5","type":"line","data":[[1,67],[2,72],[3,74],[4,62],[5,56],[6,66],[7,65],[8,59],[9,61],[10,69],[11,74],[12,69],[13,66],[14,68],[15,58],[16,64],[17,66],[18,57],[19,68],[20,62],[21,59],[22,73],[23,61],[24,61],[25,57],[26,58],[27,57],[28,67],[29,81],[30,79],[31,76]],"smooth":true},{"name":"6","type":"line","data":[[1,78],[2,74],[3,67],[4,84],[5,85],[6,79],[7,82],[8,87],[9,90],[10,87],[11,93],[12,92],[13,82],[14,80],[15,79],[16,77],[17,72],[18,65],[19,73],[20,76],[21,77],[22,76],[23,76],[24,76],[25,75],[26,78],[27,73],[28,80],[29,77],[30,83]]},{"name":"7","type":"line","data":[[1,84],[2,85],[3,81],[4,84],[5,83],[6,83],[7,88],[8,92],[9,92],[10,89],[11,82],[12,73],[13,81],[14,91],[15,80],[16,81],[17,82],[18,84],[19,87],[20,85],[21,74],[22,81],[23,82],[24,86],[25,85],[26,82],[27,86],[28,88],[29,86],[30,83],[31,81]]},{"name":"8","type":"line","data":[[1,81],[2,81],[3,82],[4,86],[5,85],[6,87],[7,89],[8,90],[9,90],[10,92],[11,86],[12,86],[13,82],[14,80],[15,79],[16,77],[17,79],[18,76],[19,78],[20,78],[21,77],[22,72],[23,75],[24,79],[25,81],[26,86],[27,88],[28,97],[29,94],[30,96],[31,94]]},{"name":"9","type":"line","data":[[1,91],[2,92],[3,93],[4,93],[5,87],[6,84],[7,80],[8,78],[9,75],[10,73],[11,81],[12,76],[13,77],[14,71],[15,71],[16,78],[17,67],[18,76],[19,68],[20,82],[21,64],[22,71],[23,81],[24,69],[25,63],[26,70],[27,77],[28,75],[29,76],[30,68]]}],"legend":{"show":true,"data":["5","6","7","8","9"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"value","show":true,"position":"left","name":"Temp","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Day","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"line","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["line","bar","tiled","stack"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"center","orient":"vertical"}},"evals":[],"jsHooks":[]}</script>
+</td>
+<td>
+<div id="echarts-909db08d7a71db40493bd9939ef7d6b0091d5a79" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-909db08d7a71db40493bd9939ef7d6b0091d5a79">{"x":{"series":[{"name":"5","type":"line","data":[[1,67],[2,72],[3,74],[4,62],[5,56],[6,66],[7,65],[8,59],[9,61],[10,69],[11,74],[12,69],[13,66],[14,68],[15,58],[16,64],[17,66],[18,57],[19,68],[20,62],[21,59],[22,73],[23,61],[24,61],[25,57],[26,58],[27,57],[28,67],[29,81],[30,79],[31,76]],"smooth":true},{"name":"6","type":"line","data":[[1,78],[2,74],[3,67],[4,84],[5,85],[6,79],[7,82],[8,87],[9,90],[10,87],[11,93],[12,92],[13,82],[14,80],[15,79],[16,77],[17,72],[18,65],[19,73],[20,76],[21,77],[22,76],[23,76],[24,76],[25,75],[26,78],[27,73],[28,80],[29,77],[30,83]],"yAxisIndex":1},{"name":"7","type":"line","data":[[1,84],[2,85],[3,81],[4,84],[5,83],[6,83],[7,88],[8,92],[9,92],[10,89],[11,82],[12,73],[13,81],[14,91],[15,80],[16,81],[17,82],[18,84],[19,87],[20,85],[21,74],[22,81],[23,82],[24,86],[25,85],[26,82],[27,86],[28,88],[29,86],[30,83],[31,81]],"yAxisIndex":1},{"name":"8","type":"line","data":[[1,81],[2,81],[3,82],[4,86],[5,85],[6,87],[7,89],[8,90],[9,90],[10,92],[11,86],[12,86],[13,82],[14,80],[15,79],[16,77],[17,79],[18,76],[19,78],[20,78],[21,77],[22,72],[23,75],[24,79],[25,81],[26,86],[27,88],[28,97],[29,94],[30,96],[31,94]],"yAxisIndex":1},{"name":"9","type":"line","data":[[1,91],[2,92],[3,93],[4,93],[5,87],[6,84],[7,80],[8,78],[9,75],[10,73],[11,81],[12,76],[13,77],[14,71],[15,71],[16,78],[17,67],[18,76],[19,68],[20,82],[21,64],[22,71],[23,81],[24,69],[25,63],[26,70],[27,77],[28,75],[29,76],[30,68]]}],"legend":{"show":true,"data":["5","6","7","8","9"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"value","show":true,"position":"left","name":"Temp","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}},{"type":"value","show":true,"position":"right","name":"Summer Temp","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Day","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"line","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["line","bar","tiled","stack"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"center","orient":"vertical"}},"evals":[],"jsHooks":[]}</script>
+</td>
+</tr>
+</table>
+<p>but you cannot assign timeline-specific axes. What about an academic style axis? That means removing all the vertical splitLines and set the borderWidth of the pane grid zero.</p>
+<pre class="r"><code>g3 %&gt;% setXAxis(splitLine=list(show=FALSE)) %&gt;% setGrid(borderWidth=0) %&gt;%
+    setYAxis(axisLine=list(lineStyle=lineStyle(width=0)))</code></pre>
+<table>
+<tr>
+<td>
+<div id="echarts-9b6ee4273e3f5f2fa1d1c32765604d7558deb1b6" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-9b6ee4273e3f5f2fa1d1c32765604d7558deb1b6">{"x":{"timeline":{"type":"number","data":[5,6,7,8,9],"x":80,"x2":80},"options":[{"series":[{"type":"line","data":[[1,67],[2,72],[3,74],[4,62],[5,56],[6,66],[7,65],[8,59],[9,61],[10,69],[11,74],[12,69],[13,66],[14,68],[15,58],[16,64],[17,66],[18,57],[19,68],[20,62],[21,59],[22,73],[23,61],[24,61],[25,57],[26,58],[27,57],[28,67],[29,81],[30,79],[31,76]],"smooth":true}],"yAxis":[{"type":"value","show":true,"position":"left","name":"Temp","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Day","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"line","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["line","bar","tiled","stack"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"center","orient":"vertical"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"}},{"series":[{"type":"line","data":[[1,78],[2,74],[3,67],[4,84],[5,85],[6,79],[7,82],[8,87],[9,90],[10,87],[11,93],[12,92],[13,82],[14,80],[15,79],[16,77],[17,72],[18,65],[19,73],[20,76],[21,77],[22,76],[23,76],[24,76],[25,75],[26,78],[27,73],[28,80],[29,77],[30,83]],"smooth":true}]},{"series":[{"type":"line","data":[[1,84],[2,85],[3,81],[4,84],[5,83],[6,83],[7,88],[8,92],[9,92],[10,89],[11,82],[12,73],[13,81],[14,91],[15,80],[16,81],[17,82],[18,84],[19,87],[20,85],[21,74],[22,81],[23,82],[24,86],[25,85],[26,82],[27,86],[28,88],[29,86],[30,83],[31,81]],"smooth":true}]},{"series":[{"type":"line","data":[[1,81],[2,81],[3,82],[4,86],[5,85],[6,87],[7,89],[8,90],[9,90],[10,92],[11,86],[12,86],[13,82],[14,80],[15,79],[16,77],[17,79],[18,76],[19,78],[20,78],[21,77],[22,72],[23,75],[24,79],[25,81],[26,86],[27,88],[28,97],[29,94],[30,96],[31,94]],"smooth":true}]},{"series":[{"type":"line","data":[[1,91],[2,92],[3,93],[4,93],[5,87],[6,84],[7,80],[8,78],[9,75],[10,73],[11,81],[12,76],[13,77],[14,71],[15,71],[16,78],[17,67],[18,76],[19,68],[20,82],[21,64],[22,71],[23,81],[24,69],[25,63],[26,70],[27,77],[28,75],[29,76],[30,68]],"smooth":true}]}]},"evals":[],"jsHooks":[]}</script>
+</td>
+<td>
+<div id="echarts-0e9e60f44ae140532e090552191de2206f1c3307" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-0e9e60f44ae140532e090552191de2206f1c3307">{"x":{"timeline":{"type":"number","data":[5,6,7,8,9],"x":80,"x2":80},"options":[{"series":[{"type":"line","data":[[1,67],[2,72],[3,74],[4,62],[5,56],[6,66],[7,65],[8,59],[9,61],[10,69],[11,74],[12,69],[13,66],[14,68],[15,58],[16,64],[17,66],[18,57],[19,68],[20,62],[21,59],[22,73],[23,61],[24,61],[25,57],[26,58],[27,57],[28,67],[29,81],[30,79],[31,76]],"smooth":true}],"yAxis":[{"type":"value","show":true,"position":"left","name":"Temp","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false,"lineStyle":{"width":0}},"axisTick":{"show":false},"axisLabel":{"show":true,"formatter":"function(x){return '' + x.toFixed(1) + ' °C';}"},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Day","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":false},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"line","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["line","bar","tiled","stack"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"center","orient":"vertical"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"grid":{"borderWidth":0}},{"series":[{"type":"line","data":[[1,78],[2,74],[3,67],[4,84],[5,85],[6,79],[7,82],[8,87],[9,90],[10,87],[11,93],[12,92],[13,82],[14,80],[15,79],[16,77],[17,72],[18,65],[19,73],[20,76],[21,77],[22,76],[23,76],[24,76],[25,75],[26,78],[27,73],[28,80],[29,77],[30,83]],"smooth":true}]},{"series":[{"type":"line","data":[[1,84],[2,85],[3,81],[4,84],[5,83],[6,83],[7,88],[8,92],[9,92],[10,89],[11,82],[12,73],[13,81],[14,91],[15,80],[16,81],[17,82],[18,84],[19,87],[20,85],[21,74],[22,81],[23,82],[24,86],[25,85],[26,82],[27,86],[28,88],[29,86],[30,83],[31,81]],"smooth":true}]},{"series":[{"type":"line","data":[[1,81],[2,81],[3,82],[4,86],[5,85],[6,87],[7,89],[8,90],[9,90],[10,92],[11,86],[12,86],[13,82],[14,80],[15,79],[16,77],[17,79],[18,76],[19,78],[20,78],[21,77],[22,72],[23,75],[24,79],[25,81],[26,86],[27,88],[28,97],[29,94],[30,96],[31,94]],"smooth":true}]},{"series":[{"type":"line","data":[[1,91],[2,92],[3,93],[4,93],[5,87],[6,84],[7,80],[8,78],[9,75],[10,73],[11,81],[12,76],[13,77],[14,71],[15,71],[16,78],[17,67],[18,76],[19,68],[20,82],[21,64],[22,71],[23,81],[24,69],[25,63],[26,70],[27,77],[28,75],[29,76],[30,68]],"smooth":true}]}]},"evals":["options.0.yAxis.0.axisLabel.formatter"],"jsHooks":[]}</script>
+</td>
+</tr>
+</table>
+<p>Let’s wrap up all the features.</p>
+<pre class="r"><code>g4 %&gt;% setY1Axis(series=&#39;Wind&#39;, axisLine=list(lineStyle=lineStyle(width=0)), 
+                 name=&#39;Wind&#39;, axisLabel=list(formatter=&quot;%.1f mph&quot;), min=0) %&gt;%
+    setXAxis(splitLine=list(show=FALSE), axisLine=list(
+        lineStyle=lineStyle(color=&#39;darkgray&#39;))) %&gt;% 
+    setYAxis(axisLine=list(lineStyle=lineStyle(width=0)), 
+             axisLabel=list(formatter=&quot;%.1f °C&quot;), min=0, name=&#39;Temp&#39;) %&gt;% 
+    setGrid(borderWidth=0)</code></pre>
+<table>
+<tr>
+<td>
+<div id="echarts-a4efa97b4a2dfa5e290fcc255550e6b656cbbe77" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-a4efa97b4a2dfa5e290fcc255550e6b656cbbe77">{"x":{"timeline":{"type":"number","data":[5,6,7,8,9],"x":80,"x2":80},"options":[{"series":[{"name":"Temp","type":"line","data":[[1,67],[2,72],[3,74],[4,62],[5,56],[6,66],[7,65],[8,59],[9,61],[10,69],[11,74],[12,69],[13,66],[14,68],[15,58],[16,64],[17,66],[18,57],[19,68],[20,62],[21,59],[22,73],[23,61],[24,61],[25,57],[26,58],[27,57],[28,67],[29,81],[30,79],[31,76]],"smooth":true},{"name":"Wind","type":"line","data":[[1,7.4],[2,8],[3,12.6],[4,11.5],[5,14.3],[6,14.9],[7,8.6],[8,13.8],[9,20.1],[10,8.6],[11,6.9],[12,9.7],[13,9.2],[14,10.9],[15,13.2],[16,11.5],[17,12],[18,18.4],[19,11.5],[20,9.7],[21,9.7],[22,16.6],[23,9.7],[24,12],[25,16.6],[26,14.9],[27,8],[28,12],[29,14.9],[30,5.7],[31,7.4]]}],"legend":{"show":true,"data":["Temp","Wind"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"value","show":true,"position":"left","name":"value","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Day","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"line","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["line","bar","tiled","stack"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"center","orient":"vertical"}},{"series":[{"name":"Temp","type":"line","data":[[1,78],[2,74],[3,67],[4,84],[5,85],[6,79],[7,82],[8,87],[9,90],[10,87],[11,93],[12,92],[13,82],[14,80],[15,79],[16,77],[17,72],[18,65],[19,73],[20,76],[21,77],[22,76],[23,76],[24,76],[25,75],[26,78],[27,73],[28,80],[29,77],[30,83]],"smooth":true},{"name":"Wind","type":"line","data":[[1,8.6],[2,9.7],[3,16.1],[4,9.2],[5,8.6],[6,14.3],[7,9.7],[8,6.9],[9,13.8],[10,11.5],[11,10.9],[12,9.2],[13,8],[14,13.8],[15,11.5],[16,14.9],[17,20.7],[18,9.2],[19,11.5],[20,10.3],[21,6.3],[22,1.7],[23,4.6],[24,6.3],[25,8],[26,8],[27,10.3],[28,11.5],[29,14.9],[30,8]]}]},{"series":[{"name":"Temp","type":"line","data":[[1,84],[2,85],[3,81],[4,84],[5,83],[6,83],[7,88],[8,92],[9,92],[10,89],[11,82],[12,73],[13,81],[14,91],[15,80],[16,81],[17,82],[18,84],[19,87],[20,85],[21,74],[22,81],[23,82],[24,86],[25,85],[26,82],[27,86],[28,88],[29,86],[30,83],[31,81]],"smooth":true},{"name":"Wind","type":"line","data":[[1,4.1],[2,9.2],[3,9.2],[4,10.9],[5,4.6],[6,10.9],[7,5.1],[8,6.3],[9,5.7],[10,7.4],[11,8.6],[12,14.3],[13,14.9],[14,14.9],[15,14.3],[16,6.9],[17,10.3],[18,6.3],[19,5.1],[20,11.5],[21,6.9],[22,9.7],[23,11.5],[24,8.6],[25,8],[26,8.6],[27,12],[28,7.4],[29,7.4],[30,7.4],[31,9.2]]}]},{"series":[{"name":"Temp","type":"line","data":[[1,81],[2,81],[3,82],[4,86],[5,85],[6,87],[7,89],[8,90],[9,90],[10,92],[11,86],[12,86],[13,82],[14,80],[15,79],[16,77],[17,79],[18,76],[19,78],[20,78],[21,77],[22,72],[23,75],[24,79],[25,81],[26,86],[27,88],[28,97],[29,94],[30,96],[31,94]],"smooth":true},{"name":"Wind","type":"line","data":[[1,6.9],[2,13.8],[3,7.4],[4,6.9],[5,7.4],[6,4.6],[7,4],[8,10.3],[9,8],[10,8.6],[11,11.5],[12,11.5],[13,11.5],[14,9.7],[15,11.5],[16,10.3],[17,6.3],[18,7.4],[19,10.9],[20,10.3],[21,15.5],[22,14.3],[23,12.6],[24,9.7],[25,3.4],[26,8],[27,5.7],[28,9.7],[29,2.3],[30,6.3],[31,6.3]]}]},{"series":[{"name":"Temp","type":"line","data":[[1,91],[2,92],[3,93],[4,93],[5,87],[6,84],[7,80],[8,78],[9,75],[10,73],[11,81],[12,76],[13,77],[14,71],[15,71],[16,78],[17,67],[18,76],[19,68],[20,82],[21,64],[22,71],[23,81],[24,69],[25,63],[26,70],[27,77],[28,75],[29,76],[30,68]],"smooth":true},{"name":"Wind","type":"line","data":[[1,6.9],[2,5.1],[3,2.8],[4,4.6],[5,7.4],[6,15.5],[7,10.9],[8,10.3],[9,10.9],[10,9.7],[11,14.9],[12,15.5],[13,6.3],[14,10.9],[15,11.5],[16,6.9],[17,13.8],[18,10.3],[19,10.3],[20,8],[21,12.6],[22,9.2],[23,10.3],[24,10.3],[25,16.6],[26,6.9],[27,13.2],[28,14.3],[29,8],[30,11.5]]}]}]},"evals":[],"jsHooks":[]}</script>
+</td>
+<td>
+<div id="echarts-2f1ac294deef6ead4ed7e9e97036b1797334febd" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-2f1ac294deef6ead4ed7e9e97036b1797334febd">{"x":{"timeline":{"type":"number","data":[5,6,7,8,9],"x":80,"x2":80},"options":[{"series":[{"name":"Temp","type":"line","data":[[1,67],[2,72],[3,74],[4,62],[5,56],[6,66],[7,65],[8,59],[9,61],[10,69],[11,74],[12,69],[13,66],[14,68],[15,58],[16,64],[17,66],[18,57],[19,68],[20,62],[21,59],[22,73],[23,61],[24,61],[25,57],[26,58],[27,57],[28,67],[29,81],[30,79],[31,76]],"smooth":true},{"name":"Wind","type":"line","data":[[1,7.4],[2,8],[3,12.6],[4,11.5],[5,14.3],[6,14.9],[7,8.6],[8,13.8],[9,20.1],[10,8.6],[11,6.9],[12,9.7],[13,9.2],[14,10.9],[15,13.2],[16,11.5],[17,12],[18,18.4],[19,11.5],[20,9.7],[21,9.7],[22,16.6],[23,9.7],[24,12],[25,16.6],[26,14.9],[27,8],[28,12],[29,14.9],[30,5.7],[31,7.4]],"yAxisIndex":1}],"legend":{"show":true,"data":["Temp","Wind"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"value","show":true,"position":"left","name":"Temp","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false,"lineStyle":{"width":0}},"axisTick":{"show":false},"axisLabel":{"show":true,"formatter":"function(x){return '' + x.toFixed(1) + ' °C';}"},"splitLine":{"show":true},"splitArea":{"show":false},"min":0},{"type":"value","show":true,"position":"right","name":"Wind","nameLocation":"end","boundaryGap":[0,0],"min":0,"scale":true,"axisLine":{"lineStyle":{"width":0}},"axisTick":{"show":false},"axisLabel":{"formatter":"function(x){return '' + x.toFixed(1) + ' mph';}"},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Day","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false,"lineStyle":{"color":"darkgray"}},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":false},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"line","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["line","bar","tiled","stack"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"center","orient":"vertical"},"grid":{"borderWidth":0}},{"series":[{"name":"Temp","type":"line","data":[[1,78],[2,74],[3,67],[4,84],[5,85],[6,79],[7,82],[8,87],[9,90],[10,87],[11,93],[12,92],[13,82],[14,80],[15,79],[16,77],[17,72],[18,65],[19,73],[20,76],[21,77],[22,76],[23,76],[24,76],[25,75],[26,78],[27,73],[28,80],[29,77],[30,83]],"smooth":true},{"name":"Wind","type":"line","data":[[1,8.6],[2,9.7],[3,16.1],[4,9.2],[5,8.6],[6,14.3],[7,9.7],[8,6.9],[9,13.8],[10,11.5],[11,10.9],[12,9.2],[13,8],[14,13.8],[15,11.5],[16,14.9],[17,20.7],[18,9.2],[19,11.5],[20,10.3],[21,6.3],[22,1.7],[23,4.6],[24,6.3],[25,8],[26,8],[27,10.3],[28,11.5],[29,14.9],[30,8]]}]},{"series":[{"name":"Temp","type":"line","data":[[1,84],[2,85],[3,81],[4,84],[5,83],[6,83],[7,88],[8,92],[9,92],[10,89],[11,82],[12,73],[13,81],[14,91],[15,80],[16,81],[17,82],[18,84],[19,87],[20,85],[21,74],[22,81],[23,82],[24,86],[25,85],[26,82],[27,86],[28,88],[29,86],[30,83],[31,81]],"smooth":true},{"name":"Wind","type":"line","data":[[1,4.1],[2,9.2],[3,9.2],[4,10.9],[5,4.6],[6,10.9],[7,5.1],[8,6.3],[9,5.7],[10,7.4],[11,8.6],[12,14.3],[13,14.9],[14,14.9],[15,14.3],[16,6.9],[17,10.3],[18,6.3],[19,5.1],[20,11.5],[21,6.9],[22,9.7],[23,11.5],[24,8.6],[25,8],[26,8.6],[27,12],[28,7.4],[29,7.4],[30,7.4],[31,9.2]]}]},{"series":[{"name":"Temp","type":"line","data":[[1,81],[2,81],[3,82],[4,86],[5,85],[6,87],[7,89],[8,90],[9,90],[10,92],[11,86],[12,86],[13,82],[14,80],[15,79],[16,77],[17,79],[18,76],[19,78],[20,78],[21,77],[22,72],[23,75],[24,79],[25,81],[26,86],[27,88],[28,97],[29,94],[30,96],[31,94]],"smooth":true},{"name":"Wind","type":"line","data":[[1,6.9],[2,13.8],[3,7.4],[4,6.9],[5,7.4],[6,4.6],[7,4],[8,10.3],[9,8],[10,8.6],[11,11.5],[12,11.5],[13,11.5],[14,9.7],[15,11.5],[16,10.3],[17,6.3],[18,7.4],[19,10.9],[20,10.3],[21,15.5],[22,14.3],[23,12.6],[24,9.7],[25,3.4],[26,8],[27,5.7],[28,9.7],[29,2.3],[30,6.3],[31,6.3]]}]},{"series":[{"name":"Temp","type":"line","data":[[1,91],[2,92],[3,93],[4,93],[5,87],[6,84],[7,80],[8,78],[9,75],[10,73],[11,81],[12,76],[13,77],[14,71],[15,71],[16,78],[17,67],[18,76],[19,68],[20,82],[21,64],[22,71],[23,81],[24,69],[25,63],[26,70],[27,77],[28,75],[29,76],[30,68]],"smooth":true},{"name":"Wind","type":"line","data":[[1,6.9],[2,5.1],[3,2.8],[4,4.6],[5,7.4],[6,15.5],[7,10.9],[8,10.3],[9,10.9],[10,9.7],[11,14.9],[12,15.5],[13,6.3],[14,10.9],[15,11.5],[16,6.9],[17,13.8],[18,10.3],[19,10.3],[20,8],[21,12.6],[22,9.2],[23,10.3],[24,10.3],[25,16.6],[26,6.9],[27,13.2],[28,14.3],[29,8],[30,11.5]]}]}]},"evals":["options.0.yAxis.0.axisLabel.formatter","options.0.yAxis.1.axisLabel.formatter"],"jsHooks":[]}</script>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div id="references" class="section level1">
+<h1><span class="header-section-number">4</span> References</h1>
+<p><a href="http://echarts.baidu.com/echarts2/doc/option.html#tooltip-line1~xAxis-i" class="uri">http://echarts.baidu.com/echarts2/doc/option.html#tooltip-line1~xAxis-i</a></p>
+<p><a href="http://echarts.baidu.com/echarts2/doc/option.html#tooltip-line1~yAxis-i" class="uri">http://echarts.baidu.com/echarts2/doc/option.html#tooltip-line1~yAxis-i</a></p>
+</div>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+    // active menu
+    var href = window.location.pathname;
+    href = href.substr(href.lastIndexOf('/') + 1);
+    if (href === '') href = './';
+    $('a[href="' + href + '"]').parent().addClass('active');
+});
+</script>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+
+</body>
+</html>

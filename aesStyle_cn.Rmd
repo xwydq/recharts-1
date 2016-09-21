@@ -1,0 +1,207 @@
+---
+title: "样式aesStyle"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+首先，加载`recharts`：
+```{r}
+library(recharts)
+```
+
+# 介绍Introduction
+
+`aesStyle`包含一大族函数，用于创建Echarts样式元件。比如，Echarts大量使用`itemStyle`，而在recharts中，你既可以用`itemStyle`函数，或直接写出itemStyle的list对象。
+
+在itemStyle的list对象内部，包含三类元素：
+
+- 原子型特性
+    - 'color', 'borderColor', 'borderWidth', 'barBorderColor', 'barBorderRadius', 'barBorderWidth', 可以直接赋值。
+
+- 对象型特性
+    - 'lineStyle', 'textStyle','areaStyle', 'chordStyle', 'nodeStyle', 'linkStyle', 可以用aesStyle函数族
+
+- 混合型特性
+    - 'label' 和'labelLine', 包含了原子性特性和其他对象性特性，如'lineStyle', 'textStyle'
+
+
+# 用法Function Call
+
+```r
+aesStyle(element = c("text", "line", "area", "chord", "node", "link"), ...)
+
+lineStyle(...)
+
+textStyle(...)
+
+areaStyle(...)
+
+chordStyle(...)
+
+nodeStyle(...)
+
+linkStyle(...)
+
+labelStyle(...)
+
+labelLineStyle(...)
+
+itemStyle(...)
+```
+
++--------------+---------------------------------------------------------------+
+|   参数       |  要求                                               |
++==============+===============================================================+
+| **chart**    | Echarts对象，由`echartR`或`echart`生成。  |
++--------------+---------------------------------------------------------------+
+| element      | 包括c("text", "line", "area", "chord", "node", "link"). |
++--------------+---------------------------------------------------------------+
+| ...          | 创建样式元件的参数列表。 |
++--------------+---------------------------------------------------------------+
+
+## 关于...Elipsis
+
+### `itemStyle` (normal|emphasis)
+
+参数         | 说明
+------------|-----------------------------------------------------------
+color |	颜色向量, 可以是'rgba', 十六进制值, 或颜色名称
+lineStyle	| 用于线图/面积图/k线图/标注线，参见`lineStyle`
+textStyle	| 参见`textStyle`
+areaStyle	| 用于堆积线图/面积图和地图，参见`areaStyle`
+chordStyle	| 用于和弦图，参见`chordStyle`
+nodeStyle	| 用于和弦图，参见`nodeStyle`
+linkStyle	| 用于和弦图，参见`linkStyle`
+borderColor	| 颜色向量, 可以是'rgba', 十六进制值, 或颜色名称
+borderWidth	| 用于symbol, symbole, 饼图、地图和标注点，数值型
+barBorderColor	| 用于symbol, symbole, 饼图、地图和标注点，可以是'rgba', 十六进制值, 或颜色名称
+barBorderRadius	| 数值型向量，长度为1或4(顺时针右-下-左-上), 默认为0
+barBorderWidth	| 数值型向量，长度为1或4(顺时针右-下-左-上), 默认为0
+label	| 用于线图/面积图/条图/柱图/k线图/散点图/气泡图/饼图/环形图/地图/力导向布局图/漏斗图/金字塔图和标注点/标注线，参见`labelStyle`
+labelLine	| 用于饼图/环形图和漏斗图，参见`labelLineStyle`
+
+### `labelStyle`
+
++------------+-----------------------------------------------------------------+
+| 参数       | 说明  |
++============+=================================================================+
+| show	     | TRUE/FALSE, 默认为TRUE |
++------------+-----------------------------------------------------------------+
+| position   | - 用于饼图/环图'outer'/'inner'; 
+|            | - 用于漏斗图/金字塔图，'inner'/'left'/'right'; 
+|            | - 用于线图/面积图/柱图/条图/k线图/散点图/气泡图，'top'/'right'/'inside'/'left'/'bottom'; 
+|            | - 用于条图/柱图，额外有'insideLeft' / 'insideRight' / 'insideTop' / 'insideBottom' |
++------------+-----------------------------------------------------------------+
+| rotate     | 仅用于和弦图。TRUE/FALSE, 默认FALSE |
++------------+-----------------------------------------------------------------+
+| distance   | 仅用于和弦图和饼图/环图。数值型，默认为10 |
++------------+-----------------------------------------------------------------+
+| formatter  | 参见`setTooltip` |
++------------+-----------------------------------------------------------------+
+| textStyle  | 参见`textStyle` |
++------------+-----------------------------------------------------------------+
+| x          | 仅用于矩形树图，数值型 |
++------------+-----------------------------------------------------------------+
+| y          | 仅用于矩形树图，数值型 |
++------------+-----------------------------------------------------------------+
+
+### `labelLineStyle`
+
+参数        | 说明
+------------|-----------------------------------------------------------
+show	| TRUE/FALSE, 默认为TRUE
+length	| 数值型或'auto', 默认为 40
+lineStyle	| 参见`lineStyle`
+
+### `textStyle`
+
+参数        | 说明
+------------|-----------------------------------------------------------
+color	| 颜色向量, 可以是'rgba', 十六进制值, 或颜色名称
+decoration	| 仅用于提示框，文本型，默认为'none'
+align	| 'left' / 'right' / 'center'
+baseline	| 'top' / 'bottom' / 'middle'
+fontFamily	| 合法的字体名称
+fontSize	| 数值型，默认为12
+fontStyle	| 'normal' / 'italic' / 'oblique', 默认为'normal'
+fontWeight	| 'normal' / 'bold' / 'bolder' / 'lighter' 祸数值型，默认为'normal'
+
+### `lineStyle`
+
+参数        | 说明
+------------|-----------------------------------------------------------
+color	| 颜色向量, 可以是'rgba', 十六进制值, 或颜色名称
+type	| 'solid' / 'dotted' / 'dashed'。对树图，额外有'curve' / 'broken'. Default 'solid'
+width	| 数值型
+shadowColor	| 颜色向量, 可以是'rgba', 十六进制值, 或颜色名称
+shadowBlur	| 数值型，默认为5
+shadowOffsetX	| 数值型，默认为3
+shadowOffsetY	| 数值型，默认为3
+
+### `areaStyle`
+
+参数        | 说明
+------------|-----------------------------------------------------------
+color	| 颜色向量, 可以是'rgba', 十六进制值, 或颜色名称
+type	| 仅能用'default'
+
+### `chordStyle`
+
+参数        | 说明
+------------|-----------------------------------------------------------
+width	| 数值型，默认为1
+color	| 颜色向量, 可以是'rgba', 十六进制值, 或颜色名称
+borderWidth	| 数值型，默认为1
+borderColor	| 颜色向量, 可以是'rgba', 十六进制值, 或颜色名称
+
+### `nodeStyle`
+
+参数        | 说明
+------------|-----------------------------------------------------------
+color	| 颜色向量, 可以是'rgba', 十六进制值, 或颜色名称
+borderWidth	| 数值型，默认为1
+borderColor	| 颜色向量, 可以是'rgba', 十六进制值, 或颜色名称
+
+### `linkStyle`
+
+参数        | 说明
+------------|-----------------------------------------------------------
+type	| 'curve'|'line'
+color	| 颜色向量, 可以是'rgba', 十六进制值, 或颜色名称。默认为'#5182ab'
+width	| 数值型，默认为1
+
+# 举例Showcase
+
+怎样构建itemStyle对象？
+
+首先，构建低级样式元件对象。
+
+```r
+styText <- textStyle(color='red', fontFamily='Arial')
+styLine <- lineStyle(color='#fff', width=4, shadowBlur=5)
+```
+
+然后，构建较高级的样式元件对象。
+
+```r
+lab <- labelStyle(show=TRUE, position='inside', textStyle=styText)
+```
+
+最后，合成一个itemSytle对象。
+
+```r
+itemStyle <- list(normal=itemStyle(lineStyle=styLine, label=lab),
+                  emphasis=itemStyle(lineStyle=styLine, label=lab)
+              )
+```
+
+# 参考材料References
+
+<http://echarts.baidu.com/echarts2/doc/doc.html#ItemStyle>

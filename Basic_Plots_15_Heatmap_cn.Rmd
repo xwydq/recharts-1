@@ -1,0 +1,105 @@
+---
+title: "基础图形Basic Plots 15 - 热力图Heatmap"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+首先，加载`recharts`:
+```{r}
+library(recharts)
+```
+
+# 介绍Introduction
+
+热力图只有一种类型：heatmap。
+
+<table id='intro'>
+<tr><td>
+```{r,echo=FALSE}
+data = rbind(
+    data.frame(
+        lng=100+rnorm(100,0, 1)*600, lat=150+rnorm(100,0, 1)*50, 
+        y=abs(rnorm(100,0,1))),
+    data.frame(
+        lng=rnorm(200,0, 1)*1000, lat=rnorm(200,0, 1)*800, 
+        y=abs(rnorm(200,0,1))),
+    data.frame(lng=400+rnorm(20,0, 1)*300, lat=5+rnorm(20,0, 1)*10, 
+               y=abs(rnorm(100,0,1))))
+
+echartr(data,lng=lng,lat=lat,y=y,type='heatmap') %>% setTitle("Heatmap") %>%
+    setTheme('infographic', width=400, height=300)
+```
+</td>
+<td>
+</table>
+
+关键是：
+
+- 不需要`x`
+- 数值型`y`，数值型纬度`lat`和经度`lng`
+
+# 用法Function Call
+
+```r
+echartr(data, y, lng, lat, <series>, <z>, <type>)
+```
+
++--------+--------------------------------------------------------------------+
+| 参数   |  要求                                              |
++========+====================================================================+
+|**data**| 数据框格式的源数据                            |
++--------+--------------------------------------------------------------------+
+| **y**  | 数值型应变量。如提供多个变量，只传入第一个。`y`表示热力值，要求介于0、1之间。如果`y`不在此区间内，`recharts` 会标化后计算。 |
++--------+--------------------------------------------------------------------+
+| series | 数据系列变量，转为因子后计算。如提供多个变量，只传入第一个。 |
++--------+--------------------------------------------------------------------+
+|**lng** | 经度或x坐标 |
++--------+--------------------------------------------------------------------+
+|**lat** | 纬度或y坐标 |
++--------+--------------------------------------------------------------------+
+|  z     | 时间轴变量，转为因子后计算。如提供多个变量，只传入第一个。 |
++--------+--------------------------------------------------------------------+
+| type   | 'heatmap' |
++--------+--------------------------------------------------------------------+
+
+
+# 举例Showcase
+
+## 数据准备Data Preparation
+
+下面是一个虚构数据集。
+
+```{r}
+data = rbind(
+    data.frame(
+        lng=100+rnorm(100,0, 1)*600, lat=150+rnorm(100,0, 1)*50, 
+        y=abs(rnorm(100,0,1))),
+    data.frame(
+        lng=rnorm(200,0, 1)*1000, lat=rnorm(200,0, 1)*800, 
+        y=abs(rnorm(200,0,1))),
+    data.frame(lng=400+rnorm(20,0, 1)*300, lat=5+rnorm(20,0, 1)*10, 
+               y=abs(rnorm(100,0,1))))
+str(data)
+```
+
+## 基本图形Basic Plot
+
+```{r}
+echartr(data,lng=lng,lat=lat,y=y,type='heatmap') %>% 
+    setTitle("Heatmap", "Fictious Data")
+```
+
+热力图在地图中更为实用。请参考`addHeatmap`函数。
+
+# 其他设定Futher Setup
+
+接下来可以配置控件、添加标注点/标注线，以及美化成图。
+
+参考相关函数，尽情探索吧。
+

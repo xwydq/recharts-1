@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Widget 25 - DataRange</title>
+
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/htmlwidgets-0.7/htmlwidgets.js"></script>
+<script src="libs/echarts-2.2.7/echarts-all.js"></script>
+<script src="libs/echarts-2.2.7/ext/params.js"></script>
+<script src="libs/echarts-2.2.7/ext/loadGeoJSON.js"></script>
+<script src="libs/echarts-binding-0.0.5/echarts.js"></script>
+<script src="libs/echarts-module-2.2.7/base.js"></script>
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 70px;
+}
+p code {
+  white-space: inherit;
+}
+.html-widget-static-bound {
+  margin: auto;
+}
+.alert>p {
+  margin-bottom: 10.5px;
+}
+</style>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/default.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="./">recharts</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="./">Home</a></li>
+        <li><a href="index_cn.html">首页</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="https://github.com/madlogos/recharts" title="View Source on Github"><i class="fa fa-github fa-lg"></i></a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</nav><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Widget 25 - DataRange</h1>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction"><span class="toc-section-number">1</span> Introduction</a></li>
+<li><a href="#function-call"><span class="toc-section-number">2</span> Function Call</a></li>
+<li><a href="#showcase"><span class="toc-section-number">3</span> Showcase</a></li>
+<li><a href="#references"><span class="toc-section-number">4</span> References</a></li>
+</ul>
+</div>
+
+<p>First, you should load <code>recharts</code>:</p>
+<pre class="r"><code>library(recharts)</code></pre>
+<div id="introduction" class="section level1">
+<h1><span class="header-section-number">1</span> Introduction</h1>
+<p>The default position of dataRange is 8 o’clock.</p>
+<p>The recommended approach to use <code>setDataRange</code> is <code>chart %&gt;% setDataRange(...)</code>.</p>
+</div>
+<div id="function-call" class="section level1">
+<h1><span class="header-section-number">2</span> Function Call</h1>
+<pre class="r"><code>setDataRange(chart, show = TRUE, pos = 8, valueRange = NULL,
+  splitNumber = 5, itemGap = 5, labels = NULL, calculable = FALSE,
+  borderColor = &quot;#ccc&quot;, borderWidth = 0, selectedMode = list(TRUE,
+  &quot;single&quot;, &quot;multiple&quot;), color = c(&quot;#1e90ff&quot;, &quot;#f0ffff&quot;), splitList = NULL,
+  initialRange = NULL, ...)</code></pre>
+<table>
+<colgroup>
+<col width="17%" />
+<col width="82%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Arg</th>
+<th align="left">Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><p><strong>chart</strong></p></td>
+<td align="left"><p>Echarts object generated by <code>echartR</code> or <code>echart</code>.</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>show</p></td>
+<td align="left"><p>logical. Show the dataRange control if TRUE. If you want to remove dataRange from the echarts object, set it NULL.</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>pos</p></td>
+<td align="left"><p>the clock-position of dataRange, default 8. Refer to vecPos. Or you can define the position vector c(x, y, orient) yourself.</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>valueRange</p></td>
+<td align="left"><p>The range of the dataRange bar in form of c(min, max). If NULL, echarts default will be used.</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>splitNumber</p></td>
+<td align="left"><p>How many discrete sections will the dataRange bar be divided into. Default 5. Set it to 0 to set the bar continuous and calculable will be accordingly set TRUE.</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>itemGap</p></td>
+<td align="left"><p>The gap between itmes in pixels. Default 10px.</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>labels</p></td>
+<td align="left"><p>The labels to the ends the dataRange bar in form <code>c('high end', 'low end')</code>. Default NULL, the min, max values will be used.</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>calculable</p></td>
+<td align="left"><p>Logical. If echart calculable feature is open. Default FALSE. If set calculable TRUE, splitNumber will be set 0.</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>borderColor</p></td>
+<td align="left"><p>The border color of the dataRange bar. Default ‘#333’.</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>borderWidth</p></td>
+<td align="left"><p>The border width of the dataRange bar. Default 0px (not shown).</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>selectedMode</p></td>
+<td align="left"><p>The mode of the dataRange bar, default TRUE. You can also set it ‘single’ or ‘multiple’.</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>color</p></td>
+<td align="left"><p>The hex vector of colors used for dataRange bar. Default c(“#1e90ff”, “#f0ffff”).</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>splitList</p></td>
+<td align="left"><p>A list for user-defined value split in the form of <code>list(list(start=m</code>, <code>end=n, label=x,</code> <code>color=hex), ...)</code>. If a valid splitList is set, splitNumber will be disabled.</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>initialRange</p></td>
+<td align="left"><p>Initial selected value range in the form of <code>list(start=m, end=n)</code>, of which <code>m</code> and <code>n</code> all refer to percentage.</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>…</p></td>
+<td align="left"><p>Elipsis.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="showcase" class="section level1">
+<h1><span class="header-section-number">3</span> Showcase</h1>
+<p>In a scatter chart, only <code>weight</code> is mapped to dataRange. So let’s prepare a bubble chart.</p>
+<pre class="r"><code>g &lt;- echartr(iris, Sepal.Width, Petal.Width, Species, Petal.Length,
+             type=&#39;bubble&#39;) %&gt;% setSymbols(&#39;circle&#39;)
+g</code></pre>
+<div id="echarts-8149510caab3ba76578267a9d0a5262b446c524b" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-8149510caab3ba76578267a9d0a5262b446c524b">{"x":{"series":[{"name":"setosa","type":"scatter","data":[[3.5,0.2,1.4],[3,0.2,1.4],[3.2,0.2,1.3],[3.1,0.2,1.5],[3.6,0.2,1.4],[3.9,0.4,1.7],[3.4,0.3,1.4],[3.4,0.2,1.5],[2.9,0.2,1.4],[3.1,0.1,1.5],[3.7,0.2,1.5],[3.4,0.2,1.6],[3,0.1,1.4],[3,0.1,1.1],[4,0.2,1.2],[4.4,0.4,1.5],[3.9,0.4,1.3],[3.5,0.3,1.4],[3.8,0.3,1.7],[3.8,0.3,1.5],[3.4,0.2,1.7],[3.7,0.4,1.5],[3.6,0.2,1],[3.3,0.5,1.7],[3.4,0.2,1.9],[3,0.2,1.6],[3.4,0.4,1.6],[3.5,0.2,1.5],[3.4,0.2,1.4],[3.2,0.2,1.6],[3.1,0.2,1.6],[3.4,0.4,1.5],[4.1,0.1,1.5],[4.2,0.2,1.4],[3.1,0.2,1.5],[3.2,0.2,1.2],[3.5,0.2,1.3],[3.6,0.1,1.4],[3,0.2,1.3],[3.4,0.2,1.5],[3.5,0.3,1.3],[2.3,0.3,1.3],[3.2,0.2,1.3],[3.5,0.6,1.6],[3.8,0.4,1.9],[3,0.3,1.4],[3.8,0.2,1.6],[3.2,0.2,1.4],[3.7,0.2,1.5],[3.3,0.2,1.4]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"},{"name":"versicolor","type":"scatter","data":[[3.2,1.4,4.7],[3.2,1.5,4.5],[3.1,1.5,4.9],[2.3,1.3,4],[2.8,1.5,4.6],[2.8,1.3,4.5],[3.3,1.6,4.7],[2.4,1,3.3],[2.9,1.3,4.6],[2.7,1.4,3.9],[2,1,3.5],[3,1.5,4.2],[2.2,1,4],[2.9,1.4,4.7],[2.9,1.3,3.6],[3.1,1.4,4.4],[3,1.5,4.5],[2.7,1,4.1],[2.2,1.5,4.5],[2.5,1.1,3.9],[3.2,1.8,4.8],[2.8,1.3,4],[2.5,1.5,4.9],[2.8,1.2,4.7],[2.9,1.3,4.3],[3,1.4,4.4],[2.8,1.4,4.8],[3,1.7,5],[2.9,1.5,4.5],[2.6,1,3.5],[2.4,1.1,3.8],[2.4,1,3.7],[2.7,1.2,3.9],[2.7,1.6,5.1],[3,1.5,4.5],[3.4,1.6,4.5],[3.1,1.5,4.7],[2.3,1.3,4.4],[3,1.3,4.1],[2.5,1.3,4],[2.6,1.2,4.4],[3,1.4,4.6],[2.6,1.2,4],[2.3,1,3.3],[2.7,1.3,4.2],[3,1.2,4.2],[2.9,1.3,4.2],[2.9,1.3,4.3],[2.5,1.1,3],[2.8,1.3,4.1]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"},{"name":"virginica","type":"scatter","data":[[3.3,2.5,6],[2.7,1.9,5.1],[3,2.1,5.9],[2.9,1.8,5.6],[3,2.2,5.8],[3,2.1,6.6],[2.5,1.7,4.5],[2.9,1.8,6.3],[2.5,1.8,5.8],[3.6,2.5,6.1],[3.2,2,5.1],[2.7,1.9,5.3],[3,2.1,5.5],[2.5,2,5],[2.8,2.4,5.1],[3.2,2.3,5.3],[3,1.8,5.5],[3.8,2.2,6.7],[2.6,2.3,6.9],[2.2,1.5,5],[3.2,2.3,5.7],[2.8,2,4.9],[2.8,2,6.7],[2.7,1.8,4.9],[3.3,2.1,5.7],[3.2,1.8,6],[2.8,1.8,4.8],[3,1.8,4.9],[2.8,2.1,5.6],[3,1.6,5.8],[2.8,1.9,6.1],[3.8,2,6.4],[2.8,2.2,5.6],[2.8,1.5,5.1],[2.6,1.4,5.6],[3,2.3,6.1],[3.4,2.4,5.6],[3.1,1.8,5.5],[3,1.8,4.8],[3.1,2.1,5.4],[3.1,2.4,5.6],[3.1,2.3,5.1],[2.7,1.9,5.1],[3.2,2.3,5.9],[3.3,2.5,5.7],[3,2.3,5.2],[2.5,1.9,5],[3,2,5.2],[3.4,2.3,5.4],[3,1.8,5.1]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"}],"legend":{"show":true,"data":["setosa","versicolor","virginica"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"value","show":true,"position":"left","name":"Petal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Sepal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    var i;\n    var text;\n    if (params.seriesName === null || params.seriesName === \"\"){\n        if (params.value.length > 1) {\n            text = params.value[0];\n            for (i = 1; i < params.value.length; i++){\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.name + \" : \" + params.value;\n        }\n    } else {\n        if (params.value.length > 1) {\n            text = params.seriesName + \" :<br/>\" + params.value[0];\n            for (i = 1; i < params.value.length; i++) {\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.seriesName + \" :<br/>\"\n            + params.name + \" : \" + params.value;\n        }\n    }\n    }","backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"symbolList":["circle","circle","circle"]},"evals":["series.0.symbolSize","series.1.symbolSize","series.2.symbolSize","tooltip.formatter"],"jsHooks":[]}</script>
+<p>Initially dataRange is not shown. Let’s turn if on. Then you will find dataRange color palette overides the orignial palette of the chart.</p>
+<pre class="r"><code>g %&gt;% setDataRange(show=TRUE)</code></pre>
+<div id="echarts-30a1967f91023dec1c30085a4bbec4210c21d6cb" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-30a1967f91023dec1c30085a4bbec4210c21d6cb">{"x":{"series":[{"name":"setosa","type":"scatter","data":[[3.5,0.2,1.4],[3,0.2,1.4],[3.2,0.2,1.3],[3.1,0.2,1.5],[3.6,0.2,1.4],[3.9,0.4,1.7],[3.4,0.3,1.4],[3.4,0.2,1.5],[2.9,0.2,1.4],[3.1,0.1,1.5],[3.7,0.2,1.5],[3.4,0.2,1.6],[3,0.1,1.4],[3,0.1,1.1],[4,0.2,1.2],[4.4,0.4,1.5],[3.9,0.4,1.3],[3.5,0.3,1.4],[3.8,0.3,1.7],[3.8,0.3,1.5],[3.4,0.2,1.7],[3.7,0.4,1.5],[3.6,0.2,1],[3.3,0.5,1.7],[3.4,0.2,1.9],[3,0.2,1.6],[3.4,0.4,1.6],[3.5,0.2,1.5],[3.4,0.2,1.4],[3.2,0.2,1.6],[3.1,0.2,1.6],[3.4,0.4,1.5],[4.1,0.1,1.5],[4.2,0.2,1.4],[3.1,0.2,1.5],[3.2,0.2,1.2],[3.5,0.2,1.3],[3.6,0.1,1.4],[3,0.2,1.3],[3.4,0.2,1.5],[3.5,0.3,1.3],[2.3,0.3,1.3],[3.2,0.2,1.3],[3.5,0.6,1.6],[3.8,0.4,1.9],[3,0.3,1.4],[3.8,0.2,1.6],[3.2,0.2,1.4],[3.7,0.2,1.5],[3.3,0.2,1.4]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"},{"name":"versicolor","type":"scatter","data":[[3.2,1.4,4.7],[3.2,1.5,4.5],[3.1,1.5,4.9],[2.3,1.3,4],[2.8,1.5,4.6],[2.8,1.3,4.5],[3.3,1.6,4.7],[2.4,1,3.3],[2.9,1.3,4.6],[2.7,1.4,3.9],[2,1,3.5],[3,1.5,4.2],[2.2,1,4],[2.9,1.4,4.7],[2.9,1.3,3.6],[3.1,1.4,4.4],[3,1.5,4.5],[2.7,1,4.1],[2.2,1.5,4.5],[2.5,1.1,3.9],[3.2,1.8,4.8],[2.8,1.3,4],[2.5,1.5,4.9],[2.8,1.2,4.7],[2.9,1.3,4.3],[3,1.4,4.4],[2.8,1.4,4.8],[3,1.7,5],[2.9,1.5,4.5],[2.6,1,3.5],[2.4,1.1,3.8],[2.4,1,3.7],[2.7,1.2,3.9],[2.7,1.6,5.1],[3,1.5,4.5],[3.4,1.6,4.5],[3.1,1.5,4.7],[2.3,1.3,4.4],[3,1.3,4.1],[2.5,1.3,4],[2.6,1.2,4.4],[3,1.4,4.6],[2.6,1.2,4],[2.3,1,3.3],[2.7,1.3,4.2],[3,1.2,4.2],[2.9,1.3,4.2],[2.9,1.3,4.3],[2.5,1.1,3],[2.8,1.3,4.1]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"},{"name":"virginica","type":"scatter","data":[[3.3,2.5,6],[2.7,1.9,5.1],[3,2.1,5.9],[2.9,1.8,5.6],[3,2.2,5.8],[3,2.1,6.6],[2.5,1.7,4.5],[2.9,1.8,6.3],[2.5,1.8,5.8],[3.6,2.5,6.1],[3.2,2,5.1],[2.7,1.9,5.3],[3,2.1,5.5],[2.5,2,5],[2.8,2.4,5.1],[3.2,2.3,5.3],[3,1.8,5.5],[3.8,2.2,6.7],[2.6,2.3,6.9],[2.2,1.5,5],[3.2,2.3,5.7],[2.8,2,4.9],[2.8,2,6.7],[2.7,1.8,4.9],[3.3,2.1,5.7],[3.2,1.8,6],[2.8,1.8,4.8],[3,1.8,4.9],[2.8,2.1,5.6],[3,1.6,5.8],[2.8,1.9,6.1],[3.8,2,6.4],[2.8,2.2,5.6],[2.8,1.5,5.1],[2.6,1.4,5.6],[3,2.3,6.1],[3.4,2.4,5.6],[3.1,1.8,5.5],[3,1.8,4.8],[3.1,2.1,5.4],[3.1,2.4,5.6],[3.1,2.3,5.1],[2.7,1.9,5.1],[3.2,2.3,5.9],[3.3,2.5,5.7],[3,2.3,5.2],[2.5,1.9,5],[3,2,5.2],[3.4,2.3,5.4],[3,1.8,5.1]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"}],"legend":{"show":true,"data":["setosa","versicolor","virginica"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"value","show":true,"position":"left","name":"Petal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Sepal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    var i;\n    var text;\n    if (params.seriesName === null || params.seriesName === \"\"){\n        if (params.value.length > 1) {\n            text = params.value[0];\n            for (i = 1; i < params.value.length; i++){\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.name + \" : \" + params.value;\n        }\n    } else {\n        if (params.value.length > 1) {\n            text = params.seriesName + \" :<br/>\" + params.value[0];\n            for (i = 1; i < params.value.length; i++) {\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.seriesName + \" :<br/>\"\n            + params.name + \" : \" + params.value;\n        }\n    }\n    }","backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"symbolList":["circle","circle","circle"],"dataRange":{"show":true,"calculable":false,"itemWidth":6,"selectedMode":true,"x":"left","y":"bottom","orient":"vertical","color":["#1e90ff","#f0ffff"],"borderColor":"#ccc","borderWidth":0,"min":0.1,"max":6.9},"grid":{"x":90}},"evals":["series.0.symbolSize","series.1.symbolSize","series.2.symbolSize","tooltip.formatter"],"jsHooks":[]}</script>
+<p>Relocate the dataRange.</p>
+<pre class="r"><code>g %&gt;% setDataRange(pos=9)</code></pre>
+<div id="echarts-8fac1000ca18e7eccad5ac25c2b15384fa998a9e" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-8fac1000ca18e7eccad5ac25c2b15384fa998a9e">{"x":{"series":[{"name":"setosa","type":"scatter","data":[[3.5,0.2,1.4],[3,0.2,1.4],[3.2,0.2,1.3],[3.1,0.2,1.5],[3.6,0.2,1.4],[3.9,0.4,1.7],[3.4,0.3,1.4],[3.4,0.2,1.5],[2.9,0.2,1.4],[3.1,0.1,1.5],[3.7,0.2,1.5],[3.4,0.2,1.6],[3,0.1,1.4],[3,0.1,1.1],[4,0.2,1.2],[4.4,0.4,1.5],[3.9,0.4,1.3],[3.5,0.3,1.4],[3.8,0.3,1.7],[3.8,0.3,1.5],[3.4,0.2,1.7],[3.7,0.4,1.5],[3.6,0.2,1],[3.3,0.5,1.7],[3.4,0.2,1.9],[3,0.2,1.6],[3.4,0.4,1.6],[3.5,0.2,1.5],[3.4,0.2,1.4],[3.2,0.2,1.6],[3.1,0.2,1.6],[3.4,0.4,1.5],[4.1,0.1,1.5],[4.2,0.2,1.4],[3.1,0.2,1.5],[3.2,0.2,1.2],[3.5,0.2,1.3],[3.6,0.1,1.4],[3,0.2,1.3],[3.4,0.2,1.5],[3.5,0.3,1.3],[2.3,0.3,1.3],[3.2,0.2,1.3],[3.5,0.6,1.6],[3.8,0.4,1.9],[3,0.3,1.4],[3.8,0.2,1.6],[3.2,0.2,1.4],[3.7,0.2,1.5],[3.3,0.2,1.4]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"},{"name":"versicolor","type":"scatter","data":[[3.2,1.4,4.7],[3.2,1.5,4.5],[3.1,1.5,4.9],[2.3,1.3,4],[2.8,1.5,4.6],[2.8,1.3,4.5],[3.3,1.6,4.7],[2.4,1,3.3],[2.9,1.3,4.6],[2.7,1.4,3.9],[2,1,3.5],[3,1.5,4.2],[2.2,1,4],[2.9,1.4,4.7],[2.9,1.3,3.6],[3.1,1.4,4.4],[3,1.5,4.5],[2.7,1,4.1],[2.2,1.5,4.5],[2.5,1.1,3.9],[3.2,1.8,4.8],[2.8,1.3,4],[2.5,1.5,4.9],[2.8,1.2,4.7],[2.9,1.3,4.3],[3,1.4,4.4],[2.8,1.4,4.8],[3,1.7,5],[2.9,1.5,4.5],[2.6,1,3.5],[2.4,1.1,3.8],[2.4,1,3.7],[2.7,1.2,3.9],[2.7,1.6,5.1],[3,1.5,4.5],[3.4,1.6,4.5],[3.1,1.5,4.7],[2.3,1.3,4.4],[3,1.3,4.1],[2.5,1.3,4],[2.6,1.2,4.4],[3,1.4,4.6],[2.6,1.2,4],[2.3,1,3.3],[2.7,1.3,4.2],[3,1.2,4.2],[2.9,1.3,4.2],[2.9,1.3,4.3],[2.5,1.1,3],[2.8,1.3,4.1]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"},{"name":"virginica","type":"scatter","data":[[3.3,2.5,6],[2.7,1.9,5.1],[3,2.1,5.9],[2.9,1.8,5.6],[3,2.2,5.8],[3,2.1,6.6],[2.5,1.7,4.5],[2.9,1.8,6.3],[2.5,1.8,5.8],[3.6,2.5,6.1],[3.2,2,5.1],[2.7,1.9,5.3],[3,2.1,5.5],[2.5,2,5],[2.8,2.4,5.1],[3.2,2.3,5.3],[3,1.8,5.5],[3.8,2.2,6.7],[2.6,2.3,6.9],[2.2,1.5,5],[3.2,2.3,5.7],[2.8,2,4.9],[2.8,2,6.7],[2.7,1.8,4.9],[3.3,2.1,5.7],[3.2,1.8,6],[2.8,1.8,4.8],[3,1.8,4.9],[2.8,2.1,5.6],[3,1.6,5.8],[2.8,1.9,6.1],[3.8,2,6.4],[2.8,2.2,5.6],[2.8,1.5,5.1],[2.6,1.4,5.6],[3,2.3,6.1],[3.4,2.4,5.6],[3.1,1.8,5.5],[3,1.8,4.8],[3.1,2.1,5.4],[3.1,2.4,5.6],[3.1,2.3,5.1],[2.7,1.9,5.1],[3.2,2.3,5.9],[3.3,2.5,5.7],[3,2.3,5.2],[2.5,1.9,5],[3,2,5.2],[3.4,2.3,5.4],[3,1.8,5.1]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"}],"legend":{"show":true,"data":["setosa","versicolor","virginica"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"value","show":true,"position":"left","name":"Petal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Sepal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    var i;\n    var text;\n    if (params.seriesName === null || params.seriesName === \"\"){\n        if (params.value.length > 1) {\n            text = params.value[0];\n            for (i = 1; i < params.value.length; i++){\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.name + \" : \" + params.value;\n        }\n    } else {\n        if (params.value.length > 1) {\n            text = params.seriesName + \" :<br/>\" + params.value[0];\n            for (i = 1; i < params.value.length; i++) {\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.seriesName + \" :<br/>\"\n            + params.name + \" : \" + params.value;\n        }\n    }\n    }","backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"symbolList":["circle","circle","circle"],"dataRange":{"show":true,"calculable":false,"itemWidth":6,"selectedMode":true,"x":"left","y":"center","orient":"vertical","color":["#1e90ff","#f0ffff"],"borderColor":"#ccc","borderWidth":0,"min":0.1,"max":6.9},"grid":{"x":140}},"evals":["series.0.symbolSize","series.1.symbolSize","series.2.symbolSize","tooltip.formatter"],"jsHooks":[]}</script>
+<p>Modify the valueRange.</p>
+<pre class="r"><code>g %&gt;% setDataRange(valueRange=c(0,10))</code></pre>
+<div id="echarts-92eb80a656485da2b138e1a7290001743cc528cb" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-92eb80a656485da2b138e1a7290001743cc528cb">{"x":{"series":[{"name":"setosa","type":"scatter","data":[[3.5,0.2,1.4],[3,0.2,1.4],[3.2,0.2,1.3],[3.1,0.2,1.5],[3.6,0.2,1.4],[3.9,0.4,1.7],[3.4,0.3,1.4],[3.4,0.2,1.5],[2.9,0.2,1.4],[3.1,0.1,1.5],[3.7,0.2,1.5],[3.4,0.2,1.6],[3,0.1,1.4],[3,0.1,1.1],[4,0.2,1.2],[4.4,0.4,1.5],[3.9,0.4,1.3],[3.5,0.3,1.4],[3.8,0.3,1.7],[3.8,0.3,1.5],[3.4,0.2,1.7],[3.7,0.4,1.5],[3.6,0.2,1],[3.3,0.5,1.7],[3.4,0.2,1.9],[3,0.2,1.6],[3.4,0.4,1.6],[3.5,0.2,1.5],[3.4,0.2,1.4],[3.2,0.2,1.6],[3.1,0.2,1.6],[3.4,0.4,1.5],[4.1,0.1,1.5],[4.2,0.2,1.4],[3.1,0.2,1.5],[3.2,0.2,1.2],[3.5,0.2,1.3],[3.6,0.1,1.4],[3,0.2,1.3],[3.4,0.2,1.5],[3.5,0.3,1.3],[2.3,0.3,1.3],[3.2,0.2,1.3],[3.5,0.6,1.6],[3.8,0.4,1.9],[3,0.3,1.4],[3.8,0.2,1.6],[3.2,0.2,1.4],[3.7,0.2,1.5],[3.3,0.2,1.4]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"},{"name":"versicolor","type":"scatter","data":[[3.2,1.4,4.7],[3.2,1.5,4.5],[3.1,1.5,4.9],[2.3,1.3,4],[2.8,1.5,4.6],[2.8,1.3,4.5],[3.3,1.6,4.7],[2.4,1,3.3],[2.9,1.3,4.6],[2.7,1.4,3.9],[2,1,3.5],[3,1.5,4.2],[2.2,1,4],[2.9,1.4,4.7],[2.9,1.3,3.6],[3.1,1.4,4.4],[3,1.5,4.5],[2.7,1,4.1],[2.2,1.5,4.5],[2.5,1.1,3.9],[3.2,1.8,4.8],[2.8,1.3,4],[2.5,1.5,4.9],[2.8,1.2,4.7],[2.9,1.3,4.3],[3,1.4,4.4],[2.8,1.4,4.8],[3,1.7,5],[2.9,1.5,4.5],[2.6,1,3.5],[2.4,1.1,3.8],[2.4,1,3.7],[2.7,1.2,3.9],[2.7,1.6,5.1],[3,1.5,4.5],[3.4,1.6,4.5],[3.1,1.5,4.7],[2.3,1.3,4.4],[3,1.3,4.1],[2.5,1.3,4],[2.6,1.2,4.4],[3,1.4,4.6],[2.6,1.2,4],[2.3,1,3.3],[2.7,1.3,4.2],[3,1.2,4.2],[2.9,1.3,4.2],[2.9,1.3,4.3],[2.5,1.1,3],[2.8,1.3,4.1]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"},{"name":"virginica","type":"scatter","data":[[3.3,2.5,6],[2.7,1.9,5.1],[3,2.1,5.9],[2.9,1.8,5.6],[3,2.2,5.8],[3,2.1,6.6],[2.5,1.7,4.5],[2.9,1.8,6.3],[2.5,1.8,5.8],[3.6,2.5,6.1],[3.2,2,5.1],[2.7,1.9,5.3],[3,2.1,5.5],[2.5,2,5],[2.8,2.4,5.1],[3.2,2.3,5.3],[3,1.8,5.5],[3.8,2.2,6.7],[2.6,2.3,6.9],[2.2,1.5,5],[3.2,2.3,5.7],[2.8,2,4.9],[2.8,2,6.7],[2.7,1.8,4.9],[3.3,2.1,5.7],[3.2,1.8,6],[2.8,1.8,4.8],[3,1.8,4.9],[2.8,2.1,5.6],[3,1.6,5.8],[2.8,1.9,6.1],[3.8,2,6.4],[2.8,2.2,5.6],[2.8,1.5,5.1],[2.6,1.4,5.6],[3,2.3,6.1],[3.4,2.4,5.6],[3.1,1.8,5.5],[3,1.8,4.8],[3.1,2.1,5.4],[3.1,2.4,5.6],[3.1,2.3,5.1],[2.7,1.9,5.1],[3.2,2.3,5.9],[3.3,2.5,5.7],[3,2.3,5.2],[2.5,1.9,5],[3,2,5.2],[3.4,2.3,5.4],[3,1.8,5.1]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"}],"legend":{"show":true,"data":["setosa","versicolor","virginica"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"value","show":true,"position":"left","name":"Petal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Sepal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    var i;\n    var text;\n    if (params.seriesName === null || params.seriesName === \"\"){\n        if (params.value.length > 1) {\n            text = params.value[0];\n            for (i = 1; i < params.value.length; i++){\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.name + \" : \" + params.value;\n        }\n    } else {\n        if (params.value.length > 1) {\n            text = params.seriesName + \" :<br/>\" + params.value[0];\n            for (i = 1; i < params.value.length; i++) {\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.seriesName + \" :<br/>\"\n            + params.name + \" : \" + params.value;\n        }\n    }\n    }","backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"symbolList":["circle","circle","circle"],"dataRange":{"show":true,"calculable":false,"itemWidth":6,"selectedMode":true,"x":"left","y":"bottom","orient":"vertical","color":["#1e90ff","#f0ffff"],"borderColor":"#ccc","borderWidth":0,"min":0,"max":10},"grid":{"x":90}},"evals":["series.0.symbolSize","series.1.symbolSize","series.2.symbolSize","tooltip.formatter"],"jsHooks":[]}</script>
+<p>Render a continuous dataRange bar.</p>
+<pre class="r"><code>g %&gt;% setDataRange(splitNumber=0)</code></pre>
+<div id="echarts-1fc47c0ecd30bfd8a169f59cbaa2a02e44e2b5a8" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-1fc47c0ecd30bfd8a169f59cbaa2a02e44e2b5a8">{"x":{"series":[{"name":"setosa","type":"scatter","data":[[3.5,0.2,1.4],[3,0.2,1.4],[3.2,0.2,1.3],[3.1,0.2,1.5],[3.6,0.2,1.4],[3.9,0.4,1.7],[3.4,0.3,1.4],[3.4,0.2,1.5],[2.9,0.2,1.4],[3.1,0.1,1.5],[3.7,0.2,1.5],[3.4,0.2,1.6],[3,0.1,1.4],[3,0.1,1.1],[4,0.2,1.2],[4.4,0.4,1.5],[3.9,0.4,1.3],[3.5,0.3,1.4],[3.8,0.3,1.7],[3.8,0.3,1.5],[3.4,0.2,1.7],[3.7,0.4,1.5],[3.6,0.2,1],[3.3,0.5,1.7],[3.4,0.2,1.9],[3,0.2,1.6],[3.4,0.4,1.6],[3.5,0.2,1.5],[3.4,0.2,1.4],[3.2,0.2,1.6],[3.1,0.2,1.6],[3.4,0.4,1.5],[4.1,0.1,1.5],[4.2,0.2,1.4],[3.1,0.2,1.5],[3.2,0.2,1.2],[3.5,0.2,1.3],[3.6,0.1,1.4],[3,0.2,1.3],[3.4,0.2,1.5],[3.5,0.3,1.3],[2.3,0.3,1.3],[3.2,0.2,1.3],[3.5,0.6,1.6],[3.8,0.4,1.9],[3,0.3,1.4],[3.8,0.2,1.6],[3.2,0.2,1.4],[3.7,0.2,1.5],[3.3,0.2,1.4]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"},{"name":"versicolor","type":"scatter","data":[[3.2,1.4,4.7],[3.2,1.5,4.5],[3.1,1.5,4.9],[2.3,1.3,4],[2.8,1.5,4.6],[2.8,1.3,4.5],[3.3,1.6,4.7],[2.4,1,3.3],[2.9,1.3,4.6],[2.7,1.4,3.9],[2,1,3.5],[3,1.5,4.2],[2.2,1,4],[2.9,1.4,4.7],[2.9,1.3,3.6],[3.1,1.4,4.4],[3,1.5,4.5],[2.7,1,4.1],[2.2,1.5,4.5],[2.5,1.1,3.9],[3.2,1.8,4.8],[2.8,1.3,4],[2.5,1.5,4.9],[2.8,1.2,4.7],[2.9,1.3,4.3],[3,1.4,4.4],[2.8,1.4,4.8],[3,1.7,5],[2.9,1.5,4.5],[2.6,1,3.5],[2.4,1.1,3.8],[2.4,1,3.7],[2.7,1.2,3.9],[2.7,1.6,5.1],[3,1.5,4.5],[3.4,1.6,4.5],[3.1,1.5,4.7],[2.3,1.3,4.4],[3,1.3,4.1],[2.5,1.3,4],[2.6,1.2,4.4],[3,1.4,4.6],[2.6,1.2,4],[2.3,1,3.3],[2.7,1.3,4.2],[3,1.2,4.2],[2.9,1.3,4.2],[2.9,1.3,4.3],[2.5,1.1,3],[2.8,1.3,4.1]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"},{"name":"virginica","type":"scatter","data":[[3.3,2.5,6],[2.7,1.9,5.1],[3,2.1,5.9],[2.9,1.8,5.6],[3,2.2,5.8],[3,2.1,6.6],[2.5,1.7,4.5],[2.9,1.8,6.3],[2.5,1.8,5.8],[3.6,2.5,6.1],[3.2,2,5.1],[2.7,1.9,5.3],[3,2.1,5.5],[2.5,2,5],[2.8,2.4,5.1],[3.2,2.3,5.3],[3,1.8,5.5],[3.8,2.2,6.7],[2.6,2.3,6.9],[2.2,1.5,5],[3.2,2.3,5.7],[2.8,2,4.9],[2.8,2,6.7],[2.7,1.8,4.9],[3.3,2.1,5.7],[3.2,1.8,6],[2.8,1.8,4.8],[3,1.8,4.9],[2.8,2.1,5.6],[3,1.6,5.8],[2.8,1.9,6.1],[3.8,2,6.4],[2.8,2.2,5.6],[2.8,1.5,5.1],[2.6,1.4,5.6],[3,2.3,6.1],[3.4,2.4,5.6],[3.1,1.8,5.5],[3,1.8,4.8],[3.1,2.1,5.4],[3.1,2.4,5.6],[3.1,2.3,5.1],[2.7,1.9,5.1],[3.2,2.3,5.9],[3.3,2.5,5.7],[3,2.3,5.2],[2.5,1.9,5],[3,2,5.2],[3.4,2.3,5.4],[3,1.8,5.1]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"}],"legend":{"show":true,"data":["setosa","versicolor","virginica"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"value","show":true,"position":"left","name":"Petal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Sepal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    var i;\n    var text;\n    if (params.seriesName === null || params.seriesName === \"\"){\n        if (params.value.length > 1) {\n            text = params.value[0];\n            for (i = 1; i < params.value.length; i++){\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.name + \" : \" + params.value;\n        }\n    } else {\n        if (params.value.length > 1) {\n            text = params.seriesName + \" :<br/>\" + params.value[0];\n            for (i = 1; i < params.value.length; i++) {\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.seriesName + \" :<br/>\"\n            + params.name + \" : \" + params.value;\n        }\n    }\n    }","backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"symbolList":["circle","circle","circle"],"dataRange":{"show":true,"calculable":true,"itemWidth":6,"selectedMode":true,"x":"left","y":"bottom","orient":"vertical","color":["#1e90ff","#f0ffff"],"borderColor":"#ccc","borderWidth":0,"min":0.1,"max":6.9},"grid":{"x":90}},"evals":["series.0.symbolSize","series.1.symbolSize","series.2.symbolSize","tooltip.formatter"],"jsHooks":[]}</script>
+<p>Customize the format.</p>
+<pre class="r"><code>g %&gt;% setDataRange(borderColor=&#39;gray&#39;, borderWidth=2,bgColor=&#39;yellow&#39;, 
+                   itemGap=20)</code></pre>
+<div id="echarts-b61f4851359bc3a7d82de824e29c987c1696faae" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-b61f4851359bc3a7d82de824e29c987c1696faae">{"x":{"series":[{"name":"setosa","type":"scatter","data":[[3.5,0.2,1.4],[3,0.2,1.4],[3.2,0.2,1.3],[3.1,0.2,1.5],[3.6,0.2,1.4],[3.9,0.4,1.7],[3.4,0.3,1.4],[3.4,0.2,1.5],[2.9,0.2,1.4],[3.1,0.1,1.5],[3.7,0.2,1.5],[3.4,0.2,1.6],[3,0.1,1.4],[3,0.1,1.1],[4,0.2,1.2],[4.4,0.4,1.5],[3.9,0.4,1.3],[3.5,0.3,1.4],[3.8,0.3,1.7],[3.8,0.3,1.5],[3.4,0.2,1.7],[3.7,0.4,1.5],[3.6,0.2,1],[3.3,0.5,1.7],[3.4,0.2,1.9],[3,0.2,1.6],[3.4,0.4,1.6],[3.5,0.2,1.5],[3.4,0.2,1.4],[3.2,0.2,1.6],[3.1,0.2,1.6],[3.4,0.4,1.5],[4.1,0.1,1.5],[4.2,0.2,1.4],[3.1,0.2,1.5],[3.2,0.2,1.2],[3.5,0.2,1.3],[3.6,0.1,1.4],[3,0.2,1.3],[3.4,0.2,1.5],[3.5,0.3,1.3],[2.3,0.3,1.3],[3.2,0.2,1.3],[3.5,0.6,1.6],[3.8,0.4,1.9],[3,0.3,1.4],[3.8,0.2,1.6],[3.2,0.2,1.4],[3.7,0.2,1.5],[3.3,0.2,1.4]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"},{"name":"versicolor","type":"scatter","data":[[3.2,1.4,4.7],[3.2,1.5,4.5],[3.1,1.5,4.9],[2.3,1.3,4],[2.8,1.5,4.6],[2.8,1.3,4.5],[3.3,1.6,4.7],[2.4,1,3.3],[2.9,1.3,4.6],[2.7,1.4,3.9],[2,1,3.5],[3,1.5,4.2],[2.2,1,4],[2.9,1.4,4.7],[2.9,1.3,3.6],[3.1,1.4,4.4],[3,1.5,4.5],[2.7,1,4.1],[2.2,1.5,4.5],[2.5,1.1,3.9],[3.2,1.8,4.8],[2.8,1.3,4],[2.5,1.5,4.9],[2.8,1.2,4.7],[2.9,1.3,4.3],[3,1.4,4.4],[2.8,1.4,4.8],[3,1.7,5],[2.9,1.5,4.5],[2.6,1,3.5],[2.4,1.1,3.8],[2.4,1,3.7],[2.7,1.2,3.9],[2.7,1.6,5.1],[3,1.5,4.5],[3.4,1.6,4.5],[3.1,1.5,4.7],[2.3,1.3,4.4],[3,1.3,4.1],[2.5,1.3,4],[2.6,1.2,4.4],[3,1.4,4.6],[2.6,1.2,4],[2.3,1,3.3],[2.7,1.3,4.2],[3,1.2,4.2],[2.9,1.3,4.2],[2.9,1.3,4.3],[2.5,1.1,3],[2.8,1.3,4.1]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"},{"name":"virginica","type":"scatter","data":[[3.3,2.5,6],[2.7,1.9,5.1],[3,2.1,5.9],[2.9,1.8,5.6],[3,2.2,5.8],[3,2.1,6.6],[2.5,1.7,4.5],[2.9,1.8,6.3],[2.5,1.8,5.8],[3.6,2.5,6.1],[3.2,2,5.1],[2.7,1.9,5.3],[3,2.1,5.5],[2.5,2,5],[2.8,2.4,5.1],[3.2,2.3,5.3],[3,1.8,5.5],[3.8,2.2,6.7],[2.6,2.3,6.9],[2.2,1.5,5],[3.2,2.3,5.7],[2.8,2,4.9],[2.8,2,6.7],[2.7,1.8,4.9],[3.3,2.1,5.7],[3.2,1.8,6],[2.8,1.8,4.8],[3,1.8,4.9],[2.8,2.1,5.6],[3,1.6,5.8],[2.8,1.9,6.1],[3.8,2,6.4],[2.8,2.2,5.6],[2.8,1.5,5.1],[2.6,1.4,5.6],[3,2.3,6.1],[3.4,2.4,5.6],[3.1,1.8,5.5],[3,1.8,4.8],[3.1,2.1,5.4],[3.1,2.4,5.6],[3.1,2.3,5.1],[2.7,1.9,5.1],[3.2,2.3,5.9],[3.3,2.5,5.7],[3,2.3,5.2],[2.5,1.9,5],[3,2,5.2],[3.4,2.3,5.4],[3,1.8,5.1]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"}],"legend":{"show":true,"data":["setosa","versicolor","virginica"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"value","show":true,"position":"left","name":"Petal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Sepal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    var i;\n    var text;\n    if (params.seriesName === null || params.seriesName === \"\"){\n        if (params.value.length > 1) {\n            text = params.value[0];\n            for (i = 1; i < params.value.length; i++){\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.name + \" : \" + params.value;\n        }\n    } else {\n        if (params.value.length > 1) {\n            text = params.seriesName + \" :<br/>\" + params.value[0];\n            for (i = 1; i < params.value.length; i++) {\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.seriesName + \" :<br/>\"\n            + params.name + \" : \" + params.value;\n        }\n    }\n    }","backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"symbolList":["circle","circle","circle"],"dataRange":{"show":true,"calculable":false,"itemWidth":6,"selectedMode":true,"x":"left","y":"bottom","orient":"vertical","color":["#1e90ff","#f0ffff"],"borderColor":"gray","borderWidth":2,"min":0.1,"max":6.9},"grid":{"x":90}},"evals":["series.0.symbolSize","series.1.symbolSize","series.2.symbolSize","tooltip.formatter"],"jsHooks":[]}</script>
+<p>Customize the color of the controls.</p>
+<pre class="r"><code>g %&gt;% setDataRange(color=getColFromPal(&#39;rainbow&#39;))</code></pre>
+<div id="echarts-f1e2662c105976d4f313924f4eaa41ea228e813d" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-f1e2662c105976d4f313924f4eaa41ea228e813d">{"x":{"series":[{"name":"setosa","type":"scatter","data":[[3.5,0.2,1.4],[3,0.2,1.4],[3.2,0.2,1.3],[3.1,0.2,1.5],[3.6,0.2,1.4],[3.9,0.4,1.7],[3.4,0.3,1.4],[3.4,0.2,1.5],[2.9,0.2,1.4],[3.1,0.1,1.5],[3.7,0.2,1.5],[3.4,0.2,1.6],[3,0.1,1.4],[3,0.1,1.1],[4,0.2,1.2],[4.4,0.4,1.5],[3.9,0.4,1.3],[3.5,0.3,1.4],[3.8,0.3,1.7],[3.8,0.3,1.5],[3.4,0.2,1.7],[3.7,0.4,1.5],[3.6,0.2,1],[3.3,0.5,1.7],[3.4,0.2,1.9],[3,0.2,1.6],[3.4,0.4,1.6],[3.5,0.2,1.5],[3.4,0.2,1.4],[3.2,0.2,1.6],[3.1,0.2,1.6],[3.4,0.4,1.5],[4.1,0.1,1.5],[4.2,0.2,1.4],[3.1,0.2,1.5],[3.2,0.2,1.2],[3.5,0.2,1.3],[3.6,0.1,1.4],[3,0.2,1.3],[3.4,0.2,1.5],[3.5,0.3,1.3],[2.3,0.3,1.3],[3.2,0.2,1.3],[3.5,0.6,1.6],[3.8,0.4,1.9],[3,0.3,1.4],[3.8,0.2,1.6],[3.2,0.2,1.4],[3.7,0.2,1.5],[3.3,0.2,1.4]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"},{"name":"versicolor","type":"scatter","data":[[3.2,1.4,4.7],[3.2,1.5,4.5],[3.1,1.5,4.9],[2.3,1.3,4],[2.8,1.5,4.6],[2.8,1.3,4.5],[3.3,1.6,4.7],[2.4,1,3.3],[2.9,1.3,4.6],[2.7,1.4,3.9],[2,1,3.5],[3,1.5,4.2],[2.2,1,4],[2.9,1.4,4.7],[2.9,1.3,3.6],[3.1,1.4,4.4],[3,1.5,4.5],[2.7,1,4.1],[2.2,1.5,4.5],[2.5,1.1,3.9],[3.2,1.8,4.8],[2.8,1.3,4],[2.5,1.5,4.9],[2.8,1.2,4.7],[2.9,1.3,4.3],[3,1.4,4.4],[2.8,1.4,4.8],[3,1.7,5],[2.9,1.5,4.5],[2.6,1,3.5],[2.4,1.1,3.8],[2.4,1,3.7],[2.7,1.2,3.9],[2.7,1.6,5.1],[3,1.5,4.5],[3.4,1.6,4.5],[3.1,1.5,4.7],[2.3,1.3,4.4],[3,1.3,4.1],[2.5,1.3,4],[2.6,1.2,4.4],[3,1.4,4.6],[2.6,1.2,4],[2.3,1,3.3],[2.7,1.3,4.2],[3,1.2,4.2],[2.9,1.3,4.2],[2.9,1.3,4.3],[2.5,1.1,3],[2.8,1.3,4.1]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"},{"name":"virginica","type":"scatter","data":[[3.3,2.5,6],[2.7,1.9,5.1],[3,2.1,5.9],[2.9,1.8,5.6],[3,2.2,5.8],[3,2.1,6.6],[2.5,1.7,4.5],[2.9,1.8,6.3],[2.5,1.8,5.8],[3.6,2.5,6.1],[3.2,2,5.1],[2.7,1.9,5.3],[3,2.1,5.5],[2.5,2,5],[2.8,2.4,5.1],[3.2,2.3,5.3],[3,1.8,5.5],[3.8,2.2,6.7],[2.6,2.3,6.9],[2.2,1.5,5],[3.2,2.3,5.7],[2.8,2,4.9],[2.8,2,6.7],[2.7,1.8,4.9],[3.3,2.1,5.7],[3.2,1.8,6],[2.8,1.8,4.8],[3,1.8,4.9],[2.8,2.1,5.6],[3,1.6,5.8],[2.8,1.9,6.1],[3.8,2,6.4],[2.8,2.2,5.6],[2.8,1.5,5.1],[2.6,1.4,5.6],[3,2.3,6.1],[3.4,2.4,5.6],[3.1,1.8,5.5],[3,1.8,4.8],[3.1,2.1,5.4],[3.1,2.4,5.6],[3.1,2.3,5.1],[2.7,1.9,5.1],[3.2,2.3,5.9],[3.3,2.5,5.7],[3,2.3,5.2],[2.5,1.9,5],[3,2,5.2],[3.4,2.3,5.4],[3,1.8,5.1]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"}],"legend":{"show":true,"data":["setosa","versicolor","virginica"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"value","show":true,"position":"left","name":"Petal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Sepal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    var i;\n    var text;\n    if (params.seriesName === null || params.seriesName === \"\"){\n        if (params.value.length > 1) {\n            text = params.value[0];\n            for (i = 1; i < params.value.length; i++){\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.name + \" : \" + params.value;\n        }\n    } else {\n        if (params.value.length > 1) {\n            text = params.seriesName + \" :<br/>\" + params.value[0];\n            for (i = 1; i < params.value.length; i++) {\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.seriesName + \" :<br/>\"\n            + params.name + \" : \" + params.value;\n        }\n    }\n    }","backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"symbolList":["circle","circle","circle"],"dataRange":{"show":true,"calculable":false,"itemWidth":6,"selectedMode":true,"x":"left","y":"bottom","orient":"vertical","color":["#FF0000","#FFFF00","#00FF00","#00FFFF","#0000FF","#FF00FF"],"borderColor":"#ccc","borderWidth":0,"min":0.1,"max":6.9},"grid":{"x":90}},"evals":["series.0.symbolSize","series.1.symbolSize","series.2.symbolSize","tooltip.formatter"],"jsHooks":[]}</script>
+<p>By default, the splitNumber is 5 and the scale is evenly splited. You can assign user-defined splitList to overide the defaults.</p>
+<pre class="r"><code>splitList &lt;-list(
+    list(start=5.1, end=7, label=&#39;5.1 - 7.0&#39;, color=&#39;red&#39;),
+    list(start=4.35, end=5.1, label=&#39;4.35 - 5.1&#39;, color=&#39;yellow&#39;),
+    list(start=1.6, end=4.35, label=&#39;1.6 - 4.35&#39;, color=&#39;lime&#39;),
+    list(start=0, end=1.6, label=&#39;0.0 - 1.6&#39;, color=&#39;cyan&#39;)
+    )
+g %&gt;% setDataRange(splitList=splitList)</code></pre>
+<div id="echarts-4989d065b5f80f2b3f7325541d1fc3cf74b40c47" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-4989d065b5f80f2b3f7325541d1fc3cf74b40c47">{"x":{"series":[{"name":"setosa","type":"scatter","data":[[3.5,0.2,1.4],[3,0.2,1.4],[3.2,0.2,1.3],[3.1,0.2,1.5],[3.6,0.2,1.4],[3.9,0.4,1.7],[3.4,0.3,1.4],[3.4,0.2,1.5],[2.9,0.2,1.4],[3.1,0.1,1.5],[3.7,0.2,1.5],[3.4,0.2,1.6],[3,0.1,1.4],[3,0.1,1.1],[4,0.2,1.2],[4.4,0.4,1.5],[3.9,0.4,1.3],[3.5,0.3,1.4],[3.8,0.3,1.7],[3.8,0.3,1.5],[3.4,0.2,1.7],[3.7,0.4,1.5],[3.6,0.2,1],[3.3,0.5,1.7],[3.4,0.2,1.9],[3,0.2,1.6],[3.4,0.4,1.6],[3.5,0.2,1.5],[3.4,0.2,1.4],[3.2,0.2,1.6],[3.1,0.2,1.6],[3.4,0.4,1.5],[4.1,0.1,1.5],[4.2,0.2,1.4],[3.1,0.2,1.5],[3.2,0.2,1.2],[3.5,0.2,1.3],[3.6,0.1,1.4],[3,0.2,1.3],[3.4,0.2,1.5],[3.5,0.3,1.3],[2.3,0.3,1.3],[3.2,0.2,1.3],[3.5,0.6,1.6],[3.8,0.4,1.9],[3,0.3,1.4],[3.8,0.2,1.6],[3.2,0.2,1.4],[3.7,0.2,1.5],[3.3,0.2,1.4]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"},{"name":"versicolor","type":"scatter","data":[[3.2,1.4,4.7],[3.2,1.5,4.5],[3.1,1.5,4.9],[2.3,1.3,4],[2.8,1.5,4.6],[2.8,1.3,4.5],[3.3,1.6,4.7],[2.4,1,3.3],[2.9,1.3,4.6],[2.7,1.4,3.9],[2,1,3.5],[3,1.5,4.2],[2.2,1,4],[2.9,1.4,4.7],[2.9,1.3,3.6],[3.1,1.4,4.4],[3,1.5,4.5],[2.7,1,4.1],[2.2,1.5,4.5],[2.5,1.1,3.9],[3.2,1.8,4.8],[2.8,1.3,4],[2.5,1.5,4.9],[2.8,1.2,4.7],[2.9,1.3,4.3],[3,1.4,4.4],[2.8,1.4,4.8],[3,1.7,5],[2.9,1.5,4.5],[2.6,1,3.5],[2.4,1.1,3.8],[2.4,1,3.7],[2.7,1.2,3.9],[2.7,1.6,5.1],[3,1.5,4.5],[3.4,1.6,4.5],[3.1,1.5,4.7],[2.3,1.3,4.4],[3,1.3,4.1],[2.5,1.3,4],[2.6,1.2,4.4],[3,1.4,4.6],[2.6,1.2,4],[2.3,1,3.3],[2.7,1.3,4.2],[3,1.2,4.2],[2.9,1.3,4.2],[2.9,1.3,4.3],[2.5,1.1,3],[2.8,1.3,4.1]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"},{"name":"virginica","type":"scatter","data":[[3.3,2.5,6],[2.7,1.9,5.1],[3,2.1,5.9],[2.9,1.8,5.6],[3,2.2,5.8],[3,2.1,6.6],[2.5,1.7,4.5],[2.9,1.8,6.3],[2.5,1.8,5.8],[3.6,2.5,6.1],[3.2,2,5.1],[2.7,1.9,5.3],[3,2.1,5.5],[2.5,2,5],[2.8,2.4,5.1],[3.2,2.3,5.3],[3,1.8,5.5],[3.8,2.2,6.7],[2.6,2.3,6.9],[2.2,1.5,5],[3.2,2.3,5.7],[2.8,2,4.9],[2.8,2,6.7],[2.7,1.8,4.9],[3.3,2.1,5.7],[3.2,1.8,6],[2.8,1.8,4.8],[3,1.8,4.9],[2.8,2.1,5.6],[3,1.6,5.8],[2.8,1.9,6.1],[3.8,2,6.4],[2.8,2.2,5.6],[2.8,1.5,5.1],[2.6,1.4,5.6],[3,2.3,6.1],[3.4,2.4,5.6],[3.1,1.8,5.5],[3,1.8,4.8],[3.1,2.1,5.4],[3.1,2.4,5.6],[3.1,2.3,5.1],[2.7,1.9,5.1],[3.2,2.3,5.9],[3.3,2.5,5.7],[3,2.3,5.2],[2.5,1.9,5],[3,2,5.2],[3.4,2.3,5.4],[3,1.8,5.1]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"}],"legend":{"show":true,"data":["setosa","versicolor","virginica"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"value","show":true,"position":"left","name":"Petal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Sepal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    var i;\n    var text;\n    if (params.seriesName === null || params.seriesName === \"\"){\n        if (params.value.length > 1) {\n            text = params.value[0];\n            for (i = 1; i < params.value.length; i++){\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.name + \" : \" + params.value;\n        }\n    } else {\n        if (params.value.length > 1) {\n            text = params.seriesName + \" :<br/>\" + params.value[0];\n            for (i = 1; i < params.value.length; i++) {\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.seriesName + \" :<br/>\"\n            + params.name + \" : \" + params.value;\n        }\n    }\n    }","backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"symbolList":["circle","circle","circle"],"dataRange":{"show":true,"calculable":false,"itemWidth":6,"selectedMode":true,"x":"left","y":"bottom","orient":"vertical","color":["#1e90ff","#f0ffff"],"borderColor":"#ccc","borderWidth":0,"min":0.1,"max":6.9,"splitList":[{"start":5.1,"end":7,"label":"5.1 - 7.0","color":"red"},{"start":4.35,"end":5.1,"label":"4.35 - 5.1","color":"yellow"},{"start":1.6,"end":4.35,"label":"1.6 - 4.35","color":"lime"},{"start":0,"end":1.6,"label":"0.0 - 1.6","color":"cyan"}],"itemGap":5},"grid":{"x":90}},"evals":["series.0.symbolSize","series.1.symbolSize","series.2.symbolSize","tooltip.formatter"],"jsHooks":[]}</script>
+<p>Set the initialRange when the dataRange is continuous.</p>
+<pre class="r"><code>g %&gt;% setDataRange(initialRange=list(start=20, end=60), splitNumber=0)</code></pre>
+<div id="echarts-3a0b15a75d8faf273e7cdf0ab19bc2a529eae595" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-3a0b15a75d8faf273e7cdf0ab19bc2a529eae595">{"x":{"series":[{"name":"setosa","type":"scatter","data":[[3.5,0.2,1.4],[3,0.2,1.4],[3.2,0.2,1.3],[3.1,0.2,1.5],[3.6,0.2,1.4],[3.9,0.4,1.7],[3.4,0.3,1.4],[3.4,0.2,1.5],[2.9,0.2,1.4],[3.1,0.1,1.5],[3.7,0.2,1.5],[3.4,0.2,1.6],[3,0.1,1.4],[3,0.1,1.1],[4,0.2,1.2],[4.4,0.4,1.5],[3.9,0.4,1.3],[3.5,0.3,1.4],[3.8,0.3,1.7],[3.8,0.3,1.5],[3.4,0.2,1.7],[3.7,0.4,1.5],[3.6,0.2,1],[3.3,0.5,1.7],[3.4,0.2,1.9],[3,0.2,1.6],[3.4,0.4,1.6],[3.5,0.2,1.5],[3.4,0.2,1.4],[3.2,0.2,1.6],[3.1,0.2,1.6],[3.4,0.4,1.5],[4.1,0.1,1.5],[4.2,0.2,1.4],[3.1,0.2,1.5],[3.2,0.2,1.2],[3.5,0.2,1.3],[3.6,0.1,1.4],[3,0.2,1.3],[3.4,0.2,1.5],[3.5,0.3,1.3],[2.3,0.3,1.3],[3.2,0.2,1.3],[3.5,0.6,1.6],[3.8,0.4,1.9],[3,0.3,1.4],[3.8,0.2,1.6],[3.2,0.2,1.4],[3.7,0.2,1.5],[3.3,0.2,1.4]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"},{"name":"versicolor","type":"scatter","data":[[3.2,1.4,4.7],[3.2,1.5,4.5],[3.1,1.5,4.9],[2.3,1.3,4],[2.8,1.5,4.6],[2.8,1.3,4.5],[3.3,1.6,4.7],[2.4,1,3.3],[2.9,1.3,4.6],[2.7,1.4,3.9],[2,1,3.5],[3,1.5,4.2],[2.2,1,4],[2.9,1.4,4.7],[2.9,1.3,3.6],[3.1,1.4,4.4],[3,1.5,4.5],[2.7,1,4.1],[2.2,1.5,4.5],[2.5,1.1,3.9],[3.2,1.8,4.8],[2.8,1.3,4],[2.5,1.5,4.9],[2.8,1.2,4.7],[2.9,1.3,4.3],[3,1.4,4.4],[2.8,1.4,4.8],[3,1.7,5],[2.9,1.5,4.5],[2.6,1,3.5],[2.4,1.1,3.8],[2.4,1,3.7],[2.7,1.2,3.9],[2.7,1.6,5.1],[3,1.5,4.5],[3.4,1.6,4.5],[3.1,1.5,4.7],[2.3,1.3,4.4],[3,1.3,4.1],[2.5,1.3,4],[2.6,1.2,4.4],[3,1.4,4.6],[2.6,1.2,4],[2.3,1,3.3],[2.7,1.3,4.2],[3,1.2,4.2],[2.9,1.3,4.2],[2.9,1.3,4.3],[2.5,1.1,3],[2.8,1.3,4.1]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"},{"name":"virginica","type":"scatter","data":[[3.3,2.5,6],[2.7,1.9,5.1],[3,2.1,5.9],[2.9,1.8,5.6],[3,2.2,5.8],[3,2.1,6.6],[2.5,1.7,4.5],[2.9,1.8,6.3],[2.5,1.8,5.8],[3.6,2.5,6.1],[3.2,2,5.1],[2.7,1.9,5.3],[3,2.1,5.5],[2.5,2,5],[2.8,2.4,5.1],[3.2,2.3,5.3],[3,1.8,5.5],[3.8,2.2,6.7],[2.6,2.3,6.9],[2.2,1.5,5],[3.2,2.3,5.7],[2.8,2,4.9],[2.8,2,6.7],[2.7,1.8,4.9],[3.3,2.1,5.7],[3.2,1.8,6],[2.8,1.8,4.8],[3,1.8,4.9],[2.8,2.1,5.6],[3,1.6,5.8],[2.8,1.9,6.1],[3.8,2,6.4],[2.8,2.2,5.6],[2.8,1.5,5.1],[2.6,1.4,5.6],[3,2.3,6.1],[3.4,2.4,5.6],[3.1,1.8,5.5],[3,1.8,4.8],[3.1,2.1,5.4],[3.1,2.4,5.6],[3.1,2.3,5.1],[2.7,1.9,5.1],[3.2,2.3,5.9],[3.3,2.5,5.7],[3,2.3,5.2],[2.5,1.9,5],[3,2,5.2],[3.4,2.3,5.4],[3,1.8,5.1]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"}],"legend":{"show":true,"data":["setosa","versicolor","virginica"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"value","show":true,"position":"left","name":"Petal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Sepal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    var i;\n    var text;\n    if (params.seriesName === null || params.seriesName === \"\"){\n        if (params.value.length > 1) {\n            text = params.value[0];\n            for (i = 1; i < params.value.length; i++){\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.name + \" : \" + params.value;\n        }\n    } else {\n        if (params.value.length > 1) {\n            text = params.seriesName + \" :<br/>\" + params.value[0];\n            for (i = 1; i < params.value.length; i++) {\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.seriesName + \" :<br/>\"\n            + params.name + \" : \" + params.value;\n        }\n    }\n    }","backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"symbolList":["circle","circle","circle"],"dataRange":{"show":true,"calculable":true,"itemWidth":6,"selectedMode":true,"x":"left","y":"bottom","orient":"vertical","color":["#1e90ff","#f0ffff"],"borderColor":"#ccc","borderWidth":0,"min":0.1,"max":6.9,"range":{"start":20,"end":60}},"grid":{"x":90}},"evals":["series.0.symbolSize","series.1.symbolSize","series.2.symbolSize","tooltip.formatter"],"jsHooks":[]}</script>
+</div>
+<div id="references" class="section level1">
+<h1><span class="header-section-number">4</span> References</h1>
+<p><a href="http://echarts.baidu.com/echarts2/doc/option.html#title~dataRange" class="uri">http://echarts.baidu.com/echarts2/doc/option.html#title~dataRange</a></p>
+</div>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+    // active menu
+    var href = window.location.pathname;
+    href = href.substr(href.lastIndexOf('/') + 1);
+    if (href === '') href = './';
+    $('a[href="' + href + '"]').parent().addClass('active');
+});
+</script>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+
+</body>
+</html>

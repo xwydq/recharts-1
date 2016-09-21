@@ -1,0 +1,173 @@
+---
+title: "控件Widget 11 - 标注线markLine"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+首先，加载`recharts`:
+```{r}
+library(recharts)
+```
+
+# 介绍Introduction
+
+适当的标注线让成图更有信息性。我们可以用`addMarkLine` (或简写为`addML`) 一个系列一系列、一个时间轴切片一个时间轴切片地添加标注线. 也可以用`overideMarkLine` (或简写为 `overideML`) 覆写已有的标注线。
+
+# 用法Function Call
+
+```r
+addMarkLine(chart, series = NULL, timeslots = NULL, data = NULL,
+  clickable = TRUE, symbol = c("circle", "arrow"), symbolSize = c(2, 4),
+  symbolRotate = NULL, large = FALSE, smooth = FALSE, smoothness = 0.2,
+  precision = 2, bundling = list(enable = FALSE, maxTurningAngle = 45),
+  effect = list(show = FALSE), itemStyle = NULL, mode = c("add",
+  "overide"), ...)
+```
+
+`overideML`与`addML(mode='overide', ...)`等价。
+
++-------------+----------------------------------------------------------------+
+|   参数      |  要求                                      |
++=============+================================================================+
+| **chart**   | `echartR`或`echart`生成的Echarts对象.  |
++-------------+----------------------------------------------------------------+
+| series      | 数值型(系列索引值)或文本型(系列名称)，前者更好。如设为NULL，则作用于所有系列。 |
++-------------+----------------------------------------------------------------+
+| timeslots   |  数值型(时间轴切片索引值)或文本型(时间轴切片名称)，前者更好。如设为NULL，则作用于所有时间轴切片。可简写为z. |
++-------------+----------------------------------------------------------------+
+| data        | 标注线源数据，数据框形式。必须包含下列列: name1, name2, value / type 和/或 x1 / xAxis1, y1 / yAxis1, x2 / xAxis2, y2 / yAxis2 和/或 series. 如提供series，必须与`addML`中的`series`参数相对应。 |
+|             |      |
+|             | - **通用**:  |
+|             |     + 通用格式: [name1, name2, value, x1, y1, x2, y2]列 |
+|             |     + 最小格式: [name1, x1, y1, x2, y2]列  |
+|             | - **散点图、线图、柱图**: |
+|             |     + 基本格式: [name1, name2, value, x1, y1, x2, y2]列 |
+|             |     + 最小格式: [name1, type]列 (type只能是'max', 'min'或'average') |
+|             |     + 映射到坐标轴: [name1, name2, value, xAxis1, yAxis1, xAxis2, yAxis2]列  |
+|             | - **k线图, 事件河流图**: |
+|             |     + 基本格式: [name1, name2, value, x1, y1, x2, y2]列 |
+|             |     + 映射到坐标轴: [name1, name2, value, xAxis1, yAxis1, xAxis2, yAxis2]列 |
+|             | - **地图**:  |
+|             |     + [name1, name2, value]列. 还需单独用`addGeoCoord`传入[name1, lng1, lat1], [name2, lng2, lat2]列。 |
++-------------+----------------------------------------------------------------+
+| clickable   | 逻辑型，数据图形是否可以点击，默认为TRUE. |
++-------------+----------------------------------------------------------------+
+| symbol      | 标注线图标向量，参见`recharts:::validSymbols`. 默认为`c('circle', 'arrow')`. |
++-------------+----------------------------------------------------------------+
+| symbolSize  | 数值型向量或`JS`函数，定义标注线起始和结尾图标的大小，默认为`c(2, 4)`. |
++-------------+----------------------------------------------------------------+
+| symbolRotate| 数值型， -180 ~ 180. 默认为NULL. |
++-------------+----------------------------------------------------------------+
+| large       | 数值型, 是否开启大规模效果. 默认为FALSE. |
++-------------+----------------------------------------------------------------+
+| effect      | 列表，标注线效果配置器。默认为NULL, 即`list(show=FALSE, loop=TRUE,` `period=15, scaleSize=2,` `color=NULL, shadowColor=NULL, shadowBlur=0)` |
++-------------+----------------------------------------------------------------+
+| itemStyle   | 列表，结构为 `list(normal=list(...), emphasis=list(...))`. 默认为NULL. |
++-------------+----------------------------------------------------------------+
+| mode        | 将标注线的data部分'add' 或 'overide'到echarts对象. 默认为'add'. 也可以直接用 `overideMarkLine`函数覆写已有的标注线的data部分 |
++-------------+----------------------------------------------------------------+
+| ...         | 省略号 |
++-------------+----------------------------------------------------------------+
+
+# 举例Showcase
+
+## 直角坐标系Cartesian Coordinate System
+
+下例来自[Scatterplot Manual](Basic_Plots_01_Scatterplot.html). 
+
+```{r}
+lm <- with(iris, lm(Petal.Width~Sepal.Width))
+pred <- predict(lm, data.frame(Sepal.Width=c(2, 4.5)))
+```
+
+我们分别向数据系列1 ('setosa'), 2 ('versicolor') 和3 ('virginica')添加最大、平均、最小值标注线。然后额外添加一条线性回归线。
+
+第四条标注线比较特别，其数据结构是一个数据框，包含'name1', 'value', 'xAxis1', 'yAxis1', 'xAxis2'和 'yAxis2'列。这是直角坐标系唯一接受的标注线数据结构。
+
+```{r}
+g = echartr(iris, Sepal.Width, Petal.Width, Species) %>% 
+    setToolbox(show=FALSE) %>% setTheme(width=400, height=300)
+```
+
+<table>
+<tr><td>
+```{r}
+g = g %>% addML(series=1, data=data.frame(
+    name1='Max', type='max'))
+g
+```
+</td><td>
+```{r}
+g = g %>% addML(series=2, data=data.frame(
+        name1='Mean', type='average')) 
+g
+```
+</td></tr>
+<tr><td>
+```{r}
+g = g %>%  addML(series=3, data=data.frame(
+    name1='Min', type='min')) 
+g
+```
+</td><td>
+```{r}
+g %>% addML(series='Linear Regr', data=data.frame(
+    name1='Regr', value=round(lm$coefficients[2], 3), 
+    xAxis1=2, yAxis1=pred[1], xAxis2=4.5, yAxis2=pred[2]))
+```
+</td></tr>
+</table>
+
+也可以把这些标注线数据整合成一个数据框，包含有效的数据列: 'name1', 'type', 'series', 等。其中，'series'必须与`addML`调用参数中的`series`参数相对应(即，数据框的每一行都映射到 `addML`的`series`向量).
+
+```{r}
+data <- data.frame(
+    name1=c('Max', 'Mean', 'Min', 'Linear Regr'), 
+    type=c('max', 'average', 'min', NA),
+    series=c(levels(iris$Species), 'Linear Regr'),
+    value=c(rep(NA, 3), round(lm$coefficients[2], 3)),
+    xAxis1=c(rep(NA, 3), 2),
+    yAxis1=c(rep(NA, 3), pred[1]), 
+    xAxis2=c(rep(NA, 3), 4.5),
+    yAxis2=c(rep(NA, 3), pred[2])
+)
+knitr::kable(data)
+echartr(iris, Sepal.Width, Petal.Width, Species) %>%
+    addML(series=c(levels(iris$Species), 'Linear Regr'), data=data)
+```
+
+
+## 非直角坐标系Non-cartesian Coordinate System
+
+对于非直角坐标系（如极坐标、地理坐标），不要提供映射到坐标轴的数据结构。对于极坐标系，x和y对应于画布坐标，而在地理坐标系里，必须用`addGeoCoord`传入所涉及的坐标，而不能直接用`addML`来传。
+
+注意，画布坐标的零点是左上角。
+
+用[Pie Chart Manual](Basic_Plot2_11_Pie.html)中的例子。
+
+```{r}
+titanic <- data.table::melt(apply(Titanic, c(1,4), sum))
+names(titanic) <- c('Class', 'Survived', 'Count')
+g <- echartr(titanic, Survived, Count, Class, type='pie') 
+```
+
+```{r}
+data <- data.frame(
+    name1=c('hor', 'ver'), name2=c('', ''), value=c(NA, NA), x1=c(10, 336), 
+    y1=c(240, 470), x2=c(660, 336), y2=c(240, 10)
+)
+knitr::kable(data)
+g %>% addML(series='crossing', data=data) %>% 
+    setSeries(series='crossing', type='line')
+```
+
+# 参考资料
+
+<http://echarts.baidu.com/echarts2/doc/option.html#tooltip-line1~series-i(line).markLine>

@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>基础图类Basic Plots 15 - 和弦图Chord Chart</title>
+
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/htmlwidgets-0.7/htmlwidgets.js"></script>
+<script src="libs/echarts-2.2.7/echarts-all.js"></script>
+<script src="libs/echarts-2.2.7/ext/params.js"></script>
+<script src="libs/echarts-2.2.7/ext/loadGeoJSON.js"></script>
+<script src="libs/echarts-binding-0.0.5/echarts.js"></script>
+<script src="libs/echarts-module-2.2.7/base.js"></script>
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 70px;
+}
+p code {
+  white-space: inherit;
+}
+.html-widget-static-bound {
+  margin: auto;
+}
+.alert>p {
+  margin-bottom: 10.5px;
+}
+</style>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/default.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="./">recharts</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="./">Home</a></li>
+        <li><a href="index_cn.html">首页</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="https://github.com/madlogos/recharts" title="View Source on Github"><i class="fa fa-github fa-lg"></i></a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</nav><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">基础图类Basic Plots 15 - 和弦图Chord Chart</h1>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction"><span class="toc-section-number">1</span> 介绍Introduction</a></li>
+<li><a href="#function-call"><span class="toc-section-number">2</span> 用法Function Call</a></li>
+<li><a href="#showcase"><span class="toc-section-number">3</span> 举例Showcase</a><ul>
+<li><a href="#data-preparation"><span class="toc-section-number">3.1</span> 数据准备Data Preparation</a><ul>
+<li><a href="#matrix-mode"><span class="toc-section-number">3.1.1</span> 矩阵模式Matrix Mode</a></li>
+<li><a href="#nodelink"><span class="toc-section-number">3.1.2</span> 节点Node/联结link模式</a></li>
+</ul></li>
+<li><a href="#chord-chart"><span class="toc-section-number">3.2</span> 和弦图Chord Chart</a><ul>
+<li><a href="#chord-with-ribbon"><span class="toc-section-number">3.2.1</span> 带缎带的和弦图Chord with Ribbon</a></li>
+<li><a href="#chord-without-ribbon"><span class="toc-section-number">3.2.2</span> 无缎带的和弦图Chord without Ribbon</a><ul>
+<li><a href="#one-direction-relationship"><span class="toc-section-number">3.2.2.1</span> 单向联结One-direction Relationship</a></li>
+<li><a href="#dual-direction-relationship"><span class="toc-section-number">3.2.2.2</span> 双向联结Dual-direction Relationship</a></li>
+</ul></li>
+<li><a href="#chord-with-timeline"><span class="toc-section-number">3.2.3</span> 带时间轴的和弦图Chord with Timeline</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#futher-setup"><span class="toc-section-number">4</span> 其他设定Futher Setup</a></li>
+</ul>
+</div>
+
+<p>首先，加载<code>recharts</code>:</p>
+<pre class="r"><code>library(recharts)</code></pre>
+<div id="introduction" class="section level1">
+<h1><span class="header-section-number">1</span> 介绍Introduction</h1>
+<p>和弦图Chord plot包含2个类型：</p>
+<ul>
+<li>带缎带的和弦图</li>
+<li>无缎带的和弦图</li>
+</ul>
+<table id="intro">
+<tr>
+<td>
+<div id="echarts-3d9b3afcda4e7c24cfddaff8376f9a4180d9535e" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-3d9b3afcda4e7c24cfddaff8376f9a4180d9535e">{"x":{"series":[{"type":"chord","name":"Connection","roam":"move","itemStyle":{"normal":{"label":{"show":false,"textStyle":{"color":"#333"}},"nodeStyle":{"brushType":"both","strokeColor":"rgba(255,215,0,0.4)"},"linkStyle":{"type":"line"}},"emphasis":{"label":{"show":false},"nodeStyle":[],"lineStyle":[]}},"minRadius":8,"maxRadius":20,"matrix":[[11975,5871,8916,2868],[1951,10048,2060,6171],[8010,16145,8090,8045],[1013,990,940,6907]],"data":[{"name":"Group1"},{"name":"Group2"},{"name":"Group3"},{"name":"Group4"}],"ribbonType":true,"sort":"ascending","sortSub":"descending","showScale":true,"showScaleText":true}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["Group1","Group2","Group3","Group4"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    if (params.indicator2) {    // is edge\n        if (isNaN(params.value.weight)){\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \")\";\n        } else {\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \") : \"\n            + params.value.weight;\n        }\n\n    } else {    // is node\n        return params.name;\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":false},"dataView":{"show":false},"magicType":{"show":true,"type":["force","chord"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["Group1","Group2","Group3","Group4"],"x":"left","y":"top","orient":"horizontal"},"title":{"text":"Test Data","subtext":"chord with ribbon","x":"center","y":"bottom","orient":"horizontal"},"theme":"macarons"},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
+</td>
+<td>
+<div id="echarts-113ed445cb5681737db205c7c02f9908366f523c" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-113ed445cb5681737db205c7c02f9908366f523c">{"x":{"series":[{"type":"chord","name":"Connection","roam":"move","itemStyle":{"normal":{"label":{"show":true,"textStyle":{"color":"#333"},"rotate":true},"nodeStyle":{"brushType":"both","strokeColor":"rgba(255,215,0,0.4)"},"linkStyle":{"type":"curve"}},"emphasis":{"label":{"show":false},"nodeStyle":[],"lineStyle":[]}},"minRadius":8,"maxRadius":20,"nodes":[{"name":"Monchengladbach"},{"name":"Bayern"},{"name":"Dortmund"},{"name":"Kruse"},{"name":"Kramer"},{"name":"Neuer"},{"name":"Boateng"},{"name":"Lahm"},{"name":"Kroos"},{"name":"Muller"},{"name":"Gotze"},{"name":"Badstuber"},{"name":"Hummels"},{"name":"Weidenfeller"},{"name":"Reus"},{"name":"Gundogan"}],"links":[{"source":"Monchengladbach","target":"Kruse","name":"Fw","weight":1},{"source":"Monchengladbach","target":"Kramer","name":"Mf","weight":1},{"source":"Bayern","target":"Neuer","name":"Gk","weight":1},{"source":"Bayern","target":"Boateng","name":"Df","weight":1},{"source":"Bayern","target":"Lahm","name":"Df","weight":1},{"source":"Bayern","target":"Kroos","name":"Mf","weight":1},{"source":"Bayern","target":"Muller","name":"Mf","weight":1},{"source":"Bayern","target":"Gotze","name":"Fw","weight":1},{"source":"Bayern","target":"Badstuber","name":"Df","weight":1},{"source":"Dortmund","target":"Hummels","name":"Df","weight":1},{"source":"Dortmund","target":"Weidenfeller","name":"Gk","weight":1},{"source":"Dortmund","target":"Reus","name":"Df","weight":1},{"source":"Dortmund","target":"Gundogan","name":"Md","weight":1}],"ribbonType":false,"sort":"ascending","sortSub":"descending","showScale":false,"showScaleText":false}],"legend":{"show":true,"data":["Monchengladbach","Bayern","Dortmund"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["Monchengladbach","Bayern","Dortmund"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    if (params.indicator2) {    // is edge\n        if (isNaN(params.value.weight)){\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \")\";\n        } else {\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \") : \"\n            + params.value.weight;\n        }\n\n    } else {    // is node\n        return params.name;\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":false},"dataView":{"show":false},"magicType":{"show":true,"type":["force","chord"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"theme":"infographic","title":{"text":"Club Orientation of Deutsch Soccer Team (2014)","subtext":"Chord without ribbon","x":"center","y":"bottom","orient":"horizontal"}},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
+</td>
+</tr>
+</table>
+<p>关键是：</p>
+<ul>
+<li>数据结构</li>
+<li>矩阵模式: 一个数据框，其中一列为节点名，余下的是一个矩阵。将节点名赋值给x, 矩阵赋值给y。</li>
+<li>节点/联结模式：一个节点数据框[x, NA, series, weight]和一个联结数据框[x, x1, relation, value]。用<code>rbind</code>将两者合并。如果未提供节点数据框，recharts会基于联结数据框自动构建。相应地，提供[x, x1, series/relation, weight/value]数据框。</li>
+</ul>
+</div>
+<div id="function-call" class="section level1">
+<h1><span class="header-section-number">2</span> 用法Function Call</h1>
+<pre class="r"><code>echartr(data, x, &lt;y&gt;, &lt;series&gt;, &lt;z&gt;, &lt;type&gt;, &lt;subtype&gt;)</code></pre>
+<table>
+<colgroup>
+<col width="11%" />
+<col width="88%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">参数</th>
+<th align="left">要求</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><p><strong>data</strong></p></td>
+<td align="left"><p>数据框格式的源数据</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p><strong>x</strong></p></td>
+<td align="left"><p>文本型自变量，其他类型转为因子后计算。节点/联结模式下，必须提供<code>x</code>列。矩阵模式下，只传入<code>x</code>的第一个变量。</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p><strong>y</strong></p></td>
+<td align="left"><p>数值型应变量。节点/联结模式下，只传入<code>y</code>的第一个变量。矩阵模式下，<code>y</code>的所有列都被传入。</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>series</p></td>
+<td align="left"><p>数据系列变量，转为因子后计算。如果提供多个变量，只传入第一个。</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>z</p></td>
+<td align="left"><p>时间轴变量，转为因子后计算。如提供多个变量，只传入第一个。</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>type</p></td>
+<td align="left"><p>‘chord’.</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>subtype</p></td>
+<td align="left"><ul>
+<li>chord: c(“ribbon”,“scale”,“scaletext”,“rotatelab”,“hidelab”,“clock”,“clockwise”,“asc”,“desc”,“ascsub”,“descsub”)
+<ul>
+<li>ribbon: 带缎带，要求数据结构为双向联结</li>
+<li>scale: 如带缎带，缎带上显示刻度</li>
+<li>scaletext: 如带缎带，缎带上显示刻度和刻度文字</li>
+<li>rotatelab: 旋转标签</li>
+<li>hidelab: 隐藏标签（默认不隐藏）</li>
+<li>clock/clockwise: 升序为顺时针（默认逆时针）</li>
+<li>asc: 节点升序排列</li>
+<li>desc:节点降序排列</li>
+<li>ascsub: 和弦升序排列</li>
+<li>descsub: 和弦降序排列</li>
+</ul></li>
+</ul></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="showcase" class="section level1">
+<h1><span class="header-section-number">3</span> 举例Showcase</h1>
+<div id="data-preparation" class="section level2">
+<h2><span class="header-section-number">3.1</span> 数据准备Data Preparation</h2>
+<div id="matrix-mode" class="section level3">
+<h3><span class="header-section-number">3.1.1</span> 矩阵模式Matrix Mode</h3>
+<pre class="r"><code>grpmtx &lt;- matrix(c(11975, 5871, 8916, 2868, 1951, 10048, 2060, 6171, 8010, 16145,
+                   8090, 8045, 1013, 990, 940, 6907), byrow=TRUE, nrow=4)
+grpmtx &lt;- as.data.frame(grpmtx)
+names(grpmtx) &lt;- paste0(&#39;Group&#39;, 1:4)
+grpmtx$Name &lt;- paste0(&#39;Group&#39;, 1:4)
+knitr::kable(grpmtx, align=c(&#39;lllll&#39;))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Group1</th>
+<th align="left">Group2</th>
+<th align="left">Group3</th>
+<th align="left">Group4</th>
+<th align="left">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">11975</td>
+<td align="left">5871</td>
+<td align="left">8916</td>
+<td align="left">2868</td>
+<td align="left">Group1</td>
+</tr>
+<tr class="even">
+<td align="left">1951</td>
+<td align="left">10048</td>
+<td align="left">2060</td>
+<td align="left">6171</td>
+<td align="left">Group2</td>
+</tr>
+<tr class="odd">
+<td align="left">8010</td>
+<td align="left">16145</td>
+<td align="left">8090</td>
+<td align="left">8045</td>
+<td align="left">Group3</td>
+</tr>
+<tr class="even">
+<td align="left">1013</td>
+<td align="left">990</td>
+<td align="left">940</td>
+<td align="left">6907</td>
+<td align="left">Group4</td>
+</tr>
+</tbody>
+</table>
+<p>数据框的前四列就是一个矩阵，而最后一列则是名称向量。所以其数据结构符合矩阵模式的要求。</p>
+<p>矩阵模式可以转换为节点/联结模式。Matrix[i, j]代表了两个节点(i &amp; j)和一个联结(i -&gt; j)。</p>
+</div>
+<div id="nodelink" class="section level3">
+<h3><span class="header-section-number">3.1.2</span> 节点Node/联结link模式</h3>
+<pre class="r"><code>knitr::kable(deutsch[deutsch$year==2014,])</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">player</th>
+<th align="left">club</th>
+<th align="right">weight</th>
+<th align="left">role</th>
+<th align="right">year</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Kruse</td>
+<td align="left">Monchengladbach</td>
+<td align="right">1</td>
+<td align="left">Fw</td>
+<td align="right">2014</td>
+</tr>
+<tr class="even">
+<td align="left">Kramer</td>
+<td align="left">Monchengladbach</td>
+<td align="right">1</td>
+<td align="left">Mf</td>
+<td align="right">2014</td>
+</tr>
+<tr class="odd">
+<td align="left">Neuer</td>
+<td align="left">Bayern</td>
+<td align="right">1</td>
+<td align="left">Gk</td>
+<td align="right">2014</td>
+</tr>
+<tr class="even">
+<td align="left">Boateng</td>
+<td align="left">Bayern</td>
+<td align="right">1</td>
+<td align="left">Df</td>
+<td align="right">2014</td>
+</tr>
+<tr class="odd">
+<td align="left">Lahm</td>
+<td align="left">Bayern</td>
+<td align="right">1</td>
+<td align="left">Df</td>
+<td align="right">2014</td>
+</tr>
+<tr class="even">
+<td align="left">Kroos</td>
+<td align="left">Bayern</td>
+<td align="right">1</td>
+<td align="left">Mf</td>
+<td align="right">2014</td>
+</tr>
+<tr class="odd">
+<td align="left">Muller</td>
+<td align="left">Bayern</td>
+<td align="right">1</td>
+<td align="left">Mf</td>
+<td align="right">2014</td>
+</tr>
+<tr class="even">
+<td align="left">Gotze</td>
+<td align="left">Bayern</td>
+<td align="right">1</td>
+<td align="left">Fw</td>
+<td align="right">2014</td>
+</tr>
+<tr class="odd">
+<td align="left">Badstuber</td>
+<td align="left">Bayern</td>
+<td align="right">1</td>
+<td align="left">Df</td>
+<td align="right">2014</td>
+</tr>
+<tr class="even">
+<td align="left">Hummels</td>
+<td align="left">Dortmund</td>
+<td align="right">1</td>
+<td align="left">Df</td>
+<td align="right">2014</td>
+</tr>
+<tr class="odd">
+<td align="left">Weidenfeller</td>
+<td align="left">Dortmund</td>
+<td align="right">1</td>
+<td align="left">Gk</td>
+<td align="right">2014</td>
+</tr>
+<tr class="even">
+<td align="left">Reus</td>
+<td align="left">Dortmund</td>
+<td align="right">1</td>
+<td align="left">Df</td>
+<td align="right">2014</td>
+</tr>
+<tr class="odd">
+<td align="left">Gundogan</td>
+<td align="left">Dortmund</td>
+<td align="right">1</td>
+<td align="left">Md</td>
+<td align="right">2014</td>
+</tr>
+</tbody>
+</table>
+<p>数据框内找不到数值型矩阵结构，所以被识别为节点/联结模式。由于第一、二列么有NA，所以<code>recharts</code>会基于所给的数据框构建一个节点数据框。其结构为：</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">name</th>
+<th align="right">value</th>
+<th align="left">series</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Badstuber</td>
+<td align="right">1</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Boateng</td>
+<td align="right">1</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Gotze</td>
+<td align="right">2</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Gundogan</td>
+<td align="right">1</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Howedes</td>
+<td align="right">1</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Hummels</td>
+<td align="right">2</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Kimmich</td>
+<td align="right">1</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Kramer</td>
+<td align="right">1</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Kroos</td>
+<td align="right">2</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Kruse</td>
+<td align="right">1</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Lahm</td>
+<td align="right">1</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Leno</td>
+<td align="right">1</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Meyer</td>
+<td align="right">1</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Muller</td>
+<td align="right">2</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Mustafi</td>
+<td align="right">1</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Neuer</td>
+<td align="right">2</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Ozil</td>
+<td align="right">1</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Reus</td>
+<td align="right">1</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Tah</td>
+<td align="right">1</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Volland</td>
+<td align="right">1</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Weidenfeller</td>
+<td align="right">1</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Arsenal</td>
+<td align="right">2</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Bayern</td>
+<td align="right">11</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Dortmund</td>
+<td align="right">5</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Leverkusen</td>
+<td align="right">3</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Madrid</td>
+<td align="right">1</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Monchengladbach</td>
+<td align="right">2</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Schalke</td>
+<td align="right">2</td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="chord-chart" class="section level2">
+<h2><span class="header-section-number">3.2</span> 和弦图Chord Chart</h2>
+<div id="chord-with-ribbon" class="section level3">
+<h3><span class="header-section-number">3.2.1</span> 带缎带的和弦图Chord with Ribbon</h3>
+<p>设<code>type</code>为’chord’，<code>subtype</code>为’ribbon’。</p>
+<pre class="r"><code>echartr(grpmtx, Name, c(Group1, Group2, Group3, Group4), 
+        type=&#39;chord&#39;, subtype=&#39;ribbon + asc + descsub + hidelab + scaletext&#39;) %&gt;% 
+  setTitle(&#39;Test Data&#39;,&#39;From d3.js&#39;)</code></pre>
+<div id="echarts-b0b270942fa7c272c23fca2a9d6f6368050dfaa7" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-b0b270942fa7c272c23fca2a9d6f6368050dfaa7">{"x":{"series":[{"type":"chord","name":"Connection","roam":"move","itemStyle":{"normal":{"label":{"show":false,"textStyle":{"color":"#333"}},"nodeStyle":{"brushType":"both","strokeColor":"rgba(255,215,0,0.4)"},"linkStyle":{"type":"line"}},"emphasis":{"label":{"show":false},"nodeStyle":[],"lineStyle":[]}},"minRadius":8,"maxRadius":20,"matrix":[[11975,5871,8916,2868],[1951,10048,2060,6171],[8010,16145,8090,8045],[1013,990,940,6907]],"data":[{"name":"Group1"},{"name":"Group2"},{"name":"Group3"},{"name":"Group4"}],"ribbonType":true,"sort":"ascending","sortSub":"descending","showScale":true,"showScaleText":true}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["Group1","Group2","Group3","Group4"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    if (params.indicator2) {    // is edge\n        if (isNaN(params.value.weight)){\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \")\";\n        } else {\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \") : \"\n            + params.value.weight;\n        }\n\n    } else {    // is node\n        return params.name;\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":false},"dataView":{"show":false},"magicType":{"show":true,"type":["force","chord"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["Group1","Group2","Group3","Group4"],"x":"left","y":"top","orient":"horizontal"},"title":{"text":"Test Data","subtext":"From d3.js","x":"center","y":"bottom","orient":"horizontal"}},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
+</div>
+<div id="chord-without-ribbon" class="section level3">
+<h3><span class="header-section-number">3.2.2</span> 无缎带的和弦图Chord without Ribbon</h3>
+<div id="one-direction-relationship" class="section level4">
+<h4><span class="header-section-number">3.2.2.1</span> 单向联结One-direction Relationship</h4>
+<p>设<code>type</code>为’chord’。如果数据结构不包括双向联结，不论是否设置<code>subtype</code>为’ribbon’，都无法显示缎带和弦图。</p>
+<pre class="r"><code>echartr(deutsch[deutsch$year==2014,], c(club, player), weight, role, type=&#39;chord&#39;, 
+        sub=&#39;asc + descsub + rotatelab&#39;) %&gt;% 
+  setTitle(&#39;Club Orientation of Deutsch Soccer Team (2014)&#39;)</code></pre>
+<div id="echarts-147bc1980b328d8e62831fc74c0b96b64a1b120e" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-147bc1980b328d8e62831fc74c0b96b64a1b120e">{"x":{"series":[{"type":"chord","name":"Connection","roam":"move","itemStyle":{"normal":{"label":{"show":true,"textStyle":{"color":"#333"},"rotate":true},"nodeStyle":{"brushType":"both","strokeColor":"rgba(255,215,0,0.4)"},"linkStyle":{"type":"curve"}},"emphasis":{"label":{"show":false},"nodeStyle":[],"lineStyle":[]}},"minRadius":8,"maxRadius":20,"nodes":[{"name":"Monchengladbach"},{"name":"Bayern"},{"name":"Dortmund"},{"name":"Kruse"},{"name":"Kramer"},{"name":"Neuer"},{"name":"Boateng"},{"name":"Lahm"},{"name":"Kroos"},{"name":"Muller"},{"name":"Gotze"},{"name":"Badstuber"},{"name":"Hummels"},{"name":"Weidenfeller"},{"name":"Reus"},{"name":"Gundogan"}],"links":[{"source":"Monchengladbach","target":"Kruse","name":"Fw","weight":1},{"source":"Monchengladbach","target":"Kramer","name":"Mf","weight":1},{"source":"Bayern","target":"Neuer","name":"Gk","weight":1},{"source":"Bayern","target":"Boateng","name":"Df","weight":1},{"source":"Bayern","target":"Lahm","name":"Df","weight":1},{"source":"Bayern","target":"Kroos","name":"Mf","weight":1},{"source":"Bayern","target":"Muller","name":"Mf","weight":1},{"source":"Bayern","target":"Gotze","name":"Fw","weight":1},{"source":"Bayern","target":"Badstuber","name":"Df","weight":1},{"source":"Dortmund","target":"Hummels","name":"Df","weight":1},{"source":"Dortmund","target":"Weidenfeller","name":"Gk","weight":1},{"source":"Dortmund","target":"Reus","name":"Df","weight":1},{"source":"Dortmund","target":"Gundogan","name":"Md","weight":1}],"ribbonType":false,"sort":"ascending","sortSub":"descending","showScale":false,"showScaleText":false}],"legend":{"show":true,"data":["Monchengladbach","Bayern","Dortmund"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["Monchengladbach","Bayern","Dortmund"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    if (params.indicator2) {    // is edge\n        if (isNaN(params.value.weight)){\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \")\";\n        } else {\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \") : \"\n            + params.value.weight;\n        }\n\n    } else {    // is node\n        return params.name;\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":false},"dataView":{"show":false},"magicType":{"show":true,"type":["force","chord"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"title":{"text":"Club Orientation of Deutsch Soccer Team (2014)","x":"center","y":"bottom","orient":"horizontal"}},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
+</div>
+<div id="dual-direction-relationship" class="section level4">
+<h4><span class="header-section-number">3.2.2.2</span> 双向联结Dual-direction Relationship</h4>
+<p>如果要显示缎带和弦图，必须将源数据修改为双向联结。</p>
+<p>现在，<code>deutsch14</code>只有单向联结，这意味着，它只定义了Gotze-&gt;Bayern的关系，而没有定义反向的Bayern-&gt;Gotze。</p>
+<pre class="r"><code>knitr::kable(with(deutsch[deutsch$year==2014,], table(player, club)))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">Bayern</th>
+<th align="right">Dortmund</th>
+<th align="right">Monchengladbach</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Badstuber</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Boateng</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Gotze</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Gundogan</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hummels</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Kramer</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Kroos</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Kruse</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Lahm</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Muller</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Neuer</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Reus</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Weidenfeller</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p>我们需要复制source和target列以构建一个矩阵。</p>
+<pre class="r"><code>deutsch14 &lt;- deutsch[deutsch$year==2014,]
+deutsch14 &lt;- rbind(deutsch14, deutsch14)
+deutsch14[14:26, c(&#39;player&#39;, &#39;club&#39;)] &lt;- recharts:::exchange(
+    deutsch14[14:26, &#39;player&#39;], deutsch14[14:26, &#39;club&#39;])
+knitr::kable(with(deutsch14, table(player, club)))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">Badstuber</th>
+<th align="right">Bayern</th>
+<th align="right">Boateng</th>
+<th align="right">Dortmund</th>
+<th align="right">Gotze</th>
+<th align="right">Gundogan</th>
+<th align="right">Hummels</th>
+<th align="right">Kramer</th>
+<th align="right">Kroos</th>
+<th align="right">Kruse</th>
+<th align="right">Lahm</th>
+<th align="right">Monchengladbach</th>
+<th align="right">Muller</th>
+<th align="right">Neuer</th>
+<th align="right">Reus</th>
+<th align="right">Weidenfeller</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Badstuber</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Bayern</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Boateng</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Dortmund</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Gotze</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Gundogan</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hummels</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Kramer</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Kroos</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Kruse</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Lahm</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Monchengladbach</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Muller</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Neuer</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Reus</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Weidenfeller</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p>这样，设置<code>subtype</code>为’ribbon’，就能获得缎带和弦图了。</p>
+<pre class="r"><code>echartr(deutsch14, c(club, player), weight, role, type=&#39;chord&#39;, 
+        sub=&#39;asc + descsub + rotatelab + ribbon&#39;) %&gt;% 
+  setTitle(&#39;Club Orientation of Deutsch Soccer Team (2014)&#39;)</code></pre>
+<div id="echarts-1cb77cfe111f4e32d8e61362d8b60cc3a62b41eb" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-1cb77cfe111f4e32d8e61362d8b60cc3a62b41eb">{"x":{"series":[{"type":"chord","name":"Connection","roam":"move","itemStyle":{"normal":{"label":{"show":true,"textStyle":{"color":"#333"},"rotate":true},"nodeStyle":{"brushType":"both","strokeColor":"rgba(255,215,0,0.4)"},"linkStyle":{"type":"curve"}},"emphasis":{"label":{"show":false},"nodeStyle":[],"lineStyle":[]}},"minRadius":8,"maxRadius":20,"nodes":[{"name":"Monchengladbach"},{"name":"Bayern"},{"name":"Dortmund"},{"name":"Kruse"},{"name":"Kramer"},{"name":"Neuer"},{"name":"Boateng"},{"name":"Lahm"},{"name":"Kroos"},{"name":"Muller"},{"name":"Gotze"},{"name":"Badstuber"},{"name":"Hummels"},{"name":"Weidenfeller"},{"name":"Reus"},{"name":"Gundogan"}],"links":[{"source":"Monchengladbach","target":"Kruse","name":"Fw","weight":1},{"source":"Monchengladbach","target":"Kramer","name":"Mf","weight":1},{"source":"Bayern","target":"Neuer","name":"Gk","weight":1},{"source":"Bayern","target":"Boateng","name":"Df","weight":1},{"source":"Bayern","target":"Lahm","name":"Df","weight":1},{"source":"Bayern","target":"Kroos","name":"Mf","weight":1},{"source":"Bayern","target":"Muller","name":"Mf","weight":1},{"source":"Bayern","target":"Gotze","name":"Fw","weight":1},{"source":"Bayern","target":"Badstuber","name":"Df","weight":1},{"source":"Dortmund","target":"Hummels","name":"Df","weight":1},{"source":"Dortmund","target":"Weidenfeller","name":"Gk","weight":1},{"source":"Dortmund","target":"Reus","name":"Df","weight":1},{"source":"Dortmund","target":"Gundogan","name":"Md","weight":1},{"source":"Kruse","target":"Monchengladbach","name":"Fw","weight":1},{"source":"Kramer","target":"Monchengladbach","name":"Mf","weight":1},{"source":"Neuer","target":"Bayern","name":"Gk","weight":1},{"source":"Boateng","target":"Bayern","name":"Df","weight":1},{"source":"Lahm","target":"Bayern","name":"Df","weight":1},{"source":"Kroos","target":"Bayern","name":"Mf","weight":1},{"source":"Muller","target":"Bayern","name":"Mf","weight":1},{"source":"Gotze","target":"Bayern","name":"Fw","weight":1},{"source":"Badstuber","target":"Bayern","name":"Df","weight":1},{"source":"Hummels","target":"Dortmund","name":"Df","weight":1},{"source":"Weidenfeller","target":"Dortmund","name":"Gk","weight":1},{"source":"Reus","target":"Dortmund","name":"Df","weight":1},{"source":"Gundogan","target":"Dortmund","name":"Md","weight":1}],"ribbonType":true,"sort":"ascending","sortSub":"descending","showScale":false,"showScaleText":false}],"legend":{"show":true,"data":["Monchengladbach","Bayern","Dortmund","Kruse","Kramer","Neuer","Boateng","Lahm","Kroos","Muller","Gotze","Badstuber","Hummels","Weidenfeller","Reus","Gundogan"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["Monchengladbach","Bayern","Dortmund","Kruse","Kramer","Neuer","Boateng","Lahm","Kroos","Muller","Gotze","Badstuber","Hummels","Weidenfeller","Reus","Gundogan"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    if (params.indicator2) {    // is edge\n        if (isNaN(params.value.weight)){\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \")\";\n        } else {\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \") : \"\n            + params.value.weight;\n        }\n\n    } else {    // is node\n        return params.name;\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":false},"dataView":{"show":false},"magicType":{"show":true,"type":["force","chord"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"title":{"text":"Club Orientation of Deutsch Soccer Team (2014)","x":"center","y":"bottom","orient":"horizontal"}},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
+<p>另一个例子基于预置的数据集<strong>mideast</strong>。</p>
+<pre class="r"><code>mideast &lt;- as.data.frame(mideast, col.names=mideast[1,], stringsAsFactors=FALSE)
+names(mideast) &lt;- mideast[1,]
+mideast &lt;- mideast[2:16,]
+me &lt;- data.table::melt(mideast, id=NA)
+me &lt;- me[!is.na(me$value),]
+me$series &lt;- strsplit(me$value, &#39;/&#39;)
+me$value &lt;- sapply(me$series, function(x) as.numeric(x[2]))
+me$series &lt;- sapply(me$series, function(x) x[1])
+names(me) &lt;- c(&#39;source&#39;, &#39;target&#39;, &#39;value&#39;, &#39;series&#39;)
+str(me)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    82 obs. of  4 variables:
+##  $ source: chr  &quot;叙利亚反对派&quot; &quot;阿萨德&quot; &quot;伊朗&quot; &quot;塞西&quot; ...
+##  $ target: Factor w/ 15 levels &quot;美国&quot;,&quot;叙利亚反对派&quot;,..: 1 1 1 1 1 1 1 1 2 2 ...
+##  $ value : num  1 1 1 1 1 1 1 1 9 9 ...
+##  $ series: chr  &quot;支持&quot; &quot;反对&quot; &quot;反对&quot; &quot;未表态&quot; ...</code></pre>
+<pre class="r"><code>echartr(me, c(source, target), value, series, type=&#39;chord&#39;, sub=&#39;ribbon&#39;)</code></pre>
+<div id="echarts-e2d5e509d421a04c82ffd3563932370ec5b96f2a" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-e2d5e509d421a04c82ffd3563932370ec5b96f2a">{"x":{"series":[{"type":"chord","name":"Connection","roam":"move","itemStyle":{"normal":{"label":{"show":true,"textStyle":{"color":"#333"}},"nodeStyle":{"brushType":"both","strokeColor":"rgba(255,215,0,0.4)"},"linkStyle":{"type":"curve"}},"emphasis":{"label":{"show":false},"nodeStyle":[],"lineStyle":[]}},"minRadius":8,"maxRadius":20,"nodes":[{"name":"叙利亚反对派"},{"name":"阿萨德"},{"name":"伊朗"},{"name":"塞西"},{"name":"哈马斯"},{"name":"以色列"},{"name":"穆斯林兄弟会"},{"name":"基地组织"},{"name":"美国"},{"name":"俄罗斯"},{"name":"黎巴嫩什叶派"},{"name":"土耳其"},{"name":"卡塔尔"},{"name":"沙特"},{"name":"黎巴嫩逊尼派"}],"links":[{"source":"叙利亚反对派","target":"美国","name":"支持","weight":1},{"source":"阿萨德","target":"美国","name":"反对","weight":1},{"source":"伊朗","target":"美国","name":"反对","weight":1},{"source":"塞西","target":"美国","name":"未表态","weight":1},{"source":"哈马斯","target":"美国","name":"反对","weight":1},{"source":"以色列","target":"美国","name":"支持","weight":1},{"source":"穆斯林兄弟会","target":"美国","name":"未表态","weight":1},{"source":"基地组织","target":"美国","name":"反对","weight":1},{"source":"美国","target":"叙利亚反对派","name":"支持","weight":9},{"source":"伊朗","target":"叙利亚反对派","name":"反对","weight":9},{"source":"哈马斯","target":"叙利亚反对派","name":"支持","weight":9},{"source":"以色列","target":"叙利亚反对派","name":"支持","weight":9},{"source":"基地组织","target":"叙利亚反对派","name":"支持","weight":9},{"source":"俄罗斯","target":"叙利亚反对派","name":"反对","weight":9},{"source":"黎巴嫩什叶派","target":"叙利亚反对派","name":"反对","weight":9},{"source":"土耳其","target":"叙利亚反对派","name":"支持","weight":9},{"source":"卡塔尔","target":"叙利亚反对派","name":"支持","weight":9},{"source":"沙特","target":"叙利亚反对派","name":"支持","weight":9},{"source":"黎巴嫩逊尼派","target":"叙利亚反对派","name":"支持","weight":9},{"source":"美国","target":"阿萨德","name":"反对","weight":9},{"source":"伊朗","target":"阿萨德","name":"支持","weight":9},{"source":"以色列","target":"阿萨德","name":"反对","weight":9},{"source":"穆斯林兄弟会","target":"阿萨德","name":"反对","weight":9},{"source":"基地组织","target":"阿萨德","name":"反对","weight":9},{"source":"俄罗斯","target":"阿萨德","name":"支持","weight":9},{"source":"黎巴嫩什叶派","target":"阿萨德","name":"支持","weight":9},{"source":"土耳其","target":"阿萨德","name":"反对","weight":9},{"source":"卡塔尔","target":"阿萨德","name":"反对","weight":9},{"source":"黎巴嫩逊尼派","target":"阿萨德","name":"反对","weight":9},{"source":"美国","target":"伊朗","name":"反对","weight":9},{"source":"叙利亚反对派","target":"伊朗","name":"反对","weight":1},{"source":"阿萨德","target":"伊朗","name":"支持","weight":1},{"source":"哈马斯","target":"伊朗","name":"支持","weight":1},{"source":"黎巴嫩什叶派","target":"伊朗","name":"支持","weight":1},{"source":"美国","target":"塞西","name":"未表态","weight":9},{"source":"哈马斯","target":"塞西","name":"反对","weight":9},{"source":"穆斯林兄弟会","target":"塞西","name":"反对","weight":1},{"source":"土耳其","target":"塞西","name":"反对","weight":9},{"source":"卡塔尔","target":"塞西","name":"反对","weight":9},{"source":"沙特","target":"塞西","name":"支持","weight":9},{"source":"美国","target":"哈马斯","name":"反对","weight":9},{"source":"叙利亚反对派","target":"哈马斯","name":"支持","weight":1},{"source":"伊朗","target":"哈马斯","name":"支持","weight":9},{"source":"塞西","target":"哈马斯","name":"反对","weight":1},{"source":"以色列","target":"哈马斯","name":"反对","weight":9},{"source":"卡塔尔","target":"哈马斯","name":"支持","weight":9},{"source":"美国","target":"以色列","name":"支持","weight":9},{"source":"叙利亚反对派","target":"以色列","name":"支持","weight":1},{"source":"阿萨德","target":"以色列","name":"反对","weight":1},{"source":"哈马斯","target":"以色列","name":"反对","weight":1},{"source":"美国","target":"穆斯林兄弟会","name":"未表态","weight":9},{"source":"阿萨德","target":"穆斯林兄弟会","name":"反对","weight":1},{"source":"塞西","target":"穆斯林兄弟会","name":"反对","weight":9},{"source":"土耳其","target":"穆斯林兄弟会","name":"支持","weight":9},{"source":"卡塔尔","target":"穆斯林兄弟会","name":"支持","weight":9},{"source":"沙特","target":"穆斯林兄弟会","name":"反对","weight":9},{"source":"美国","target":"基地组织","name":"反对","weight":9},{"source":"叙利亚反对派","target":"基地组织","name":"支持","weight":1},{"source":"阿萨德","target":"基地组织","name":"反对","weight":1},{"source":"沙特","target":"基地组织","name":"反对","weight":1},{"source":"叙利亚反对派","target":"俄罗斯","name":"反对","weight":1},{"source":"阿萨德","target":"俄罗斯","name":"支持","weight":1},{"source":"叙利亚反对派","target":"黎巴嫩什叶派","name":"反对","weight":1},{"source":"阿萨德","target":"黎巴嫩什叶派","name":"支持","weight":1},{"source":"伊朗","target":"黎巴嫩什叶派","name":"支持","weight":9},{"source":"叙利亚反对派","target":"土耳其","name":"支持","weight":1},{"source":"阿萨德","target":"土耳其","name":"反对","weight":1},{"source":"塞西","target":"土耳其","name":"反对","weight":1},{"source":"穆斯林兄弟会","target":"土耳其","name":"支持","weight":1},{"source":"叙利亚反对派","target":"卡塔尔","name":"支持","weight":1},{"source":"阿萨德","target":"卡塔尔","name":"反对","weight":1},{"source":"塞西","target":"卡塔尔","name":"反对","weight":1},{"source":"哈马斯","target":"卡塔尔","name":"支持","weight":1},{"source":"穆斯林兄弟会","target":"卡塔尔","name":"支持","weight":1},{"source":"叙利亚反对派","target":"沙特","name":"支持","weight":1},{"source":"塞西","target":"沙特","name":"支持","weight":1},{"source":"穆斯林兄弟会","target":"沙特","name":"反对","weight":1},{"source":"基地组织","target":"沙特","name":"反对","weight":9},{"source":"黎巴嫩逊尼派","target":"沙特","name":"支持","weight":1},{"source":"叙利亚反对派","target":"黎巴嫩逊尼派","name":"支持","weight":1},{"source":"阿萨德","target":"黎巴嫩逊尼派","name":"反对","weight":1},{"source":"沙特","target":"黎巴嫩逊尼派","name":"支持","weight":9}],"ribbonType":true,"showScale":false,"showScaleText":false}],"legend":{"show":true,"data":["叙利亚反对派","阿萨德","伊朗","塞西","哈马斯","以色列","穆斯林兄弟会","基地组织","美国","俄罗斯","黎巴嫩什叶派","土耳其","卡塔尔","沙特","黎巴嫩逊尼派"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["叙利亚反对派","阿萨德","伊朗","塞西","哈马斯","以色列","穆斯林兄弟会","基地组织","美国","俄罗斯","黎巴嫩什叶派","土耳其","卡塔尔","沙特","黎巴嫩逊尼派"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    if (params.indicator2) {    // is edge\n        if (isNaN(params.value.weight)){\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \")\";\n        } else {\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \") : \"\n            + params.value.weight;\n        }\n\n    } else {    // is node\n        return params.name;\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":false},"dataView":{"show":false},"magicType":{"show":true,"type":["force","chord"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"}},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
+</div>
+</div>
+<div id="chord-with-timeline" class="section level3">
+<h3><span class="header-section-number">3.2.3</span> 带时间轴的和弦图Chord with Timeline</h3>
+<p>用<code>year</code>列作为时间轴。</p>
+<pre class="r"><code>echartr(deutsch, c(club, player), weight, role, z=year, type=&#39;chord&#39;, 
+        sub=&#39;asc + descsub + rotatelab&#39;) %&gt;% 
+    setTimeline(show=FALSE, autoPlay=TRUE) %&gt;%
+    setTitle(&#39;Club Orientation of Deutsch Soccer Team&#39;)</code></pre>
+<div id="echarts-3c86b90be1d72847a8e82e0d572551ad956db303" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-3c86b90be1d72847a8e82e0d572551ad956db303">{"x":{"timeline":{"type":"number","data":[2014,2016],"x":80,"x2":80,"show":false,"autoPlay":true,"y2":50},"options":[{"series":[{"type":"chord","name":"Connection","roam":"move","itemStyle":{"normal":{"label":{"show":true,"textStyle":{"color":"#333"},"rotate":true},"nodeStyle":{"brushType":"both","strokeColor":"rgba(255,215,0,0.4)"},"linkStyle":{"type":"curve"}},"emphasis":{"label":{"show":false},"nodeStyle":[],"lineStyle":[]}},"minRadius":8,"maxRadius":20,"nodes":[{"name":"Monchengladbach"},{"name":"Bayern"},{"name":"Dortmund"},{"name":"Kruse"},{"name":"Kramer"},{"name":"Neuer"},{"name":"Boateng"},{"name":"Lahm"},{"name":"Kroos"},{"name":"Muller"},{"name":"Gotze"},{"name":"Badstuber"},{"name":"Hummels"},{"name":"Weidenfeller"},{"name":"Reus"},{"name":"Gundogan"}],"links":[{"source":"Monchengladbach","target":"Kruse","name":"Fw","weight":1},{"source":"Monchengladbach","target":"Kramer","name":"Mf","weight":1},{"source":"Bayern","target":"Neuer","name":"Gk","weight":1},{"source":"Bayern","target":"Boateng","name":"Df","weight":1},{"source":"Bayern","target":"Lahm","name":"Df","weight":1},{"source":"Bayern","target":"Kroos","name":"Mf","weight":1},{"source":"Bayern","target":"Muller","name":"Mf","weight":1},{"source":"Bayern","target":"Gotze","name":"Fw","weight":1},{"source":"Bayern","target":"Badstuber","name":"Df","weight":1},{"source":"Dortmund","target":"Hummels","name":"Df","weight":1},{"source":"Dortmund","target":"Weidenfeller","name":"Gk","weight":1},{"source":"Dortmund","target":"Reus","name":"Df","weight":1},{"source":"Dortmund","target":"Gundogan","name":"Md","weight":1}],"ribbonType":false,"sort":"ascending","sortSub":"descending","showScale":false,"showScaleText":false}],"legend":{"show":true,"data":["Monchengladbach","Bayern","Dortmund","Leverkusen","Schalke","Arsenal","Madrid"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["Monchengladbach","Bayern","Dortmund","Leverkusen","Schalke","Arsenal","Madrid"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    if (params.indicator2) {    // is edge\n        if (isNaN(params.value.weight)){\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \")\";\n        } else {\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \") : \"\n            + params.value.weight;\n        }\n\n    } else {    // is node\n        return params.name;\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":false},"dataView":{"show":false},"magicType":{"show":true,"type":["force","chord"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"title":{"text":"Club Orientation of Deutsch Soccer Team (year: 2014)","x":"center","y":"bottom","orient":"horizontal"}},{"series":[{"type":"chord","name":"Connection","roam":"move","itemStyle":{"normal":{"label":{"show":true,"textStyle":{"color":"#333"},"rotate":true},"nodeStyle":{"brushType":"both","strokeColor":"rgba(255,215,0,0.4)"},"linkStyle":{"type":"curve"}},"emphasis":{"label":{"show":false},"nodeStyle":[],"lineStyle":[]}},"minRadius":8,"maxRadius":20,"nodes":[{"name":"Bayern"},{"name":"Leverkusen"},{"name":"Schalke"},{"name":"Arsenal"},{"name":"Madrid"},{"name":"Dortmund"},{"name":"Neuer"},{"name":"Leno"},{"name":"Hummels"},{"name":"Kimmich"},{"name":"Howedes"},{"name":"Mustafi"},{"name":"Ozil"},{"name":"Tah"},{"name":"Muller"},{"name":"Meyer"},{"name":"Kroos"},{"name":"Gotze"},{"name":"Volland"}],"links":[{"source":"Bayern","target":"Neuer","name":"Gk","weight":1},{"source":"Leverkusen","target":"Leno","name":"Gk","weight":1},{"source":"Bayern","target":"Hummels","name":"Df","weight":1},{"source":"Bayern","target":"Kimmich","name":"Df","weight":1},{"source":"Schalke","target":"Howedes","name":"Df","weight":1},{"source":"Arsenal","target":"Mustafi","name":"Df","weight":1},{"source":"Arsenal","target":"Ozil","name":"Mf","weight":1},{"source":"Leverkusen","target":"Tah","name":"Mf","weight":1},{"source":"Bayern","target":"Muller","name":"Mf","weight":1},{"source":"Schalke","target":"Meyer","name":"Mf","weight":1},{"source":"Madrid","target":"Kroos","name":"Mf","weight":1},{"source":"Dortmund","target":"Gotze","name":"Fw","weight":1},{"source":"Leverkusen","target":"Volland","name":"Fw","weight":1}],"ribbonType":false,"sort":"ascending","sortSub":"descending","showScale":false,"showScaleText":false}],"title":{"text":"Club Orientation of Deutsch Soccer Team (year: 2016)","x":"center","y":"bottom","orient":"horizontal"}}]},"evals":["options.0.tooltip.formatter"],"jsHooks":[]}</script>
+</div>
+</div>
+</div>
+<div id="futher-setup" class="section level1">
+<h1><span class="header-section-number">4</span> 其他设定Futher Setup</h1>
+<p>接下来可以配置控件、添加标注点/标注线，以及美化成图。</p>
+<p>参考相关函数，尽情探索吧。</p>
+</div>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+    // active menu
+    var href = window.location.pathname;
+    href = href.substr(href.lastIndexOf('/') + 1);
+    if (href === '') href = './';
+    $('a[href="' + href + '"]').parent().addClass('active');
+});
+</script>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>控件Widget 31 - 提示框Tooltip</title>
+
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/htmlwidgets-0.7/htmlwidgets.js"></script>
+<script src="libs/echarts-2.2.7/echarts-all.js"></script>
+<script src="libs/echarts-2.2.7/ext/params.js"></script>
+<script src="libs/echarts-2.2.7/ext/loadGeoJSON.js"></script>
+<script src="libs/echarts-binding-0.0.5/echarts.js"></script>
+<script src="libs/echarts-module-2.2.7/base.js"></script>
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 70px;
+}
+p code {
+  white-space: inherit;
+}
+.html-widget-static-bound {
+  margin: auto;
+}
+.alert>p {
+  margin-bottom: 10.5px;
+}
+</style>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/default.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="./">recharts</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="./">Home</a></li>
+        <li><a href="index_cn.html">首页</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="https://github.com/madlogos/recharts" title="View Source on Github"><i class="fa fa-github fa-lg"></i></a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</nav><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">控件Widget 31 - 提示框Tooltip</h1>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction"><span class="toc-section-number">1</span> 介绍Introduction</a></li>
+<li><a href="#function-call"><span class="toc-section-number">2</span> 用法Function Call</a></li>
+<li><a href="#showcase"><span class="toc-section-number">3</span> 举例Showcase</a><ul>
+<li><a href="#global-setting"><span class="toc-section-number">3.1</span> 全局设置Global Setting</a><ul>
+<li><a href="#formatter"><span class="toc-section-number">3.1.1</span> 内容格式Formatter</a></li>
+<li><a href="#trigger"><span class="toc-section-number">3.1.2</span> 触发器Trigger</a></li>
+<li><a href="#aesthetics"><span class="toc-section-number">3.1.3</span> 美工Aesthetics</a></li>
+</ul></li>
+<li><a href="#local-setting"><span class="toc-section-number">3.2</span> 局部设置Local Setting</a></li>
+</ul></li>
+<li><a><span class="toc-section-number">4</span> 参考资料</a></li>
+</ul>
+</div>
+
+<p>首先，加载<code>recharts</code>:</p>
+<pre class="r"><code>library(recharts)</code></pre>
+<div id="introduction" class="section level1">
+<h1><span class="header-section-number">1</span> 介绍Introduction</h1>
+<p>提示框是交互的关键控件。它可以多级配置，作用于全局或局部。可以用<code>setTooltip</code> (<code>setTT</code>)配置全局或<code>setSeries</code>配置局部。</p>
+<p>用提示框，建议对JavaScript略有了解，以便更好地利用<code>formatter</code>模板。</p>
+<p>建议用<code>chart %&gt;% setTT(...)</code>格式调用<code>setTT</code>。</p>
+</div>
+<div id="function-call" class="section level1">
+<h1><span class="header-section-number">2</span> 用法Function Call</h1>
+<pre class="r"><code>setTooltip(chart, series = NULL, timeslots = NULL, trigger = NULL,
+  formatter = NULL, islandFormatter = &quot;{a} &lt; br/&gt;{b} : {c}&quot;,
+  position = NULL, enterable = FALSE, axisPointer = NULL,
+  textStyle = NULL, showDelay = 20, hideDelay = 100,
+  transitionDuration = 0.4, bgColor = &quot;rgba(0,0,0,0.7)&quot;,
+  borderColor = &quot;#333&quot;, borderWidth = 0, borderRadius = 4, show = TRUE,
+  ...)
+  </code></pre>
+<p>可以简写为<code>setTT</code>。</p>
+<table>
+<colgroup>
+<col width="24%" />
+<col width="75%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">参数</th>
+<th align="left">要求</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><p><strong>chart</strong></p></td>
+<td align="left"><p><code>echartR</code>或<code>echart</code>创建的Echarts对象。</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>series</p></td>
+<td align="left"><p>数据系列名称或索引值向量，如<code>c('setosa', 'virginica')</code>或<code>1:2</code>。</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>timeslots</p></td>
+<td align="left"><p>时间轴切片名称或索引值向量，如<code>c(1990, 1992)</code>或<code>c(1,3)</code>. 可以简写为<code>z</code>。</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>trigger</p></td>
+<td align="left"><p>触发类型，‘item’或’axis’</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>formatter</p></td>
+<td align="left"><p>提示框文本格式</p>
+<ul>
+<li>文本 (模板)
+<ul>
+<li>{a} / {a0}</li>
+<li>{b} / {b0}</li>
+<li>{c} / {c0}</li>
+<li>{d} / {d0} (某些图中不可用)</li>
+<li>{e} / {e0} (某些图中不可用)</li>
+</ul></li>
+<li>函数
+<ul>
+<li>JS函数，列表格式为<code>[params, ticket, callback]</code></li>
+</ul></li>
+</ul>
+<p><strong>{a}, {b}, {c}, {d}的含义: </strong></p>
+<ul>
+<li>折线（区域）图、柱状（条形）图、K线图 :
+<ul>
+<li>a（系列名称），b（类目值），c（数值）, d（无）</li>
+</ul></li>
+<li>散点图（气泡）图 :
+<ul>
+<li>a（系列名称），b（数据名称），c（数值数组）, d（无）</li>
+</ul></li>
+<li>地图 :
+<ul>
+<li>a（系列名称），b（区域名称），c（合并数值）, d（无）</li>
+</ul></li>
+<li>饼图、雷达图、仪表盘、漏斗图:
+<ul>
+<li>a（系列名称），b（数据项名称），c（数值）, d（饼图：百分比 | 雷达图：指标名称）</li>
+</ul></li>
+<li>力导向图, 和弦图 :
+<ul>
+<li>节点 : a（系列名称），b（节点名称），c（节点值）, d(节点类目索引)</li>
+<li>边 : a（系列名称），b（边名称，默认为大端节点名称-小端节点名称），c（联结值）, d(大端节点 name 或者 index), e(小端节点 name 或者 index)</li>
+</ul></li>
+</ul>
+<p><strong>JS函数参数模板…</strong></p>
+<ul>
+<li><code>seriesIndex</code>: 0, 1, 2, …</li>
+<li><code>seriesName</code>: ‘周一’, ‘周二’, …</li>
+<li><code>name</code>: ‘数据1’, ‘数据2’, …</li>
+<li><code>dataIndex</code>: 0, 1, 2, …</li>
+<li><code>data</code>: data</li>
+<li><code>value</code>: value</li>
+<li><code>percent</code>: special //饼图</li>
+<li><code>indicator</code>: special //雷达图、力导向布局图、和弦图</li>
+<li><code>value2</code>: special2 //力导向布局图、和弦图</li>
+<li><code>indicator2</code>: special2 //力导向布局图、和弦图</li>
+</ul></td>
+</tr>
+<tr class="even">
+<td align="left"><p>islandFormatter</p></td>
+<td align="left"><p>数据岛样式，默认<code>{a}&lt;br/&gt;{b}: {c}</code>.</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>position</p></td>
+<td align="left"><p>可以是固定值<code>c(x, y)</code>或JS函数，如<code>JS('function([x, y]) {return [newX,newY]}')</code>. 默认NULL.</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>enterable</p></td>
+<td align="left"><p>用户是否可以点击提示框的内容，默认为FALSE.</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>axisPointer</p></td>
+<td align="left"><p>坐标指示器格式，默认为<code>list(type = &quot;line&quot;,</code> <code>lineStyle = list(color = &quot;#48b&quot;,</code> <code>width = 2, type = &quot;solid&quot;),</code> <code>crossStyle = list(color = &quot;#1e90ff&quot;,</code> <code>width = 1, type = &quot;dashed&quot;),</code> <code>shadowStyle = list(color =</code> <code>&quot;rgba(150,150,150,0.3)&quot;, width = &quot;auto&quot;, type = &quot;default&quot;)).</code></p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>textStyle</p></td>
+<td align="left"><p>提示框文本格式，默认为<code>list(color =&quot;#fff&quot;)</code>. 该列表可包括 <code>color, decoration, fontSize,</code> <code>fontFamily, fontStyle, fontWeight, align, baseline</code>属性.</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>showDelay</p></td>
+<td align="left"><p>显示延时(ms). 默认为20ms.</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>hideDelay</p></td>
+<td align="left"><p>隐藏延时(ms). 默认为100ms.</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>transitionDuration</p></td>
+<td align="left"><p>动画切换的耗时 ，默认为0.4. 如要实时交互，设为0.</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>bgColor</p></td>
+<td align="left"><p>提示框背景色，默认为’rgba(0,0,0,0.7)’ (半透明深灰色).</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>borderColor</p></td>
+<td align="left"><p>提示框边框色，默认为’#333’.</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>borderWidth</p></td>
+<td align="left"><p>提示框边框宽度，默认为0 (不显示).</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>borderRadius</p></td>
+<td align="left"><p>提示框边框圆角半径，默认为4px.</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>show</p></td>
+<td align="left"><p>逻辑型，是否显示提示框。默认为TRUE.</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>…</p></td>
+<td align="left"><p>省略号</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="showcase" class="section level1">
+<h1><span class="header-section-number">3</span> 举例Showcase</h1>
+<pre class="r"><code>g &lt;- echartr(iris, Sepal.Width, Petal.Width, Species,  weight=Petal.Length,
+             type=&#39;bubble&#39;) %&gt;% setSymbols(&#39;circle&#39;)
+g</code></pre>
+<div id="echarts-18e533488088d5c6f2eb64ce8fa2b2d9a3a40403" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-18e533488088d5c6f2eb64ce8fa2b2d9a3a40403">{"x":{"series":[{"name":"setosa","type":"scatter","data":[[3.5,0.2,1.4],[3,0.2,1.4],[3.2,0.2,1.3],[3.1,0.2,1.5],[3.6,0.2,1.4],[3.9,0.4,1.7],[3.4,0.3,1.4],[3.4,0.2,1.5],[2.9,0.2,1.4],[3.1,0.1,1.5],[3.7,0.2,1.5],[3.4,0.2,1.6],[3,0.1,1.4],[3,0.1,1.1],[4,0.2,1.2],[4.4,0.4,1.5],[3.9,0.4,1.3],[3.5,0.3,1.4],[3.8,0.3,1.7],[3.8,0.3,1.5],[3.4,0.2,1.7],[3.7,0.4,1.5],[3.6,0.2,1],[3.3,0.5,1.7],[3.4,0.2,1.9],[3,0.2,1.6],[3.4,0.4,1.6],[3.5,0.2,1.5],[3.4,0.2,1.4],[3.2,0.2,1.6],[3.1,0.2,1.6],[3.4,0.4,1.5],[4.1,0.1,1.5],[4.2,0.2,1.4],[3.1,0.2,1.5],[3.2,0.2,1.2],[3.5,0.2,1.3],[3.6,0.1,1.4],[3,0.2,1.3],[3.4,0.2,1.5],[3.5,0.3,1.3],[2.3,0.3,1.3],[3.2,0.2,1.3],[3.5,0.6,1.6],[3.8,0.4,1.9],[3,0.3,1.4],[3.8,0.2,1.6],[3.2,0.2,1.4],[3.7,0.2,1.5],[3.3,0.2,1.4]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"},{"name":"versicolor","type":"scatter","data":[[3.2,1.4,4.7],[3.2,1.5,4.5],[3.1,1.5,4.9],[2.3,1.3,4],[2.8,1.5,4.6],[2.8,1.3,4.5],[3.3,1.6,4.7],[2.4,1,3.3],[2.9,1.3,4.6],[2.7,1.4,3.9],[2,1,3.5],[3,1.5,4.2],[2.2,1,4],[2.9,1.4,4.7],[2.9,1.3,3.6],[3.1,1.4,4.4],[3,1.5,4.5],[2.7,1,4.1],[2.2,1.5,4.5],[2.5,1.1,3.9],[3.2,1.8,4.8],[2.8,1.3,4],[2.5,1.5,4.9],[2.8,1.2,4.7],[2.9,1.3,4.3],[3,1.4,4.4],[2.8,1.4,4.8],[3,1.7,5],[2.9,1.5,4.5],[2.6,1,3.5],[2.4,1.1,3.8],[2.4,1,3.7],[2.7,1.2,3.9],[2.7,1.6,5.1],[3,1.5,4.5],[3.4,1.6,4.5],[3.1,1.5,4.7],[2.3,1.3,4.4],[3,1.3,4.1],[2.5,1.3,4],[2.6,1.2,4.4],[3,1.4,4.6],[2.6,1.2,4],[2.3,1,3.3],[2.7,1.3,4.2],[3,1.2,4.2],[2.9,1.3,4.2],[2.9,1.3,4.3],[2.5,1.1,3],[2.8,1.3,4.1]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"},{"name":"virginica","type":"scatter","data":[[3.3,2.5,6],[2.7,1.9,5.1],[3,2.1,5.9],[2.9,1.8,5.6],[3,2.2,5.8],[3,2.1,6.6],[2.5,1.7,4.5],[2.9,1.8,6.3],[2.5,1.8,5.8],[3.6,2.5,6.1],[3.2,2,5.1],[2.7,1.9,5.3],[3,2.1,5.5],[2.5,2,5],[2.8,2.4,5.1],[3.2,2.3,5.3],[3,1.8,5.5],[3.8,2.2,6.7],[2.6,2.3,6.9],[2.2,1.5,5],[3.2,2.3,5.7],[2.8,2,4.9],[2.8,2,6.7],[2.7,1.8,4.9],[3.3,2.1,5.7],[3.2,1.8,6],[2.8,1.8,4.8],[3,1.8,4.9],[2.8,2.1,5.6],[3,1.6,5.8],[2.8,1.9,6.1],[3.8,2,6.4],[2.8,2.2,5.6],[2.8,1.5,5.1],[2.6,1.4,5.6],[3,2.3,6.1],[3.4,2.4,5.6],[3.1,1.8,5.5],[3,1.8,4.8],[3.1,2.1,5.4],[3.1,2.4,5.6],[3.1,2.3,5.1],[2.7,1.9,5.1],[3.2,2.3,5.9],[3.3,2.5,5.7],[3,2.3,5.2],[2.5,1.9,5],[3,2,5.2],[3.4,2.3,5.4],[3,1.8,5.1]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"}],"legend":{"show":true,"data":["setosa","versicolor","virginica"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"value","show":true,"position":"left","name":"Petal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Sepal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    var i;\n    var text = params.value[0];\n    if (params.seriesName === null || params.seriesName === \"\"){\n        if (params.value.length > 1) {\n            for (i = 1; i < params.value.length; i++){\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.name + \" : \" + text;\n        }\n    } else {\n        if (params.value.length > 1) {\n            text = params.seriesName + \" :<br/>\" + text;\n            for (i = 1; i < params.value.length; i++) {\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.seriesName + \" :<br/>\"\n            + params.name + \" : \" + text;\n        }\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"symbolList":["circle","circle","circle"]},"evals":["series.0.symbolSize","series.1.symbolSize","series.2.symbolSize","tooltip.formatter"],"jsHooks":[]}</script>
+<div id="global-setting" class="section level2">
+<h2><span class="header-section-number">3.1</span> 全局设置Global Setting</h2>
+<p>鼠标掠过数据点，可以发现气泡图提示框内容的格式为<code>series:\nx, y, weight</code>, 在JavaScript中就是：</p>
+<pre class="javascript"><code>function (params) {
+    var i;
+    var text;
+    if (params.seriesName === null || params.seriesName === &quot;&quot;){
+        if (params.value.length &gt; 1) {
+            text = params.value[0];
+            for (i = 1; i &lt; params.value.length; i++){
+                text += &quot; ,    &quot; + params.value[i];
+            }
+            return text;
+        } else {
+            return params.name + &quot; : &quot; + params.value;
+        }
+    } else {
+        if (params.value.length &gt; 1) {
+            text = params.seriesName + &quot; :&lt;br/&gt;&quot; + params.value[0];
+            for (i = 1; i &lt; params.value.length; i++) {
+                text += &quot; ,    &quot; + params.value[i];
+            }
+            return text;
+        } else {
+            return params.seriesName + &quot; :&lt;br/&gt;&quot;
+            + params.name + &quot; : &quot; + params.value;
+        }
+    }
+}</code></pre>
+<div id="formatter" class="section level3">
+<h3><span class="header-section-number">3.1.1</span> 内容格式Formatter</h3>
+<p>可以略作调整。</p>
+<pre class="r"><code>g %&gt;% setTT(formatter=JS(&#39;function (params) {
+  return params.seriesName + &quot;&lt;br/&gt;Sepal Width: &quot; + params.value[0] +  
+  &quot;&lt;br/&gt;Petal Width: &quot; +  params.value[1] + &quot;&lt;br/&gt;Petal Length: &quot; + 
+  params.value[2];
+}&#39;))</code></pre>
+<div id="echarts-291ccf4a8393d45e1db89aa69ff50c19a525ba6b" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-291ccf4a8393d45e1db89aa69ff50c19a525ba6b">{"x":{"series":[{"name":"setosa","type":"scatter","data":[[3.5,0.2,1.4],[3,0.2,1.4],[3.2,0.2,1.3],[3.1,0.2,1.5],[3.6,0.2,1.4],[3.9,0.4,1.7],[3.4,0.3,1.4],[3.4,0.2,1.5],[2.9,0.2,1.4],[3.1,0.1,1.5],[3.7,0.2,1.5],[3.4,0.2,1.6],[3,0.1,1.4],[3,0.1,1.1],[4,0.2,1.2],[4.4,0.4,1.5],[3.9,0.4,1.3],[3.5,0.3,1.4],[3.8,0.3,1.7],[3.8,0.3,1.5],[3.4,0.2,1.7],[3.7,0.4,1.5],[3.6,0.2,1],[3.3,0.5,1.7],[3.4,0.2,1.9],[3,0.2,1.6],[3.4,0.4,1.6],[3.5,0.2,1.5],[3.4,0.2,1.4],[3.2,0.2,1.6],[3.1,0.2,1.6],[3.4,0.4,1.5],[4.1,0.1,1.5],[4.2,0.2,1.4],[3.1,0.2,1.5],[3.2,0.2,1.2],[3.5,0.2,1.3],[3.6,0.1,1.4],[3,0.2,1.3],[3.4,0.2,1.5],[3.5,0.3,1.3],[2.3,0.3,1.3],[3.2,0.2,1.3],[3.5,0.6,1.6],[3.8,0.4,1.9],[3,0.3,1.4],[3.8,0.2,1.6],[3.2,0.2,1.4],[3.7,0.2,1.5],[3.3,0.2,1.4]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"},{"name":"versicolor","type":"scatter","data":[[3.2,1.4,4.7],[3.2,1.5,4.5],[3.1,1.5,4.9],[2.3,1.3,4],[2.8,1.5,4.6],[2.8,1.3,4.5],[3.3,1.6,4.7],[2.4,1,3.3],[2.9,1.3,4.6],[2.7,1.4,3.9],[2,1,3.5],[3,1.5,4.2],[2.2,1,4],[2.9,1.4,4.7],[2.9,1.3,3.6],[3.1,1.4,4.4],[3,1.5,4.5],[2.7,1,4.1],[2.2,1.5,4.5],[2.5,1.1,3.9],[3.2,1.8,4.8],[2.8,1.3,4],[2.5,1.5,4.9],[2.8,1.2,4.7],[2.9,1.3,4.3],[3,1.4,4.4],[2.8,1.4,4.8],[3,1.7,5],[2.9,1.5,4.5],[2.6,1,3.5],[2.4,1.1,3.8],[2.4,1,3.7],[2.7,1.2,3.9],[2.7,1.6,5.1],[3,1.5,4.5],[3.4,1.6,4.5],[3.1,1.5,4.7],[2.3,1.3,4.4],[3,1.3,4.1],[2.5,1.3,4],[2.6,1.2,4.4],[3,1.4,4.6],[2.6,1.2,4],[2.3,1,3.3],[2.7,1.3,4.2],[3,1.2,4.2],[2.9,1.3,4.2],[2.9,1.3,4.3],[2.5,1.1,3],[2.8,1.3,4.1]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"},{"name":"virginica","type":"scatter","data":[[3.3,2.5,6],[2.7,1.9,5.1],[3,2.1,5.9],[2.9,1.8,5.6],[3,2.2,5.8],[3,2.1,6.6],[2.5,1.7,4.5],[2.9,1.8,6.3],[2.5,1.8,5.8],[3.6,2.5,6.1],[3.2,2,5.1],[2.7,1.9,5.3],[3,2.1,5.5],[2.5,2,5],[2.8,2.4,5.1],[3.2,2.3,5.3],[3,1.8,5.5],[3.8,2.2,6.7],[2.6,2.3,6.9],[2.2,1.5,5],[3.2,2.3,5.7],[2.8,2,4.9],[2.8,2,6.7],[2.7,1.8,4.9],[3.3,2.1,5.7],[3.2,1.8,6],[2.8,1.8,4.8],[3,1.8,4.9],[2.8,2.1,5.6],[3,1.6,5.8],[2.8,1.9,6.1],[3.8,2,6.4],[2.8,2.2,5.6],[2.8,1.5,5.1],[2.6,1.4,5.6],[3,2.3,6.1],[3.4,2.4,5.6],[3.1,1.8,5.5],[3,1.8,4.8],[3.1,2.1,5.4],[3.1,2.4,5.6],[3.1,2.3,5.1],[2.7,1.9,5.1],[3.2,2.3,5.9],[3.3,2.5,5.7],[3,2.3,5.2],[2.5,1.9,5],[3,2,5.2],[3.4,2.3,5.4],[3,1.8,5.1]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"}],"legend":{"show":true,"data":["setosa","versicolor","virginica"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"value","show":true,"position":"left","name":"Petal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Sepal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n  return params.seriesName + \"<br/>Sepal Width: \" + params.value[0] +  \n  \"<br/>Petal Width: \" +  params.value[1] + \"<br/>Petal Length: \" + \n  params.value[2];\n}","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"symbolList":["circle","circle","circle"]},"evals":["series.0.symbolSize","series.1.symbolSize","series.2.symbolSize","tooltip.formatter"],"jsHooks":[]}</script>
+<p>现在其格式变成 <code>series:\n&lt;x: &gt;...\n&lt;y: &gt;...\n&lt;weight: &gt;...</code>.</p>
+</div>
+<div id="trigger" class="section level3">
+<h3><span class="header-section-number">3.1.2</span> 触发器Trigger</h3>
+<p>散点图的<code>trigger</code>默认为<code>axis</code>。如改为<code>item</code>，则<code>axisPointer</code>属性被禁用。</p>
+<pre class="r"><code>g %&gt;% setTT(trigger=&#39;item&#39;)</code></pre>
+<div id="echarts-1c90854a25cec3743f53ad45bc12f395889fce29" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-1c90854a25cec3743f53ad45bc12f395889fce29">{"x":{"series":[{"name":"setosa","type":"scatter","data":[[3.5,0.2,1.4],[3,0.2,1.4],[3.2,0.2,1.3],[3.1,0.2,1.5],[3.6,0.2,1.4],[3.9,0.4,1.7],[3.4,0.3,1.4],[3.4,0.2,1.5],[2.9,0.2,1.4],[3.1,0.1,1.5],[3.7,0.2,1.5],[3.4,0.2,1.6],[3,0.1,1.4],[3,0.1,1.1],[4,0.2,1.2],[4.4,0.4,1.5],[3.9,0.4,1.3],[3.5,0.3,1.4],[3.8,0.3,1.7],[3.8,0.3,1.5],[3.4,0.2,1.7],[3.7,0.4,1.5],[3.6,0.2,1],[3.3,0.5,1.7],[3.4,0.2,1.9],[3,0.2,1.6],[3.4,0.4,1.6],[3.5,0.2,1.5],[3.4,0.2,1.4],[3.2,0.2,1.6],[3.1,0.2,1.6],[3.4,0.4,1.5],[4.1,0.1,1.5],[4.2,0.2,1.4],[3.1,0.2,1.5],[3.2,0.2,1.2],[3.5,0.2,1.3],[3.6,0.1,1.4],[3,0.2,1.3],[3.4,0.2,1.5],[3.5,0.3,1.3],[2.3,0.3,1.3],[3.2,0.2,1.3],[3.5,0.6,1.6],[3.8,0.4,1.9],[3,0.3,1.4],[3.8,0.2,1.6],[3.2,0.2,1.4],[3.7,0.2,1.5],[3.3,0.2,1.4]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"},{"name":"versicolor","type":"scatter","data":[[3.2,1.4,4.7],[3.2,1.5,4.5],[3.1,1.5,4.9],[2.3,1.3,4],[2.8,1.5,4.6],[2.8,1.3,4.5],[3.3,1.6,4.7],[2.4,1,3.3],[2.9,1.3,4.6],[2.7,1.4,3.9],[2,1,3.5],[3,1.5,4.2],[2.2,1,4],[2.9,1.4,4.7],[2.9,1.3,3.6],[3.1,1.4,4.4],[3,1.5,4.5],[2.7,1,4.1],[2.2,1.5,4.5],[2.5,1.1,3.9],[3.2,1.8,4.8],[2.8,1.3,4],[2.5,1.5,4.9],[2.8,1.2,4.7],[2.9,1.3,4.3],[3,1.4,4.4],[2.8,1.4,4.8],[3,1.7,5],[2.9,1.5,4.5],[2.6,1,3.5],[2.4,1.1,3.8],[2.4,1,3.7],[2.7,1.2,3.9],[2.7,1.6,5.1],[3,1.5,4.5],[3.4,1.6,4.5],[3.1,1.5,4.7],[2.3,1.3,4.4],[3,1.3,4.1],[2.5,1.3,4],[2.6,1.2,4.4],[3,1.4,4.6],[2.6,1.2,4],[2.3,1,3.3],[2.7,1.3,4.2],[3,1.2,4.2],[2.9,1.3,4.2],[2.9,1.3,4.3],[2.5,1.1,3],[2.8,1.3,4.1]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"},{"name":"virginica","type":"scatter","data":[[3.3,2.5,6],[2.7,1.9,5.1],[3,2.1,5.9],[2.9,1.8,5.6],[3,2.2,5.8],[3,2.1,6.6],[2.5,1.7,4.5],[2.9,1.8,6.3],[2.5,1.8,5.8],[3.6,2.5,6.1],[3.2,2,5.1],[2.7,1.9,5.3],[3,2.1,5.5],[2.5,2,5],[2.8,2.4,5.1],[3.2,2.3,5.3],[3,1.8,5.5],[3.8,2.2,6.7],[2.6,2.3,6.9],[2.2,1.5,5],[3.2,2.3,5.7],[2.8,2,4.9],[2.8,2,6.7],[2.7,1.8,4.9],[3.3,2.1,5.7],[3.2,1.8,6],[2.8,1.8,4.8],[3,1.8,4.9],[2.8,2.1,5.6],[3,1.6,5.8],[2.8,1.9,6.1],[3.8,2,6.4],[2.8,2.2,5.6],[2.8,1.5,5.1],[2.6,1.4,5.6],[3,2.3,6.1],[3.4,2.4,5.6],[3.1,1.8,5.5],[3,1.8,4.8],[3.1,2.1,5.4],[3.1,2.4,5.6],[3.1,2.3,5.1],[2.7,1.9,5.1],[3.2,2.3,5.9],[3.3,2.5,5.7],[3,2.3,5.2],[2.5,1.9,5],[3,2,5.2],[3.4,2.3,5.4],[3,1.8,5.1]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"}],"legend":{"show":true,"data":["setosa","versicolor","virginica"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"value","show":true,"position":"left","name":"Petal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Sepal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    var i;\n    var text = params.value[0];\n    if (params.seriesName === null || params.seriesName === \"\"){\n        if (params.value.length > 1) {\n            for (i = 1; i < params.value.length; i++){\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.name + \" : \" + text;\n        }\n    } else {\n        if (params.value.length > 1) {\n            text = params.seriesName + \" :<br/>\" + text;\n            for (i = 1; i < params.value.length; i++) {\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.seriesName + \" :<br/>\"\n            + params.name + \" : \" + text;\n        }\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"symbolList":["circle","circle","circle"]},"evals":["series.0.symbolSize","series.1.symbolSize","series.2.symbolSize","tooltip.formatter"],"jsHooks":[]}</script>
+</div>
+<div id="aesthetics" class="section level3">
+<h3><span class="header-section-number">3.1.3</span> 美工Aesthetics</h3>
+<p>修改背景色或任何其他美工属性。</p>
+<pre class="r"><code>g %&gt;% setTT(bgColor=&#39;green&#39;)</code></pre>
+<div id="echarts-e3d7b4ba4d0df44d0ad407e16768c6f26e3b34e7" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-e3d7b4ba4d0df44d0ad407e16768c6f26e3b34e7">{"x":{"series":[{"name":"setosa","type":"scatter","data":[[3.5,0.2,1.4],[3,0.2,1.4],[3.2,0.2,1.3],[3.1,0.2,1.5],[3.6,0.2,1.4],[3.9,0.4,1.7],[3.4,0.3,1.4],[3.4,0.2,1.5],[2.9,0.2,1.4],[3.1,0.1,1.5],[3.7,0.2,1.5],[3.4,0.2,1.6],[3,0.1,1.4],[3,0.1,1.1],[4,0.2,1.2],[4.4,0.4,1.5],[3.9,0.4,1.3],[3.5,0.3,1.4],[3.8,0.3,1.7],[3.8,0.3,1.5],[3.4,0.2,1.7],[3.7,0.4,1.5],[3.6,0.2,1],[3.3,0.5,1.7],[3.4,0.2,1.9],[3,0.2,1.6],[3.4,0.4,1.6],[3.5,0.2,1.5],[3.4,0.2,1.4],[3.2,0.2,1.6],[3.1,0.2,1.6],[3.4,0.4,1.5],[4.1,0.1,1.5],[4.2,0.2,1.4],[3.1,0.2,1.5],[3.2,0.2,1.2],[3.5,0.2,1.3],[3.6,0.1,1.4],[3,0.2,1.3],[3.4,0.2,1.5],[3.5,0.3,1.3],[2.3,0.3,1.3],[3.2,0.2,1.3],[3.5,0.6,1.6],[3.8,0.4,1.9],[3,0.3,1.4],[3.8,0.2,1.6],[3.2,0.2,1.4],[3.7,0.2,1.5],[3.3,0.2,1.4]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"},{"name":"versicolor","type":"scatter","data":[[3.2,1.4,4.7],[3.2,1.5,4.5],[3.1,1.5,4.9],[2.3,1.3,4],[2.8,1.5,4.6],[2.8,1.3,4.5],[3.3,1.6,4.7],[2.4,1,3.3],[2.9,1.3,4.6],[2.7,1.4,3.9],[2,1,3.5],[3,1.5,4.2],[2.2,1,4],[2.9,1.4,4.7],[2.9,1.3,3.6],[3.1,1.4,4.4],[3,1.5,4.5],[2.7,1,4.1],[2.2,1.5,4.5],[2.5,1.1,3.9],[3.2,1.8,4.8],[2.8,1.3,4],[2.5,1.5,4.9],[2.8,1.2,4.7],[2.9,1.3,4.3],[3,1.4,4.4],[2.8,1.4,4.8],[3,1.7,5],[2.9,1.5,4.5],[2.6,1,3.5],[2.4,1.1,3.8],[2.4,1,3.7],[2.7,1.2,3.9],[2.7,1.6,5.1],[3,1.5,4.5],[3.4,1.6,4.5],[3.1,1.5,4.7],[2.3,1.3,4.4],[3,1.3,4.1],[2.5,1.3,4],[2.6,1.2,4.4],[3,1.4,4.6],[2.6,1.2,4],[2.3,1,3.3],[2.7,1.3,4.2],[3,1.2,4.2],[2.9,1.3,4.2],[2.9,1.3,4.3],[2.5,1.1,3],[2.8,1.3,4.1]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"},{"name":"virginica","type":"scatter","data":[[3.3,2.5,6],[2.7,1.9,5.1],[3,2.1,5.9],[2.9,1.8,5.6],[3,2.2,5.8],[3,2.1,6.6],[2.5,1.7,4.5],[2.9,1.8,6.3],[2.5,1.8,5.8],[3.6,2.5,6.1],[3.2,2,5.1],[2.7,1.9,5.3],[3,2.1,5.5],[2.5,2,5],[2.8,2.4,5.1],[3.2,2.3,5.3],[3,1.8,5.5],[3.8,2.2,6.7],[2.6,2.3,6.9],[2.2,1.5,5],[3.2,2.3,5.7],[2.8,2,4.9],[2.8,2,6.7],[2.7,1.8,4.9],[3.3,2.1,5.7],[3.2,1.8,6],[2.8,1.8,4.8],[3,1.8,4.9],[2.8,2.1,5.6],[3,1.6,5.8],[2.8,1.9,6.1],[3.8,2,6.4],[2.8,2.2,5.6],[2.8,1.5,5.1],[2.6,1.4,5.6],[3,2.3,6.1],[3.4,2.4,5.6],[3.1,1.8,5.5],[3,1.8,4.8],[3.1,2.1,5.4],[3.1,2.4,5.6],[3.1,2.3,5.1],[2.7,1.9,5.1],[3.2,2.3,5.9],[3.3,2.5,5.7],[3,2.3,5.2],[2.5,1.9,5],[3,2,5.2],[3.4,2.3,5.4],[3,1.8,5.1]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }"}],"legend":{"show":true,"data":["setosa","versicolor","virginica"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"value","show":true,"position":"left","name":"Petal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Sepal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    var i;\n    var text = params.value[0];\n    if (params.seriesName === null || params.seriesName === \"\"){\n        if (params.value.length > 1) {\n            for (i = 1; i < params.value.length; i++){\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.name + \" : \" + text;\n        }\n    } else {\n        if (params.value.length > 1) {\n            text = params.seriesName + \" :<br/>\" + text;\n            for (i = 1; i < params.value.length; i++) {\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.seriesName + \" :<br/>\"\n            + params.name + \" : \" + text;\n        }\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"#00FF06","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"symbolList":["circle","circle","circle"]},"evals":["series.0.symbolSize","series.1.symbolSize","series.2.symbolSize","tooltip.formatter"],"jsHooks":[]}</script>
+</div>
+</div>
+<div id="local-setting" class="section level2">
+<h2><span class="header-section-number">3.2</span> 局部设置Local Setting</h2>
+<p>如果只想设置某些特定系列的提示框格式，可指定特定的<code>series</code>或<code>timeslots</code>。</p>
+<pre class="r"><code>g %&gt;% setTT(1, bgColor=&#39;orange&#39;, textStyle=textStyle(
+        fontFamily=&#39;Times New Roman&#39;, color=&#39;black&#39;)) %&gt;% 
+    setTT(2, bgColor=&#39;lightblue&#39;, textStyle=textStyle(
+        fontFamily=&#39;Courier New&#39;, color=&#39;black&#39;)) %&gt;%
+    setTT(3, bgColor=&#39;purple&#39;, textStyle=textStyle(fontFamily=&#39;Verdana&#39;))</code></pre>
+<div id="echarts-fff3193cd432c56512d10a723a3658362d166ce5" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-fff3193cd432c56512d10a723a3658362d166ce5">{"x":{"series":[{"name":"setosa","type":"scatter","data":[[3.5,0.2,1.4],[3,0.2,1.4],[3.2,0.2,1.3],[3.1,0.2,1.5],[3.6,0.2,1.4],[3.9,0.4,1.7],[3.4,0.3,1.4],[3.4,0.2,1.5],[2.9,0.2,1.4],[3.1,0.1,1.5],[3.7,0.2,1.5],[3.4,0.2,1.6],[3,0.1,1.4],[3,0.1,1.1],[4,0.2,1.2],[4.4,0.4,1.5],[3.9,0.4,1.3],[3.5,0.3,1.4],[3.8,0.3,1.7],[3.8,0.3,1.5],[3.4,0.2,1.7],[3.7,0.4,1.5],[3.6,0.2,1],[3.3,0.5,1.7],[3.4,0.2,1.9],[3,0.2,1.6],[3.4,0.4,1.6],[3.5,0.2,1.5],[3.4,0.2,1.4],[3.2,0.2,1.6],[3.1,0.2,1.6],[3.4,0.4,1.5],[4.1,0.1,1.5],[4.2,0.2,1.4],[3.1,0.2,1.5],[3.2,0.2,1.2],[3.5,0.2,1.3],[3.6,0.1,1.4],[3,0.2,1.3],[3.4,0.2,1.5],[3.5,0.3,1.3],[2.3,0.3,1.3],[3.2,0.2,1.3],[3.5,0.6,1.6],[3.8,0.4,1.9],[3,0.3,1.4],[3.8,0.2,1.6],[3.2,0.2,1.4],[3.7,0.2,1.5],[3.3,0.2,1.4]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }","tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"fontFamily":"Times New Roman","color":"black"},"formatter":"function (params) {\n    var i;\n    var text = params.value[0];\n    if (params.seriesName === null || params.seriesName === \"\"){\n        if (params.value.length > 1) {\n            for (i = 1; i < params.value.length; i++){\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.name + \" : \" + text;\n        }\n    } else {\n        if (params.value.length > 1) {\n            text = params.seriesName + \" :<br/>\" + text;\n            for (i = 1; i < params.value.length; i++) {\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.seriesName + \" :<br/>\"\n            + params.name + \" : \" + text;\n        }\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"#FFA504","borderColor":"#333","borderWidth":0,"borderRadius":4}},{"name":"versicolor","type":"scatter","data":[[3.2,1.4,4.7],[3.2,1.5,4.5],[3.1,1.5,4.9],[2.3,1.3,4],[2.8,1.5,4.6],[2.8,1.3,4.5],[3.3,1.6,4.7],[2.4,1,3.3],[2.9,1.3,4.6],[2.7,1.4,3.9],[2,1,3.5],[3,1.5,4.2],[2.2,1,4],[2.9,1.4,4.7],[2.9,1.3,3.6],[3.1,1.4,4.4],[3,1.5,4.5],[2.7,1,4.1],[2.2,1.5,4.5],[2.5,1.1,3.9],[3.2,1.8,4.8],[2.8,1.3,4],[2.5,1.5,4.9],[2.8,1.2,4.7],[2.9,1.3,4.3],[3,1.4,4.4],[2.8,1.4,4.8],[3,1.7,5],[2.9,1.5,4.5],[2.6,1,3.5],[2.4,1.1,3.8],[2.4,1,3.7],[2.7,1.2,3.9],[2.7,1.6,5.1],[3,1.5,4.5],[3.4,1.6,4.5],[3.1,1.5,4.7],[2.3,1.3,4.4],[3,1.3,4.1],[2.5,1.3,4],[2.6,1.2,4.4],[3,1.4,4.6],[2.6,1.2,4],[2.3,1,3.3],[2.7,1.3,4.2],[3,1.2,4.2],[2.9,1.3,4.2],[2.9,1.3,4.3],[2.5,1.1,3],[2.8,1.3,4.1]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }","tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"fontFamily":"Courier New","color":"black"},"formatter":"function (params) {\n    var i;\n    var text = params.value[0];\n    if (params.seriesName === null || params.seriesName === \"\"){\n        if (params.value.length > 1) {\n            for (i = 1; i < params.value.length; i++){\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.name + \" : \" + text;\n        }\n    } else {\n        if (params.value.length > 1) {\n            text = params.seriesName + \" :<br/>\" + text;\n            for (i = 1; i < params.value.length; i++) {\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.seriesName + \" :<br/>\"\n            + params.name + \" : \" + text;\n        }\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"#ADD8E6","borderColor":"#333","borderWidth":0,"borderRadius":4}},{"name":"virginica","type":"scatter","data":[[3.3,2.5,6],[2.7,1.9,5.1],[3,2.1,5.9],[2.9,1.8,5.6],[3,2.2,5.8],[3,2.1,6.6],[2.5,1.7,4.5],[2.9,1.8,6.3],[2.5,1.8,5.8],[3.6,2.5,6.1],[3.2,2,5.1],[2.7,1.9,5.3],[3,2.1,5.5],[2.5,2,5],[2.8,2.4,5.1],[3.2,2.3,5.3],[3,1.8,5.5],[3.8,2.2,6.7],[2.6,2.3,6.9],[2.2,1.5,5],[3.2,2.3,5.7],[2.8,2,4.9],[2.8,2,6.7],[2.7,1.8,4.9],[3.3,2.1,5.7],[3.2,1.8,6],[2.8,1.8,4.8],[3,1.8,4.9],[2.8,2.1,5.6],[3,1.6,5.8],[2.8,1.9,6.1],[3.8,2,6.4],[2.8,2.2,5.6],[2.8,1.5,5.1],[2.6,1.4,5.6],[3,2.3,6.1],[3.4,2.4,5.6],[3.1,1.8,5.5],[3,1.8,4.8],[3.1,2.1,5.4],[3.1,2.4,5.6],[3.1,2.3,5.1],[2.7,1.9,5.1],[3.2,2.3,5.9],[3.3,2.5,5.7],[3,2.3,5.2],[2.5,1.9,5],[3,2,5.2],[3.4,2.3,5.4],[3,1.8,5.1]],"symbolSize":"function (value){\n                return 4*Math.round(Math.abs(value[2]/1));\n                }","tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"fontFamily":"Verdana"},"formatter":"function (params) {\n    var i;\n    var text = params.value[0];\n    if (params.seriesName === null || params.seriesName === \"\"){\n        if (params.value.length > 1) {\n            for (i = 1; i < params.value.length; i++){\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.name + \" : \" + text;\n        }\n    } else {\n        if (params.value.length > 1) {\n            text = params.seriesName + \" :<br/>\" + text;\n            for (i = 1; i < params.value.length; i++) {\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.seriesName + \" :<br/>\"\n            + params.name + \" : \" + text;\n        }\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"#A021F0","borderColor":"#333","borderWidth":0,"borderRadius":4}}],"legend":{"show":true,"data":["setosa","versicolor","virginica"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"value","show":true,"position":"left","name":"Petal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Sepal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"symbolList":["circle","circle","circle"]},"evals":["series.0.symbolSize","series.0.tooltip.formatter","series.1.symbolSize","series.1.tooltip.formatter","series.2.symbolSize","series.2.tooltip.formatter"],"jsHooks":[]}</script>
+</div>
+</div>
+<div class="section level1">
+<h1><span class="header-section-number">4</span> 参考资料</h1>
+<p><a href="http://echarts.baidu.com/echarts2/doc/option.html#title~tooltip" class="uri">http://echarts.baidu.com/echarts2/doc/option.html#title~tooltip</a></p>
+</div>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+    // active menu
+    var href = window.location.pathname;
+    href = href.substr(href.lastIndexOf('/') + 1);
+    if (href === '') href = './';
+    $('a[href="' + href + '"]').parent().addClass('active');
+});
+</script>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+
+</body>
+</html>

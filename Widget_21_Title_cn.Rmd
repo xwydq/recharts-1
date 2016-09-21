@@ -1,0 +1,145 @@
+---
+title: "控件Widget 21 - 标题Title"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+首先，加载`recharts`:
+```{r}
+library(recharts)
+```
+
+# 介绍Introduction
+
+标题包含两个部分: 标题 (及链接)、副标题 (及链接)。默认方位为6点钟位.
+
+建议用`chart %>% setTitle(...)`形式调用`setTitle`.
+
+# 用法Function Call
+
+```r
+setTitle(chart, title = NULL, subtitle = NULL, link = NULL,
+  sublink = NULL, pos = 6, bgColor = NULL, borderColor = NULL,
+  borderWidth = NULL, textStyle = NULL, subtextStyle = NULL,
+  show = TRUE, ...)
+```
+
++-------------+----------------------------------------------------------------+
+|  参数       |  要求                                                          |
++=============+================================================================+
+| **chart**   | `echartR`或`echart`创建的Echarts对象.                          |
++-------------+----------------------------------------------------------------+
+| title       | 标题文本。如写成markdown链接格式`[caption](url)`，则caption传给title，url传给link。如果标题向量长度与时间轴切片数相同，则标题向量会映射为时间轴各切片标题。 |
++-------------+----------------------------------------------------------------+
+| subtitle    | 副标题文本。如写成markdown链接格式`[caption](url)`，则caption传给subtitle，url传给sublink。如果副标题向量长度与时间轴切片数相同，则副标题向量会映射为时间轴各切片副标题。 |
++-------------+----------------------------------------------------------------+
+| link        | 标题链接  |
++-------------+----------------------------------------------------------------+
+| sublink     | 副标题链接 |
++-------------+----------------------------------------------------------------+
+| pos         | 标题和/或副标题的时钟方位, 参考`vecPos`. 也可以自己指定`c(x, y, orient)`向量. |
++-------------+----------------------------------------------------------------+
+| bgColor     | 标题背景色，默认为'rgba(0,0,0,0)' (透明) |
++-------------+----------------------------------------------------------------+
+| borderColor | 标题边框色，默认为'#ccc'. |
++-------------+----------------------------------------------------------------+
+| borderWidth | 标题边框宽度，默认为0px (不显示). |
++-------------+----------------------------------------------------------------+
+| textStyle   | 可自定义标题的文本样式，如 `list(fontFamily='Arial|Verdana|sans-serif'`, `fontSize=20,` `fontWeight='normal|bold|bolder|lighter|<numbers>',` `fontStyle='normal|italic|oblique', color='red')`  |
++-------------+----------------------------------------------------------------+
+| subtextStyle| 副标题文本样式列表  |
++-------------+----------------------------------------------------------------+
+| show        | 逻辑型，是否显示标题。如果要从Echarts对象中完全移除title部件，设为NULL.  |
++-------------+----------------------------------------------------------------+
+| ...         | 省略号  |
++-------------+----------------------------------------------------------------+
+
+
+# 举例Showcase
+
+```{r}
+g1 <- echartr(iris, Sepal.Width, Petal.Width, Species)
+g2 <- echartr(iris, Sepal.Width, Petal.Width, z=Species)
+```
+
+<table>
+<tr><td>
+```{r}
+g1 %>% setTheme(width=400, height=300)
+```
+</td><td>
+```{r}
+g2 %>% setTheme(width=400, height=300)
+```
+</td></tr>
+</table>
+
+## 不带时间轴Echarts without Timeline
+
+标题和副标题在默认位置。
+```{r}
+g1 %>% setTitle(title='Iris data set', subtitle='by: R. A. Fisher')
+```
+
+改变方位。
+```{r}
+g1 %>% setTitle(title='Iris data set', subtitle='by: R. A. Fisher', pos=12)
+```
+
+标题和副标题链接。
+```{r}
+g1 %>% setTitle(
+  '[Iris data set](https://en.wikipedia.org/wiki/Iris_flower_data_set)',
+  '[R. A. Fisher](https://en.wikipedia.org/wiki/Ronald_Fisher)')
+```
+
+自定义格式（丑）。
+```{r}
+g1 %>% setTitle(
+  '[Iris data set](https://en.wikipedia.org/wiki/Iris_flower_data_set)',
+  '[R. A. Fisher](https://en.wikipedia.org/wiki/Ronald_Fisher)',
+  textStyle=textStyle(fontFamily='Courier New', fontSize=24, color='gold'),
+  subtextStyle=textStyle(color='silver'), bgColor='lightgreen') %>%
+    setGrid(y2=90)
+```
+
+## 带时间轴Echarts with Timeline
+
+标题和副标题在默认位置。
+```{r}
+g2 %>% setTitle(
+    '[Iris data set](https://en.wikipedia.org/wiki/Iris_flower_data_set)',
+    '[R. A. Fisher](https://en.wikipedia.org/wiki/Ronald_Fisher)')
+```
+
+定制标题和副标题。必须都写成向量，并映射各个时间轴切片。
+```{r}
+titles <- c(
+    '[Iris setosa](https://en.wikipedia.org/wiki/Iris_setosa)',
+    '[Iris versicolor](https://en.wikipedia.org/wiki/Iris_versicolor)',
+    '[Iris virginica](https://en.wikipedia.org/wiki/Iris_virginica)')
+g2 %>% setTitle(titles)
+```
+
+更多格式设置。诸如textStyle等属性也可以写成列表，映射到各时间轴切片。
+```{r}
+g2 %>% setTitle(
+    titles,
+    textStyle=list(
+      textStyle(fontFamily='Impact', color='red', fontStyle='normal'),
+      textStyle(fontFamily='Times New Roman', color='darkgreen'),
+      textStyle(fontFamily='Calibri', color='blue', fontStyle='oblique')
+   ),
+   bgColor='yellow')
+```
+
+# 参考资料
+
+<http://echarts.baidu.com/echarts2/doc/option.html#title~title>

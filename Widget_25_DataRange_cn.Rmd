@@ -1,0 +1,128 @@
+---
+title: "控件Widget 25 - 值域选择DataRange"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+首先，加载`recharts`:
+```{r}
+library(recharts)
+```
+
+# Introduction
+
+值域选择控件默认放置于8点钟位。
+
+建议用`chart %>% setDataRange(...)`格式调用`setDataRange`.
+
+# 用法Function Call
+
+```r
+setDataRange(chart, show = TRUE, pos = 8, valueRange = NULL,
+  splitNumber = 5, itemGap = 5, labels = NULL, calculable = FALSE,
+  borderColor = "#ccc", borderWidth = 0, selectedMode = list(TRUE,
+  "single", "multiple"), color = c("#1e90ff", "#f0ffff"), splitList = NULL,
+  initialRange = NULL, ...)
+```
+
++-------------+----------------------------------------------------------------+
+|   参数      |  要求                                              |
++=============+================================================================+
+| **chart**   | `echartR`或`echart`创建的Echarts对象.  |
++-------------+----------------------------------------------------------------+
+| show        | 逻辑型，是否显示值域选择。默认为TRUE。如要把值域选择部件整体从Echarts对象中移除，设为NULL. |
++-------------+----------------------------------------------------------------+
+| pos         | 值域选择的时钟方位，默认为8，参见`vecPos`。也可以自定义方位向量`c(x, y, orient)`. |
++-------------+----------------------------------------------------------------+
+| valueRange  | 值域选择的区间为c(min, max). 如设为NULL, 使用echarts的默认值 |
++-------------+----------------------------------------------------------------+
+| splitNumber | 值域选择分隔成多少段，默认为5. 设为0，则不分段，连续显示，且启用值域漫游。 |
++-------------+----------------------------------------------------------------+
+| itemGap     | 项目间距，默认为10px. |
++-------------+----------------------------------------------------------------+
+| labels      | 值域选择标题，显示在两端，格式为`c('high end', 'low end')`. 默认为NULL，即选择映射数据的最大最小值。 |
++-------------+----------------------------------------------------------------+
+| calculable  | 逻辑型，是否启用echarts拖曳重算功能。默认为FALSE. 如设为TRUE, splitNumber自动置0，启用值域漫游. |
++-------------+----------------------------------------------------------------+
+| borderColor | 值域选择边框颜色，默认为'#333'. |
++-------------+----------------------------------------------------------------+
+| borderWidth | 值域选择边框宽度，默认为0px (不显示). |
++-------------+----------------------------------------------------------------+
+| selectedMode| 选择模式，默认为TRUE. 可设为'single'或'multiple'. |
++-------------+----------------------------------------------------------------+
+| color       | 颜色向量(十六进制值)，默认为 c("#1e90ff", "#f0ffff"). |
++-------------+----------------------------------------------------------------+
+| splitList   | 自定义分段列表，格式为`list(list(start=m`, `end=n, label=x,` `color=hex), ...)`. 如传入有效的splitList，则splitNumber被禁用。 |
++-------------+----------------------------------------------------------------+
+|initialRange | 初始选中区间，格式为`list(start=m, end=n)`, 其中`m`和`n`均为数值，代表百分比 |
++-------------+----------------------------------------------------------------+
+| ...         | 省略号 |
++-------------+----------------------------------------------------------------+
+
+# 举例Showcase
+
+在散点图，`weight`映射值域选择轴。所以准备一个气泡图。
+
+```{r}
+g <- echartr(iris, Sepal.Width, Petal.Width, Species, Petal.Length,
+             type='bubble') %>% setSymbols('circle')
+g
+```
+
+初始时值域选择不显示，可以打开。你会发现值域选择轴的颜色覆写了echarts初始色版。
+```{r}
+g %>% setDataRange(show=TRUE)
+```
+
+移动值域选择控件。
+```{r}
+g %>% setDataRange(pos=9)
+```
+
+更改值域选择的值域区间。
+```{r}
+g %>% setDataRange(valueRange=c(0,10))
+```
+
+连续型值域选择轴。
+```{r}
+g %>% setDataRange(splitNumber=0)
+```
+
+自定义格式。
+```{r}
+g %>% setDataRange(borderColor='gray', borderWidth=2,bgColor='yellow', 
+                   itemGap=20)
+```
+
+自定义控件颜色。
+```{r}
+g %>% setDataRange(color=getColFromPal('rainbow'))
+```
+
+默认的splitNumber为5，尺度均分。可以传入一个自定义的splitList列表。
+```{r}
+splitList <-list(
+    list(start=5.1, end=7, label='5.1 - 7.0', color='red'),
+    list(start=4.35, end=5.1, label='4.35 - 5.1', color='yellow'),
+    list(start=1.6, end=4.35, label='1.6 - 4.35', color='lime'),
+    list(start=0, end=1.6, label='0.0 - 1.6', color='cyan')
+    )
+g %>% setDataRange(splitList=splitList)
+```
+
+设定初始选中区间（连续型值域选择轴）。
+```{r}
+g %>% setDataRange(initialRange=list(start=20, end=60), splitNumber=0)
+```
+
+# 参考资料
+
+<http://echarts.baidu.com/echarts2/doc/option.html#title~dataRange>

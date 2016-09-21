@@ -1,0 +1,206 @@
+---
+title: "控件Widget 31 - 提示框Tooltip"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+首先，加载`recharts`:
+```{r}
+library(recharts)
+```
+
+# 介绍Introduction
+
+提示框是交互的关键控件。它可以多级配置，作用于全局或局部。可以用`setTooltip` (`setTT`)配置全局或`setSeries`配置局部。
+
+用提示框，建议对JavaScript略有了解，以便更好地利用`formatter`模板。
+
+建议用`chart %>% setTT(...)`格式调用`setTT`。
+
+# 用法Function Call
+
+```r
+setTooltip(chart, series = NULL, timeslots = NULL, trigger = NULL,
+  formatter = NULL, islandFormatter = "{a} < br/>{b} : {c}",
+  position = NULL, enterable = FALSE, axisPointer = NULL,
+  textStyle = NULL, showDelay = 20, hideDelay = 100,
+  transitionDuration = 0.4, bgColor = "rgba(0,0,0,0.7)",
+  borderColor = "#333", borderWidth = 0, borderRadius = 4, show = TRUE,
+  ...)
+  
+```
+
+可以简写为`setTT`。
+
++------------------+-----------------------------------------------------------+
+|   参数           |  要求                                            |
++==================+===========================================================+
+| **chart**        | `echartR`或`echart`创建的Echarts对象。  |
++------------------+-----------------------------------------------------------+
+| series           | 数据系列名称或索引值向量，如`c('setosa', 'virginica')`或`1:2`。 |
++------------------+-----------------------------------------------------------+
+| timeslots        | 时间轴切片名称或索引值向量，如`c(1990, 1992)`或`c(1,3)`. 可以简写为`z`。 |
++------------------+-----------------------------------------------------------+
+| trigger          | 触发类型，'item'或'axis' |
++------------------+-----------------------------------------------------------+
+| formatter        | 提示框文本格式 |
+|                  |                     |
+|                  | - 文本 (模板) |
+|                  |      + {a} / {a0} |
+|                  |      + {b} / {b0} |
+|                  |      + {c} / {c0} |
+|                  |      + {d} / {d0} (某些图中不可用) |
+|                  |      + {e} / {e0} (某些图中不可用) |
+|                  |                     |
+|                  |  - 函数 |
+|                  |      + JS函数，列表格式为`[params, ticket, callback]` |
+|                  |                        |
+|                  |  **{a}, {b}, {c}, {d}的含义: **    |
+|                  |                     |
+|                  |  - 折线（区域）图、柱状（条形）图、K线图 : |
+|                  |      + a（系列名称），b（类目值），c（数值）, d（无）|
+|                  |  - 散点图（气泡）图 : |
+|                  |      + a（系列名称），b（数据名称），c（数值数组）, d（无） |
+|                  |  - 地图 :  |
+|                  |      + a（系列名称），b（区域名称），c（合并数值）, d（无） |
+|                  |  - 饼图、雷达图、仪表盘、漏斗图:  |
+|                  |      + a（系列名称），b（数据项名称），c（数值）, d（饼图：百分比 | 雷达图：指标名称） |
+|                  |  - 力导向图, 和弦图 : |
+|                  |      + 节点 : a（系列名称），b（节点名称），c（节点值）, d(节点类目索引) |
+|                  |      + 边 : a（系列名称），b（边名称，默认为大端节点名称-小端节点名称），c（联结值）, d(大端节点 name 或者 index), e(小端节点 name 或者 index) |
+|                  |              |
+|                  |  **JS函数参数模板...** |
+|                  |          |
+|                  |  - `seriesIndex`:	0, 1, 2, ... |
+|                  |  - `seriesName`:	'周一', '周二', ... |
+|                  |  - `name`:	'数据1', '数据2', ... |
+|                  |  - `dataIndex`:	0, 1, 2, ... |
+|                  |  - `data`:	data |
+|                  |  - `value`:	value |
+|                  |  - `percent`:	special //饼图 |
+|                  |  - `indicator`:	special //雷达图、力导向布局图、和弦图 |
+|                  |  - `value2`:	special2 //力导向布局图、和弦图 |
+|                  |  - `indicator2`:	special2 //力导向布局图、和弦图 |
++------------------+-----------------------------------------------------------+
+| islandFormatter  | 数据岛样式，默认`{a}<br/>{b}: {c}`. |
++------------------+-----------------------------------------------------------+
+| position         | 可以是固定值`c(x, y)`或JS函数，如`JS('function([x, y]) {return [newX,newY]}')`. 默认NULL. |
++------------------+-----------------------------------------------------------+
+| enterable        | 用户是否可以点击提示框的内容，默认为FALSE. |
++------------------+-----------------------------------------------------------+
+| axisPointer      | 坐标指示器格式，默认为`list(type = "line",` `lineStyle = list(color = "#48b",` `width = 2, type = "solid"),` `crossStyle = list(color = "#1e90ff",` `width = 1, type = "dashed"),` `shadowStyle = list(color =` `"rgba(150,150,150,0.3)", width = "auto", type = "default")).` |
++------------------+-----------------------------------------------------------+
+| textStyle        | 提示框文本格式，默认为`list(color ="#fff")`. 该列表可包括 `color, decoration, fontSize,` `fontFamily, fontStyle, fontWeight, align, baseline`属性. |
++------------------+-----------------------------------------------------------+
+| showDelay	       | 显示延时(ms). 默认为20ms. |
++------------------+-----------------------------------------------------------+
+| hideDelay	       | 隐藏延时(ms). 默认为100ms. |
++------------------+-----------------------------------------------------------+
+|transitionDuration| 动画切换的耗时 ，默认为0.4. 如要实时交互，设为0. |
++------------------+-----------------------------------------------------------+
+| bgColor	       | 提示框背景色，默认为'rgba(0,0,0,0.7)' (半透明深灰色). |
++------------------+-----------------------------------------------------------+
+| borderColor	   | 提示框边框色，默认为'#333'. |
++------------------+-----------------------------------------------------------+
+| borderWidth	   | 提示框边框宽度，默认为0 (不显示). |
++------------------+-----------------------------------------------------------+
+| borderRadius	   | 提示框边框圆角半径，默认为4px. |
++------------------+-----------------------------------------------------------+
+| show	           | 逻辑型，是否显示提示框。默认为TRUE. |
++------------------+-----------------------------------------------------------+
+| ...              | 省略号 |
++------------------+-----------------------------------------------------------+
+
+# 举例Showcase
+
+```{r}
+g <- echartr(iris, Sepal.Width, Petal.Width, Species,  weight=Petal.Length,
+             type='bubble') %>% setSymbols('circle')
+g
+```
+
+## 全局设置Global Setting
+
+鼠标掠过数据点，可以发现气泡图提示框内容的格式为`series:\nx, y, weight`, 在JavaScript中就是：
+
+```javascript
+function (params) {
+    var i;
+    var text;
+    if (params.seriesName === null || params.seriesName === ""){
+        if (params.value.length > 1) {
+            text = params.value[0];
+            for (i = 1; i < params.value.length; i++){
+                text += " ,    " + params.value[i];
+            }
+            return text;
+        } else {
+            return params.name + " : " + params.value;
+        }
+    } else {
+        if (params.value.length > 1) {
+            text = params.seriesName + " :<br/>" + params.value[0];
+            for (i = 1; i < params.value.length; i++) {
+                text += " ,    " + params.value[i];
+            }
+            return text;
+        } else {
+            return params.seriesName + " :<br/>"
+            + params.name + " : " + params.value;
+        }
+    }
+}
+```
+
+### 内容格式Formatter
+
+可以略作调整。
+
+```{r}
+g %>% setTT(formatter=JS('function (params) {
+  return params.seriesName + "<br/>Sepal Width: " + params.value[0] +  
+  "<br/>Petal Width: " +  params.value[1] + "<br/>Petal Length: " + 
+  params.value[2];
+}'))
+```
+
+现在其格式变成 `series:\n<x: >...\n<y: >...\n<weight: >...`.
+
+### 触发器Trigger
+
+散点图的`trigger`默认为`axis`。如改为`item`，则`axisPointer`属性被禁用。
+
+```{r}
+g %>% setTT(trigger='item')
+```
+
+### 美工Aesthetics
+
+修改背景色或任何其他美工属性。
+
+```{r}
+g %>% setTT(bgColor='green')
+```
+
+## 局部设置Local Setting
+
+如果只想设置某些特定系列的提示框格式，可指定特定的`series`或`timeslots`。
+
+```{r}
+g %>% setTT(1, bgColor='orange', textStyle=textStyle(
+        fontFamily='Times New Roman', color='black')) %>% 
+    setTT(2, bgColor='lightblue', textStyle=textStyle(
+        fontFamily='Courier New', color='black')) %>%
+    setTT(3, bgColor='purple', textStyle=textStyle(fontFamily='Verdana'))
+```
+
+# 参考资料
+
+<http://echarts.baidu.com/echarts2/doc/option.html#title~tooltip>

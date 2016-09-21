@@ -1,0 +1,485 @@
+---
+title: "基础图形Basic Plots 31 - 地图Map"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+首先，加载`recharts`:
+```{r}
+library(recharts)
+```
+
+# 介绍Introduction
+
+地图包含4种基本类型：
+
+- 中国地图
+- 可多选的中国地图
+- 世界地图
+- 可多选的世界地图
+
+<table id='intro'>
+<tr><td>
+```{r,echo=FALSE}
+echartr(ChinaGDP[ChinaGDP$Year==2014,], Prov, GDP, type="map_china") %>%
+    setDataRange(splitNumber=0, 
+                 color=c('red','orange','yellow','limegreen','green')) %>%
+    setTitle("China GDP by Provice, 2014") %>%
+    setTheme('infographic', width=400, height=300)
+```
+</td>
+<td>
+```{r,echo=FALSE}
+echartr(ChinaGDP[ChinaGDP$Year==2014,], Prov, GDP, type="map_china_multi") %>%
+    setDataRange(splitNumber=0, min=0,
+                 color=c('red','orange','yellow','limegreen','green')) %>%
+    setTitle("China GDP by Provice, 2014") %>%
+    setTheme('roma', width=400, height=300)
+```
+</td></tr>
+<tr><td>
+```{r, echo=FALSE}
+worldgdp <- data.frame(
+    country=c('United States of America', 'China', 'Japan', 'Germany',
+              'United Kingdom', 'France', 'Brazil', 'Italy', 'India','Russia',
+              'Canada', 'Australia', 'South Korea', 'Spain', 'Mexico', 
+              'Indonesia', 'Netherlands', 'Turkey', 'Saudi Arabia', 
+              'Switzerland'),
+    GDP=c(17418925, 10380380, 4616335, 3859547, 2945146, 2846889, 2353025, 
+          2147952, 2049501, 1857461, 1788717, 1444189, 1416949, 1406855, 1282725,
+          888648, 866354, 806108, 752459, 712050))
+echartr(worldgdp, country, GDP, type="map_world") %>%
+    setDataRange(splitNumber=0, 
+                 color=getColFromPal('rainbow')) %>%
+    setTitle("World GDP Top 20, 2014") %>%
+    setTheme('macarons', width=400, height=300)
+```
+</td>
+<td>
+```{r,echo=FALSE}
+echartr(worldgdp, country, GDP, type="map_world_multi") %>%
+    setDataRange(splitNumber=0, 
+                 color=getColFromPal('rainbow')) %>%
+    setTitle("World GDP Top 20, 2014") %>%
+    setTheme('macarons2', width=400, height=300)
+```
+</td></tr>
+</table>
+
+关键是:
+
+- 地图底图模式:
+    - 指定`type`和/或`subtype`得到地图底图
+- 数据地图模式:
+  - 文本型`x`
+    - `x[,1]`必须是有效的地理名称，比如'United States of America'而非'USA'或'U.S.'
+    - 如提供`x[,2]`，映射为数据系列
+  - 数值型/逻辑型`y`
+    - `y[,1]`: 数值
+    - `y[,2]`: 是否选中。也可用1代表TRUE, 0代表FALSE
+  - series映射为独立的地图，即，series的每个水平对应于一副地图。series必须为有效的地理名称
+- 可额外向echarts对象添加地理数据
+    - `addNameMap`添加地理名称翻译字典
+    - `addHeatMap`添加额外的热力图图层
+    - `addMarkLine`或`addMarkPoint`添加标注线/标注点
+        - `addGeoCoord`定义标注线/标注点的地理坐标
+
+# 用法Function Call
+
+```r
+echartr(data, <x>, <y>, <series>, <lng>, <lat>, <z>, <type>, <subtype>)
+```
+
++--------+--------------------------------------------------------------------+
+| 参数   |  要求                                              |
++========+====================================================================+
+|**data**| 数据框格式的源数据    |
++--------+--------------------------------------------------------------------+
+| **x**  | 文本型自变量。`x[1,]`必须是有效地理名称，`x[,2]`则被处理为数据系列。如提供多个变量，只传入前两个。 |
++--------+--------------------------------------------------------------------+
+| **y**  | 数值型应变量。如提供多个变量，只传入前两个。`y[,1]`为数值，`y[,2]` (逻辑型) 表示是否选中，也可用1代表TRUE, 0 代表FALSE。 |
++--------+--------------------------------------------------------------------+
+| series | series转为因子后计算。`series`的每个水平被处理为分组因子，生成独立的地图。如提供多个变量，只传入第一个。 |
++--------+--------------------------------------------------------------------+
+|  z     | 时间轴变量，转为因子后计算。如提供多个变量，只传入第一个。 |
++--------+--------------------------------------------------------------------+
+| type   | 'map_world', 'map_world_multi', 'map_china', 'map_china_multi'. |
++--------+--------------------------------------------------------------------+
+| subtype| - map_world: c("sum", "average", [country names]) | 
+|        |     + sum: 求和法计算 (默认算法). |
+|        |     + average: 平均法计算 |
+|        |     + [country names]: 一组Echarts可接受的合法值。参考下文的'有效国家名'。 |
+|        | - map_world_multi: c("sum", "average", [country names]) | 
+|        | - map_china: c("sum", "average", [China province names]) | 
+|        |     + [China province names]: 一组Echarts可接受的合法值。参考下文的'有效中国省份名' |
+|        | - map_china_multi: c("sum", "average", <China province names>) | 
++--------+--------------------------------------------------------------------+
+
+- **有效国家名:**
+    - "Afghanistan", "Angola", "Albania", "United Arab Emirates", "Argentina", "Armenia", "French Southern and Antarctic Lands", "Australia", "Austria", "Azerbaijan", "Burundi", "Belgium", "Benin", "Burkina Faso", "Bangladesh", "Bulgaria", "The Bahamas", "Bosnia and Herzegovina", "Belarus", "Belize", "Bermuda", "Bolivia", "Brazil", "Brunei", "Bhutan", "Botswana", "Central African Republic", "Canada", "Switzerland", "Chile", "China", "Ivory Coast", "Cameroon", "Democratic Republic of the Congo", "Republic of the Congo", "Colombia", "Costa Rica", "Cuba", "Northern Cyprus", "Cyprus", "Czech Republic", "Germany", "Djibouti", "Denmark", "Dominican Republic", "Algeria", "Ecuador", "Egypt", "Eritrea", "Spain", "Estonia", "Ethiopia", "Finland", "Fiji", "Falkland Islands", "France", "Gabon", "United Kingdom", "Georgia", "Ghana", "Guinea", "Gambia", "Guinea Bissau", "Equatorial Guinea", "Greece", "Greenland", "Guatemala", "French Guiana", "Guyana", "Honduras", "Croatia", "Haiti", "Hungary", "Indonesia", "India", "Ireland", "Iran", "Iraq", "Iceland", "Israel", "Italy", "Jamaica", "Jordan", "Japan", "Kazakhstan", "Kenya", "Kyrgyzstan", "Cambodia", "South Korea", "Kosovo", "Kuwait", "Laos", "Lebanon", "Liberia", "Libya", "Sri Lanka", "Lesotho", "Lithuania", "Luxembourg", "Latvia", "Morocco", "Moldova", "Madagascar", "Mexico", "Macedonia", "Mali", "Myanmar", "Montenegro", "Mongolia", "Mozambique", "Mauritania", "Malawi", "Malaysia", "Namibia", "New Caledonia", "Niger", "Nigeria", "Nicaragua", "Netherlands", "Norway", "Nepal", "New Zealand", "Oman", "Pakistan", "Panama", "Peru", "Philippines", "Papua New Guinea", "Poland", "Puerto Rico", "North Korea", "Portugal", "Paraguay", "Qatar", "Romania", "Russia", "Rwanda", "Western Sahara", "Saudi Arabia", "Sudan", "South Sudan", "Senegal", "Solomon Islands", "Sierra Leone", "El Salvador", "Somaliland", "Somalia", "Republic of Serbia", "Suriname", "Slovakia", "Slovenia", "Sweden", "Swaziland", "Syria", "Chad", "Togo", "Thailand", "Tajikistan", "Turkmenistan", "East Timor", "Trinidad and Tobago", "Tunisia", "Turkey", "United Republic of Tanzania", "Uganda", "Ukraine", "Uruguay", "United States of America", "Uzbekistan", "Venezuela", "Vietnam", "Vanuatu", "West Bank", "Yemen", "South Africa", "Zambia", "Zimbabwe"
+- **有效中国省份名:**
+    - "新疆", "西藏", "内蒙古", "青海", "四川", "黑龙江", "甘肃", "云南", "广西", "湖南", "陕西", "广东", "吉林", "河北", "湖北", "贵州", "山东", "江西", "河南", "辽宁", "山西", "安徽", "福建", "浙江", "江苏", "重庆", "宁夏", "海南", "台湾", "北京", "天津", "上海", "香港", "澳门"
+
+# 举例Showcase
+
+## 底图模式Base Map Mode
+
+如果其他参数均为NULL，只设置`type`和/或`subtype`，就可以得到地图底图，不显示任何数据。
+
+### 完整底图Complete Base Map
+
+`type`设为'map_world'或'map_china'，其他参数为NULL（忽略）。
+
+```{r}
+echartr(NULL, type='map_world') %>% setTitle('World Map')
+echartr(NULL, type='map_china') %>% setTitle('China Map')
+```
+
+### 部分底图Partial Base map
+
+也可以只显示部分底图。中国的省级行政区可以作为独立的mapType，从而看到下辖的市级行政区。
+
+```{r}
+echartr(NULL, type='map_world', subtype='United States of America') %>% 
+    setTitle('World Map|USA')
+echartr(NULL, type='map_china', subtype='上海') %>% 
+    setTitle('China Map|Shanghai')
+```
+
+## 扩展底图模式Extensive Base Map Mode
+
+### 多选底图Multi-select Base Map
+
+`type`设为'map_world_multi'或'map_china_multi'，获得可多选的地图底图。也可以设置subtype。
+
+```{r}
+echartr(NULL, type='map_world_multi') %>% setTitle('World Map')
+echartr(NULL, type='map_china_multi', subtype='上海') %>% 
+    setTitle('China Map|Shanghai')
+```
+
+### 多个地图Multiple Maps
+
+如设置`series`和`subtype`（有效的地理名称），可得到独立的地图。
+
+```{r}
+data <- data.frame(x=c('United States of America', 'China', 'Japan'))
+echartr(data, x, series=x, type='map_world', subtype=data$x)
+```
+
+## 数据地图模式Data Map Mode
+
+也可以在底图上加载数据，提高其信息性。
+
+### 单个系列Single Series
+
+如果未指定`x[,2]`，地图不会区分数据系列。
+
+```{r}
+worldgdp <- data.frame(
+    country=c('United States of America', 'China', 'Japan', 'Germany',
+              'United Kingdom', 'France', 'Brazil', 'Italy', 'India', 'Russia',
+              'Canada', 'Australia', 'South Korea', 'Spain', 'Mexico', 
+              'Indonesia', 'Netherlands', 'Turkey', 'Saudi Arabia', 
+              'Switzerland'),
+    GDP=c(17418925, 10380380, 4616335, 3859547, 2945146, 2846889, 2353025, 
+          2147952, 2049501, 1857461, 1788717, 1444189, 1416949, 1406855, 1282725,
+          888648, 866354, 806108, 752459, 712050))
+echartr(worldgdp, country, GDP, type="map_world") %>%
+    setTitle("World GDP Top 20, 2014")
+```
+
+然而点标注信息性不强，可以映射值域选择，给地图区块填色。
+
+```{r}
+echartr(worldgdp, country, GDP, type="map_world") %>%
+    setDataRange(splitNumber=0, 
+                 color=getColFromPal('rainbow')) %>%
+    setTitle("World GDP Top 20, 2014")
+```
+
+### 多系列Multiple Series
+
+用`ChinaGDP`数据集作图，'Year'作为数据系列变量。
+
+```{r}
+str(ChinaGDP)
+totGDP <- data.table::dcast(ChinaGDP, Prov~., sum, value.var='GDP')
+
+ChinaGDP <- ChinaGDP[order(ChinaGDP$Year),]
+echartr(ChinaGDP, c(Prov, Year), GDP, type="map_china") %>%
+    setDataRange(splitNumber=0, valueRange=range(totGDP[, 2]), 
+                 color=c('red','orange','yellow','limegreen','green')) %>%
+    setTitle("China GDP by Provice, 2012-2014")
+```
+
+这里，`mapValueCalculation`方法是求和。在`subtype`添加'average'，就改为平均法。
+
+```{r}
+echartr(ChinaGDP, c(Prov, Year), GDP, type="map_china", subtype='average') %>%
+    setDataRange(splitNumber=0, 
+                 color=c('red','orange','yellow','limegreen','green')) %>%
+    setTitle("China GDP by Provice, 2012-2014")
+```
+
+### 带时间轴的地图Maps with Timeline
+
+把`z`设为'Year'，可获得带时间轴的地图。
+
+```{r}
+echartr(ChinaGDP, Prov, GDP, z=Year, type="map_china", subtype='average') %>%
+    setDataRange(splitNumber=0, 
+                 color=c('red','orange','yellow','limegreen','green')) %>%
+    setTitle("China GDP by Provice, 2012-2014")
+```
+
+## 扩展的数据地图模式Extensive Data Map Mode
+
+### 可多选的数据地图Multi-select Data Map
+
+设`type`为'map_world_multi'或'map_china_multi'，其余与上述相似。
+
+### 多个地图Multiple Maps
+
+把GDP前十名国家平铺，而非原位展示。
+
+```{r}
+worldgdp <- worldgdp[order(worldgdp$GDP, decreasing=TRUE),]
+worldgdp10 <- worldgdp[1:10, ]
+
+echartr(worldgdp10, country, GDP, country, type='map_world', 
+        subtype=worldgdp10$country) %>% 
+    setDataRange(color=c(
+        'red', 'orange', 'yellow', 'limegreen', 'green'), pos=4) %>%
+    setSymbols('none')
+```
+
+# 其他设置Futher Setup
+
+接下来可以配置控件、添加标注点/标注线，以及美化成图。
+
+## 增加Add/覆盖Overide地名字典nameMap
+
+或许你想让中国省份显示为英文。可以使用`addNameMap`或`overideNameMap`函数。
+
+recharts内置了一个**geoNameMap**数据集，包含了一部分中英文地理名称。'LEVEL'列是0-3的数值: 0代表国家, 1代表省份, 2 代表城市, 3代表区县。'FKEY'是上级行政区的外键，比如'China'的ID为31，所以可以通过`geoNameMap[geoNameMap$FKEY==31,]`获得中国所有的省份。
+
+```{r}
+str(geoNameMap)
+```
+
+所以准备一个两列的数据框作为地名字典：第1列是源语言，第2列是目标语言。这就是`addNameMap`函数要求的合法数据结构。
+
+```{r}
+dict <- geoNameMap[geoNameMap$FKEY==31, c("CN", "EN")]
+echartr(NULL, type="map_china_multi") %>% addNameMap(dict, mode='overide')
+```
+
+## 增加Add/覆盖Overide标注线markLine
+
+### 添加标注线`addMarkLine`
+
+基于底图，可通过`addMarkLine` (或简写为`addML`) 或`overideMarkLine`增加/覆写标注线。
+
+下例使用的是另一个内置数据集**flight**。
+
+```{r}
+str(flight)
+```
+
+```{r}
+route <- flight$route
+names(route) <- c('name1', 'name2')
+coord <- flight$coord
+g <- echartr(NULL, type='map_china') %>% 
+    addML(series='北京', data=route[route$name1=='北京',]) %>% 
+    addML(series='上海', data=route[route$name1=='上海',]) %>% 
+    addML(series='广州', data=route[route$name1=='广州',])
+g
+```
+
+该命令等价于
+```r
+g <- echartr(NULL, type='map_china') %>% 
+    addML(series=c('北京', '上海', '广州), data=route) 
+```
+
+### 添加坐标`addGeoCoord`
+
+这样做仍不能显示标注线。必须通过`addGeoCoord`添加上述标注线涉及到的地名的经纬度。
+
+```{r}
+g %>% addGeoCoord(coord)
+```
+
+## 添加Add/覆盖Overide标注点markPoint
+
+### 添加标注点`addMarkPoint`
+
+基于底图，可通过`addMarkPoint` (或简写为`addMP`) 或`overideMarkPoint`增加/覆写标注点。
+
+下例使用的是另一个内置数据集**chinapm25**。
+
+```{r}
+str(chinapm25)
+```
+
+```{r}
+names(chinapm25) <- c('name', 'value', 'lng', 'lat')
+
+g <- echartr(NULL, type='map_china') %>% 
+    addMP(data=chinapm25[,c('name', 'value')], symbolSize=5, itemStyle=list(
+        normal=list(borderColor='#87cefa', borderWidth=1,
+                    label=list(show=FALSE)), 
+        emphasis=list(borderColor='#1e90ff', borderWidth=5, 
+                      label=list(show=FALSE))
+    )) %>%
+    addMP(series='Top 5', 
+          data=data.frame(
+              name=c('廊坊', '合肥', '菏泽', '武汉', '大庆'),
+              value=c(193, 194, 229, 273, 279)), 
+          symbol='emptyCircle',
+          symbolSize=JS('function (v) {return 10 + v/100;}'), 
+          effect=list(show=TRUE)
+    ) %>%
+    setDataRange(splitNumber=0, valueRange=c(0, 500), color=c(
+        'maroon', 'purple', 'red', 'orange', 'yellow', 'lightgreen'))
+g
+```
+
+### 添加坐标`addGeoCoord`
+
+#### 预置坐标数据集Pre-installed geoCoord dataset
+
+尽管`recharts`能够识别多数城市的坐标，但仍有一些坐标识别不了。同样，我们需要用`addGeoCoord`添加坐标。
+
+`addGeoCoord`有求一个三列数据框，依次包含`name`, `longitude`和`latitude`。注意`lng`和`lat`的顺序。
+
+```{r}
+g %>% addGeoCoord(chinapm25[,c('name', 'lng', 'lat')]) %>% 
+    setTitle('PM2.5 in China Cities', 'Fictious Data')
+```
+
+#### 查询坐标Query the Coordinates
+
+如果不知道某些地名的坐标怎么办？可以用`geocode` (转自[geoChina](github.com/caijun/geoChina))。这个函数可通过Google (首先你得能访问Google)或百度 (需要有百度开发者密钥)。 
+
+```{r}
+geocode(c('北京', '上海'), api='google')
+```
+
+或`geocode(c('北京', '上海'), api='baidu', key='xxxxx')`。
+
+默认获得的是WGS-84坐标。如果要用于Echarts，需要用`convWGS2BD`函数或`geocode` (`ocs`='BD-09') 转为BD-09坐标。
+
+```{r}
+convWGS2BD(geocode(c('北京', '上海'), api='google'))
+```
+
+或`geocode(c('北京', '上海'), api='google', ocs='BD-09')`
+
+## 添加标注线`addMarkLine`和标注点`addMarkPoint`
+
+在标注线`addMarkLine`案例的基础上，用`addMarkPOint`实现[虚构百度迁徙](http://echarts.baidu.com/echarts2/doc/example/map11.html)的案例。
+
+```{r}
+route <- flight$route
+names(route) <- c('name1', 'name2')
+coord <- flight$coord
+target <- data.frame(
+    name1=c(rep('北京', 10), rep('上海', 10), rep('广州', 10)),
+    name2=c(
+        "上海","广州","大连","南宁","南昌","拉萨","长春","包头","重庆","常州",
+        "包头","昆明","广州","郑州","长春","重庆","长沙","北京","丹东","大连",
+        "福州","太原","长春","重庆","西安","成都","常州","北京","北海","海口"),
+    value=c(95,90,80,70,60,50,40,30,20,10,95,90,80,70,60,50,40,30,20,10,95,90,
+            80,70,60,50,40,30,20,10))
+# series column mapping series of addML/addMP
+target$series <- paste0(target$name1, 'Top10')
+
+## apply addGeoCoord, and add markLines without values
+g <- echartr(NULL, type='map_china') %>% addGeoCoord(coord) %>%
+    addML(series=1, data=route, symbol=c('none', 'circle'), symbolSize=1, 
+          smooth=TRUE, itemStyle=list(normal=itemStyle(
+              color='#fff', borderWidth=1, borderColor='rgba(30,144,255,0.5)')))
+
+## modify itemStyle of the base map to align the areaStyle with bgColor and 
+## disable `hoverable`
+g <- g %>% setSeries(hoverable=FALSE, itemStyle=list(
+    normal=itemStyle(
+        borderColor='rgba(100,149,237,1)', borderWidth=0.5, 
+        areaStyle=areaStyle(color='#1b1b1b'))
+))
+
+g
+
+## add markLines with values
+line.effect <- list(
+    show=TRUE, scaleSize=1, period=30, color='#fff', shadowBlur=10)
+line.style <- list(normal=itemStyle(
+    borderWidth=1, lineStyle=lineStyle(type='solid', shadowBlur=10)))
+g1 <- g %>% 
+    addML(series=c('北京Top10', '上海Top10', '广州Top10'), data=target, 
+          smooth=TRUE, effect=line.effect, itemStyle=line.style)
+g1
+
+## add markPoints
+## series better be 2, 3, 4 rather than the series names
+jsSymbolSize <- JS('function (v) {return 10+v/10;}')
+mp.style <- list(normal=itemStyle(label=labelStyle(show=FALSE)), 
+                 emphasis=itemStyle(label=labelStyle(position='top')))
+g2 <- g1 %>%
+    addMP(series=2:4, data=target[,c("name2", "value", "series")],
+          effect=list(show=TRUE), symbolSize=jsSymbolSize, 
+          itmeStyle=mp.style) 
+g2
+
+## setDataRange
+g3 <- g2 %>%
+    setDataRange(
+        color=c('#ff3333', 'orange', 'yellow','limegreen','aquamarine'),
+        valueRange=c(0, 100), textStyle=list(color='#fff'),
+        splitNumber=0)
+
+## setTheme
+g3 <- g3 %>% setLegend(pos=10, selected='上海Top10', textStyle=list(color='#fff')) %>%
+    setTheme(palette=c('gold','aquamarine','limegreen'), bgColor='#1b1b1b') %>%
+    setToolbox(pos=3) %>% 
+    setTitle('Baidu Migration', 'Fictious Data', pos=12, 
+             textStyle=list(color='white'))
+g3
+```
+
+## 添加Add/覆盖Overide热力图heatMap
+
+构建一个虚构数据集，必须包含`lng`, `lat`和`heat value`。
+
+```{r}
+heatmap <- sapply(1:15, function(i){
+    x <- 100 + runif(1, 0, 1) * 16
+    y <- 24 + runif(1, 0, 1) * 12
+    lapply(0:floor(50 * abs(rnorm(1))), function(j){
+        c(x+runif(1, 0, 1)*2, y+runif(1, 0, 1)*2, runif(1, 0, 1))
+    })
+})
+heatmap <- data.frame(matrix(unlist(heatmap), byrow=TRUE, ncol=3))
+str(heatmap)
+```
+
+用`addHeatmap` / `overideHeatmap`将热力图数据集添加/修改到echarts对象上。
+
+```{r}
+echartr(NULL, type="map_china") %>% addHeatmap(data=heatmap)
+```
+
+------
+
+参考相关函数，尽情探索吧。
+

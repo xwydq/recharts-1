@@ -1,0 +1,236 @@
+---
+title: "基础图类Basic Plots 03 - 线图Line/面积图Area"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+首先，加载`recharts`:
+```{r}
+library(recharts)
+```
+
+# 介绍Introduction
+
+线图Line plot包括4个基本类型：
+
+- 线图: line
+- 平滑线图: curve
+- 面积图: area
+- 平滑面积图: wave
+
+<table id='intro'>
+<tr><td>
+```{r,echo=FALSE}
+titanic <- data.table::melt(apply(Titanic, c(1,4), sum))
+names(titanic) <- c('Class', 'Survived', 'Count')
+echartr(titanic, Class, Count, Survived, type='line') %>% setLegend(pos=3) %>%
+    setTheme('infographic', width=400, height=300) %>%
+    setTitle('Titanic: Survival by Cabin Class','line')
+```
+</td>
+<td>
+```{r,echo=FALSE}
+echartr(titanic, Class, Count, Survived, type='curve') %>% 
+    setTheme('roma', width=400, height=300) %>% setLegend(pos=3) %>%
+    setTitle('Titanic: Outcome by Cabin Class','curve')
+```
+</td></tr>
+<tr><td>
+```{r,echo=FALSE}
+echartr(titanic, Class, Count, Survived, type='area') %>% setLegend(pos=3) %>%
+    setTheme('macarons', width=400, height=300) %>%
+    setTitle('Titanic: Survival by Cabin Class','area')
+```
+</td>
+<td>
+```{r,echo=FALSE}
+echartr(titanic, Class, Count, Survived, type='wave') %>% 
+    setTheme('macarons2', width=400, height=300) %>% setLegend(pos=3) %>%
+    setTitle('Titanic: Outcome by Cabin Class','wave')
+```
+</td></tr>
+</table>
+
+关键是:
+
+- 文本型`x`和数值型`y`
+- `x` (和`series`) 的各水平的每个组合只能对应一个`y`数据点
+- 平铺和堆积线图可通过工具箱按钮快速切换
+- 线图/面积图可通过工具箱快速切换为柱图/条图
+
+# 用法Function Call
+
+```r
+echartr(data, x, y, <series>, <weight>, <z>, <type>, <subtype>)
+```
+
++---------+--------------------------------------------------------------------+
+| 参数    |  要求                                                      |
++=========+====================================================================+
+| **data**| 数据框格式的源数据                          |
++---------+--------------------------------------------------------------------+
+| **x**   | 文本型自变量，其他类型会被转为因子。如提供多个变量，只传入第一个。 |
++---------+--------------------------------------------------------------------+
+| **y**   | 数值型应变量。如提供多个变量，只传入第一个。 |
++---------+--------------------------------------------------------------------+
+| series  | 数据系列变量，转为因子后计算。如提供多个变量，只传入第一个。 |
++---------+--------------------------------------------------------------------+
+| weight  | 权重变量映射各系列的线宽lineWidth。 |
++---------+--------------------------------------------------------------------+
+|  z      | 时间轴变量，转为因子后计算。如提供多个变量，只传入第一个。 |
++---------+--------------------------------------------------------------------+
+| type    | 'line', 'curve', 'area', 'wave' |
++---------+--------------------------------------------------------------------+
+| subtype | - 线图line: c("stack","smooth","dotted","solid","dashed") | 
+|         |      + stack: 堆积的数据系列向量 |
+|         |      + smooth: 平滑 |
+|         |      + dotted: 虚线 |
+|         |      + solid: 实线（默认） |
+|         |      + dashed: 虚划线 |
+|         | - 平滑线图curve: c("stack","solid") |
+|         | - 面积图area: c("stack","smooth","dotted","solid","dashed")  |
+|         | - 平滑面积图wave: c("stack","solid") |
++---------+--------------------------------------------------------------------+
+
+# 举例Showcase
+
+## 数据准备Data Preparation
+
+让我们使用`datasets`包自带数据集`airquality`。数据结构如下：
+
+```{r}
+aq <- airquality
+aq$Date <- as.Date(paste('1973', aq$Month, aq$Day, sep='-'))
+aq$Day <- as.character(aq$Day)
+aq$Month <- factor(aq$Month, labels=c("May", "Jun", "Jul", "Aug", "Sep"))
+head(aq)
+```
+
+## 线图Line Chart
+
+### 单个数据系列Singular Series
+
+`type`设为'line'。
+
+```{r}
+echartr(aq, Date, Temp, type='line') %>%
+    setTitle('NY Temperature May - Sep 1973')
+```
+
+### 多个数据系列Multiple Series
+
+```{r}
+echartr(aq, Day, Temp, Month, type='line') %>%
+    setTitle('NY Temperature May - Sep 1973, by Month') %>% 
+    setSymbols('emptycircle')
+```
+
+### 堆积线图Stacked Line Chart
+
+设`type`为'line'，`subtype`为'stack'。
+
+```{r}
+echartr(aq, Day, Temp, Month, type='line', subtype='stack') %>%
+    setTitle('NY Temperature May - Sep 1973, by Month') %>% 
+    setSymbols('emptycircle')
+```
+
+### 权重变量映射线宽Line Width Mapped to `Weight`
+
+把线宽和各系列(Month)风速均值关联起来。
+
+```{r}
+echartr(aq, Day, Temp, Month, weight=Wind, type='line') %>%
+    setTitle('NY Temperature May - Sep 1973, by Month') %>% 
+    setSymbols('emptycircle')
+```
+
+### 带时间轴的线图Line Chart with Timeline
+
+```{r}
+echartr(aq, Day, Temp, z=Month, type='line') %>%
+    setTitle('NY Temperature May - Sep 1973, by Month') %>% 
+    setSymbols('emptycircle')
+```
+
+## 平滑线图Curve (Smooth Line) Chart
+
+### 平铺平滑线图Tiled Smooth Line Chart
+
+设`type`为'curve'。
+
+```{r}
+echartr(aq, Day, Temp, Month, type='curve') %>%
+    setTitle('NY Temperature May - Sep 1973, by Month') %>% 
+    setSymbols('emptycircle')
+```
+
+### 堆积平滑线图Stacked Smooth Line Chart
+
+设`type`为'curve'，`subtype`为'stack'。
+
+```{r}
+echartr(aq, Day, Temp, Month, type='curve', subtype='stack') %>%
+    setTitle('NY Temperature May - Sep 1973, by Month') %>% 
+    setSymbols('emptycircle')
+```
+
+## 面积图Area Chart
+
+### 平铺面积图Tiled Area Chart
+
+面积图实际上和线图是一回事，唯一不同之处是前者设定了`areaStyle`特性。
+
+设`type`为'area'。
+
+```{r}
+echartr(aq, Date, Temp, type='area') %>%
+    setTitle('NY Temperature May - Sep 1973') %>% 
+    setSymbols('emptycircle')
+```
+
+### 堆积面积图Stacked Area Chart
+
+设`type`为'area'，`subtype`为'stack'。
+
+```{r}
+echartr(aq, Day, Temp, Month, type='area', subtype='stack') %>%
+    setTitle('NY Temperature May - Sep 1973, by Month') %>% 
+    setSymbols('emptycircle')
+```
+
+## 平滑面积图Wave (Smooth Area) Chart
+
+### 平铺平滑面积图Tiled Smooth Area Chart
+
+设`type`为'wave'。
+
+```{r}
+echartr(aq, Date, Temp, type='wave') %>%
+    setTitle('NY Temperature May - Sep 1973') %>% 
+    setSymbols('emptycircle')
+```
+
+### 堆积平滑面积图Stacked Smooth Area Chart
+
+设`type`为'wave'，`subtype`为'stack'。
+
+```{r}
+echartr(aq, Day, Temp, Month, type='wave', subtype='stack') %>%
+    setTitle('NY Temperature May - Sep 1973, by Month') %>% 
+    setSymbols('emptycircle')
+```
+
+# 其他设定Futher Setup
+
+接下来可以配置控件、添加标注点/标注线，以及美化成图。
+
+参考相关函数，尽情探索吧。
+

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>基础图形Basic Plots 22 - 漏斗图Funnel Chart</title>
+
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/htmlwidgets-0.7/htmlwidgets.js"></script>
+<script src="libs/echarts-2.2.7/echarts-all.js"></script>
+<script src="libs/echarts-2.2.7/ext/params.js"></script>
+<script src="libs/echarts-2.2.7/ext/loadGeoJSON.js"></script>
+<script src="libs/echarts-binding-0.0.5/echarts.js"></script>
+<script src="libs/echarts-module-2.2.7/base.js"></script>
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 70px;
+}
+p code {
+  white-space: inherit;
+}
+.html-widget-static-bound {
+  margin: auto;
+}
+.alert>p {
+  margin-bottom: 10.5px;
+}
+</style>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/default.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="./">recharts</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="./">Home</a></li>
+        <li><a href="index_cn.html">首页</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="https://github.com/madlogos/recharts" title="View Source on Github"><i class="fa fa-github fa-lg"></i></a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</nav><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">基础图形Basic Plots 22 - 漏斗图Funnel Chart</h1>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction"><span class="toc-section-number">1</span> 介绍Introduction</a></li>
+<li><a href="#function-call"><span class="toc-section-number">2</span> 用法Function Call</a></li>
+<li><a href="#showcase"><span class="toc-section-number">3</span> 举例Showcase</a><ul>
+<li><a href="#data-preparation"><span class="toc-section-number">3.1</span> 数据准备Data Preparation</a></li>
+<li><a href="#funnel-chart"><span class="toc-section-number">3.2</span> 漏斗图Funnel Chart</a><ul>
+<li><a href="#single-funnel"><span class="toc-section-number">3.2.1</span> 单个漏斗图Single Funnel</a></li>
+<li><a href="#multiple-funnel"><span class="toc-section-number">3.2.2</span> 多个漏斗图Multiple Funnel</a></li>
+<li><a href="#with-timeline"><span class="toc-section-number">3.2.3</span> 带时间轴With Timeline</a></li>
+<li><a href="#different-alignment"><span class="toc-section-number">3.2.4</span> 对齐方式Different Alignment</a></li>
+</ul></li>
+<li><a href="#pyramid-chart"><span class="toc-section-number">3.3</span> 金字塔图Pyramid Chart</a></li>
+</ul></li>
+<li><a href="#futher-setup"><span class="toc-section-number">4</span> 其他设定Futher Setup</a></li>
+</ul>
+</div>
+
+<p>首先，加载<code>recharts</code>:</p>
+<pre class="r"><code>library(recharts)</code></pre>
+<div id="introduction" class="section level1">
+<h1><span class="header-section-number">1</span> 介绍Introduction</h1>
+<p>漏斗图有2种类型:</p>
+<ul>
+<li>漏斗图</li>
+<li>金字塔图</li>
+</ul>
+<table id="intro">
+<tr>
+<td>
+<div id="echarts-52a208c4d30df408e8560299922c083d9fac293c" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-52a208c4d30df408e8560299922c083d9fac293c">{"x":{"series":[{"name":"Proportion","type":"funnel","data":[{"name":"1","value":7,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"2","value":10,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"3","value":3,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"4","value":10,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"6","value":1,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"8","value":1,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["50%","50%"],"width":"90%","x":"5%","radius":"90%","max":10,"height":"70%","y":"15%","selectedMode":null,"itemStyle":{"normal":{"labelLine":{"show":true}}}}],"xAxis":[{"type":"value","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["pie","funnel"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["1","2","3","4","6","8"],"x":"right","y":"center","orient":"vertical"},"theme":"infographic","title":{"text":"mtcars: carb distibution by am","subtext":"funnel","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</td>
+<td>
+<div id="echarts-9fb229a39a7992ae1a2ef77f082e3d7682767f9b" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-9fb229a39a7992ae1a2ef77f082e3d7682767f9b">{"x":{"series":[{"name":"Proportion","type":"funnel","data":[{"name":"1","value":7,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"2","value":10,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"3","value":3,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"4","value":10,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"6","value":1,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"8","value":1,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["50%","50%"],"width":"90%","x":"5%","radius":"90%","max":10,"height":"70%","y":"15%","selectedMode":null,"sort":"ascending","itemStyle":{"normal":{"labelLine":{"show":true}}}}],"xAxis":[{"type":"value","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["pie","funnel"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["1","2","3","4","6","8"],"x":"right","y":"center","orient":"vertical"},"theme":"roma","title":{"text":"mtcars: carb distibution by am","subtext":"pyramid","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</td>
+</tr>
+</table>
+<p>关键是:</p>
+<ul>
+<li>文本型<code>x</code>和数值型<code>y</code>，会使用<code>data.table::dcast</code>压缩（<code>fun=sum</code>）</li>
+<li><strong><code>x</code>用作数据系列，而<code>series</code>用于产生多个不同的漏斗图!</strong></li>
+<li>饼图和漏斗图可通过工具箱按钮快速切换</li>
+</ul>
+</div>
+<div id="function-call" class="section level1">
+<h1><span class="header-section-number">2</span> 用法Function Call</h1>
+<pre class="r"><code>echartr(data, x, &lt;y&gt;, &lt;series&gt;, &lt;z&gt;, &lt;type&gt;, &lt;subtype&gt;)</code></pre>
+<table>
+<colgroup>
+<col width="11%" />
+<col width="88%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">参数</th>
+<th align="left">要求</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><p><strong>data</strong></p></td>
+<td align="left"><p>数据框格式的源数据</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p><strong>x</strong></p></td>
+<td align="left"><p>文本型自变量。<code>x</code>的每个水平被处理为一个数据系列。其他类型会被转为因子后计算。如提供多个变量，只传入第一个。</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>y</p></td>
+<td align="left"><p>数值型应变量。如提供多个变量，只传入第一个。</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>series</p></td>
+<td align="left"><p>转为因子后计算。<code>series</code>的每个水平被处理为分组因子，用于产生独立的极坐标系。如提供多个变量，只传入第一个。</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>z</p></td>
+<td align="left"><p>时间轴变量，转为因子后计算。如提供多个变量，只传入第一个。</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>type</p></td>
+<td align="left"><p>‘funnel’, ‘pyramid’.</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>subtype</p></td>
+<td align="left"><ul>
+<li>funnel: c(“left”,“center”,“right”)
+<ul>
+<li>left: funnelAlign为左（左对齐）</li>
+<li>center: funnelAlign为居中 (默认)</li>
+<li>right: funnelAlign为右（右对齐）</li>
+</ul></li>
+<li>pyramid: c(“left”,“center”,“right”)</li>
+</ul></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="showcase" class="section level1">
+<h1><span class="header-section-number">3</span> 举例Showcase</h1>
+<div id="data-preparation" class="section level2">
+<h2><span class="header-section-number">3.1</span> 数据准备Data Preparation</h2>
+<p>考察<code>datasets</code>包自带数据集<code>mtcars</code>。按carb及am的分布如下。</p>
+<pre class="r"><code>cars &lt;- data.table::dcast(mtcars, carb+am~., length, value.var=&#39;gear&#39;)
+names(cars) &lt;- c(&quot;carb&quot;, &quot;am&quot;, &quot;N&quot;)
+knitr::kable(cars)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">carb</th>
+<th align="right">am</th>
+<th align="right">N</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">0</td>
+<td align="right">7</td>
+</tr>
+<tr class="odd">
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="right">6</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">8</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="funnel-chart" class="section level2">
+<h2><span class="header-section-number">3.2</span> 漏斗图Funnel Chart</h2>
+<div id="single-funnel" class="section level3">
+<h3><span class="header-section-number">3.2.1</span> 单个漏斗图Single Funnel</h3>
+<p><code>type</code>设为’funnel’。</p>
+<pre class="r"><code>echartr(cars, carb, N, type=&#39;funnel&#39;) %&gt;% 
+    setTitle(&#39;mtcars: carb distibution&#39;)</code></pre>
+<div id="echarts-e3ba75cf7875ee0d7739be3f887df52ca63d464c" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-e3ba75cf7875ee0d7739be3f887df52ca63d464c">{"x":{"series":[{"name":"Proportion","type":"funnel","data":[{"name":"1","value":7,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"2","value":10,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"3","value":3,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"4","value":10,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"6","value":1,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"8","value":1,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["50%","50%"],"width":"90%","x":"5%","radius":"90%","max":10,"height":"70%","y":"15%","selectedMode":null,"itemStyle":{"normal":{"labelLine":{"show":true}}}}],"xAxis":[{"type":"value","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["pie","funnel"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["1","2","3","4","6","8"],"x":"left","y":"top","orient":"horizontal"},"title":{"text":"mtcars: carb distibution","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="multiple-funnel" class="section level3">
+<h3><span class="header-section-number">3.2.2</span> 多个漏斗图Multiple Funnel</h3>
+<p>与直角坐标系下不同，漏斗图用<code>series</code>作为区分不同极坐标系的分组变量。所以，我们用<code>am</code> (有2个水平) 作为<code>series</code>，可得到2个漏斗图。</p>
+<pre class="r"><code>echartr(cars, carb, N, am, type=&#39;funnel&#39;) %&gt;% 
+    setTitle(&#39;mtcars: carb distibution by am&#39;)</code></pre>
+<div id="echarts-79f40fb219987cefce57f0d328fb2420256c7f34" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-79f40fb219987cefce57f0d328fb2420256c7f34">{"x":{"series":[{"name":"0","type":"funnel","data":[{"name":"1","value":3,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"2","value":6,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"3","value":3,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"4","value":7,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"6","value":0,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"8","value":0,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["27.5%","50%"],"width":"42.5%","x":"6.25%","radius":"42.5%","max":7,"height":"70%","y":"15%","selectedMode":null,"itemStyle":{"normal":{"labelLine":{"show":true}}}},{"name":"1","type":"funnel","data":[{"name":"1","value":4,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"2","value":4,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"3","value":0,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"4","value":3,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"6","value":1,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"8","value":1,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["72.5%","50%"],"width":"42.5%","x":"51.25%","radius":"42.5%","max":4,"height":"70%","y":"15%","selectedMode":null,"itemStyle":{"normal":{"labelLine":{"show":true}}}}],"legend":{"show":true,"data":["1","2","3","4","6","8"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"value","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["pie","funnel"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"title":{"text":"mtcars: carb distibution by am","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="with-timeline" class="section level3">
+<h3><span class="header-section-number">3.2.3</span> 带时间轴With Timeline</h3>
+<p>需要一个时间轴变量。不妨用’gear’。</p>
+<pre class="r"><code>cars_gear &lt;- data.table::dcast(mtcars, carb+gear+am~., length, value.var=&#39;gear&#39;)
+names(cars_gear) &lt;- c(&quot;carb&quot;, &quot;gear&quot;, &quot;am&quot;, &quot;N&quot;)</code></pre>
+<p>为了让时间轴正确显示，我们需要用<code>expand.grid</code>扩展数据集，覆盖<code>x</code>及<code>z</code>各水平的全部组合。</p>
+<pre class="r"><code>fullData &lt;- with(mtcars, data.frame(
+    expand.grid(unique(carb), unique(gear), unique(am))))
+names(fullData) &lt;- c(&quot;carb&quot;, &quot;gear&quot;, &quot;am&quot;)
+cars_gear &lt;- merge(cars_gear, fullData, all.y=TRUE)</code></pre>
+<pre class="r"><code>echartr(cars_gear, carb, N, am, z=gear, type=&#39;funnel&#39;) %&gt;% 
+    setTitle(&#39;mtcars: carb distibution by am across gear&#39;)</code></pre>
+<div id="echarts-ec507db4ecad449a51aac90d51dca306baead96e" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-ec507db4ecad449a51aac90d51dca306baead96e">{"x":{"timeline":{"type":"number","data":[3,4,5],"x":80,"x2":80,"y2":50},"options":[{"series":[{"name":"0","type":"funnel","data":[{"name":"1","value":3,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"2","value":4,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"3","value":3,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"4","value":5,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"6","value":"-","itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"8","value":"-","itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["27.5%","45%"],"width":"37.5%","x":"8.75%","radius":"37.5%","max":5,"height":"70%","y":"15%","selectedMode":null,"itemStyle":{"normal":{"labelLine":{"show":true}}}},{"name":"1","type":"funnel","data":[{"name":"1","value":"-","itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"2","value":"-","itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"3","value":"-","itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"4","value":"-","itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"6","value":"-","itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"8","value":"-","itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["72.5%","45%"],"width":"37.5%","x":"53.75%","radius":"37.5%","max":0,"height":"70%","y":"15%","selectedMode":null,"itemStyle":{"normal":{"labelLine":{"show":true}}}}],"legend":{"show":true,"data":["1","2","3","4","6","8"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"value","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["pie","funnel"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"title":{"text":"mtcars: carb distibution by am across gear (gear: 3)","x":"center","y":"bottom","orient":"horizontal"}},{"series":[{"name":"0","type":"funnel","data":[{"name":"1","value":"-","itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"2","value":2,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"3","value":"-","itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"4","value":2,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"6","value":"-","itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"8","value":"-","itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["27.5%","45%"],"width":"37.5%","x":"8.75%","radius":"37.5%","max":2,"height":"70%","y":"15%","selectedMode":null,"itemStyle":{"normal":{"labelLine":{"show":true}}}},{"name":"1","type":"funnel","data":[{"name":"1","value":4,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"2","value":2,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"3","value":"-","itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"4","value":2,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"6","value":"-","itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"8","value":"-","itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["72.5%","45%"],"width":"37.5%","x":"53.75%","radius":"37.5%","max":4,"height":"70%","y":"15%","selectedMode":null,"itemStyle":{"normal":{"labelLine":{"show":true}}}}],"title":{"text":"mtcars: carb distibution by am across gear (gear: 4)","x":"center","y":"bottom","orient":"horizontal"}},{"series":[{"name":"0","type":"funnel","data":[{"name":"1","value":"-","itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"2","value":"-","itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"3","value":"-","itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"4","value":"-","itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"6","value":"-","itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"8","value":"-","itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["27.5%","45%"],"width":"37.5%","x":"8.75%","radius":"37.5%","max":0,"height":"70%","y":"15%","selectedMode":null,"itemStyle":{"normal":{"labelLine":{"show":true}}}},{"name":"1","type":"funnel","data":[{"name":"1","value":"-","itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"2","value":2,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"3","value":"-","itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"4","value":1,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"6","value":1,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"8","value":1,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["72.5%","45%"],"width":"37.5%","x":"53.75%","radius":"37.5%","max":2,"height":"70%","y":"15%","selectedMode":null,"itemStyle":{"normal":{"labelLine":{"show":true}}}}],"title":{"text":"mtcars: carb distibution by am across gear (gear: 5)","x":"center","y":"bottom","orient":"horizontal"}}]},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="different-alignment" class="section level3">
+<h3><span class="header-section-number">3.2.4</span> 对齐方式Different Alignment</h3>
+<p>左对齐。</p>
+<pre class="r"><code>echartr(cars, carb, N, am, type=&#39;funnel&#39;, subtype=&#39;left&#39;) %&gt;% 
+    setTitle(&#39;mtcars: carb distibution by am across gear&#39;)</code></pre>
+<div id="echarts-a6be95d236214c0ea529e94e2ed973f8be4b5f84" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-a6be95d236214c0ea529e94e2ed973f8be4b5f84">{"x":{"series":[{"name":"0","type":"funnel","data":[{"name":"1","value":3,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"2","value":6,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"3","value":3,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"4","value":7,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"6","value":0,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"8","value":0,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["27.5%","50%"],"width":"42.5%","x":"6.25%","radius":"42.5%","max":7,"height":"70%","y":"15%","selectedMode":null,"itemStyle":{"normal":{"labelLine":{"show":true}}},"funnelAlign":"left"},{"name":"1","type":"funnel","data":[{"name":"1","value":4,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"2","value":4,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"3","value":0,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"4","value":3,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"6","value":1,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"8","value":1,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["72.5%","50%"],"width":"42.5%","x":"51.25%","radius":"42.5%","max":4,"height":"70%","y":"15%","selectedMode":null,"itemStyle":{"normal":{"labelLine":{"show":true}}},"funnelAlign":"left"}],"legend":{"show":true,"data":["1","2","3","4","6","8"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"value","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["pie","funnel"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"title":{"text":"mtcars: carb distibution by am across gear","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div id="pyramid-chart" class="section level2">
+<h2><span class="header-section-number">3.3</span> 金字塔图Pyramid Chart</h2>
+<p><code>type</code>设为’pyramid’。</p>
+<pre class="r"><code>echartr(cars, carb, N, am, type=&#39;pyramid&#39;) %&gt;% 
+    setTitle(&#39;mtcars: carb distibution by am&#39;)</code></pre>
+<div id="echarts-a75a163031eb37fe97a4029a71f394b2eaaebb1f" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-a75a163031eb37fe97a4029a71f394b2eaaebb1f">{"x":{"series":[{"name":"0","type":"funnel","data":[{"name":"1","value":3,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"2","value":6,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"3","value":3,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"4","value":7,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"6","value":0,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"8","value":0,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["27.5%","50%"],"width":"42.5%","x":"6.25%","radius":"42.5%","max":7,"height":"70%","y":"15%","selectedMode":null,"sort":"ascending","itemStyle":{"normal":{"labelLine":{"show":true}}}},{"name":"1","type":"funnel","data":[{"name":"1","value":4,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"2","value":4,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"3","value":0,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"4","value":3,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"6","value":1,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"8","value":1,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["72.5%","50%"],"width":"42.5%","x":"51.25%","radius":"42.5%","max":4,"height":"70%","y":"15%","selectedMode":null,"sort":"ascending","itemStyle":{"normal":{"labelLine":{"show":true}}}}],"legend":{"show":true,"data":["1","2","3","4","6","8"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"value","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["pie","funnel"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"title":{"text":"mtcars: carb distibution by am","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+<p>也可以混合<code>funnel</code>和<code>pyramid</code>。</p>
+<pre class="r"><code>echartr(cars, carb, N, am, type=c(&#39;funnel&#39;, &#39;pyramid&#39;)) %&gt;% 
+    setTitle(&#39;mtcars: carb distibution by am&#39;)</code></pre>
+<div id="echarts-f2903600b61f6b8cd78804fbaafba3a4ceedea53" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-f2903600b61f6b8cd78804fbaafba3a4ceedea53">{"x":{"series":[{"name":"0","type":"funnel","data":[{"name":"1","value":3,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"2","value":6,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"3","value":3,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"4","value":7,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"6","value":0,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"8","value":0,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["27.5%","50%"],"width":"42.5%","x":"6.25%","radius":"42.5%","max":7,"height":"70%","y":"15%","selectedMode":null,"itemStyle":{"normal":{"labelLine":{"show":true}}}},{"name":"1","type":"funnel","data":[{"name":"1","value":4,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"2","value":4,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"3","value":0,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"4","value":3,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"6","value":1,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"8","value":1,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["72.5%","50%"],"width":"42.5%","x":"51.25%","radius":"42.5%","max":4,"height":"70%","y":"15%","selectedMode":null,"sort":"ascending","itemStyle":{"normal":{"labelLine":{"show":true}}}}],"legend":{"show":true,"data":["1","2","3","4","6","8"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"value","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["pie","funnel"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"title":{"text":"mtcars: carb distibution by am","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>echartr(cars, carb, N, am, type=c(&#39;funnel&#39;, &#39;pyramid&#39;), 
+        subtype=c(&#39;right&#39;, &#39;left&#39;)) %&gt;% 
+    setTitle(&#39;mtcars: carb distibution by am&#39;)</code></pre>
+<div id="echarts-660abb37e05a40dfd25888779922eea96c1bcb64" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-660abb37e05a40dfd25888779922eea96c1bcb64">{"x":{"series":[{"name":"0","type":"funnel","data":[{"name":"1","value":3,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"2","value":6,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"3","value":3,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"4","value":7,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"6","value":0,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"8","value":0,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["27.5%","50%"],"width":"42.5%","x":"6.25%","radius":"42.5%","max":7,"height":"70%","y":"15%","selectedMode":null,"itemStyle":{"normal":{"labelLine":{"show":true}}},"funnelAlign":"right"},{"name":"1","type":"funnel","data":[{"name":"1","value":4,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"2","value":4,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"3","value":0,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"4","value":3,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"6","value":1,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"8","value":1,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["72.5%","50%"],"width":"42.5%","x":"51.25%","radius":"42.5%","max":4,"height":"70%","y":"15%","selectedMode":null,"sort":"ascending","itemStyle":{"normal":{"labelLine":{"show":true}}},"funnelAlign":"left"}],"legend":{"show":true,"data":["1","2","3","4","6","8"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"value","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["pie","funnel"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"title":{"text":"mtcars: carb distibution by am","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div id="futher-setup" class="section level1">
+<h1><span class="header-section-number">4</span> 其他设定Futher Setup</h1>
+<p>接下来可以配置控件、添加标注点/标注线，以及美化成图。</p>
+<p>参考相关函数，尽情探索吧。</p>
+</div>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+    // active menu
+    var href = window.location.pathname;
+    href = href.substr(href.lastIndexOf('/') + 1);
+    if (href === '') href = './';
+    $('a[href="' + href + '"]').parent().addClass('active');
+});
+</script>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+
+</body>
+</html>

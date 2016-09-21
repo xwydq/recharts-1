@@ -1,0 +1,134 @@
+---
+title: "基础图形Basic Plots 33 - 矩形树图Treemap Chart"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+首先，加载`recharts`:
+```{r}
+library(recharts)
+```
+
+# 介绍Introduction
+
+矩形树图包括一种类型：treemap
+
+<table id='intro'>
+<tr><td>
+```{r,echo=FALSE}
+data <- data.frame(
+    node=c('IOS', 'Android', 'Samsung', 'Apple', 'Huawei', 'Lenovo', 'Xiaomi', 
+           'Others', 'LG', 'Oppo', 'Vivo', 'ZTE', 'Other'),
+    parent=c(rep(NA, 2), 'Android', 'IOS', rep('Android', 4), rep('Others', 5)),
+    series=(rep('Smartphone', 13)),
+    value=c(231.5, 1201.4, 324.8, 231.5, 106.6, 74, 70.8, 625.2, 51.7, 49.1,
+            42.6, 40, 243))
+    
+echartr(data, c(node, parent), value, series, type='treemap') %>%
+    setTitle('Smartphone Sales 2015 (M)','treemap', pos=5) %>% 
+    setTheme('infographic', width=400, height=300)
+```
+</td>
+<td>
+
+</td></tr>
+</table>
+
+关键是:
+
+- 文本型`x`，至少两列：x[,1]为树图结点，x[,2]为节点的父节点。根节点的父节点为NA。
+- 数值型`y`
+- series`用于生成多个树图
+
+# 用法Function Call
+
+```r
+echartr(data, x, <y>, <series>, <z>, <type>, <subtype>)
+```
+
++--------+--------------------------------------------------------------------+
+| 变量   |  要求                                                    |
++========+====================================================================+
+|**data**| 数据框格式的源数据                 |
++--------+--------------------------------------------------------------------+
+| **x**  | 文本型自变量。如提供多个变量，只传入前两个: 第一列为节点，第二列为其父节点。 |
++--------+--------------------------------------------------------------------+
+| y      | 数值型应变量。如提供多个变量，只传入第一个。  |
++--------+--------------------------------------------------------------------+
+| series | 转为因子后计算。`series`的每个水平被处理为分组因子，用于产生独立的极坐标系。如提供多个变量，只传入第一个。 |
++--------+--------------------------------------------------------------------+
+|  z     | 时间轴变量，转为因子后计算。如提供多个变量，只传入第一个。 |
++--------+--------------------------------------------------------------------+
+| type   | 'treemap'. |
++--------+--------------------------------------------------------------------+
+
+# 举例Showcase
+
+## 数据准备Data Preparation
+
+准备一个数据框，查看其结构。
+
+```{r}
+data <- data.frame(
+    node=c('IOS', 'Android', 'Samsung', 'Apple', 'Huawei', 'Lenovo', 'Xiaomi', 
+           'Others', 'LG', 'Oppo', 'Vivo', 'ZTE', 'Other'),
+    parent=c(rep(NA, 2), 'Android', 'IOS', rep('Android', 4), rep('Others', 5)),
+    series=(rep('Smartphone', 13)),
+    value=c(231.5, 1201.4, 324.8, 231.5, 106.6, 74, 70.8, 625.2, 51.7, 49.1,
+            42.6, 40, 243))
+knitr::kable(data)
+```
+
+矩形树图结构由节点和父节点的映射关系决定。
+
+- 只有'Smartphone'一个系列，所以只得到一个矩形树图。
+    - 在'Smartphone'系列中，'IOS'和'Android'的父节点为NA，所以'IOS'和'Android'为矩形树图的根节点。
+        - 'Android'节点之下，父节点有5个水平：'Samsung', 'Huawei', 'Lenovo', 'Xiaomi' and 'Others'。所以'Android'节点有5个子节点。
+            - 'Others'节点下，另有5个子节点。
+
+在矩形树图下能看到面包屑导航。各矩形块的面积由`value`决定。
+
+## 矩形树图Tree Chart
+
+### 单个矩形树图Single Treemap
+
+`type`设为'treemap'.
+
+```{r}
+echartr(data, c(node, parent), value, series, type='treemap') %>%
+    setTitle('Smartphone Sales 2015 (Million)', pos=5)
+```
+
+### 多个矩形树图Multiple Treemaps
+
+稍微修改一下`series`，获得多个矩形树图。
+
+```{r}
+data1 <- data[3:13,]
+data1$series <- c('Android', 'IOS', rep('Android', 9))
+data1$parent[1:6] <- NA
+knitr::kable(data1)
+```
+
+这样，能够得到两个矩形树图。
+
+```{r}
+echartr(data1, c(node, parent), value, series, type='treemap') %>%
+    setTitle('Smartphone Sales 2015 (Million)', pos=5)
+```
+
+
+# 其他设置Futher Setup
+
+接下来可以配置控件、添加标注点/标注线，以及美化成图。
+
+参考相关函数，尽情探索吧
+
+

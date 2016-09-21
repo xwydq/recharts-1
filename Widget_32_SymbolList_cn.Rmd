@@ -1,0 +1,73 @@
+---
+title: "控件Widget 32 - 图标symbolList"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+首先，加载`recharts`:
+```{r}
+library(recharts)
+```
+
+# 介绍Introduction
+
+SymbolList是图表名称向量。可以用`setSymbols`定义它。symbolList映射数据系列，且循环调用。
+
+建议用`chart %>% setSymbols(...)`格式调用`setSymbols`。
+
+# 用法Function Call
+
+```r
+setSymbols(chart, symbols = NULL, ...)
+```
+
++--------------+---------------------------------------------------------------+
+|   Arg        |  Requirement                                                |
++==============+===============================================================+
+| **chart**    | `echartR`或`echart`创建的Echarts对象.  |
++--------------+---------------------------------------------------------------+
+| symbols      | 图标名向量。如果指定的图标向量长度小于数据系列个数，就用最后一个图标补足。默认为NULL. |
+|              |               |
+|              | - 如果symbolList为NULL或忽略，则循环调用Echarts的默认图标: `c('circle', 'rectangle', 'triangle', 'diamond',` `'emptyCircle', 'emptyRectangle',` `'emptyTriangle', 'emptyDiamond')`.    |
+|              | - 也可使用非标图标，如`'heart', 'droplet',` `'pin', 'arrow',` `'star3', 'star4',` `'star5', 'star6',` `'star7', 'star8',` `'star9'`, 等。  |
+|              | - 如设为'none', 则不使用图标。这可用于不带点的折线等。
+|              | - 不在合法图标列表中的图标名会被忽略。 |
++--------------+---------------------------------------------------------------+
+| ...          | 省略号 |
++--------------+---------------------------------------------------------------+
+
+# 举例Showcase
+
+```{r}
+g <- echartr(iris, Sepal.Width, Petal.Width, Species)
+g
+```
+
+默认的图标为'circle', 'rectangle' and 'triangle'。可以指定其他图标。
+
+```{r}
+g %>% setSymbols(symbols=c('diamond', 'emptycircle', 'emptyrectangle'))
+```
+
+如果symbolList长度小于数据系列个数，最后一个图标用来补足。
+
+```{r}
+g %>% setSymbols(symbols=c('diamond', 'emptycircle'))
+```
+
+也可用一些非标图标。
+
+```{r}
+g %>% setSymbols(c('pin', 'heart', 'star8'))
+```
+
+# 参考资料
+
+<http://echarts.baidu.com/echarts2/doc/option.html#title~symbolList>

@@ -1,0 +1,185 @@
+---
+title: "Basic Plots 32 - Tree Chart"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+First, you should load `recharts`:
+```{r}
+library(recharts)
+```
+
+# Introduction
+
+Tree chart includes 4 basic types:
+
+- Horizontal tree
+- Inverse horizontal tree
+- Vertical tree
+- Inverse vertical tree
+
+<table id='intro'>
+<tr><td>
+```{r,echo=FALSE}
+data <- data.frame(
+    node=c('North America', 'USA', 'Canada', 'California', 'New York', 
+           'Massachusetts', 'Quebec', 'Ontario', 'South America',
+           'Brazil', 'Argentina', 'Rio de Jeneiro', 'Sao Paolo', 'Buenos Aires',
+           'Mendosa'),
+    parent=c(NA, rep('North America', 2), rep('USA', 3), rep('Canada', 2),
+             NA, rep('South America', 2), rep('Brazil', 2), rep('Argentina', 2)),
+    series=c(rep('Tree 1', 8), rep('Tree 2', 7)),
+    value=rep(1, 15))
+    
+echartr(data, c(node, parent), value, series, type='tree') %>%
+    setTitle('tree') %>% setTheme('infographic', width=400, height=300)
+```
+</td>
+<td>
+```{r,echo=FALSE}
+echartr(data, c(node, parent), value, series, type='tree_inv') %>%
+    setTitle('tree_inv') %>% setTheme('roma', width=400, height=300)
+```
+</td></tr>
+<tr><td>
+```{r,echo=FALSE}
+echartr(data, c(node, parent), value, series, type='htree') %>%
+    setTitle('htree') %>% setTheme('macarons', width=400, height=300)
+```
+</td><td>
+```{r,echo=FALSE}
+echartr(data, c(node, parent), value, series, type='htree_inv') %>%
+    setTitle('htree_inv') %>% setTheme('macarons2', width=400, height=300)
+```
+</td></tr>
+</table>
+
+The keys are:
+
+- character `x` with at least 2 columns: x[,1] are the nodes of the trees, x[,2] are parent nodes of the tree nodes. For root nodes, parent should be NA.
+- numeric `y`
+- series` is used to produce separate trees
+
+# Function Call
+
+```r
+echartr(data, x, <y>, <series>, <z>, <type>, <subtype>)
+```
+
++--------+--------------------------------------------------------------------+
+| Arg    |  Requirement                                                       |
++========+====================================================================+
+|**data**| source data in the form of data.frame                            |
++--------+--------------------------------------------------------------------+
+| **x**  | character independent variable. Each level of `x` is treated as a data series. Other type will be coerced to factors. Only the first two are accepted if multiple variables are provided: 1st one as nodes, 2nd one as parent nodes. |
++--------+--------------------------------------------------------------------+
+| y      | numeric dependent variable. Only the first one is accepted if multiple variables are provided. |
++--------+--------------------------------------------------------------------+
+| series | series variable which will be coerced to factors. Each level of `series` is treated as a subsetting factor to produce separate trees. Only the first one is accepted if multiple variables are provided. |
++--------+--------------------------------------------------------------------+
+|  z     | timeline variable which will be coerced to factors. Only the first one is accepted if multiple variables are provided. |
++--------+--------------------------------------------------------------------+
+| type   | 'tree'/'vtree', 'tree_inv'/'vtree_inv', 'htree', 'htree_inv'. |
++--------+--------------------------------------------------------------------+
+| subtype| - tree: c("curve","broken","dotted","dashed","solid") | 
+|        |     + curve: nodes are connected by curve |
+|        |     + broken: nodes are connected by broken lines |
+|        |     + dotted: the connection lines are dotted |
+|        |     + solid: the connection lines are solid |
+|        |     + dashed: the connection lines are dashed |
+|        | - tree_inv: c("curve","broken","dotted","dashed","solid") |
+|        | - htree: c("curve","broken","dotted","dashed","solid") |
+|        | - htree_inv: c("curve","broken","dotted","dashed","solid") |
++--------+--------------------------------------------------------------------+
+
+
+# Showcase
+
+## Data Preparation
+
+Let's prepare a data.frame to show the typical structure.
+
+```{r}
+data <- data.frame(
+    node=c('North America', 'USA', 'Canada', 'California', 'New York', 
+           'Massachusetts', 'Quebec', 'Ontario', 'South America',
+           'Brazil', 'Argentina', 'Rio de Jeneiro', 'Sao Paolo', 'Buenos Aires',
+           'Mendosa'),
+    parent=c(NA, rep('North America', 2), rep('USA', 3), rep('Canada', 2),
+             NA, rep('South America', 2), rep('Brazil', 2), rep('Argentina', 2)),
+    series=c(rep('Tree 1', 8), rep('Tree 2', 7)),
+    value=rep(1, 15))
+knitr::kable(data)
+```
+
+The tree structure is defined by the mapping of nodes and parents.
+
+- There are two series 'Tree 1' and 'Tree 2', so we will see two trees.
+    - In the series 'Tree 1', we see 'North America' has NA parent node. So 'North America' will be the root node of this tree.
+        - Below the root, we see 2 levels in parents nodes: 'USA' and 'Canada'. So 'Tree 1' tree will contain 2 level-1 nodes under the root 'North America'.
+            - There are 3 nodes with 'USA' as parent: 'California', "New York" and "Massachusetts"
+            - There are 2 nodes with 'Canada' as parent: 'Ontario' and 'Quebec'
+
+## Tree Chart
+
+### Single Tree
+
+`type` is set 'tree'.
+
+```{r}
+echartr(data[data$series=='Tree 1',], c(node, parent), value, type='tree') %>%
+    setTitle('Single Tree')
+```
+
+### Multiple Trees
+
+If you assign `series` with a valid data structure, you yield multiple trees.
+But Echarts does not map `series` with legend and color well. So you need to color the trees separately.
+
+```{r}
+echartr(data, c(node, parent), value, series, type='tree') %>%
+    setTitle('Multiple Trees')
+```
+
+## Inverse Tree Chart
+
+Set `type` 'tree_inv'. Here you can test `subtype`s. 
+
+```{r}
+echartr(data, c(node, parent), value, series, type='tree_inv',
+        subtype='broken') %>% setTitle('tree_inv')
+```
+
+## Horizontal Tree
+
+Set `type` 'htree'.
+
+```{r}
+echartr(data, c(node, parent), value, series, type='htree', 
+        subtype='broken + dashed') %>% setTitle('htree')
+```
+
+## Inverse Horzontal Tree
+
+Set `type` 'htree_inv'.
+
+```{r}
+echartr(data, c(node, parent), value, series, type='htree_inv', 
+        subtype='broken + dotted') %>% setTitle('htree_inv')
+```
+
+
+# Futher Setup
+
+Then you can configure the widgets, add markLines and/or markPoints, fortify the chart.
+
+You can refer to related functions to play around on your own.
+
+

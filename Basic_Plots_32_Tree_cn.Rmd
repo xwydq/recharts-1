@@ -1,0 +1,185 @@
+---
+title: "基础图形Basic Plots 32 - 树图Tree Chart"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+首先，加载`recharts`:
+```{r}
+library(recharts)
+```
+
+# 介绍Introduction
+
+树图包括4种基本类型:
+
+- 水平树图
+- 倒置水平树图
+- 垂直树图
+- 倒置垂直树图
+
+<table id='intro'>
+<tr><td>
+```{r,echo=FALSE}
+data <- data.frame(
+    node=c('North America', 'USA', 'Canada', 'California', 'New York', 
+           'Massachusetts', 'Quebec', 'Ontario', 'South America',
+           'Brazil', 'Argentina', 'Rio de Jeneiro', 'Sao Paolo', 'Buenos Aires',
+           'Mendosa'),
+    parent=c(NA, rep('North America', 2), rep('USA', 3), rep('Canada', 2),
+             NA, rep('South America', 2), rep('Brazil', 2), rep('Argentina', 2)),
+    series=c(rep('Tree 1', 8), rep('Tree 2', 7)),
+    value=rep(1, 15))
+    
+echartr(data, c(node, parent), value, series, type='tree') %>%
+    setTitle('tree') %>% setTheme('infographic', width=400, height=300)
+```
+</td>
+<td>
+```{r,echo=FALSE}
+echartr(data, c(node, parent), value, series, type='tree_inv') %>%
+    setTitle('tree_inv') %>% setTheme('roma', width=400, height=300)
+```
+</td></tr>
+<tr><td>
+```{r,echo=FALSE}
+echartr(data, c(node, parent), value, series, type='htree') %>%
+    setTitle('htree') %>% setTheme('macarons', width=400, height=300)
+```
+</td><td>
+```{r,echo=FALSE}
+echartr(data, c(node, parent), value, series, type='htree_inv') %>%
+    setTitle('htree_inv') %>% setTheme('macarons2', width=400, height=300)
+```
+</td></tr>
+</table>
+
+关键是:
+
+- 文本型`x`，至少两列：x[,1]为树图节点，x[,2]为树图节点的父节点。根节点的父节点为NA。
+- 数值型`y`
+- series`用于生成多棵树
+
+# 用法Function Call
+
+```r
+echartr(data, x, <y>, <series>, <z>, <type>, <subtype>)
+```
+
++--------+--------------------------------------------------------------------+
+| 变量   |  要求                                                    |
++========+====================================================================+
+|**data**| 数据框格式的源数据                 |
++--------+--------------------------------------------------------------------+
+| **x**  | 文本型自变量。如提供多个变量，只传入前两个: 第一列为节点，第二列为其父节点 |
++--------+--------------------------------------------------------------------+
+| y      | 数值型应变量。如提供多个变量，只传入第一个。 |
++--------+--------------------------------------------------------------------+
+| series | 转为因子后计算。`series`的每个水平被处理为分组因子，用于产生独立的极坐标系。如提供多个变量，只传入第一个。  |
++--------+--------------------------------------------------------------------+
+|  z     | 时间轴变量，转为因子后计算。如提供多个变量，只传入第一个。 |
++--------+--------------------------------------------------------------------+
+| type   | 'tree'/'vtree', 'tree_inv'/'vtree_inv', 'htree', 'htree_inv'. |
++--------+--------------------------------------------------------------------+
+| subtype| - tree: c("curve","broken","dotted","dashed","solid") | 
+|        |     + curve: 节点间以曲线联结 |
+|        |     + broken: 节点间以折线连接 |
+|        |     + dotted: 节点间以虚线连接 |
+|        |     + solid: 节点间以实线连接 |
+|        |     + dashed: 节点间以划线连接 |
+|        | - tree_inv: c("curve","broken","dotted","dashed","solid") |
+|        | - htree: c("curve","broken","dotted","dashed","solid") |
+|        | - htree_inv: c("curve","broken","dotted","dashed","solid") |
++--------+--------------------------------------------------------------------+
+
+
+# 举例Showcase
+
+## 数据准备Data Preparation
+
+准备一个数据框，显示其典型结构。
+
+```{r}
+data <- data.frame(
+    node=c('North America', 'USA', 'Canada', 'California', 'New York', 
+           'Massachusetts', 'Quebec', 'Ontario', 'South America',
+           'Brazil', 'Argentina', 'Rio de Jeneiro', 'Sao Paolo', 'Buenos Aires',
+           'Mendosa'),
+    parent=c(NA, rep('North America', 2), rep('USA', 3), rep('Canada', 2),
+             NA, rep('South America', 2), rep('Brazil', 2), rep('Argentina', 2)),
+    series=c(rep('Tree 1', 8), rep('Tree 2', 7)),
+    value=rep(1, 15))
+knitr::kable(data)
+```
+
+树结构由节点列和父节点列的映射关系决定。
+
+- 有'Tree 1'和'Tree 2'两个系列，所以会产生两棵树。
+    - 在数据系列'Tree 1'中，能看到'North America'的父节点为NA。所以，'North America'是这棵树的根节点。
+        - 根节点以下，父节点有两个水平：'USA'和'Canada'。所以'Tree 1'树在根节点'North America'下包含两个第一层节点。
+            - 有三个节点以'USA'为父节点: 'California', "New York" 和 "Massachusetts"
+            - 有两个节点以'Canada'为父节点: 'Ontario' 和 'Quebec'
+
+## 树图Tree Chart
+
+### 单棵树图Single Tree
+
+`type`设为'tree'。
+
+```{r}
+echartr(data[data$series=='Tree 1',], c(node, parent), value, type='tree') %>%
+    setTitle('Single Tree')
+```
+
+### 多棵树图Multiple Trees
+
+如`series`赋值以有效的数据结构，可以得到多棵树。
+但Echarts没有把`series`和图例填色映射好，所以需要单独对多棵树着色。
+
+```{r}
+echartr(data, c(node, parent), value, series, type='tree') %>%
+    setTitle('Multiple Trees')
+```
+
+## 倒置树图Inverse Tree Chart
+
+`type`设为'tree_inv'。然后不妨试验几个`subtype`。
+
+```{r}
+echartr(data, c(node, parent), value, series, type='tree_inv',
+        subtype='broken') %>% setTitle('tree_inv')
+```
+
+## 水平树图Horizontal Tree
+
+`type`设为'htree'。
+
+```{r}
+echartr(data, c(node, parent), value, series, type='htree', 
+        subtype='broken + dashed') %>% setTitle('htree')
+```
+
+## 倒置水平树图Inverse Horzontal Tree
+
+`type`设为'htree_inv'。
+
+```{r}
+echartr(data, c(node, parent), value, series, type='htree_inv', 
+        subtype='broken + dotted') %>% setTitle('htree_inv')
+```
+
+
+# 其他设置Futher Setup
+
+接下来可以配置控件、添加标注点/标注线，以及美化成图。
+
+参考相关函数，尽情探索吧。
+
+

@@ -1,0 +1,245 @@
+---
+title: "控件Widget 01 - 坐标轴Axis"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+首先，加载`recharts`:
+```{r}
+library(recharts)
+```
+
+# 介绍Introduction
+
+线图、柱图、散点图、k线图和事件河流图都基于直角坐标系，需要配置x-和y-坐标轴。用`echartr`创建好一个直角坐标系Echarts对象，接下来可以用`setAxis`调整期坐标轴。这个函数家族包括几个工作函数：`setXAxis`, `setYAxis`, `setX1Axis`, `setY1Axis`。
+
+# 用法Function Call
+
+```r
+setAxis(chart, series = NULL, which = c("x", "y", "x1", "y1"),
+  type = c("value", "category", "time", "log"), show = TRUE,
+  position = c("bottom", "top", "left", "right"), name = "",
+  nameLocation = c("end", "start"), nameTextStyle = emptyList(),
+  boundaryGap = c(0, 0), min = NULL, max = NULL, scale = TRUE,
+  splitNumber = NULL, axisLine = list(show = TRUE, onZero = FALSE),
+  axisTick = list(show = FALSE), axisLabel = list(show = TRUE),
+  splitLine = list(show = TRUE), splitArea = list(show = FALSE),
+  data = list())
+
+setYAxis(chart, ...)
+
+setY1Axis(chart, ...)
+
+setXAxis(chart, ...)
+
+setX1Axis(chart, ...)
+```
+
++-------------+----------------------------------------------------------------+
+|   参数      |  要求                                            |
++=============+================================================================+
+|**chart**    | `echartR`或`echart`创建的Echarts对象.  |
++-------------+----------------------------------------------------------------+
+| series      | 哪些系列放置在此坐标轴上。如设为NULL，作用于所有系列。可以写作: |
+|             |                |
+|             | - 系列名称向量，如c('setosa', 'virginica'); |
+|             | - 系列索引值向量，如 1:2 或 c(1,3). |
++-------------+----------------------------------------------------------------+
+| which       | 要修改哪条坐标轴，可以是下列之一: |
+|             |        |
+|             | - x: 主x轴 |
+|             | - y: 主y轴 |
+|             | - x1: 次x轴 |
+|             | - y1: 次y轴 |
++-------------+----------------------------------------------------------------+
+| type        | 坐标轴类型，可以是 c('time', 'value', 'category', 'log'). 默认为'value'. |
++-------------+----------------------------------------------------------------+
+| show        | 逻辑型，该坐标轴是否显示。默认为TRUE. |
++-------------+----------------------------------------------------------------+
+| position    | 该坐标轴的位置。可以是 c('bottom', 'top', 'left', 'right') (分别为主x轴、次x轴、主y轴和次y轴的默认值) |
++-------------+----------------------------------------------------------------+
+| name        | 该坐标轴的名称，默认为空白(""). |
++-------------+----------------------------------------------------------------+
+|nameLocation | 坐标轴名称位置，可以是c('start', 'end'). 默认为'end'. |
++-------------+----------------------------------------------------------------+
+|nameTextStyle| 坐标轴名称文本样式，可以是textStyle列表样式。默认值继承textStyle全局设定 |
++-------------+----------------------------------------------------------------+
+| boundaryGap | 长度为2的数值型向量，定义坐标轴两端留空策略 (百分比)。默认为 c(0, 0). |
++-------------+----------------------------------------------------------------+
+| min         | 坐标轴最小值，默认为NULL (自动)。 如设置数值，则boundaryGap被禁用.|
++-------------+----------------------------------------------------------------+
+| max         | 坐标轴最大值，默认为NULL (自动)。 如设置数值，则boundaryGap被禁用 |
++-------------+----------------------------------------------------------------+
+| scale       | 逻辑型，用于'value', 'time', 'log'型坐标轴，定义是否自动缩放到最小、最大值区间内。默认为TRUE. |
++-------------+----------------------------------------------------------------+
+| splitNumber | 数值型，将坐标轴且分成多少份。默认为NULL，即自动根据最小、最大值计算。 |
++-------------+----------------------------------------------------------------+
+| axisLine    | 列表，默认为 `list(show=TRUE, onZero=FALSE, lineStyle=lineStyle(` `type='solid', color='#48b', width=2, shadowColor='rgba(0,0,0,0)',` `shadowBlur=5, shadowOffsetX=3, shadowOffsetY=3))`  |
++-------------+----------------------------------------------------------------+
+| axisTick    | 列表，默认为 `list(show=FALSE, inside=FALSE, length=5,` `lineStyle=lineStyle(color="#333", width=1))` |
++-------------+----------------------------------------------------------------+
+| axisLabel   | 控制坐标轴标签的列表，默认为 `list(show=TRUE, rotate=0, margin=8,` `clickable=FALSE, formatter=NULL,` `textStyle=list(color="#333"))` |
+|             | `formatter` 可以是`sprintf`格式文本或`JS`函数/表达式 |
+|             | `axisLabel=list(formatter="%s cm")` 等价于 |
+|             |                                |
+|             | - `axisLabel=list(formatter=JS('function (value) {return value + "cm";}'))` 或 |
+|             | - `axisLabel=list(formatter='{value} cm')`
++-------------+----------------------------------------------------------------+
+| splitLine   | 控制分割线的列表，默认为 `list(show=TRUE, lineStyle=``lineStyle(color=list("#ccc"), width=1, type="solid"))`  |
++-------------+----------------------------------------------------------------+
+| splitArea   | 控制分割区域的列表，默认为 `list(show=FALSE, onGap=NULL,` `areaStyle=areaStyle(color= list("rgba(250,250,250,0.3)",` `"rgba(200,200,200,0.3)") , type="default")` |
++-------------+----------------------------------------------------------------+
+| data        | 文本型向量或列表，用于'category'型坐标轴，定义坐标轴标签文字。默认为NULL。甚至可以传入带textStyle列表的复杂列表: `list('Jan', 'Feb', 'Mar',` `list(value='Apr', textStyle=list(color='red', ...)), 'May', ...)`  |
++-------------+----------------------------------------------------------------+
+| ...         | 省略号 |
++-------------+----------------------------------------------------------------+
+
+
+# 举例Showcase
+
+## 数据准备Data Preparation
+
+用`airquality`生成4个Echarts对象 `g1` - `g4`: 
+
+**时间轴**    | **单个系列**    | **多个系列**
+--------------|-----------------|-----------------
+**no**        |  `g1`           |  `g2`
+**yes**       |  `g3`           |  `g4`
+
+```{r}
+require(data.table)
+aq <- airquality
+aq$Date <- as.Date(paste('1973', aq$Month, aq$Day, sep='-'))
+g1 <- echartr(aq, Date, Temp, type='curve') %>% setToolbox(pos=3)
+g2 <- echartr(aq, Day, Temp, Month, type='curve') %>% setToolbox(pos=3)
+g3 <- echartr(aq, Day, Temp, z=Month, type='curve') %>% setToolbox(pos=3)
+aq1 <- melt(aq, id=c('Month', 'Day'), measure=c('Temp', 'Wind'), 
+            variable='Param')
+g4 <- echartr(aq1, Day, value, Param, z=Month, type='curve') %>% 
+    setToolbox(pos=3)
+```
+
+
+## 修饰Modification
+
+可以修改坐标轴外观: 标题、分割段数、标签。留意`axisLabel`中的`formatter`: 要求使用JavaScript，所以始终可以用`JS`函数。也可以用`sprintf`表达式。
+
+```r
+g1 %>% setXAxis(name='m/d', splitNumber=20, axisLabel=list(
+    formatter='%m/%d', rotate=90)) %>%
+    setYAxis(axisLabel=list(formatter='{value} °C')) 
+```
+就等价于
+
+```r
+g1 %>% setXAxis(name='m/d', splitNumber=20, axisLabel=list(
+       formatter=JS('function (v) {
+                    return v.getMonth() + 1 + "/" + v.getDate();
+                    }'),
+       rotate=90)) %>%
+       setYAxis(axisLabel=list(formatter='{value} °C'))
+```
+
+<table>
+<tr><td>
+```{r, echo=FALSE}
+g1 %>% setTheme(width=400, height=300)
+```
+</td><td>
+```{r, echo=FALSE}
+g1 %>% setXAxis(name='m/d', splitNumber=20, axisLabel=list(
+    formatter='%m/%d', rotate=90)) %>%
+    setYAxis(axisLabel=list(formatter='{value} °C')) %>%
+    setTheme(width=400, height=300)
+```
+</td></tr>
+</table>
+
+可以把第2-4系列 (6月-8月) 放置在次y轴...
+
+```r
+g2 %>% setY1Axis(series=2:4, name='Summer Temp')
+```
+
+<table>
+<tr><td>
+```{r,echo=FALSE}
+g2 %>% setTheme(width=400, height=300)
+```
+</td><td>
+```{r,echo=FALSE}
+g2 %>% setY1Axis(series=2:4, name='Summer Temp') %>% 
+    setTheme(width=400, height=300)
+```
+</td></tr>
+</table>
+
+
+但不能在不同时间轴设置不同的坐标轴。
+
+要不设置成学术样式的坐标轴？那意味着去掉所有垂直分割线，并把绘图区边框宽度设为0。
+
+```r
+g3 %>% setXAxis(splitLine=list(show=FALSE)) %>% setGrid(borderWidth=0) %>%
+    setYAxis(axisLine=list(lineStyle=lineStyle(width=0)))
+```
+
+<table>
+<tr><td>
+```{r,echo=FALSE}
+g3 %>% setTheme(width=400, height=300)
+```
+</td><td>
+```{r,echo=FALSE}
+g3 %>% setXAxis(splitLine=list(show=FALSE)) %>% setGrid(borderWidth=0) %>%
+    setYAxis(axisLine=list(lineStyle=lineStyle(width=0)), 
+             axisLabel=list(formatter="%.1f °C")) %>% 
+    setTheme(width=400, height=300)
+```
+</td></tr>
+</table>
+
+
+把这些属性串联起来。
+
+```r
+g4 %>% setY1Axis(series='Wind', axisLine=list(lineStyle=lineStyle(width=0)), 
+                 name='Wind', axisLabel=list(formatter="%.1f mph"), min=0) %>%
+    setXAxis(splitLine=list(show=FALSE), axisLine=list(
+        lineStyle=lineStyle(color='darkgray'))) %>% 
+    setYAxis(axisLine=list(lineStyle=lineStyle(width=0)), 
+             axisLabel=list(formatter="%.1f °C"), min=0, name='Temp') %>% 
+    setGrid(borderWidth=0)
+```
+
+<table>
+<tr><td>
+```{r,echo=FALSE}
+g4 %>% setTheme(width=400, height=300)
+```
+</td><td>
+```{r,echo=FALSE}
+g4 %>% setY1Axis(series='Wind', axisLine=list(lineStyle=lineStyle(width=0)), 
+                 name='Wind', axisLabel=list(formatter="%.1f mph"), min=0) %>%
+    setXAxis(splitLine=list(show=FALSE), axisLine=list(
+        lineStyle=lineStyle(color='darkgray'))) %>% 
+    setYAxis(axisLine=list(lineStyle=lineStyle(width=0)), 
+             axisLabel=list(formatter="%.1f °C"), min=0, name='Temp') %>% 
+    setGrid(borderWidth=0) %>%
+    setTheme(width=400, height=300)
+```
+</td></tr>
+</table>
+
+# 参考资料
+
+<http://echarts.baidu.com/echarts2/doc/option.html#tooltip-line1~xAxis-i>
+
+<http://echarts.baidu.com/echarts2/doc/option.html#tooltip-line1~yAxis-i>

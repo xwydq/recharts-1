@@ -1,0 +1,168 @@
+---
+title: "控件Widget 12 - 标注点markPoint"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+首先，加载`recharts`:
+```{r}
+library(recharts)
+```
+
+# 介绍Introduction
+
+适当的标注点让成图更有信息性。我们可以用`addMarkPoint` (或简写为`addMP`) 一个系列一系列、一个时间轴切片一个时间轴切片地添加标注点. 也可以用`overideMarkPoint` (或简写为 `overideMP`) 覆写已有的标注点。
+
+# 用法Function Call
+
+```r
+addMarkPoint(chart, series = NULL, timeslots = NULL, data = NULL,
+  clickable = TRUE, symbol = "pin", symbolSize = 10,
+  symbolRotate = NULL, large = FALSE, effect = list(show = FALSE),
+  itemStyle = NULL, ...)
+```
+
+`overideMP`等价于`addMP(mode='overide', ...)`.
+
++-------------+----------------------------------------------------------------+
+|  参数       |  要求                                            |
++=============+================================================================+
+| **chart**   | `echartR`或`echart`生成的Echarts对象.  |
++-------------+----------------------------------------------------------------+
+| series      | 数值型(系列索引值)或文本型(系列名称)，前者更好。如设为NULL，则作用于所有系列。 |
++-------------+----------------------------------------------------------------+
+| timeslots   | 数值型(时间轴切片索引值)或文本型(时间轴切片名称)，前者更好。如设为NULL，则作用于所有时间轴切片。可简写为z. |
++-------------+----------------------------------------------------------------+
+| data        | 标注点源数据，数据框形式。必须包含下列列： `name`, 和/或 `value / type` 和/或 `x / xAxis, y / yAxis` 和/或 `series`. 如提供series，必须与`addML`中的`series`参数相对应。 |
+|             |      |
+|             | - **通用**:  |
+|             |     + 通用格式: [name, value, x, y]列 |
+|             |     + 最小格式: [name, x, y]列  |
+|             | - **散点图、线图、柱图**: |
+|             |     + 基本格式: [name, value, x, y]列 |
+|             |     + 最小格式: [name, type]列 (type只能是'max', 'min') |
+|             |     + 映射到坐标轴: [name, value, xAxis, yAxis]列  |
+|             | - **k线图,事件河流图**: |
+|             |     + 基本格式: [name, value, x, y]列 |
+|             |     + 映射到坐标轴: [name, value, xAxis, yAxis]列 |
+|             | - **地图**:  |
+|             |     + [name, value]列. 可以单独通过`addGeoCoord`传入 [name, lng, lat]列。 |
+|             |             |
+|             | **注意** 标注线数据集兼容于`addMarkPoint`. |
+|             |             |
+|             | - `x1, x2`被视为`x` (如果检测到的话，接受第一个) |
+|             | - `y1, y2`被视为`y` (如果检测到的话，接受第一个) |
+|             | - `xAxis1, xAxis2`被视为`xAxis` (如果检测到的话，接受第一个) |
+|             | - `yAxis1, yAxis2`被视为`yAxis` (如果检测到的话，接受第一个) |
++-------------+----------------------------------------------------------------+
+| clickable   | 逻辑型，数据图形是否可以点击，默认为TRUE. |
++-------------+----------------------------------------------------------------+
+| symbol      | 标注点图标，参见`recharts:::validSymbols`. 默认为`pin`. |
++-------------+----------------------------------------------------------------+
+| symbolSize  | 数值型向量`c(height, width)`或`JS`函数，定义标注点大小，默认为10. |
++-------------+----------------------------------------------------------------+
+| symbolRotate| 数值型 -180 ~ 180. 默认为NULL. |
++-------------+----------------------------------------------------------------+
+| large       | 数值型, 是否开启大规模效果. 默认为FALSE.  |
++-------------+----------------------------------------------------------------+
+| effect      | 列表，标注点效果配置器。默认为NULL, 即 `list(show=FALSE, type='scale',` `loop=TRUE, period=15, scaleSize=2,` `bounceDistance=10, color=NULL, shadowColor=NULL, shadowBlur=0)` |
++-------------+----------------------------------------------------------------+
+| itemStyle   | 列表，结构为 `list(normal=list(...), emphasis=list(...))`. 默认为NULL. |
++-------------+----------------------------------------------------------------+
+| mode        | 将标注点的data部分'add' 或 'overide'到echarts对象. 默认为'add'. 也可以直接用 `overideMarkPoint`函数覆写已有的标注点的data部分 |
++-------------+----------------------------------------------------------------+
+| ...         | 省略号 |
++-------------+----------------------------------------------------------------+
+
+# 举例Showcase
+
+## 直角坐标系Cartesian Coordinate System
+
+下例来自[Scatterplot Manual](Basic_Plots_01_Scatterplot.html). 
+
+我们分别向数据系列1 ('setosa')和2 ('versicolor')添加最大、最小值标注点，在另外添加两个绝对位置标注点。
+
+第三个标注点的数据结构比较特别，是一个数据框，包含这些列：'name', 'value', 'xAxis', 'yAxis'。这是直角坐标系唯一接受的标注点数据结构。
+
+第四个标注点的数据结构是通用结构，x和y对应画布坐标。然而在直角坐标系中却无法正确显示，只能被放在坐标系的零点。
+
+```{r}
+g = echartr(iris, Sepal.Width, Petal.Width, Species) %>% 
+    setToolbox(show=FALSE) %>% setTheme(width=400, height=300)
+```
+
+<table>
+<tr><td>
+```{r}
+g = g %>% addMP(series=1, data=data.frame(
+    name='Max', type='max'))
+g
+```
+</td><td>
+```{r}
+g = g %>% addMP(series=2, data=data.frame(
+        name='Min', type='min')) 
+g
+```
+</td></tr>
+<tr><td>
+```{r}
+g = g %>%  addMP(series=3, data=data.frame(
+    name='Misc', value=5, xAxis=3, yAxis=5)) 
+g
+```
+</td><td>
+```{r}
+g = g %>% addMP(series='Not Known', data=data.frame(
+    name='Not Known', value=2, x=350, y=300))
+g
+```
+</td></tr>
+</table>
+
+可以把上述三个标注点的数据框合并为一个，包含这些有效列: 'name', 'type', 'series', 等。其中，'series'必须与`series`参数对应 (即，数据框的每一行都映射到 `addMP`的`series`向量).
+
+```{r}
+data <- data.frame(
+    name=c('Max', 'Min', 'Misc', 'Not Known'), type=c('max', 'min', NA, NA),
+    series=c(levels(iris$Species), 'Not Known'), x=c(NA, NA, NA, 350),
+    y=c(NA, NA, NA, 300), xAxis=c(NA, NA, 3, NA), yAxis=c(NA, NA, 5, NA))
+knitr::kable(data)
+echartr(iris, Sepal.Width, Petal.Width, Species) %>%
+    addMP(series=c(levels(iris$Species), 'Not Known'), data=data)
+```
+
+
+## 非直角坐标系Non-cartesian Coordinate System
+
+对于非直角坐标系（如极坐标、地理坐标），不要提供映射到坐标轴的数据结构。对于极坐标系，x和y对应于画布坐标，而在地理坐标系里，必须用`addGeoCoord`传入所涉及的坐标，而不能直接用`addMP`来传。
+
+注意，画布坐标的零点是左上角。
+
+用[Pie Chart Manual](Basic_Plot2_11_Pie.html)中的例子。
+
+```{r}
+titanic <- data.table::melt(apply(Titanic, c(1,4), sum))
+names(titanic) <- c('Class', 'Survived', 'Count')
+g <- echartr(titanic, Survived, Count, Class, type='pie') 
+```
+
+```{r}
+data <- data.frame(
+    name=rep('', 4), value=1:4, x=c(190, 490, 190, 490), y=c(132, 132, 348, 348)
+)
+knitr::kable(data)
+g %>% addMP(series='Series Index', data=data) %>% 
+    setSeries(series='Series Index', type='scatter')
+```
+
+# 参考资料
+
+<http://echarts.baidu.com/echarts2/doc/option.html#tooltip-line1~series-i(line).markLine>

@@ -1,0 +1,96 @@
+---
+title: "基础图类Basic Plots 05 - 事件河流图eventRiver"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+首先，加载`recharts`:
+```{r}
+library(recharts)
+```
+
+# 介绍Introduction
+
+事件河流图只有一中类型：eventRiver。
+
+<table id='intro'>
+<tr><td>
+```{r,echo=FALSE}
+data(events)
+events$link <- 'www.baidu.com'
+events$img <- 'inst/favicon.png'
+events$title <- paste(rownames(events), events$event)
+echartr(events, c(time, event, title, link, img), c(value, weight), series, 
+        type='eventRiver') %>% 
+    setTheme('infographic', width=400, height=300) %>% 
+    setTitle('Event River', 'Ficticious Data') %>% setXAxis('Time')
+```
+</td>
+<td>
+</table>
+
+关键是：
+
+- `x`必须按顺序包含：
+    - 2个必备列: 事件切片的时间, 事件名称
+    - 3个可选列: 事件切片的标题, 事件切片的链接, 事件切片的图标
+- `y`必须按顺序包含：
+    - 1个必备列: 事件切片赋值
+    - 1个可选列: 事件切片权重值(默认为1)
+- `series`必须按顺序包含：
+    - 2个可选列: 数据系列, 数据系列的权重(默认为1)
+- 上述变量必须按所述顺序排列。
+
+# 用法Function Call
+
+```r
+echartr(data, x, y, <z>, <series>, <type>)
+```
+
++--------+--------------------------------------------------------------------+
+| 变量   |  要求                      |
++========+====================================================================+
+| **data**| 数据框格式的源数据                          |
++--------+--------------------------------------------------------------------+
+| **x**  | 文本型自变量，其他类型会被转为因子。必须包含2个必备列(事件切片的时间, 事件名称)，和/或3个可选列(事件切片的标题, 事件切片的链接, 事件切片的图标)。参数列表必须照此排列。 |
++--------+--------------------------------------------------------------------+
+| **y**  | 数值型应变量。必须包含1个必备列(事件切片赋值)和/或1个可选列(事件切片权重值)。参数列表必须照此排列。 |
++--------+--------------------------------------------------------------------+
+|  z     | 时间轴变量，转为因子后计算。如提供多个变量，只传入第一个。 |
++--------+--------------------------------------------------------------------+
+| series | 数据系列变量，转为因子后计算。可包含2个可选列(数据系列, 数据系列的权重)。参数列表必须照此排列。 |
++--------+--------------------------------------------------------------------+
+| type   | 'eventRiver' |
++--------+--------------------------------------------------------------------+
+
+
+# 举例Showcase
+
+## 基础图形Basic Plot
+
+```{r}
+data(events)
+events$link <- 'www.baidu.com'
+events$img <- 'inst/favicon.png'
+events$title <- paste(rownames(events), events$event)
+echartr(events, c(time, event, title, link, img), c(value, weight), series, 
+        type='eventRiver') %>% 
+    setTitle('Event River', 'Ficticious Data') %>% setXAxis(name='Time') %>%
+    setGrid(y2=80)
+```
+
+如果在`x`中为每个事件切片提供细节(title, link 和 image)，成图就会更有信息性。
+
+# 其他设定Futher Setup
+
+接下来可以配置控件、添加标注点/标注线，以及美化成图。
+
+参考相关函数，尽情探索吧。
+

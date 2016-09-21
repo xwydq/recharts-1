@@ -1,0 +1,139 @@
+---
+title: "控件Widget 03 - 绘图区Grid"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+首先，加载`recharts`:
+```{r}
+library(recharts)
+```
+
+# 介绍Introduction
+
+`setGrid`用于为直角坐标系图形设置绘图区网格 (但在其他类型的图中也可生效)。
+
+`setGrid`函数族有两类：设置网格和调整控件位置。关键是四个参数: x, y, x2, y2. 点(x, y)是控件/绘图区的左上角，而点(x2, y2)则是其右下角。
+
+每次调用recharts包的函数都会自动重算各控件尺寸，建议把`setGrid`函数族放置在链式调用栈的末尾。
+
+# 用法Function Call
+
+```r
+setGrid(chart, x = 80, y = 60, x2 = 80, y2 = 60, width = NULL,
+  height = NULL, bgColor = NULL, borderColor = NULL, borderWidth = 1,
+  widget = c("pane", "timeline", "legend", "title", "dataZoom", "dataRange",
+  "toolbox", "roamController"), ...)
+
+relocTitle(chart, x = NULL, y = NULL, ...)
+
+relocLegend(chart, x = NULL, y = NULL, ...)
+
+relocDataZoom(chart, x = NULL, y = NULL, ...)
+
+relocDataRange(chart, x = NULL, y = NULL, ...)
+
+relocTimeline(chart, x = NULL, y = NULL, x2 = NULL, y2 = NULL, ...)
+
+relocToolbox(chart, x = NULL, y = NULL, ...)
+
+relocRoam(chart, x = NULL, y = NULL, ...)
+```
+
++-------------+----------------------------------------------------------------+
+|  参数       |  要求                                              |
++=============+================================================================+
+| **chart**   | `echartR`或`echart`生成的Echarts对象.  |
++-------------+----------------------------------------------------------------+
+| x           | 绘图区/控件左上角的x坐标，默认为80px. |
++-------------+----------------------------------------------------------------+
+| y           | 绘图区/控件左上角的y坐标，默认为60px. |
++-------------+----------------------------------------------------------------+
+| x2          | 绘图区/控件右下角的x坐标，默认为80px. |
++-------------+----------------------------------------------------------------+
+| y2          | 绘图区/控件右下角的y坐标，默认为60px. |
++-------------+----------------------------------------------------------------+
+| width       | 宽度，默认为NULL (自动配置). |
++-------------+----------------------------------------------------------------+
+| height      | 高度，默认为NULL (自动配置). |
++-------------+----------------------------------------------------------------+
+| bgColor     | 绘图区背景色，默认为透明('rgba(0,0,0,0)'). |
++-------------+----------------------------------------------------------------+
+| borderColor | 绘图区边框颜色，默认为'#ccc'. |
++-------------+----------------------------------------------------------------+
+| borderWidth | 绘图区边框宽度，默认为0px (不显示). |
++-------------+----------------------------------------------------------------+
+| widget      | 要设置的控件名称，可以是c('pane', 'timeline', 'legend', 'title', 'dataZoom', 'dataRange', 'toolbox', 'roamController'). |
+|             |           |
+|             | - **pane**: 绘图区，接受上述所有参数 |
+|             | - **timeline**: 时间轴控件，可x, y, x2, y2 |
+|             | - **legend, title, dataZoom, dataRange, toolbox, roamController**: 其他控件，只接受x, y |
++-------------+----------------------------------------------------------------+
+| ...         | 省略号 |
++-------------+----------------------------------------------------------------+
+
+
+# 举例Showcase
+
+## 数据准备Data Preparation
+
+用`airquality`数据集生成Echarts对象`g`: 
+
+```{r}
+library(data.table)
+aq1 <- melt(airquality, id=c('Month', 'Day'), measure=c('Temp', 'Wind'), 
+            variable='Param')
+g <- echartr(aq1, Day, value, Param, z=Month, type='curve') %>% 
+    setToolbox(pos=3) %>% setTitle('Temp & Wind') %>% setDataZoom() %>% 
+    setDataRange()
+g
+```
+
+## 修饰Modification
+
+`setGrid`中的`width`和`height`与`setTheme`中的不同。`setGrid`只作用于绘图区。
+
+```{r}
+g %>% setGrid(width=300, height=200)
+```
+
+我们要把绘图区扩大一点。所以需要移动控件，然后用`setGrid`改变绘图区尺寸。
+
+移动控件，最简单的办法是用`set[Widgets]`函数族的`pos`参数。
+
+```{r}
+g1 <- g %>% setTitle(pos=12)
+g1
+```
+
+现在可以把时间轴和缩放漫游轴移到底部。由于缩放漫游只支持x和y，如果我们要把它放到底部，固定右下角的y2，怎么办呢？ Echarts对象的元数据中都有一个随机编码的`elementId`。我们可以用一个JavaScript表达式`document.getElementById(<elementId>).offsetHeight`动态获取画布高度。无论如何缩放画布窗口，控件都会保持正确的相对定位。
+
+```{r}
+g1 <- g1 %>% relocDataZoom(x=120, y=JS(paste0(
+    "document.getElementById('", g1$elementId, "').offsetHeight-30")))
+g1
+```
+
+`timeline`支持x2和y2。所以我们可以直接设置y2为25。这样，我们交换了时间轴和缩放漫游的位置。
+
+```{r}
+g1 <- g1 %>% relocTimeline(y2=25, x=120, x2=50)
+g1
+```
+
+最后，把绘图区增大。
+
+```{r}
+g1 %>% setGrid(x=120, y=40, x2=50, y2=90)
+```
+
+# 参考资料
+
+<http://echarts.baidu.com/echarts2/doc/option.html#title~grid>

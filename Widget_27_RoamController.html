@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Widget 27 - RoamController</title>
+
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/htmlwidgets-0.7/htmlwidgets.js"></script>
+<script src="libs/echarts-2.2.7/echarts-all.js"></script>
+<script src="libs/echarts-2.2.7/ext/params.js"></script>
+<script src="libs/echarts-2.2.7/ext/loadGeoJSON.js"></script>
+<script src="libs/echarts-binding-0.0.5/echarts.js"></script>
+<script src="libs/echarts-module-2.2.7/base.js"></script>
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 70px;
+}
+p code {
+  white-space: inherit;
+}
+.html-widget-static-bound {
+  margin: auto;
+}
+.alert>p {
+  margin-bottom: 10.5px;
+}
+</style>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/default.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="./">recharts</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="./">Home</a></li>
+        <li><a href="index_cn.html">首页</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="https://github.com/madlogos/recharts" title="View Source on Github"><i class="fa fa-github fa-lg"></i></a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</nav><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Widget 27 - RoamController</h1>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction"><span class="toc-section-number">1</span> Introduction</a></li>
+<li><a href="#function-call"><span class="toc-section-number">2</span> Function Call</a></li>
+<li><a href="#showcase"><span class="toc-section-number">3</span> Showcase</a></li>
+<li><a href="#references"><span class="toc-section-number">4</span> References</a></li>
+</ul>
+</div>
+
+<p>First, you should load <code>recharts</code>:</p>
+<pre class="r"><code>library(recharts)</code></pre>
+<div id="introduction" class="section level1">
+<h1><span class="header-section-number">1</span> Introduction</h1>
+<p>roamController is only for maps. The default position of roamController is 2 o’clock. Since the map can move and scale by default, roamController is not quite useful.</p>
+<p>The recommended approach to use <code>setRoam</code> is <code>chart %&gt;% setRoam(...)</code>.</p>
+</div>
+<div id="function-call" class="section level1">
+<h1><span class="header-section-number">2</span> Function Call</h1>
+<pre class="r"><code>setRoam(chart, show = TRUE, pos = 2, width = 80, height = 120,
+  bgColor = &quot;rgba(0,0,0,0)&quot;, borderColor = &quot;#ccc&quot;, borderWidth = 0,
+  fillerColor = &quot;#fff&quot;, handleColor = &quot;#6495ed&quot;, step = 15,
+  mapTypeControl = NULL, ...)</code></pre>
+<table>
+<colgroup>
+<col width="18%" />
+<col width="81%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Arg</th>
+<th align="left">Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><p><strong>chart</strong></p></td>
+<td align="left"><p>Echarts object generated by <code>echartR</code> or <code>echart</code>.</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>show</p></td>
+<td align="left"><p>logical. Show the roamController control if TRUE. If you want to remove roamController from the echarts object, set it NULL.</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>pos</p></td>
+<td align="left"><p>Clock position of the roamController. Default 2. Refer to <code>vecPos</code>. Or you can define the position vector <code>c(x, y, orient)</code> yourself. But note that roamController is always vertical.</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>width</p></td>
+<td align="left"><p>The width of the roamController. Default 80px.</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>height</p></td>
+<td align="left"><p>The width of the roamController. Default 120px.</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>bgColor</p></td>
+<td align="left"><p>background color, default transparent (‘rgba(0,0,0,0)’).</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>borderColor</p></td>
+<td align="left"><p>Border color, default ‘#ccc’.</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>borderWidth</p></td>
+<td align="left"><p>Border width, default 0px (not shown).</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>fillerColor</p></td>
+<td align="left"><p>Filler color, default ‘#fff’.</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>handleColor</p></td>
+<td align="left"><p>Handle color, default ‘#6495ed’.</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>step</p></td>
+<td align="left"><p>Movement in px per move. Default 15px.</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>mapTypeControl</p></td>
+<td align="left"><p>Which map to be controlled by roamController. E.g,, <code>list(china=TRUE)</code>. Default NULL and setRoam will calculate automatically.</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>…</p></td>
+<td align="left"><p>Elipsis.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="showcase" class="section level1">
+<h1><span class="header-section-number">3</span> Showcase</h1>
+<pre class="r"><code>g &lt;- echartr(NULL, type=&#39;map_china&#39;)
+g</code></pre>
+<div id="echarts-06cd200bf434335ded7b57b36b11a7240de4466c" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-06cd200bf434335ded7b57b36b11a7240de4466c">{"x":{"series":[{"type":"map","roam":true,"mapType":"china","itemStyle":{"normal":{"label":{"show":false}},"emphasis":{"label":{"show":true}}},"data":[]}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":""}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+<p>Initially roamController is not shown. Let’s turn if on.</p>
+<pre class="r"><code>g %&gt;% setRoam(show=TRUE)</code></pre>
+<div id="echarts-ebb0d6d8a6beb1993bdccbe2d37ef1e962323b2e" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-ebb0d6d8a6beb1993bdccbe2d37ef1e962323b2e">{"x":{"series":[{"type":"map","roam":true,"mapType":"china","itemStyle":{"normal":{"label":{"show":false}},"emphasis":{"label":{"show":true}}},"data":[]}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":""}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"roamController":{"show":true,"width":80,"height":120,"backgroundColor":"rgba(0,0,0,0)","borderColor":"#ccc","borderWidth":0,"fillerColor":"#fff","handleColor":"#6495ed","step":15,"mapTypeControl":{"china":true},"x":"right","y":"top"}},"evals":[],"jsHooks":[]}</script>
+<p>Relocate the roamController.</p>
+<pre class="r"><code>g %&gt;% setRoam(pos=8)</code></pre>
+<div id="echarts-658829dd0ede0ceeb3f7af39a1372cebe0a93546" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-658829dd0ede0ceeb3f7af39a1372cebe0a93546">{"x":{"series":[{"type":"map","roam":true,"mapType":"china","itemStyle":{"normal":{"label":{"show":false}},"emphasis":{"label":{"show":true}}},"data":[]}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":""}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"roamController":{"show":true,"width":80,"height":120,"backgroundColor":"rgba(0,0,0,0)","borderColor":"#ccc","borderWidth":0,"fillerColor":"#fff","handleColor":"#6495ed","step":15,"mapTypeControl":{"china":true},"x":"left","y":"bottom"}},"evals":[],"jsHooks":[]}</script>
+<p>Customize the format.</p>
+<pre class="r"><code>g %&gt;% setRoam(bgColor=&#39;darkgray&#39;, fillerColor=&#39;white&#39;, handleColor=&#39;black&#39;)</code></pre>
+<div id="echarts-edee73f3317dd084d26f7333211153cd8d26a7ac" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-edee73f3317dd084d26f7333211153cd8d26a7ac">{"x":{"series":[{"type":"map","roam":true,"mapType":"china","itemStyle":{"normal":{"label":{"show":false}},"emphasis":{"label":{"show":true}}},"data":[]}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":""}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"roamController":{"show":true,"width":80,"height":120,"backgroundColor":"darkgray","borderColor":"#ccc","borderWidth":0,"fillerColor":"white","handleColor":"black","step":15,"mapTypeControl":{"china":true},"x":"right","y":"top"}},"evals":[],"jsHooks":[]}</script>
+<p>set mapTypeControl and it no longer takes effect on China map.</p>
+<pre class="r"><code>g %&gt;% setRoam(mapTypeControl=list(world=TRUE))</code></pre>
+<div id="echarts-d9bafb684c2a28525e52ce271a2b8c3aca4b6c60" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-d9bafb684c2a28525e52ce271a2b8c3aca4b6c60">{"x":{"series":[{"type":"map","roam":true,"mapType":"china","itemStyle":{"normal":{"label":{"show":false}},"emphasis":{"label":{"show":true}}},"data":[]}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":""}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"roamController":{"show":true,"width":80,"height":120,"backgroundColor":"rgba(0,0,0,0)","borderColor":"#ccc","borderWidth":0,"fillerColor":"#fff","handleColor":"#6495ed","step":15,"mapTypeControl":{"world":true},"x":"right","y":"top"}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="references" class="section level1">
+<h1><span class="header-section-number">4</span> References</h1>
+<p><a href="http://echarts.baidu.com/echarts2/doc/option.html#title~roamController" class="uri">http://echarts.baidu.com/echarts2/doc/option.html#title~roamController</a></p>
+</div>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+    // active menu
+    var href = window.location.pathname;
+    href = href.substr(href.lastIndexOf('/') + 1);
+    if (href === '') href = './';
+    $('a[href="' + href + '"]').parent().addClass('active');
+});
+</script>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+
+</body>
+</html>

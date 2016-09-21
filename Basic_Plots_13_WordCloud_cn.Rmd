@@ -1,0 +1,159 @@
+---
+title: "基础图形Basic Plots 21 - 词云WordCloud"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+首先，加载`recharts`:
+```{r}
+library(recharts)
+```
+
+# 介绍Introduction
+
+词云只有一种类型: wordCloud
+
+<table id='intro'>
+<tr><td>
+```{r,echo=FALSE}
+getBaiduHot <- function(url, top=30, HTMLencoding='GB2312'){
+    baiduhot <- paste0(readLines(url), collapse="")
+    charset <- gsub('^.+charset=([[:alnum:]-]+?)[^[:alnum:]-].+$', "\\1", baiduhot)
+    if (!is.null(charset)) HTMLencoding <- charset
+    baiduhot <- iconv(baiduhot, from=HTMLencoding)
+    hotword <- gsub(".+?<a class=\"list-title\"[^>]+?>([^<>]+?)</a>.+?<span class=\"icon-(rise|fair|fall)\">(\\d+?)</span>.+?","\\1\t\\3\t\\2\t", baiduhot)
+    hotword <- enc2native(gsub("^(.+?)\t{4,}.+$","\\1",hotword))
+    hotword <- t(matrix(unlist(strsplit(hotword,"\t")), nrow=3))
+    hotword <- as.data.frame(hotword, stringsAsFactors=FALSE)
+    names(hotword) <- c("Keyword", "Freq", "Trend")
+    hotword$Freq <- as.numeric(hotword$Freq)
+    hotword <- hotword[order(hotword$Freq, decreasing=TRUE),]
+    return(hotword[1:top,])
+}
+hotword <- getBaiduHot("http://top.baidu.com/buzz?b=1")
+
+echartr(hotword[1:30,], Keyword, Freq, type='wordCloud') %>% 
+    setTheme('infographic', width=400, height=300)
+```
+</td>
+<td>
+</table>
+
+关键是:
+
+- 文本型`x`，词列表
+- 数值型`y`，词汇的频数
+- `series`与图例无关联，而与颜色关联
+
+# 用法Function Call
+
+```r
+echartr(data, x, y, <z>, <type>)
+```
+
++--------+---------------------------------------------------------------------+
+| 参数   |  要求                                                      |
++========+=====================================================================+
+|**data**| 数据框格式的源数据                         |
++--------+--------------------------------------------------------------------+
+| **x**  | 文本型自变量，其他类型会被转为因子。如提供多个变量，只传入第一个。 |
++--------+--------------------------------------------------------------------+
+| **y**  | 数值型应变量。如提供多个变量，只传入第一个。 |
++--------+--------------------------------------------------------------------+
+| series | 数据系列变量，转为因子后计算。如提供多个变量，只传入第一个。 |
++--------+--------------------------------------------------------------------+
+|  z     | 时间轴变量，转为因子后计算。如提供多个变量，只传入第一个。|
++--------+--------------------------------------------------------------------+
+| type   | 'wordCloud' |
++--------+--------------------------------------------------------------------+
+
+
+# 举例Showcase
+
+## 数据准备Data Preparation
+
+从百度热词榜获取热词，并解析为数据框，包含热词和频数。
+
+为此构建一个函数`getBaiduHot`，解析_百度热词趋势_ 网页。
+
+```{r}
+getBaiduHot <- function(url, top=30, HTMLencoding='GB2312'){
+    baiduhot <- paste0(readLines(url), collapse="")
+    charset <- gsub('^.+charset=([[:alnum:]-]+?)[^[:alnum:]-].+$', "\\1", 
+                    baiduhot)
+    if (!is.null(charset)) HTMLencoding <- charset
+    baiduhot <- iconv(baiduhot, from=HTMLencoding)
+    hotword <- gsub(".+?<a class=\"list-title\"[^>]+?>([^<>]+?)</a>.+?<span class=\"icon-(rise|fair|fall)\">(\\d+?)</span>.+?","\\1\t\\3\t\\2\t", baiduhot)
+    hotword <- enc2native(gsub("^(.+?)\t{4,}.+$","\\1", hotword))
+    hotword <- t(matrix(unlist(strsplit(hotword,"\t")), nrow=3))
+    hotword <- as.data.frame(hotword, stringsAsFactors=FALSE)
+    names(hotword) <- c("Keyword", "Freq", "Trend")
+    hotword$Freq <- as.numeric(hotword$Freq)
+    hotword <- hotword[order(hotword$Freq, decreasing=TRUE),]
+    return(hotword[1:top,])
+}
+hotword <- getBaiduHot("http://top.baidu.com/buzz?b=1")
+knitr::kable(hotword)
+```
+
+## 基本图形Basic Plot
+
+只要提供`x`和`y`。
+
+```{r}
+echartr(hotword, Keyword, Freq, type='wordCloud') %>% 
+    setTitle('Baidu Hot Word Top30 (realtime)', as.character(Sys.time()))
+```
+
+## 按数据系列着色Color by Series
+
+我们希望将热词分组。定义一个`series`变量'Trend'。'rise'系列和'fall'系列用不同的颜色标注。
+
+```{r}
+echartr(hotword, Keyword, Freq, Trend, type='wordCloud') %>% 
+    setTitle('Baidu Hot Word Top30 (realtime)', as.character(Sys.time()))
+```
+
+## 带时间轴With Timeline
+
+比较实时、今日和七日热词趋势。
+
+首先，获取今日和七日两个榜单的网页并转为数据框，合并。
+
+```{r}
+hotword$z <- 'Realtime'
+hotword1 <- getBaiduHot("http://top.baidu.com/buzz?b=341&fr=topbuzz_b1")
+hotword1$z <- 'Today'
+hotword2 <- getBaiduHot("http://top.baidu.com/buzz?b=42&c=513&fr=topbuzz_b341")
+hotword2$z <- '7-days'
+hotword <- do.call('rbind', list(hotword, hotword1, hotword2))
+hotword$z <- factor(hotword$z, levels=c('Realtime', 'Today', '7-days'))
+```
+
+然后作图。
+
+```{r}
+g <- echartr(hotword, Keyword, Freq, z=z, type='wordCloud') %>% 
+    setTitle('Baidu Hot Word Top30')
+g
+```
+
+# 其他设定Futher Setup
+
+接下来可以配置控件、添加标注点/标注线，以及美化成图。
+
+## 设置主题`setTheme`
+
+```{r}
+g %>% setTheme('dark', palette='manyeyes')
+```
+
+-------------------
+
+参考相关函数，尽情探索吧。

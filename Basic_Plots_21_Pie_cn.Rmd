@@ -1,0 +1,219 @@
+---
+title: "基础图形Basic Plots 21 - 饼图Pie Chart"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+首先，加载`recharts`:
+```{r}
+library(recharts)
+```
+
+# 介绍Introduction
+
+饼图有3种基本类型:
+
+- 饼图: pie
+- 环图: ring
+- 南丁格尔玫瑰图: rose
+
+<table id='intro'>
+<tr><td>
+```{r,echo=FALSE}
+titanic <- data.table::melt(apply(Titanic, c(1,4), sum))
+names(titanic) <- c('Class', 'Survived', 'Count')
+echartr(titanic, Survived, Count, Class, type='pie') %>% 
+    setLegend(pos=3) %>%
+    setTheme('infographic', width=400, height=300) %>%
+    setTitle('Titanic: Survival by Cabin Class','pie')
+```
+</td>
+<td>
+```{r,echo=FALSE}
+echartr(titanic, Survived, Count, Class, type='ring') %>% 
+    setTheme('roma', width=400, height=300) %>% setLegend(pos=3) %>%
+    setTitle('Titanic: Outcome by Cabin Class','ring')
+```
+</td></tr>
+<tr><td>
+```{r,echo=FALSE}
+echartr(titanic, Survived, Count, Class, type='rose') %>% 
+    setTheme('macarons2', width=400, height=300) %>% setLegend(pos=3) %>%
+    setTitle('Titanic: Outcome by Cabin Class','rose')
+```
+</td><td>
+
+</td></tr>
+</table>
+
+关键是:
+
+- 文本型`x`和数值型`y`，会使用`data.table::dcast`压缩（`fun=sum`）
+- **`x`用作数据系列，而`series`用于产生多个不同的饼图!**
+- 饼图和漏斗图可通过工具箱按钮快速切换
+
+# 用法Function Call
+
+```r
+echartr(data, x, <y>, <series>, <z>, <type>, <subtype>)
+```
+
++--------+--------------------------------------------------------------------+
+| 参数   |  要求                                                    |
++========+====================================================================+
+|**data**| 数据框格式的源数据                                |
++--------+--------------------------------------------------------------------+
+| **x**  | 文本型自变量。`x`的每个水平被处理为一个数据系列。其他类型会被转为因子后计算。如提供多个变量，只传入第一个。 |
++--------+--------------------------------------------------------------------+
+| y      | 数值型应变量。如提供多个变量，只传入第一个。 |
++--------+--------------------------------------------------------------------+
+| series | 转为因子后计算。`series`的每个水平被处理为分组因子，用于产生独立的饼图。如提供多个变量，只传入第一个。|
++--------+--------------------------------------------------------------------+
+|  z     | 时间轴变量，转为因子后计算。如提供多个变量，只传入第一个。 |
++--------+--------------------------------------------------------------------+
+| type   | 'pie', 'ring', 'rose'. |
++--------+--------------------------------------------------------------------+
+| subtype| - pie: c("multi","clock","clockwise") | 
+|        |     + multi: 多选模式 |
+|        |     + clock/clokwise: 饼图顺时针显示 |
+|        | - ring: c("info","multi","clock","clockwise") |
+|        |     + info: 信息图样式环图 |
+|        | - rose: c("area","radius","multi","clock","clockwise") |
+|        |     + area: 面积模式玫瑰图 |
+|        |     + radius: 半径模式玫瑰图 |
++--------+--------------------------------------------------------------------+
+
+
+# 举例Showcase
+
+## 数据准备Data Preparation
+
+考察`datasets`包自带的数据集`Titanic`。不同舱别生存人数如下：
+
+```{r}
+titanic <- data.table::melt(apply(Titanic, c(1,4), sum))
+names(titanic) <- c('Class', 'Survived', 'Count')
+knitr::kable(titanic)
+```
+
+## 饼图Pie Chart
+
+### 单个饼图Single Pie
+
+`type`设为'pie'。
+
+```{r}
+echartr(titanic, Class, Count, type='pie') %>%
+    setTitle('Titanic: N by Cabin Class')
+```
+
+### 多个饼图Multiple Pies
+
+与直角坐标系下不同，饼图用`series`作为区分不同极坐标系的分组变量。所以当我们把`Class` (有4个水平) 作为`series`，可以得到4个饼图。
+
+```{r}
+echartr(titanic, Survived, Count, Class, type='pie') %>%
+    setTitle('Titanic: Survival Outcome by Cabin Class')
+```
+
+### 多个饼图（不带X）Multiple Series without X
+
+如果只提供`series`和`y`会怎么样？我们会得到多个两分类饼图。
+
+```{r}
+echartr(titanic, y=Count, series=Class, type='pie') %>%
+    setTitle('Titanic: Propotion of Each Cabin Class')
+```
+
+### 带时间轴的饼图Pies With Timeline
+
+需要一个时间轴变量。不妨用'sex'。
+
+```{r}
+titanic_sex <- data.table::melt(apply(Titanic, c(1,2,4), sum))
+names(titanic_sex)[4] <- "Count"
+knitr::kable(titanic_sex)
+```
+
+```{r}
+echartr(titanic_sex, Survived, Count, Class, z=Sex, type='pie') %>% 
+    setTitle("Titanic: Survival Outcome by Cabin Class Across Sex") %>%
+    setPolar(radius='30%')
+```
+
+## 环图Ring Chart
+
+### 常规环图Regular Ring Chart
+
+`type`设为'ring'。
+
+```{r}
+echartr(titanic, Survived, Count, Class, type='ring') %>%
+    setTitle('Titanic: Survival Outcome by Cabin Class')
+```
+
+### 信息图样环图Infographic Ring Chart
+
+信息图样环图是特例。需要一步步小心地配置。
+
+```{r}
+ds <- data.frame(q=c('68% feel good', '29% feel bad', '3% have no feelings'),
+              a=c(68, 29, 3))
+```
+
+构建底图。
+
+```{r}
+g <- echartr(ds, q, a, type='ring', subtype='info') %>% 
+    setTheme('macarons', width=800, height=600) %>%
+    setTitle('How do you feel?','ring_info', 
+             pos=c('center','center', 'horizontal'))
+g
+```
+
+但图例的位置不对。所以我们首先设置`pos=c('center','top','vertical')`，然后用`relocLegend`微调其位置。 
+
+> 每调用一次控件配置函数，`echartr`就会用`tuneGrid`函数自动调整各控件的尺寸、位置。所以，如果你用`setLegend`设置图例的尺寸和位置，会被后续的自动配置覆盖。建议把`relocWidget`放在链式调用的末尾。 
+
+```{r}
+width = 800
+height = 600
+g %>% setLegend(pos=c('center','top','vertical'), itemGap=height/25) %>%
+    relocLegend(x=width/2, y=height/8)
+```
+
+## 南丁格尔玫瑰图Nighingale Rose Chart 
+
+### 半径模式Radius Mode
+
+`type`设为'rose'，`subtype`设为'radius'。
+
+```{r}
+echartr(titanic_sex, Class, Count, Survived, type='rose', subtype='radius') %>%
+    setTitle('Titanic: Survival Outcome by Cabin Class') 
+```
+
+## 面积模式Area Mode
+
+`type`设为'rose'，`subtype`设为'area'。
+
+```{r}
+echartr(titanic_sex, Class, Count, Survived, type='rose', subtype='area') %>%
+    setTitle('Titanic: Survival Outcome by Cabin Class') 
+```
+
+
+# 其他设定Futher Setup
+
+接下来可以配置控件、添加标注点/标注线，以及美化成图。
+
+参考相关函数，尽情探索吧。
+
+

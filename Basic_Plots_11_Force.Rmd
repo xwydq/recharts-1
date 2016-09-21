@@ -1,0 +1,176 @@
+---
+title: "Basic Plots 14 - Force Chart"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+First, you should load `recharts`:
+```{r}
+library(recharts)
+```
+
+# Introduction
+
+Force plot includes 2 basic types:
+
+- Force chart with curve
+- Force chart with line
+
+<table id='intro'>
+<tr><td>
+```{r,echo=FALSE}
+nodes <- cbind(yuNetwork$nodes[,1], NA, yuNetwork$nodes[,2:3],
+               stringsAsFactors=FALSE)
+names(nodes) <- names(yuNetwork$links)
+yu <- rbind(yuNetwork$links, nodes, stringsAsFactors=FALSE)
+
+echartr(yu, c(source, target), weight, relation, type='force') %>% 
+    setTitle("Yu Family of Shaoxing") %>% setTheme(palette=c(
+        'tan3','green3','green2','lawngreen','olivedrab1'), 
+        width=400, height=300)
+```
+</td>
+<td>
+```{r,echo=FALSE}
+echartr(yu, c(source, target), weight, relation, type='force_line') %>% 
+    setTitle("Yu Family of Shaoxing") %>% setTheme(palette=c(
+        'tan3','green3','green2','lawngreen','olivedrab1'), 
+        width=400, height=300)
+```
+</td></tr>
+</table>
+
+The keys are:
+
+- data structure:
+  - matrix mode: A data.frame comprising of a column of name, and a numeric matrix. Assign the name column to x, the matrix to y.
+  - node/link mode: node data.frame [x, NA, series, weight]; link data.frame [x, x1, relation, value]. Combine them using `rbind`. If you don't provide node data.frame, recharts will build it automatically. Assign the param list [x, x1, series/relation, weight/value] accordingly.
+- force chart and chord chart are exchangeble by the toolbox buttons.
+
+# Function Call
+
+```r
+echartr(data, x, <y>, <series>, <z>, <type>, <subtype>)
+```
+
++--------+--------------------------------------------------------------------+
+| Arg    |  Requirement                                                       |
++========+====================================================================+
+|**data**| source data in the form of data.frame |
++--------+--------------------------------------------------------------------+
+| **x**  | character independent variable. Other type will be coerced to factors. For node/link mode, you must provide two columns of `x`. For matrix mode, only the first column of `x` is accepted. |
++--------+--------------------------------------------------------------------+
+| **y**  | numeric dependent variable. For node/link mode, only the first column of `y` is accepted. For matrix mode, all the columns of `y` are accepted. |
++--------+--------------------------------------------------------------------+
+| series | series variable which will be coerced to factors. Only the first one is accepted if multiple variables are provided. |
++--------+--------------------------------------------------------------------+
+|  z     | timeline variable which will be coerced to factors. Only the first one is accepted if multiple variables are provided. |
++--------+--------------------------------------------------------------------+
+| type   | 'force'/'force_curve', 'force_line'. |
++--------+--------------------------------------------------------------------+
+| subtype| - force: c("arrow", "triangle") | 
+|        |     + arrow: The end symbol of the connection lines is arrow. |
+|        |     + triangle: The end symbol of the connection lines is triangle |
+|        | - force_line: c("arrow", "triangle")  |
++--------+--------------------------------------------------------------------+
+
+# Showcase
+
+## Data Preparation
+
+
+### Matrix Mode
+
+```{r}
+grpmtx <- matrix(c(11975, 5871, 8916, 2868, 1951, 10048, 2060, 6171, 8010, 16145,
+                   8090, 8045, 1013, 990, 940, 6907), byrow=TRUE, nrow=4)
+grpmtx <- as.data.frame(grpmtx)
+names(grpmtx) <- paste0('Group', 1:4)
+grpmtx$Name <- paste0('Group', 1:4)
+knitr::kable(grpmtx, align=c('lllll'))
+```
+
+The first 4 columns are exactly a matrix structure and the last column is a name vector. So this meets data structure requirements for matrix mode.
+
+Matrix mode can be transformed to node/link mode as well. Matrix[i, j] represents 2 nodes (i & j) and 1 link (i -> j).
+
+### Node/link Mode
+
+```{r}
+str(yuNetwork)
+```
+
+The yuNetwork dataset contains a nodes data.frame and a links data.frame. You can then combine them into one.
+
+- nodes: 
+    - `name`: the nodes name, 
+    - `series`: the series that the nodes belongs to, 
+    - `value`: the importance score of the nodes.
+- links: 
+    - `source` and `target`: defines the connections, 
+    - `relation`: the name of the connections, 
+    - `weight`: the importance sorce of the connections.
+
+```{r}
+nodes <- cbind(yuNetwork$nodes[,1], NA, yuNetwork$nodes[,2:3],
+               stringsAsFactors=FALSE)
+names(nodes) <- names(yuNetwork$links)
+yu <- rbind(yuNetwork$links, nodes, stringsAsFactors=FALSE)
+```
+
+
+## Force Chart
+
+### Force with Curve
+
+Set `type` 'force'.
+
+```{r}
+echartr(yu, c(source, target), weight, relation, type='force') %>% 
+    setTitle("Yu Family of Shaoxing") %>% setTheme(palette=c(
+        'tan3','green3','green2','lawngreen','olivedrab1'))
+```
+
+### Force with Line
+
+#### Matrix Mode
+
+```{r}
+echartr(grpmtx, Name, c(Group1, Group2, Group3, Group4), type='force_line') %>% 
+  setTitle('Test Data', 'Force with ribbon')
+```
+
+#### Node/link Mode
+
+Set `type` 'force_line'.
+
+```{r}
+echartr(yu, c(source, target), weight, relation, type='force_line') %>% 
+    setTitle("Yu Family of Shaoxing") %>% setTheme(palette=c(
+        'tan3','green3','green2','lawngreen','olivedrab1'))
+```
+
+
+### Force with Timeline
+
+Let's use `year` columns as timeline.
+
+```{r}
+echartr(deutsch, c(club, player), weight, role, z=year,
+        type='force', sub='arrow') %>% 
+  setTitle('Club Orientation of Deutsch Soccer Team')
+```
+
+# Futher Setup
+
+Then you can configure the widgets, add markLines and/or markPoints, fortify the chart.
+
+You can refer to related functions to play around on your own.
+

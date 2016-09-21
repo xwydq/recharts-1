@@ -1,0 +1,424 @@
+---
+title: "recharts: 百度ECharts的R语言接口"
+output: 
+  html_document: 
+    toc: yes
+    toc_depth: 4
+---
+
+---
+
+<div class="alert alert-warning">
+
+<strong>注意:</strong>本加载包仍在开发完善中。recharts基于百度Echarts2的最后一个稳定发布版(v2.2.7)开发。本文档始终反映**recharts**最新的特性([Github](https://github.com/madlogos/recharts))。安装方法：
+
+```r
+if (!require(devtools)) library(devtools)
+install_github("madlogos/recharts")
+```
+
+</div>
+
+# 知识地图Knowledge Map
+
+1. 基本图类
+    1. 单个坐标系
+        1. 直角坐标系
+            1. [散点图Scatter/气泡图Bubble Plot](Basic_Plots_01_Scatterplot_cn.html)
+            1. [条图Bar/柱图Column Chart](Basic_Plots_02_Bar_cn.html)
+            1. [线图Line/面积图Area Chart](Basic_Plots_03_Line_cn.html)
+            1. [蜡烛图/K线图Candlestick/K Chart](Basic_Plots_04_K_cn.html)
+            1. [事件河流图Event River Chart](Basic_Plots_05_eventRiver_cn.html)
+        1. 其他
+            1. [力导向布局图Force Chart](Basic_Plots_11_Force_cn.html)
+            1. [和弦图Chord Chart](Basic_Plots_12_Chord_cn.html)
+            1. [词云Word Cloud](Basic_Plots_13_WordCloud_cn.html)
+            1. [韦恩图Venn Chart](Basic_Plots_14_Venn_cn.html)
+            1. [热力图Heatmap](Basic_Plots_15_Heatmap_cn.html)
+    1. 多个坐标系
+        1. 极坐标系
+            1. [饼图Pie/环状图Ring/玫瑰图Rose Chart](Basic_Plots_21_Pie_cn.html)
+            1. [漏斗图Funnel/金字塔图Pyramid Chart](Basic_Plots_22_Funnel_cn.html)
+            1. [雷达图Radar Chart](Basic_Plots_23_Radar_cn.html)
+            1. [仪表盘Gauge Chart](Basic_Plots_24_Gauge_cn.html)
+        1. 其他
+            1. [地图Map](Basic_Plots_31_Map_cn.html)
+            1. [树图Tree Chart](Basic_Plots_32_Tree_cn.html)
+            1. [矩形树图Treemap](Basic_Plots_33_Treemap_cn.html)
+1. [混合图类](Mixed_Plots_cn.html)
+1. 坐标轴/控件配置
+    1. 调整数据系列
+        1. [设置系列`setSeries`](setSeries_cn.html)
+    1. 坐标轴/制图区
+        1. [设置坐标轴`setAxis`](Widget_01_Axis_cn.html)
+        1. [设置极坐标系`setPolar`](Widget_02_Polar_cn.html)
+        1. [设置绘图区`setGrid`](Widget_03_Grid_cn.html)
+    1. 图形元件
+        1. [添加标注线`addMarkLine`](Widget_11_markLine_cn.html)
+        1. [添加标注点`addMarkPoint`](Widget_12_markPoint_cn.html)
+    1. 控件
+        1. [设置标题`setTitle`](Widget_21_Title_cn.html)
+        1. [设置图例`setLegend`](Widget_22_Legend_cn.html)
+        1. [设置时间轴`setTimeline`](Widget_23_Timeline_cn.html)
+        1. [设置工具箱`setToolbox`](Widget_24_Toolbox_cn.html)
+        1. [设置值域选择`setDataRange`](Widget_25_DataRange_cn.html)
+        1. [设置缩放漫游`setDataZoom`](Widget_26_DataZoom_cn.html)
+        1. [设置地图漫游`setRoam`](Widget_27_RoamController_cn.html)
+    1. 样式特性
+        1. [样式`aesStyle`](aesStyle_cn.html)
+1. 美工
+    1. [设置提示框`setTooltip`](Widget_31_Tooltip_cn.html)
+    1. [设置符号`setSymbols`](Widget_32_SymbolList_cn.html)
+    1. [设置主题`setTheme`](Widget_33_Theme_cn.html)
+1. [定制化](Cust_Plots_cn.html)
+
+# Hello World
+
+**recharts**是一个用于可视化的R加载包，它提供了一套面向JavaScript库[ECharts2](http://echarts.baidu.com/echarts2)的接口。此包的目的是让R用户即便不精通HTML或JavaScript，也能用很少的代码做出Echarts交互图——当然，懂一点JavaScript的话会更如虎添翼。下面这个散点图展示了本包的基本语法：
+
+```{r}
+library(recharts)
+echartr(iris, ~Sepal.Length, ~Sepal.Width, series = ~Species)
+```
+
+**recharts**建基于[**htmlwidgets**](http://htmlwidgets.org)包之上，这样做的优点是极大地节省了开发者管理JavaScript依赖包和处理不同类型的输出文档（如R Markdown和Shiny）的时间。你只需要创建一幅图，而如何输出这幅图（无论R Markdown, Shiny, 还是R控制台/ RStudio）则交由htmlwidgets来处理。
+
+此包的主函数是`echartr()`和S3通用函数`echart()`。在设计宗旨上，我们希望它们能自动处理不同类型的R数据。比如，当把一个数据框传入`echart()`，而`x`/`y`变量均为数值型，它们会自动适配散点图，并自动生成对应的坐标轴。当然，你也可以覆盖自动适配的结果。
+
+# 快速入门Quick Start
+
+试着按下面的步骤制作你的第一幅Echarts交互图。
+
+## 数据Data
+制图总是始于数据本身。我们用`datasets`包自带的`mtcars`数据集。你可以输入命令`?mtcars`查看数据集的结构。
+
+```{r}
+head(mtcars)
+```
+
+我们想知道`wt` (weight)和`mpg` (miles per gallon)的关联，那么散点图是一个不错的选择。这要求x和y都是数值型。
+
+## 基础图形Core Chart
+
+用`echartr`构建基础图形。
+
+```{r}
+echartr(mtcars, wt, mpg)
+```
+
+`echartr`的语法是：
+
+```{r, echo=FALSE}
+str(args(echartr))
+```
+
+### 参数Arguments
+
++-----------+------------------------------------------------------------------+
+|   参数    |               解释               |
++===========+==================================================================+
+| **data**  | 源数据，必须是数据框 |
++-----------+------------------------------------------------------------------+
+|  x        | 自变量。`data`的一列或多列。可以是时间、数值或文本型。   |
+|           |              |
+|           | - 直角坐标系里，`x`与x轴关联 |
+|           | - 在极坐标系，`x`的第一变量与极坐标关联，`x`的第二变量为数据系列(映射到图例) |
+|           | - 其他类型中，单坐标系可参考直角坐标系的例子，而多坐标系可参考极坐标系的例子。  |
++-----------+------------------------------------------------------------------+
+|  y        | 应变量，`data`的一列或多列。始终为数值型。 |
++-----------+------------------------------------------------------------------+
+|  series   | 分组变量，`data`的某一列。进行运算时被视作因子。 |
+|           |    |
+|           | - 直角坐标系里，`series`为数据系列 (映射到图例)。   |
+|           | - 极坐标系里，`series`映射到极坐标系的索引值。 |
+|           | - 其他类型中，单坐标系可参考直角坐标系的例子，而多坐标系可参考极坐标系的例子。 |
++-----------+------------------------------------------------------------------+
+|  weight   | 权重变量，在气泡图、线图、柱图中与图形大小关联。 |
++-----------+------------------------------------------------------------------+
+|  z        | 时间轴变量。一旦指定`z`变量，就会生成时间轴组件。 |
++-----------+------------------------------------------------------------------+
+|  lat      | 纬度，用于地图/热力图 |
++-----------+------------------------------------------------------------------+
+|  lng      | 经度，用于地图/热力图 |
++-----------+------------------------------------------------------------------+
+|  type     | 图类型，默认为'auto'。`type`作为向量传入时，映射到`series`向量。 |
++-----------+------------------------------------------------------------------+
+| subtype   | 图亚类，默认为NULL。`subtype`作为向量传入时，映射到`series`向量。 |
++-----------+------------------------------------------------------------------+
+
+### 支持的图类型Supported Chart Types
+
+`echartr`目前支持下列图类型 ('name'列的正则样式，不分大小写)。'type'列则是目前Echarts2所支持的图类型。
+
+```{r}
+knitr::kable(recharts:::validChartTypes[,c(1:3,5)])
+```
+
+指定`data`以及`x`、`y`，`echartr`就会自动调用`recharts:::series_scatter`函数处理数据。
+
+如果指定`series`，就会产生一幅分组散点图。
+
+```{r}
+echartr(mtcars, wt, mpg, factor(am, labels=c('Automatic', 'Manual')))
+```
+
+如果指定`weight`，并设`type`为`bubble`，就生成一幅气泡图。
+
+```{r}
+echartr(mtcars, wt, mpg, am, weight=gear, type='bubble')
+```
+
+### 特别注意Special Notes
+
+#### 参数列表Param List
+
+输入参数列表的格式包括
+
+- 表达式: `wt`、`mpg` 甚至复杂如`factor(am, labels=c('Automatic', 'Mannual'))`
+- 文本: `'wt'`、`'mpg'`
+- 公式: `~wt`、`~mpg`
+
+#### 数据要求Data Requirements
+
+数据必须以数据框形式传入。数据系列和时间轴会以`series`和`z`变量的原始顺序排序。所以作图前，必须先对数据框进行相应的排序，以确保作出的图里，图例和时间轴以正确的顺序显示。
+
+用到时间轴(`z`)时，务必格外小心。`x`、`y`、`series`、`weight`变量一旦用到，就要确保每个`z`水平上，这些变量都完备地排列组合了。否则你会发现各组图形在时间轴上莫名其妙地重叠呈现。
+
+对`series`要特别留意，因为在单坐标系（如直角坐标系）和多坐标系（如极坐标系）中，series的作用是不同的。在前一种情形下，`series`指数据系列。但在后一种情形下，`series`指的是坐标系索引，而`x[,2]`才指数据系列。这样设计是因为`type`和`subtype`固定映射到`series`向量，而在多坐标系图中，用户通常倾向于把不同的图类/亚类映射到多个不同的图，而不是数据系列。
+
+#### 图类和亚类Type/Subtype
+`recharts`在某些情况下支持混合作图，比如柱图和线图。
+
+```{r}
+d <- data.table::dcast(mtcars, carb+gear~., mean, value.var='mpg')
+names(d)[3] <- 'mean.mpg'
+d$carb <- as.character(d$carb)
+echartr(d, carb, "mean.mpg", gear, type=c('vbar', 'vbar', 'line')) %>% 
+    setSymbols('emptycircle')
+```
+
+也可以混合亚类。参见`recharts:::validChartTypes`的`subtype`列。你可以用'+'、'_'或'|'组合多个亚类，比如'stack+smooth'可以用来生成堆积平滑线图。
+
+```{r}
+echartr(d, carb, mean.mpg, gear, type='line', 
+        subtype=c('stack + smooth', 'stack + dotted', 'smooth + dashed')) %>%
+    setSymbols('emptycircle')
+```
+
+## 修改作图Modify the Chart
+
+你可以将基本图形存为一个对象，然后不断修改它，并把这些修改用`%>%`串联起来。
+
+```{r}
+g = echartr(mtcars, wt, mpg, factor(am, labels=c('Automatic', 'Manual')))
+```
+
+### 调整Tune Series
+
+上述命令创建了一个Echarts对象`g`，包含两个数据系列：'Automatic'和'Manual'。`g`作为一个列表，其数据结构为：
+
+```
+- x
+    - series
+        - list 1
+            - name: 'Automatic'
+            - data: ...
+            - type: 'scatter'
+        - list 2
+            - name: 'Manual'
+            - data: ...
+            - type: 'scatter'
+    - legend
+    - xAxis
+    - yAxis
+    - tooltip
+    ...
+```
+
+如果你想直接修改数据系列的定义，可以调用低阶函数`setSeries`。
+
+我们把'Manual'系列(索引号为2)的symbolSize改为8，symbolRotate改为30。
+
+```{r}
+g %>% setSeries(series=2, symbolSize=8, symbolRotate=30)
+```
+
+### 标注线markLine
+
+给两个数据系列分别添加各自的均数标注线。
+
+```{r}
+g %>% addMarkLine(data=data.frame(type='average', name1='Avg'))
+```
+
+### 标注点markPoint
+
+给第一个数据系列('Automatic')标出最大值的点。
+
+```{r}
+g %>% addMarkPoint(series=1, data=data.frame(type='max', name='Max'))
+```
+
+该命令也可以写作
+```r
+g %>% addMarkPoint(series='Automatic', data=data.frame(type='max', name='Max'))
+```
+
+### 标题Title
+
+添加标题(红色)和副标题(超级链接到 <https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/mtcars.html>)。
+
+```{r}
+link <- 'https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/mtcars.html'
+g %>% setTitle('wt vs mpg', paste0('[Motor Trend](', link, ')'), 
+               textStyle=list(color='red'))
+```
+
+### 图例Legend
+
+修改图例(柠檬色)，初始化时只选中第一系列('Automatic')。
+
+```{r}
+g %>% setLegend(selected='Automatic', textStyle=list(color='lime'))
+```
+
+### 工具箱Toolbox
+
+修改工具箱显示语言为英文，并置于交互图右上角，垂直显示。
+
+```{r}
+g %>% setToolbox(lang='en', pos=2)
+```
+
+### 数据缩放漫游DataZoom
+
+添加缩放漫游控件(初始时不显示).
+
+```{r}
+g %>% setDataZoom()
+```
+
+### 坐标轴Axis
+
+调整坐标轴，使x-和y-坐标交叉于零点。
+
+```{r}
+g %>% setXAxis(min=0) %>% setYAxis(min=0)
+```
+
+## 美化Fortify the Chart
+
+### 主题Theme
+
+使用'dark'主题。可以选择的自带主题包括"macarons", "infographic", "blue", "dark", "gray", "green", "helianthus", "macarons2", "mint", "red", "roma", "sakura", "shine",  和 "vintage"。
+
+拖曳重算(Calculable)是Echarts特有的交互方式。在某些图(如饼图)中，效果比较好。
+
+```{r}
+g %>% setTheme('dark', calculable=TRUE)
+```
+
+### 图标Symbols
+
+把第1系列('Automatic')的图标改为'heart'，第2系列('Manual')的图标改为'star6'。
+
+```{r}
+g %>% setSymbols(c('heart', 'star6'))
+```
+
+## 合起来Altogether
+
+你可以把上述步骤用%>%合起来。如果你对JavaScript很熟悉，你可以把JavaScript片段包在`JS()`函数中，以获得更好的效果。
+
+```{r}
+g %>% setSeries(series=2, symbolSize=8, symbolRotate=30) %>% 
+    addMarkLine(data=data.frame(type='average', name1='Avg')) %>%
+    addMarkPoint(series=1, data=data.frame(type='max', name='Max')) %>%
+    setTitle('wt vs mpg', paste0('[Motor Trend](', link, ')'), 
+               textStyle=list(color='red')) %>%
+    setLegend(selected='Automatic', textStyle=list(color='lime')) %>%
+    setToolbox(lang='en', pos=2) %>% setDataZoom() %>% 
+    setTheme('dark', calculable=TRUE) %>% setSymbols(c('heart', 'star6'))
+```
+
+# Low-level API
+
+## 从头创建De Novo
+虽然ECharts支持很多种图，但要娴熟地用`echartr()`创建它们仍可能花不少时间。 所以recharts也为list提供了一个低级的S3方法实现。由于ECharts的主要用法是传入一个JavaScript对象给`.setOption()`方法，而在R中，这样一个对象是用list构建的。所以`echart.list()`这个低级方法能让用户任意创建自定义图形。下面是一个简单的和弦图的例子，取材于http://echarts.baidu.com/echarts2/doc/example/chord1.html：
+
+```{r}
+chordEx1 = list(
+  title = list(
+    text = '测试数据',
+    subtext = 'From d3.js',
+    x = 'right',
+    y = 'bottom'
+  ),
+  tooltip = list(
+    trigger = 'item',
+    formatter = JS('function(params) {
+      if (params.indicator2) { // is edge
+        return params.value.weight;
+      } else {// is node
+        return params.name
+      }
+    }')
+  ),
+  toolbox = list(
+    show = TRUE,
+    feature = list(
+      restore = list(show = TRUE),
+      magicType = list(show = TRUE, type = c('force', 'chord')),
+      saveAsImage = list(show = TRUE)
+    )
+  ),
+  legend = list(
+    x = 'left',
+    data = c('group1', 'group2', 'group3', 'group4')
+  ),
+  series = list(
+    list(
+      type = 'chord',
+      sort = 'ascending',
+      sortSub = 'descending',
+      showScale = TRUE,
+      showScaleText = TRUE,
+      data = list(
+        list(name = 'group1'),
+        list(name = 'group2'),
+        list(name = 'group3'),
+        list(name = 'group4')
+      ),
+      itemStyle = list(
+        normal = list(
+          label = list(show = FALSE)
+        )
+      ),
+      matrix = rbind(
+        c(11975,  5871, 8916, 2868),
+        c( 1951, 10048, 2060, 6171),
+        c( 8010, 16145, 8090, 8045),
+        c( 1013,   990,  940, 6907)
+      )
+    )
+  )
+)
+
+echart(chordEx1)
+```
+
+显然，上述例子就是把[原例子](http://echarts.baidu.com/doc/example/chord1.html)中的JavaScript对象翻译成了R对象。注意，我们是用**htmlwidgets**中的`JS()`函数翻译了`tooltip.fomatter`函数。其他所有对象都可以自然地映射到R。
+
+## 修改Echarts对象Modify the Echarts Object
+
+如果熟悉Echarts的数据结构，我们也可以用`echartr`创建Echarts对象，然后直接修改它，就如同修改其他S3 list一样。
+
+下面是Echarts对象`g`的数据结构。`g`是通过命令`echartr(mtcars, wt, mpg, factor(am, labels=c('Automatic', 'Mannual')))`创建出来的。
+
+```{r}
+enquote(g)
+```
+
+# 结语Finale
+
+通常我们不希望R用户写那么长的选项列表。R用户一般更熟悉（也更常用到）诸如数据框、矩阵、表格等数据结构，理想状态下，我们希望用户只要传入一些熟悉的数据对象，recharts自动地配置出ECharts对象来。目前离理想还有距离。但欢迎反馈您的体验和看法，也欢迎用[Github pull requests](https://github.com/madlogos/recharts)贡献您的代码。

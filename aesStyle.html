@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>aesStyle</title>
+
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 70px;
+}
+p code {
+  white-space: inherit;
+}
+.html-widget-static-bound {
+  margin: auto;
+}
+.alert>p {
+  margin-bottom: 10.5px;
+}
+</style>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/default.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="./">recharts</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="./">Home</a></li>
+        <li><a href="index_cn.html">首页</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="https://github.com/madlogos/recharts" title="View Source on Github"><i class="fa fa-github fa-lg"></i></a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</nav><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">aesStyle</h1>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction"><span class="toc-section-number">1</span> Introduction</a></li>
+<li><a href="#function-call"><span class="toc-section-number">2</span> Function Call</a><ul>
+<li><a href="#elipsis"><span class="toc-section-number">2.1</span> Elipsis</a><ul>
+<li><a href="#itemstyle-normalemphasis"><span class="toc-section-number">2.1.1</span> <code>itemStyle</code> (normal|emphasis)</a></li>
+<li><a href="#labelstyle"><span class="toc-section-number">2.1.2</span> <code>labelStyle</code></a></li>
+<li><a href="#labellinestyle"><span class="toc-section-number">2.1.3</span> <code>labelLineStyle</code></a></li>
+<li><a href="#textstyle"><span class="toc-section-number">2.1.4</span> <code>textStyle</code></a></li>
+<li><a href="#linestyle"><span class="toc-section-number">2.1.5</span> <code>lineStyle</code></a></li>
+<li><a href="#areastyle"><span class="toc-section-number">2.1.6</span> <code>areaStyle</code></a></li>
+<li><a href="#chordstyle"><span class="toc-section-number">2.1.7</span> <code>chordStyle</code></a></li>
+<li><a href="#nodestyle"><span class="toc-section-number">2.1.8</span> <code>nodeStyle</code></a></li>
+<li><a href="#linkstyle"><span class="toc-section-number">2.1.9</span> <code>linkStyle</code></a></li>
+</ul></li>
+</ul></li>
+<li><a href="#showcase"><span class="toc-section-number">3</span> Showcase</a></li>
+<li><a href="#references"><span class="toc-section-number">4</span> References</a></li>
+</ul>
+</div>
+
+<p>First, you should load <code>recharts</code>:</p>
+<pre class="r"><code>library(recharts)</code></pre>
+<div id="introduction" class="section level1">
+<h1><span class="header-section-number">1</span> Introduction</h1>
+<p><code>aesStyle</code> is a big family to construct Echarts styling element objects. E.g., Echarts uses <code>itemStyle</code> heavily, and you can either use <code>itemStyle</code> function or directly build the itemStyle object by writing a list.</p>
+<p>Inside an itemStyle list object, there are three types of elements:</p>
+<ul>
+<li>atomic features
+<ul>
+<li>‘color’, ‘borderColor’, ‘borderWidth’, ‘barBorderColor’, ‘barBorderRadius’, ‘barBorderWidth’, which you can directly assign values</li>
+</ul></li>
+<li>object features
+<ul>
+<li>‘lineStyle’, ‘textStyle’,‘areaStyle’, ‘chordStyle’, ‘nodeStyle’, ‘linkStyle’, which you can yield by aesStyle function family</li>
+</ul></li>
+<li>mixed object features
+<ul>
+<li>‘label’ and ‘labelLine’, which contains other object features, such as ‘lineStyle’, ‘textStyle’</li>
+</ul></li>
+</ul>
+</div>
+<div id="function-call" class="section level1">
+<h1><span class="header-section-number">2</span> Function Call</h1>
+<pre class="r"><code>aesStyle(element = c(&quot;text&quot;, &quot;line&quot;, &quot;area&quot;, &quot;chord&quot;, &quot;node&quot;, &quot;link&quot;), ...)
+
+lineStyle(...)
+
+textStyle(...)
+
+areaStyle(...)
+
+chordStyle(...)
+
+nodeStyle(...)
+
+linkStyle(...)
+
+labelStyle(...)
+
+labelLineStyle(...)
+
+itemStyle(...)</code></pre>
+<table>
+<colgroup>
+<col width="18%" />
+<col width="81%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Arg</th>
+<th align="left">Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><p><strong>chart</strong></p></td>
+<td align="left"><p>Echarts object generated by <code>echartR</code> or <code>echart</code>.</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>element</p></td>
+<td align="left"><p>c(“text”, “line”, “area”, “chord”, “node”, “link”).</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>…</p></td>
+<td align="left"><p>The params to form an aesthetic element.</p></td>
+</tr>
+</tbody>
+</table>
+<div id="elipsis" class="section level2">
+<h2><span class="header-section-number">2.1</span> Elipsis</h2>
+<div id="itemstyle-normalemphasis" class="section level3">
+<h3><span class="header-section-number">2.1.1</span> <code>itemStyle</code> (normal|emphasis)</h3>
+<table style="width:101%;">
+<colgroup>
+<col width="18%" />
+<col width="83%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Arg</th>
+<th align="left">Instruction</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">color</td>
+<td align="left">color vector, ‘rgba’, hex color, or color names.</td>
+</tr>
+<tr class="even">
+<td align="left">lineStyle</td>
+<td align="left">for line, k charts and markLine, see <code>lineStyle</code></td>
+</tr>
+<tr class="odd">
+<td align="left">textStyle</td>
+<td align="left">see <code>textStyle</code></td>
+</tr>
+<tr class="even">
+<td align="left">areaStyle</td>
+<td align="left">for stacked line chart and map, see <code>areaStyle</code></td>
+</tr>
+<tr class="odd">
+<td align="left">chordStyle</td>
+<td align="left">for chord chart, see <code>chordStyle</code></td>
+</tr>
+<tr class="even">
+<td align="left">nodeStyle</td>
+<td align="left">for force chart, see <code>nodeStyle</code></td>
+</tr>
+<tr class="odd">
+<td align="left">linkStyle</td>
+<td align="left">for force chart, see <code>linkStyle</code></td>
+</tr>
+<tr class="even">
+<td align="left">borderColor</td>
+<td align="left">color vector, ‘rgba’, hex color, or color names.</td>
+</tr>
+<tr class="odd">
+<td align="left">borderWidth</td>
+<td align="left">for symbol, symbole, pie chart, map and markPoint, numeric</td>
+</tr>
+<tr class="even">
+<td align="left">barBorderColor</td>
+<td align="left">for symbol, symbole, pie chart, map and markPoint, numeric</td>
+</tr>
+<tr class="odd">
+<td align="left">barBorderRadius</td>
+<td align="left">numeric vector length 1 or 4 (right-bottom-left-top), default 0</td>
+</tr>
+<tr class="even">
+<td align="left">barBorderWidth</td>
+<td align="left">numeric vector length 1 or 4 (right-bottom-left-top), default 00</td>
+</tr>
+<tr class="odd">
+<td align="left">label</td>
+<td align="left">for line, bar, k, scatter, pie, map, force, funnel charts and markPoint, markLine, see <code>labelStyle</code></td>
+</tr>
+<tr class="even">
+<td align="left">labelLine</td>
+<td align="left">for pie and funnel chart, see <code>labelLineStyle</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="labelstyle" class="section level3">
+<h3><span class="header-section-number">2.1.2</span> <code>labelStyle</code></h3>
+<table>
+<colgroup>
+<col width="16%" />
+<col width="83%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Arg</th>
+<th align="left">Instruction</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><p>show</p></td>
+<td align="left"><p>TRUE|FALSE, default TRUE</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>position</p></td>
+<td align="left"><ul>
+<li>for pie, ‘outer’/‘inner’;</li>
+<li>for funnel, ‘inner’/‘left’/‘right’;</li>
+<li>for line, bar, k, scatter, ‘top’/‘right’/‘inside’/‘left’/‘bottom’;</li>
+<li>for bar, additionally ‘insideLeft’ / ‘insideRight’ / ‘insideTop’ / ‘insideBottom’</li>
+</ul></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>rotate</p></td>
+<td align="left"><p>chord chart only. TRUE|FALSE, default FALSE</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>distance</p></td>
+<td align="left"><p>chord and pie chart only. numeric, default 10</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>formatter</p></td>
+<td align="left"><p>see <code>setTooltip</code></p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>textStyle</p></td>
+<td align="left"><p>see <code>textStyle</code></p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>x</p></td>
+<td align="left"><p>treemap only, numeric</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>y</p></td>
+<td align="left"><p>treemap only, numeric</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="labellinestyle" class="section level3">
+<h3><span class="header-section-number">2.1.3</span> <code>labelLineStyle</code></h3>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Arg</th>
+<th align="left">Instruction</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">show</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="even">
+<td align="left">length</td>
+<td align="left">numeric or ‘auto’, default 40</td>
+</tr>
+<tr class="odd">
+<td align="left">lineStyle</td>
+<td align="left">see <code>lineStyle</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="textstyle" class="section level3">
+<h3><span class="header-section-number">2.1.4</span> <code>textStyle</code></h3>
+<table style="width:101%;">
+<colgroup>
+<col width="18%" />
+<col width="83%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Arg</th>
+<th align="left">Instruction</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">color</td>
+<td align="left">color vector, ‘rgba’, hex color, or color names.</td>
+</tr>
+<tr class="even">
+<td align="left">decoration</td>
+<td align="left">only for tooltip. string, default ‘none’</td>
+</tr>
+<tr class="odd">
+<td align="left">align</td>
+<td align="left">‘left’ / ‘right’ / ‘center’</td>
+</tr>
+<tr class="even">
+<td align="left">baseline</td>
+<td align="left">‘top’ / ‘bottom’ / ‘middle’</td>
+</tr>
+<tr class="odd">
+<td align="left">fontFamily</td>
+<td align="left">valid font family name</td>
+</tr>
+<tr class="even">
+<td align="left">fontSize</td>
+<td align="left">numeric, default 12</td>
+</tr>
+<tr class="odd">
+<td align="left">fontStyle</td>
+<td align="left">‘normal’ / ‘italic’ / ‘oblique’, default ‘normal’</td>
+</tr>
+<tr class="even">
+<td align="left">fontWeight</td>
+<td align="left">‘normal’ / ‘bold’ / ‘bolder’ / ‘lighter’ or numeric, default ‘normal’</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="linestyle" class="section level3">
+<h3><span class="header-section-number">2.1.5</span> <code>lineStyle</code></h3>
+<table style="width:101%;">
+<colgroup>
+<col width="18%" />
+<col width="83%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Arg</th>
+<th align="left">Instruction</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">color</td>
+<td align="left">color vector, ‘rgba’, hex color, or color names.</td>
+</tr>
+<tr class="even">
+<td align="left">type</td>
+<td align="left">‘solid’ / ‘dotted’ / ‘dashed’, for tree, additionally ‘curve’ / ‘broken’. Default ‘solid’</td>
+</tr>
+<tr class="odd">
+<td align="left">width</td>
+<td align="left">numeric</td>
+</tr>
+<tr class="even">
+<td align="left">shadowColor</td>
+<td align="left">color vector, ‘rgba’, hex color, or color names.</td>
+</tr>
+<tr class="odd">
+<td align="left">shadowBlur</td>
+<td align="left">numeric, default 5</td>
+</tr>
+<tr class="even">
+<td align="left">shadowOffsetX</td>
+<td align="left">numeric, default 3</td>
+</tr>
+<tr class="odd">
+<td align="left">shadowOffsetY</td>
+<td align="left">numeric, default 3</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="areastyle" class="section level3">
+<h3><span class="header-section-number">2.1.6</span> <code>areaStyle</code></h3>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Arg</th>
+<th align="left">Instruction</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">color</td>
+<td align="left">color vector, ‘rgba’, hex color, or color names.</td>
+</tr>
+<tr class="even">
+<td align="left">type</td>
+<td align="left">only ‘default’</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="chordstyle" class="section level3">
+<h3><span class="header-section-number">2.1.7</span> <code>chordStyle</code></h3>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Arg</th>
+<th align="left">Instruction</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">width</td>
+<td align="left">numeric, default 1</td>
+</tr>
+<tr class="even">
+<td align="left">color</td>
+<td align="left">color vector, ‘rgba’, hex color, or color names.</td>
+</tr>
+<tr class="odd">
+<td align="left">borderWidth</td>
+<td align="left">numeric, default 1</td>
+</tr>
+<tr class="even">
+<td align="left">borderColor</td>
+<td align="left">color vector, ‘rgba’, hex color, or color names.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="nodestyle" class="section level3">
+<h3><span class="header-section-number">2.1.8</span> <code>nodeStyle</code></h3>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Arg</th>
+<th align="left">Instruction</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">color</td>
+<td align="left">color vector, ‘rgba’, hex color, or color names.</td>
+</tr>
+<tr class="even">
+<td align="left">borderWidth</td>
+<td align="left">numeric, default 1</td>
+</tr>
+<tr class="odd">
+<td align="left">borderColor</td>
+<td align="left">color vector, ‘rgba’, hex color, or color names.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="linkstyle" class="section level3">
+<h3><span class="header-section-number">2.1.9</span> <code>linkStyle</code></h3>
+<table style="width:101%;">
+<colgroup>
+<col width="18%" />
+<col width="83%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Arg</th>
+<th align="left">Instruction</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">type</td>
+<td align="left">‘curve’</td>
+</tr>
+<tr class="even">
+<td align="left">color</td>
+<td align="left">color vector, ‘rgba’, hex color, or color names. default ‘#5182ab’</td>
+</tr>
+<tr class="odd">
+<td align="left">width</td>
+<td align="left">numeric, default 1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="showcase" class="section level1">
+<h1><span class="header-section-number">3</span> Showcase</h1>
+<p>How to build an itemStyle object?</p>
+<p>First, build the low-level style element object.</p>
+<pre class="r"><code>styText &lt;- textStyle(color=&#39;red&#39;, fontFamily=&#39;Arial&#39;)
+styLine &lt;- lineStyle(color=&#39;#fff&#39;, width=4, shadowBlur=5)</code></pre>
+<p>Then, build up higher-level style element objects.</p>
+<pre class="r"><code>lab &lt;- labelStyle(show=TRUE, position=&#39;inside&#39;, textStyle=styText)</code></pre>
+<p>Finally, consolidate an itemSytle object.</p>
+<pre class="r"><code>itemStyle &lt;- list(normal=itemStyle(lineStyle=styLine, label=lab),
+                  emphasis=itemStyle(lineStyle=styLine, label=lab)
+              )</code></pre>
+</div>
+<div id="references" class="section level1">
+<h1><span class="header-section-number">4</span> References</h1>
+<p><a href="http://echarts.baidu.com/echarts2/doc/doc.html#ItemStyle" class="uri">http://echarts.baidu.com/echarts2/doc/doc.html#ItemStyle</a></p>
+</div>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+    // active menu
+    var href = window.location.pathname;
+    href = href.substr(href.lastIndexOf('/') + 1);
+    if (href === '') href = './';
+    $('a[href="' + href + '"]').parent().addClass('active');
+});
+</script>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+
+</body>
+</html>

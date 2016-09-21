@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>基础图形Basic Plots 14 - 韦恩图Venn</title>
+
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/htmlwidgets-0.7/htmlwidgets.js"></script>
+<script src="libs/echarts-2.2.7/echarts-all.js"></script>
+<script src="libs/echarts-2.2.7/ext/params.js"></script>
+<script src="libs/echarts-2.2.7/ext/loadGeoJSON.js"></script>
+<script src="libs/echarts-binding-0.0.5/echarts.js"></script>
+<script src="libs/echarts-module-2.2.7/base.js"></script>
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 70px;
+}
+p code {
+  white-space: inherit;
+}
+.html-widget-static-bound {
+  margin: auto;
+}
+.alert>p {
+  margin-bottom: 10.5px;
+}
+</style>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/default.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="./">recharts</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="./">Home</a></li>
+        <li><a href="index_cn.html">首页</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="https://github.com/madlogos/recharts" title="View Source on Github"><i class="fa fa-github fa-lg"></i></a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</nav><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">基础图形Basic Plots 14 - 韦恩图Venn</h1>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction"><span class="toc-section-number">1</span> 介绍Introduction</a></li>
+<li><a href="#function-call"><span class="toc-section-number">2</span> 用法Function Call</a></li>
+<li><a href="#showcase"><span class="toc-section-number">3</span> 举例Showcase</a><ul>
+<li><a href="#data-preparation"><span class="toc-section-number">3.1</span> 数据准备Data Preparation</a></li>
+<li><a href="#basic-venn"><span class="toc-section-number">3.2</span> 基本韦恩图Basic Venn</a></li>
+</ul></li>
+<li><a href="#futher-setup"><span class="toc-section-number">4</span> 其他设定Futher Setup</a></li>
+</ul>
+</div>
+
+<p>首先，加载<code>recharts</code>:</p>
+<pre class="r"><code>library(recharts)</code></pre>
+<div id="introduction" class="section level1">
+<h1><span class="header-section-number">1</span> 介绍Introduction</h1>
+<p>Echarts中韦恩图的功能较有限。</p>
+<table id='intro'>
+<tr>
+<td>
+<div id="echarts-162b58859cc94edc033c54dee94942ae8a7af059" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-162b58859cc94edc033c54dee94942ae8a7af059">{"x":{"series":[{"type":"venn","itemStyle":{"normal":{"label":{"show":true}},"emphasis":{"borderWidth":3,"borderColor":"yellow"}},"data":[{"value":40,"name":"Collection 1"},{"value":50,"name":"Collection 2"},{"value":20,"name":"Intersection"}]}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["Collection 1","Collection 2","Intersection"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"theme":"macarons","title":{"text":"Venn","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</td>
+<td>
+</table>
+<p>关键是:</p>
+<ul>
+<li>文本型<code>x</code>和数值型<code>y</code></li>
+<li>3行数据，其中最后一行为交集</li>
+<li><code>series</code>不可用</li>
+</ul>
+</div>
+<div id="function-call" class="section level1">
+<h1><span class="header-section-number">2</span> 用法Function Call</h1>
+<pre class="r"><code>echartr(data, x, y, &lt;z&gt;, &lt;type&gt;)</code></pre>
+<table>
+<colgroup>
+<col width="11%" />
+<col width="88%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">参数</th>
+<th align="left">要求</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><p><strong>data</strong></p></td>
+<td align="left"><p>数据框格式的源数据</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p><strong>x</strong></p></td>
+<td align="left"><p>文本型自变量，其他类型会被转为因子。如提供多个变量，只传入第一个。</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p><strong>y</strong></p></td>
+<td align="left"><p>数值型应变量。如提供多个变量，只传入第一个。</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>z</p></td>
+<td align="left"><p>时间轴变量，转为因子后计算。如提供多个变量，只传入第一个。</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>type</p></td>
+<td align="left"><p>‘venn’</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="showcase" class="section level1">
+<h1><span class="header-section-number">3</span> 举例Showcase</h1>
+<div id="data-preparation" class="section level2">
+<h2><span class="header-section-number">3.1</span> 数据准备Data Preparation</h2>
+<p>下面是一个虚构数据集。</p>
+<pre class="r"><code>data = data.frame(x=c(&#39;Collection 1&#39;, &#39;Collection 2&#39;, &#39;Intersection&#39;), 
+                  y=c(40,50,20))
+knitr::kable(data)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">x</th>
+<th align="right">y</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Collection 1</td>
+<td align="right">40</td>
+</tr>
+<tr class="even">
+<td align="left">Collection 2</td>
+<td align="right">50</td>
+</tr>
+<tr class="odd">
+<td align="left">Intersection</td>
+<td align="right">20</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="basic-venn" class="section level2">
+<h2><span class="header-section-number">3.2</span> 基本韦恩图Basic Venn</h2>
+<pre class="r"><code>echartr(data, x, y, type=&#39;venn&#39;) %&gt;% 
+    setTitle(&#39;Venn&#39;, &#39;Fictious Data&#39;)</code></pre>
+<div id="echarts-9793455c11942058867a2a70da432a19fb7278dd" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-9793455c11942058867a2a70da432a19fb7278dd">{"x":{"series":[{"type":"venn","itemStyle":{"normal":{"label":{"show":true}},"emphasis":{"borderWidth":3,"borderColor":"yellow"}},"data":[{"value":40,"name":"Collection 1"},{"value":50,"name":"Collection 2"},{"value":20,"name":"Intersection"}]}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["Collection 1","Collection 2","Intersection"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"title":{"text":"Venn","subtext":"Fictious Data","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div id="futher-setup" class="section level1">
+<h1><span class="header-section-number">4</span> 其他设定Futher Setup</h1>
+<p>接下来可以配置控件、添加标注点/标注线，以及美化成图。</p>
+<p>参考相关函数，尽情探索吧。</p>
+</div>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+    // active menu
+    var href = window.location.pathname;
+    href = href.substr(href.lastIndexOf('/') + 1);
+    if (href === '') href = './';
+    $('a[href="' + href + '"]').parent().addClass('active');
+});
+</script>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+
+</body>
+</html>

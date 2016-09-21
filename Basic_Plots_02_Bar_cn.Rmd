@@ -1,0 +1,248 @@
+---
+title: "基础图类Basic Plots 02 - 条图Bar/柱图Column"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+首先，加载`recharts`:
+```{r}
+library(recharts)
+```
+
+# 介绍Introduction
+
+条图Bar plot包含3种基本类型：
+
+- 条图: bar|hbar
+- 柱图: column|vbar
+- 直方图: histogram|hist
+
+<table id='intro'>
+<tr><td>
+```{r,echo=FALSE}
+titanic <- data.table::melt(apply(Titanic, c(1,4), sum))
+names(titanic) <- c('Class', 'Survived', 'Count')
+echartr(titanic, Class, Count, Survived) %>% setLegend(pos=3) %>%
+    setTheme('infographic', width=400, height=300) %>%
+    setTitle('Titanic: Survival by Cabin Class','hbar')
+```
+</td>
+<td>
+```{r,echo=FALSE}
+echartr(titanic, Class, Count, Survived, type='column') %>% 
+    setTheme('roma', width=400, height=300) %>% setLegend(pos=3) %>%
+    setTitle('Titanic: Outcome by Cabin Class','column')
+```
+</td></tr>
+<tr><td>
+```{r,echo=FALSE}
+echartr(iris, Sepal.Width) %>% setLegend(pos=3) %>%
+    setTheme('macarons', width=400, height=300) %>%
+    setTitle('Iris Sepal Width','histogram')
+```
+</td><td>
+
+</td></tr>
+</table>
+
+关键是：
+
+- 文本型`x`和数值型`y`
+- `x`各水平(和`series`各水平)的每一个组合只能对应于一个`y`数据点
+- 平铺和堆积条图/柱图可通过工具箱按钮快速相互切换
+
+# 用法Function Call
+
+```r
+echartr(data, x, <y>, <series>, <weight>, <z>, <type>, <subtype>)
+```
+
++---------+--------------------------------------------------------------------+
+| 参数    |  要求                                                   |
++=========+====================================================================+
+| **data**| 数据框格式的源数据                        |
++---------+--------------------------------------------------------------------+
+| **x**   | - 文本型自变量。其他类型会被转为因子。如提供多个变量，只传入第一个。 |
+|         | - 数值型，且`y`缺失，则生成直方图。 |
++---------+--------------------------------------------------------------------+
+| y       | - 数值型应变量。如提供多个变量，只传入第一个。 |
+|         | - 如`y`缺失且`x`为数值型，则生成直方图。 |
++---------+--------------------------------------------------------------------+
+| series  | 数据系列，转为因子处理。如提供多个变量，只传入第一个。 |
++---------+--------------------------------------------------------------------+
+| weight  | 权重变量关联不同系列的柱宽。 |
++---------+--------------------------------------------------------------------+
+|  z      | 时间轴变量，转为因子处理。如提供多个变量，只传入第一个。 |
++---------+--------------------------------------------------------------------+
+| type    | - `x`为文本型而`y`为数值型, 或'x'为数值型而'y'缺失, 则可以忽略'type'或指定为'auto'。 |
+|         | - 也可指定为'bar'/'hbar'\'vbar'/'column'、'hist'/'histogram'。 |
++---------+--------------------------------------------------------------------+
+| subtype | - bar/column: c('stack') | 
+|         |      + stack: 要堆积的数据系列 |
+|         | - hist: c('count', 'freq', 'density') |
+|         |      + count/freq: 按频数统计 |
+|         |      + denstiy: 按密度统计 |
++---------+--------------------------------------------------------------------+
+
+# 举例Showcase
+
+## 数据准备Data Preparation
+
+让我们看一下`datasets`包自带的`Titanic`数据集。不同舱位的生存人数如下:
+
+```{r}
+titanic <- data.table::melt(apply(Titanic, c(1,4), sum))
+names(titanic) <- c('Class', 'Survived', 'Count')
+knitr::kable(titanic)
+```
+
+## 条图Horizontal Bar Chart
+
+### 单个数据系列Singular Series
+
+`type`可以是'hbar'、'bar'或'auto'。
+
+```{r}
+echartr(titanic[titanic$Survived=='Yes',], Class, Count) %>%
+    setTitle('Titanic: N Survival by Cabin Class')
+```
+
+### 多个数据系列Multiple Series
+
+```{r}
+echartr(titanic, Class, Count, Survived) %>%
+    setTitle('Titanic: Survival Outcome by Cabin Class')
+```
+
+### 堆积条图Stacked Horizontal Bar Chart
+
+相比于hbar，你需要设置`subtype`为'stack'。
+
+单系列和多系列堆积条图的实现语法和普通条图类似。
+
+```{r}
+echartr(titanic, Class, Count, Survived, type='hbar', subtype='stack') %>%
+    setTitle('Titanic: Survival Outcome by Cabin Class') 
+```
+
+### 柱宽映射到权重变量Bar Width Mapped to Weight
+
+如果你希望`barWidth`随某个变量改变，可以设置它为`weight`。
+
+```{r}
+echartr(titanic, Class, Count, Survived, weight=Count) %>%
+    setTitle('Titanic: Survival Outcome by Cabin Class')
+```
+
+### 龙卷风图Tornado Chart
+
+龙卷风图是条图的特例。关键是：
+
+- 提供一个全正值变量，和一个全负值变量
+- 平铺，不要堆积
+
+```{r}
+titanic_tc <- titanic
+titanic_tc$Count[titanic_tc$Survived=='No'] <- 
+    - titanic_tc$Count[titanic_tc$Survived=='No']
+g <- echartr(titanic_tc, Class, Count, Survived, type='hbar') %>%
+    setTitle("Titanic: Survival Outcome by Cabin Class")
+g
+```
+
+当然，我们还得微调一下坐标轴。Y轴应该和x轴交会于零点，且x轴标签都要取绝对值 (略有点复杂，需要懂一点JaveScript)。
+
+```{r}
+g %>% setYAxis(axisLine=list(onZero=TRUE)) %>% 
+    setXAxis(axisLabel=list(
+        formatter=JS('function (value) {return Math.abs(value);}')
+    ))
+```
+
+### 人口学金字塔Population Pyramid
+
+如果设`type`为'hbar'，`subtype`为'stack'，就得到了社会学中常用的人口学金字塔。
+
+```{r}
+echartr(titanic_tc, Class, Count, Survived, type='hbar', subtype='stack') %>%
+    setTitle("Titanic: Survival Outcome by Cabin Class") %>%
+    setYAxis(axisLine=list(onZero=TRUE)) %>%
+    setXAxis(axisLabel=list(
+        formatter=JS('function (value) {return Math.abs(value);}')
+    ))
+```
+
+### 带时间轴的条图Bar Chart with Timeline
+
+需要一个时间轴变量。不妨用'sex'变量。
+
+```{r}
+titanic_sex <- data.table::melt(apply(Titanic, c(1,2,4), sum))
+names(titanic_sex)[4] <- "Count"
+knitr::kable(titanic_sex)
+```
+
+```{r}
+echartr(titanic_sex, Class, Count, Survived, z=Sex, type='bar') %>% 
+    setTitle("Titanic: Survival Outcome by Cabin Class Across Sex")
+```
+
+## 柱图Vertical Bar (Column) Chart
+
+### 平铺柱图Tiled Vertical Bar (Column) Chart
+
+相比于hbar，需要设`type`为'vbar'或'column'。
+
+单系列或多系列柱图的实现语法和普通条图类似。
+
+```{r}
+echartr(titanic, Class, Count, Survived, type='column') %>%
+    setTitle('Titanic: Survival Outcome by Cabin Class') 
+```
+
+### 堆积柱图Stacked Vertical Bar (Column) Chart
+
+相比于vbar，需要设`subtype`为'stack'。
+
+单系列或多系列柱图的实现语法和普通条图类似。
+
+```{r}
+echartr(titanic, Class, Count, Survived, type='column', subtype='stack') %>%
+    setTitle('Titanic: Survival Outcome by Cabin Class') 
+```
+
+## 直方图Histogram
+
+### 按频数统计Stat by Frequency
+
+直方图是柱图的特例，只需要提供一个数值型`x`变量。
+
+`type`可以是'histogram'、'hist'。
+
+```{r}
+echartr(iris, Sepal.Width) %>%
+    setTitle('Iris: Histogram of Sepal.Width') 
+```
+
+### 按密度统计Stat by Density
+
+有时需要一幅密度直方图，那么设`subtype`为'density'。
+
+```{r}
+echartr(iris, Sepal.Width, type='hist', subtype='density') %>%
+    setTitle('Iris: Histogram of Sepal.Width') %>% setYAxis(name="Density")
+```
+
+# 其他设定Futher Setup
+
+接下来可以配置控件、添加标注点/标注线，以及美化成图。
+
+参考相关函数，尽情探索吧。
+

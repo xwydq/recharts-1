@@ -1,0 +1,94 @@
+---
+title: "Basic Plots 04 - Candlestick"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+First, you should load `recharts`:
+```{r}
+library(recharts)
+```
+
+# Introduction
+
+Candlestick plot is also known as K chart:
+
+<table id='intro'>
+<tr><td>
+```{r,echo=FALSE}
+data(stock)
+echartr(stock, as.character(date), c("open", "close", "low", "high"), type='k') %>% 
+    setTheme('infographic', width=400, height=300) %>% 
+    setTitle('Shanghai Stock Index 2013 1H') %>% setXAxis(name='Date') %>%
+    setYAxis(name="Price")
+```
+</td>
+<td>
+</table>
+
+The keys are:
+
+- character `x` 
+- numeric 'y' (four columns) aranged in the order of 'open', 'close', 'low', 'high'
+
+# Function Call
+
+```r
+echartr(data, x, y, <z>, <type>)
+```
+
++--------+--------------------------------------------------------------------+
+| Arg    |  Requirement                                                       |
++========+====================================================================+
+| **data** | source data in the form of data.frame                            |
++--------+--------------------------------------------------------------------+
+| **x**  | character independent variable. Only the first one is accepted if multiple variables are provided. |
++--------+--------------------------------------------------------------------+
+| **y**  | numeric dependent variable. Only the first four ones are accepted which are arranged in the order of 'open', 'close', 'low', 'high'. |
++--------+--------------------------------------------------------------------+
+|  z     | timeline variable which will be coerced to factors. Only the first one is accepted if multiple variables are provided. |
++--------+--------------------------------------------------------------------+
+| type   | 'k' or 'candlestick' |
++--------+--------------------------------------------------------------------+
+
+
+# Showcase
+
+## Basic Plot
+
+```{r}
+echartr(stock, as.character(date), c(open, close, low, high), type='k') %>%
+    setXAxis(name='Date', axisLabel=list(rotate=30)) %>%
+    setYAxis(name="Price")
+```
+
+## With Timeline
+
+Remember the special notes in the [quick start](index.html)? We need to supplement the dataset to cover all the `x` and `z` levels.
+
+```{r}
+stock$Month <- format(stock$date, '%m')
+stock$Day <- format(stock$date, '%d')
+fullData <- data.frame(expand.grid(unique(stock$Month), unique(stock$Day)))
+names(fullData) <- c("Month", "Day")
+stock <- merge(stock, fullData, all.y=TRUE)
+```
+
+Then timeline will work properly.
+```{r}
+echartr(stock, Day, c(open, close, low, high), z=Month, type='k') %>%
+    setYAxis(name="Price")
+```
+
+# Futher Setup
+
+Then you can configure the widgets, add markLines and/or markPoints, fortify the chart.
+
+You can refer to related functions to play around on your own.
+

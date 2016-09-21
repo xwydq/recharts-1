@@ -1,0 +1,100 @@
+---
+title: "Basic Plots 24 - Gauge"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+First, you should load `recharts`:
+```{r}
+library(recharts)
+```
+
+# Introduction
+
+Gauge is also known as dashboard.
+
+<table id='intro'>
+<tr><td>
+```{r,echo=FALSE}
+data = data.frame(x='kph', y=70)
+echartr(data, x, y, type='gauge') %>% 
+    setTheme('macarons', width=400, height=300) %>% 
+    setTitle('KM per Hour')
+```
+</td>
+<td>
+</table>
+
+The keys are:
+
+- character `x` 
+- numeric `y`
+- character `series` to yield multiple gauges
+- `z` if you want the gauge change
+
+# Function Call
+
+```r
+echartr(data, x, y, <series>, <z>, <type>)
+```
+
++--------+--------------------------------------------------------------------+
+| Arg    |  Requirement                                                       |
++========+====================================================================+
+| **data** | source data in the form of data.frame                            |
++--------+--------------------------------------------------------------------+
+| **x**  | character independent variable. Only the first one is accepted if multiple variables are provided. |
++--------+--------------------------------------------------------------------+
+| **y**  | numeric dependent variable. Only the first one is accepted. |
++--------+--------------------------------------------------------------------+
+| series | series variable which will be coerced to factors. Each level of `series` is treated as a subsetting factor to produce separate gauges. Only the first one is accepted if multiple variables are provided. |
++--------+--------------------------------------------------------------------+
+|  z     | timeline variable which will be coerced to factors. Only the first one is accepted if multiple variables are provided. |
++--------+--------------------------------------------------------------------+
+| type   | 'gauge' |
++--------+--------------------------------------------------------------------+
+
+
+# Showcase
+
+## Data Preparation
+
+Here is a fictious dataset.
+
+```{r}
+data = data.frame(x=rep(c('KR/min', 'Kph'), 2), y=c(6.3, 54, 7.5, 82), 
+                  z=c(rep('t1', 2), rep('t2', 2)))
+knitr::kable(data)
+```
+
+## Single Gauge
+
+```{r}
+echartr(data, x, y, type='gauge')
+```
+
+## Multiple Gauges
+
+```{r}
+echartr(data, x, y, x, type='gauge')
+```
+
+## With Timeline
+
+
+```{r}
+echartr(data, x, y, x, z=z, type='gauge')
+```
+
+# Futher Setup
+
+Then you can configure the widgets, add markLines and/or markPoints, fortify the chart.
+
+You can refer to related functions to play around on your own.
+

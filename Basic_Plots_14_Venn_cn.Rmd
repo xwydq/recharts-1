@@ -1,0 +1,87 @@
+---
+title: "基础图形Basic Plots 14 - 韦恩图Venn"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+首先，加载`recharts`:
+```{r}
+library(recharts)
+```
+
+# 介绍Introduction
+
+Echarts中韦恩图的功能较有限。
+
+<table id='intro'>
+<tr><td>
+```{r,echo=FALSE}
+data = data.frame(x=c('Collection 1', 'Collection 2', 'Intersection'), 
+                  y=c(40,50,20))
+echartr(data, x, y, type='venn') %>% 
+    setTheme('macarons', width=400, height=300) %>% 
+    setTitle('Venn')
+```
+</td>
+<td>
+</table>
+
+关键是:
+
+- 文本型`x`和数值型`y` 
+- 3行数据，其中最后一行为交集
+- `series`不可用
+
+# 用法Function Call
+
+```r
+echartr(data, x, y, <z>, <type>)
+```
+
++--------+--------------------------------------------------------------------+
+| 参数   |  要求                                                   |
++========+====================================================================+
+|**data**| 数据框格式的源数据                         |
++--------+--------------------------------------------------------------------+
+| **x**  | 文本型自变量，其他类型会被转为因子。如提供多个变量，只传入第一个。 |
++--------+--------------------------------------------------------------------+
+| **y**  | 数值型应变量。如提供多个变量，只传入第一个。 |
++--------+--------------------------------------------------------------------+
+|  z     | 时间轴变量，转为因子后计算。如提供多个变量，只传入第一个。 |
++--------+--------------------------------------------------------------------+
+| type   | 'venn' |
++--------+--------------------------------------------------------------------+
+
+
+# 举例Showcase
+
+## 数据准备Data Preparation
+
+下面是一个虚构数据集。
+
+```{r}
+data = data.frame(x=c('Collection 1', 'Collection 2', 'Intersection'), 
+                  y=c(40,50,20))
+knitr::kable(data)
+```
+
+## 基本韦恩图Basic Venn
+
+```{r}
+echartr(data, x, y, type='venn') %>% 
+    setTitle('Venn', 'Fictious Data')
+```
+
+
+# 其他设定Futher Setup
+
+接下来可以配置控件、添加标注点/标注线，以及美化成图。
+
+参考相关函数，尽情探索吧。
+

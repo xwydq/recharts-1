@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Basic Plots 02 - Bar/Column</title>
+
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/htmlwidgets-0.7/htmlwidgets.js"></script>
+<script src="libs/echarts-2.2.7/echarts-all.js"></script>
+<script src="libs/echarts-2.2.7/ext/params.js"></script>
+<script src="libs/echarts-2.2.7/ext/loadGeoJSON.js"></script>
+<script src="libs/echarts-binding-0.0.5/echarts.js"></script>
+<script src="libs/echarts-module-2.2.7/base.js"></script>
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 70px;
+}
+p code {
+  white-space: inherit;
+}
+.html-widget-static-bound {
+  margin: auto;
+}
+.alert>p {
+  margin-bottom: 10.5px;
+}
+</style>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/default.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="./">recharts</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="./">Home</a></li>
+        <li><a href="index_cn.html">首页</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="https://github.com/madlogos/recharts" title="View Source on Github"><i class="fa fa-github fa-lg"></i></a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</nav><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Basic Plots 02 - Bar/Column</h1>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction"><span class="toc-section-number">1</span> Introduction</a></li>
+<li><a href="#function-call"><span class="toc-section-number">2</span> Function Call</a></li>
+<li><a href="#showcase"><span class="toc-section-number">3</span> Showcase</a><ul>
+<li><a href="#data-preparation"><span class="toc-section-number">3.1</span> Data Preparation</a></li>
+<li><a href="#horizontal-bar-chart"><span class="toc-section-number">3.2</span> Horizontal Bar Chart</a><ul>
+<li><a href="#singular-series"><span class="toc-section-number">3.2.1</span> Singular Series</a></li>
+<li><a href="#multiple-series"><span class="toc-section-number">3.2.2</span> Multiple Series</a></li>
+<li><a href="#stacked-horizontal-bar-chart"><span class="toc-section-number">3.2.3</span> Stacked Horizontal Bar Chart</a></li>
+<li><a href="#bar-width-mapped-to-weight"><span class="toc-section-number">3.2.4</span> Bar Width Mapped to Weight</a></li>
+<li><a href="#tornado-chart"><span class="toc-section-number">3.2.5</span> Tornado Chart</a></li>
+<li><a href="#population-pyramid"><span class="toc-section-number">3.2.6</span> Population Pyramid</a></li>
+<li><a href="#bar-chart-with-timeline"><span class="toc-section-number">3.2.7</span> Bar Chart with Timeline</a></li>
+</ul></li>
+<li><a href="#vertical-bar-column-chart"><span class="toc-section-number">3.3</span> Vertical Bar (Column) Chart</a><ul>
+<li><a href="#tiled-vertical-bar-column-chart"><span class="toc-section-number">3.3.1</span> Tiled Vertical Bar (Column) Chart</a></li>
+<li><a href="#stacked-vertical-bar-column-chart"><span class="toc-section-number">3.3.2</span> Stacked Vertical Bar (Column) Chart</a></li>
+</ul></li>
+<li><a href="#histogram"><span class="toc-section-number">3.4</span> Histogram</a><ul>
+<li><a href="#stat-by-frequency"><span class="toc-section-number">3.4.1</span> Stat by Frequency</a></li>
+<li><a href="#stat-by-density"><span class="toc-section-number">3.4.2</span> Stat by Density</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#futher-setup"><span class="toc-section-number">4</span> Futher Setup</a></li>
+</ul>
+</div>
+
+<p>First, you should load <code>recharts</code>:</p>
+<pre class="r"><code>library(recharts)</code></pre>
+<div id="introduction" class="section level1">
+<h1><span class="header-section-number">1</span> Introduction</h1>
+<p>Bar plot includes 3 basic types:</p>
+<ul>
+<li>horizontal bar: bar|hbar</li>
+<li>vertical bar: column|vbar</li>
+<li>histogram: histogram|hist</li>
+</ul>
+<table id="intro">
+<tr>
+<td>
+<div id="echarts-b77f0f4165ddb4b2258304d731d324d51b613b20" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-b77f0f4165ddb4b2258304d731d324d51b613b20">{"x":{"series":[{"name":"No","type":"bar","data":[122,167,528,673]},{"name":"Yes","type":"bar","data":[203,118,178,212]}],"legend":{"show":true,"data":["No","Yes"],"x":"right","y":"center","orient":"vertical"},"yAxis":[{"type":"category","show":true,"position":"bottom","name":"Class","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["1st","2nd","3rd","Crew"]}],"xAxis":[{"type":"value","show":true,"position":"left","name":"Count","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"shadow","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["line","bar","tiled","stack"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"theme":"infographic","title":{"text":"Titanic: Survival by Cabin Class","subtext":"hbar","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</td>
+<td>
+<div id="echarts-2acbe46be42e4e957f2dfb223693d33aa40006e1" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-2acbe46be42e4e957f2dfb223693d33aa40006e1">{"x":{"series":[{"name":"No","type":"bar","data":[122,167,528,673]},{"name":"Yes","type":"bar","data":[203,118,178,212]}],"legend":{"show":true,"data":["No","Yes"],"x":"right","y":"center","orient":"vertical"},"yAxis":[{"type":"value","show":true,"position":"left","name":"Count","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"category","show":true,"position":"bottom","name":"Class","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["1st","2nd","3rd","Crew"]}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"shadow","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["line","bar","tiled","stack"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"theme":"roma","title":{"text":"Titanic: Outcome by Cabin Class","subtext":"column","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</td>
+</tr>
+<tr>
+<td>
+<div id="echarts-5e9fd32f18c24343a6623978d1378a2b9b007322" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-5e9fd32f18c24343a6623978d1378a2b9b007322">{"x":{"series":[{"type":"bar","data":[[2.1,4],[2.3,7],[2.5,13],[2.7,23],[2.9,36],[3.1,24],[3.3,18],[3.5,10],[3.7,9],[3.9,3],[4.1,2],[4.3,1]],"barGap":"1%","barWidth":"(document.getElementById('echarts-5e9fd32f18c24343a6623978d1378a2b9b007322').offsetWidth-200)/13","barMaxWidth":63}],"yAxis":[{"type":"value","show":true,"position":"left","name":"Freq","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Sepal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"shadow","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["line","bar","tiled","stack"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"right","y":"center","orient":"vertical"},"theme":"macarons","title":{"text":"Iris Sepal Width","subtext":"histogram","x":"center","y":"bottom","orient":"horizontal"}},"evals":["series.0.barWidth"],"jsHooks":[]}</script>
+</td>
+<td>
+</td>
+</tr>
+</table>
+<p>The keys are:</p>
+<ul>
+<li>character <code>x</code> and numeric <code>y</code></li>
+<li>each combination level of <code>x</code> (and <code>series</code>) can only have one <code>y</code> data point</li>
+<li>Tiled and stacked bar/column charts can shift from one to another by clicking type shift buttons in the toolbox widget.</li>
+</ul>
+</div>
+<div id="function-call" class="section level1">
+<h1><span class="header-section-number">2</span> Function Call</h1>
+<pre class="r"><code>echartr(data, x, &lt;y&gt;, &lt;series&gt;, &lt;weight&gt;, &lt;z&gt;, &lt;type&gt;, &lt;subtype&gt;)</code></pre>
+<table>
+<colgroup>
+<col width="12%" />
+<col width="87%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Arg</th>
+<th align="left">Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><p><strong>data</strong></p></td>
+<td align="left"><p>source data in the form of data.frame</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p><strong>x</strong></p></td>
+<td align="left"><ul>
+<li>character independent variable. Other type will be coerced to factors. Only the first one is accepted if multiple variables are provided.</li>
+<li>numeric variable and <code>y</code> is omitted, in which case comes up with a histogram.</li>
+</ul></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>y</p></td>
+<td align="left"><ul>
+<li>numeric dependent variable. Only the first one is accepted if multiple variables are provided.</li>
+<li>If y is omitted, and x is numeric, a histogram will be displayed.</li>
+</ul></td>
+</tr>
+<tr class="even">
+<td align="left"><p>series</p></td>
+<td align="left"><p>data series variable which will be coerced to factors. Only the first one is accepted if multiple variables are provided.</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>weight</p></td>
+<td align="left"><p>weight is mapped to the barWidth of the chart by series</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>z</p></td>
+<td align="left"><p>timeline variable which will be coerced to factors. Only the first one is accepted if multiple variables are provided.</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>type</p></td>
+<td align="left"><ul>
+<li><code>x</code> is character and <code>y</code> is numeric, or ‘x’ is numeric and ‘y’ is omitted, you can omit ‘type’ or assign it ‘auto’.</li>
+<li>You can also assign it ‘bar’, ‘hbar’, ‘vbar’, ‘column’, ‘hist’, ‘histogram’.</li>
+</ul></td>
+</tr>
+<tr class="even">
+<td align="left"><p>subtype</p></td>
+<td align="left"><ul>
+<li>bar/column: c(‘stack’)
+<ul>
+<li>stack: stacked series</li>
+</ul></li>
+<li>hist: c(‘count’, ‘freq’, ‘density’)
+<ul>
+<li>count/freq: stat by freq</li>
+<li>denstiy: stat by density</li>
+</ul></li>
+</ul></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="showcase" class="section level1">
+<h1><span class="header-section-number">3</span> Showcase</h1>
+<div id="data-preparation" class="section level2">
+<h2><span class="header-section-number">3.1</span> Data Preparation</h2>
+<p>Let’s look into <code>Titanic</code> dataset embeded in the package <code>datasets</code>. The survival count by cabin class is shown as below:</p>
+<pre class="r"><code>titanic &lt;- data.table::melt(apply(Titanic, c(1,4), sum))
+names(titanic) &lt;- c(&#39;Class&#39;, &#39;Survived&#39;, &#39;Count&#39;)
+knitr::kable(titanic)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Class</th>
+<th align="left">Survived</th>
+<th align="right">Count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1st</td>
+<td align="left">No</td>
+<td align="right">122</td>
+</tr>
+<tr class="even">
+<td align="left">2nd</td>
+<td align="left">No</td>
+<td align="right">167</td>
+</tr>
+<tr class="odd">
+<td align="left">3rd</td>
+<td align="left">No</td>
+<td align="right">528</td>
+</tr>
+<tr class="even">
+<td align="left">Crew</td>
+<td align="left">No</td>
+<td align="right">673</td>
+</tr>
+<tr class="odd">
+<td align="left">1st</td>
+<td align="left">Yes</td>
+<td align="right">203</td>
+</tr>
+<tr class="even">
+<td align="left">2nd</td>
+<td align="left">Yes</td>
+<td align="right">118</td>
+</tr>
+<tr class="odd">
+<td align="left">3rd</td>
+<td align="left">Yes</td>
+<td align="right">178</td>
+</tr>
+<tr class="even">
+<td align="left">Crew</td>
+<td align="left">Yes</td>
+<td align="right">212</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="horizontal-bar-chart" class="section level2">
+<h2><span class="header-section-number">3.2</span> Horizontal Bar Chart</h2>
+<div id="singular-series" class="section level3">
+<h3><span class="header-section-number">3.2.1</span> Singular Series</h3>
+<p><code>type</code> could be ‘hbar’, ‘bar’ or ‘auto’.</p>
+<pre class="r"><code>echartr(titanic[titanic$Survived==&#39;Yes&#39;,], Class, Count) %&gt;%
+    setTitle(&#39;Titanic: N Survival by Cabin Class&#39;)</code></pre>
+<div id="echarts-23ce37b195e94f21457be67525648cd589bcc3f0" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-23ce37b195e94f21457be67525648cd589bcc3f0">{"x":{"series":[{"type":"bar","data":[203,118,178,212]}],"yAxis":[{"type":"category","show":true,"position":"bottom","name":"Class","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["1st","2nd","3rd","Crew"]}],"xAxis":[{"type":"value","show":true,"position":"left","name":"Count","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"shadow","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["line","bar","tiled","stack"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"title":{"text":"Titanic: N Survival by Cabin Class","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="multiple-series" class="section level3">
+<h3><span class="header-section-number">3.2.2</span> Multiple Series</h3>
+<pre class="r"><code>echartr(titanic, Class, Count, Survived) %&gt;%
+    setTitle(&#39;Titanic: Survival Outcome by Cabin Class&#39;)</code></pre>
+<div id="echarts-e2195ad44361f5c8ec4520b68e5d8be1a8e3dc39" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-e2195ad44361f5c8ec4520b68e5d8be1a8e3dc39">{"x":{"series":[{"name":"No","type":"bar","data":[122,167,528,673]},{"name":"Yes","type":"bar","data":[203,118,178,212]}],"legend":{"show":true,"data":["No","Yes"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"category","show":true,"position":"bottom","name":"Class","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["1st","2nd","3rd","Crew"]}],"xAxis":[{"type":"value","show":true,"position":"left","name":"Count","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"shadow","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["line","bar","tiled","stack"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"title":{"text":"Titanic: Survival Outcome by Cabin Class","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="stacked-horizontal-bar-chart" class="section level3">
+<h3><span class="header-section-number">3.2.3</span> Stacked Horizontal Bar Chart</h3>
+<p>Compared to hbar, you just set <code>subtype</code> ‘stack’.</p>
+<p>Grammar for singular and multiple series are similar to legacy hbar chart.</p>
+<pre class="r"><code>echartr(titanic, Class, Count, Survived, type=&#39;hbar&#39;, subtype=&#39;stack&#39;) %&gt;%
+    setTitle(&#39;Titanic: Survival Outcome by Cabin Class&#39;) </code></pre>
+<div id="echarts-59cb9a83633995591a4f59777921119e2f6c084c" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-59cb9a83633995591a4f59777921119e2f6c084c">{"x":{"series":[{"name":"No","type":"bar","data":[122,167,528,673],"stack":"Group"},{"name":"Yes","type":"bar","data":[203,118,178,212],"stack":"Group"}],"legend":{"show":true,"data":["No","Yes"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"category","show":true,"position":"bottom","name":"Class","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["1st","2nd","3rd","Crew"]}],"xAxis":[{"type":"value","show":true,"position":"left","name":"Count","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"shadow","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["line","bar","tiled","stack"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"title":{"text":"Titanic: Survival Outcome by Cabin Class","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="bar-width-mapped-to-weight" class="section level3">
+<h3><span class="header-section-number">3.2.4</span> Bar Width Mapped to Weight</h3>
+<p>If you want the <code>barWidth</code> change with a variable, assign <code>weight</code> to it.</p>
+<pre class="r"><code>echartr(titanic, Class, Count, Survived, weight=Count) %&gt;%
+    setTitle(&#39;Titanic: Survival Outcome by Cabin Class&#39;)</code></pre>
+<div id="echarts-d002e391c5cff6b8e77c711ce6da9a2d9613baba" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-d002e391c5cff6b8e77c711ce6da9a2d9613baba">{"x":{"series":[{"name":"No","type":"bar","data":[122,167,528,673],"barWidth":"(document.getElementById('echarts-d002e391c5cff6b8e77c711ce6da9a2d9613baba').offsetHeight-200)/4*0.8*0.676965015901863"},{"name":"Yes","type":"bar","data":[203,118,178,212],"barWidth":"(document.getElementById('echarts-d002e391c5cff6b8e77c711ce6da9a2d9613baba').offsetHeight-200)/4*0.8*0.323034984098137"}],"legend":{"show":true,"data":["No","Yes"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"category","show":true,"position":"bottom","name":"Class","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["1st","2nd","3rd","Crew"]}],"xAxis":[{"type":"value","show":true,"position":"left","name":"Count","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"shadow","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["line","bar","tiled","stack"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"title":{"text":"Titanic: Survival Outcome by Cabin Class","x":"center","y":"bottom","orient":"horizontal"}},"evals":["series.0.barWidth","series.1.barWidth"],"jsHooks":[]}</script>
+</div>
+<div id="tornado-chart" class="section level3">
+<h3><span class="header-section-number">3.2.5</span> Tornado Chart</h3>
+<p>Tornado chart is a special case. The keys are:</p>
+<ul>
+<li>An all-positive series and an all-negative series</li>
+<li>Tiled rather than stacked</li>
+</ul>
+<pre class="r"><code>titanic_tc &lt;- titanic
+titanic_tc$Count[titanic_tc$Survived==&#39;No&#39;] &lt;- 
+    - titanic_tc$Count[titanic_tc$Survived==&#39;No&#39;]
+g &lt;- echartr(titanic_tc, Class, Count, Survived, type=&#39;hbar&#39;) %&gt;%
+    setTitle(&quot;Titanic: Survival Outcome by Cabin Class&quot;)
+g</code></pre>
+<div id="echarts-ba8fb1020343400e1d232df0fb564d9d8023dcd1" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-ba8fb1020343400e1d232df0fb564d9d8023dcd1">{"x":{"series":[{"name":"No","type":"bar","data":[-122,-167,-528,-673]},{"name":"Yes","type":"bar","data":[203,118,178,212]}],"legend":{"show":true,"data":["No","Yes"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"category","show":true,"position":"bottom","name":"Class","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["1st","2nd","3rd","Crew"]}],"xAxis":[{"type":"value","show":true,"position":"left","name":"Count","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"shadow","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["line","bar","tiled","stack"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"title":{"text":"Titanic: Survival Outcome by Cabin Class","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+<p>Of course we need to adjust the axis a little bit as well. Y-axis should intersect x-axis at zero and the label of x-axis should be absolute values (a little bit complex, you’d better know a little bit JaveScript).</p>
+<pre class="r"><code>g %&gt;% setYAxis(axisLine=list(onZero=TRUE)) %&gt;% 
+    setXAxis(axisLabel=list(
+        formatter=JS(&#39;function (value) {return Math.abs(value);}&#39;)
+    ))</code></pre>
+<div id="echarts-d27ae9e518ec375416ce8ecfebf25bfcecf9dd40" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-d27ae9e518ec375416ce8ecfebf25bfcecf9dd40">{"x":{"series":[{"name":"No","type":"bar","data":[-122,-167,-528,-673]},{"name":"Yes","type":"bar","data":[203,118,178,212]}],"legend":{"show":true,"data":["No","Yes"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"category","show":true,"position":"bottom","name":"Class","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":true},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["1st","2nd","3rd","Crew"]}],"xAxis":[{"type":"value","show":true,"position":"left","name":"Count","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true,"formatter":"function (value) {return Math.abs(value);}"},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"shadow","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["line","bar","tiled","stack"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"title":{"text":"Titanic: Survival Outcome by Cabin Class","x":"center","y":"bottom","orient":"horizontal"}},"evals":["xAxis.0.axisLabel.formatter"],"jsHooks":[]}</script>
+</div>
+<div id="population-pyramid" class="section level3">
+<h3><span class="header-section-number">3.2.6</span> Population Pyramid</h3>
+<p>So when you apply ‘hbar’ to <code>type</code> and ‘stack’ to <code>subtype</code>, you yield a ‘population pyramid’ as usually used in sociology.</p>
+<pre class="r"><code>echartr(titanic_tc, Class, Count, Survived, type=&#39;hbar&#39;, subtype=&#39;stack&#39;) %&gt;%
+    setTitle(&quot;Titanic: Survival Outcome by Cabin Class&quot;) %&gt;%
+    setYAxis(axisLine=list(onZero=TRUE)) %&gt;%
+    setXAxis(axisLabel=list(
+        formatter=JS(&#39;function (value) {return Math.abs(value);}&#39;)
+    ))</code></pre>
+<div id="echarts-ff741323c7a7e028731fe80a6bee36eb1b73894d" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-ff741323c7a7e028731fe80a6bee36eb1b73894d">{"x":{"series":[{"name":"No","type":"bar","data":[-122,-167,-528,-673],"stack":"Group"},{"name":"Yes","type":"bar","data":[203,118,178,212],"stack":"Group"}],"legend":{"show":true,"data":["No","Yes"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"category","show":true,"position":"bottom","name":"Class","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":true},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["1st","2nd","3rd","Crew"]}],"xAxis":[{"type":"value","show":true,"position":"left","name":"Count","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true,"formatter":"function (value) {return Math.abs(value);}"},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"shadow","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["line","bar","tiled","stack"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"title":{"text":"Titanic: Survival Outcome by Cabin Class","x":"center","y":"bottom","orient":"horizontal"}},"evals":["xAxis.0.axisLabel.formatter"],"jsHooks":[]}</script>
+</div>
+<div id="bar-chart-with-timeline" class="section level3">
+<h3><span class="header-section-number">3.2.7</span> Bar Chart with Timeline</h3>
+<p>We need another variable as timeline. Let’s say, ‘sex’.</p>
+<pre class="r"><code>titanic_sex &lt;- data.table::melt(apply(Titanic, c(1,2,4), sum))
+names(titanic_sex)[4] &lt;- &quot;Count&quot;
+knitr::kable(titanic_sex)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Class</th>
+<th align="left">Sex</th>
+<th align="left">Survived</th>
+<th align="right">Count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1st</td>
+<td align="left">Male</td>
+<td align="left">No</td>
+<td align="right">118</td>
+</tr>
+<tr class="even">
+<td align="left">2nd</td>
+<td align="left">Male</td>
+<td align="left">No</td>
+<td align="right">154</td>
+</tr>
+<tr class="odd">
+<td align="left">3rd</td>
+<td align="left">Male</td>
+<td align="left">No</td>
+<td align="right">422</td>
+</tr>
+<tr class="even">
+<td align="left">Crew</td>
+<td align="left">Male</td>
+<td align="left">No</td>
+<td align="right">670</td>
+</tr>
+<tr class="odd">
+<td align="left">1st</td>
+<td align="left">Female</td>
+<td align="left">No</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">2nd</td>
+<td align="left">Female</td>
+<td align="left">No</td>
+<td align="right">13</td>
+</tr>
+<tr class="odd">
+<td align="left">3rd</td>
+<td align="left">Female</td>
+<td align="left">No</td>
+<td align="right">106</td>
+</tr>
+<tr class="even">
+<td align="left">Crew</td>
+<td align="left">Female</td>
+<td align="left">No</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">1st</td>
+<td align="left">Male</td>
+<td align="left">Yes</td>
+<td align="right">62</td>
+</tr>
+<tr class="even">
+<td align="left">2nd</td>
+<td align="left">Male</td>
+<td align="left">Yes</td>
+<td align="right">25</td>
+</tr>
+<tr class="odd">
+<td align="left">3rd</td>
+<td align="left">Male</td>
+<td align="left">Yes</td>
+<td align="right">88</td>
+</tr>
+<tr class="even">
+<td align="left">Crew</td>
+<td align="left">Male</td>
+<td align="left">Yes</td>
+<td align="right">192</td>
+</tr>
+<tr class="odd">
+<td align="left">1st</td>
+<td align="left">Female</td>
+<td align="left">Yes</td>
+<td align="right">141</td>
+</tr>
+<tr class="even">
+<td align="left">2nd</td>
+<td align="left">Female</td>
+<td align="left">Yes</td>
+<td align="right">93</td>
+</tr>
+<tr class="odd">
+<td align="left">3rd</td>
+<td align="left">Female</td>
+<td align="left">Yes</td>
+<td align="right">90</td>
+</tr>
+<tr class="even">
+<td align="left">Crew</td>
+<td align="left">Female</td>
+<td align="left">Yes</td>
+<td align="right">20</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>echartr(titanic_sex, Class, Count, Survived, z=Sex, type=&#39;bar&#39;) %&gt;% 
+    setTitle(&quot;Titanic: Survival Outcome by Cabin Class Across Sex&quot;)</code></pre>
+<div id="echarts-80bf31e938a91815849264bdfd7cf998cccbcf56" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-80bf31e938a91815849264bdfd7cf998cccbcf56">{"x":{"timeline":{"type":"number","data":["Male","Female"],"x":80,"x2":80,"y2":50},"options":[{"series":[{"name":"No","type":"bar","data":[118,154,422,670]},{"name":"Yes","type":"bar","data":[62,25,88,192]}],"legend":{"show":true,"data":["No","Yes"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"category","show":true,"position":"bottom","name":"Class","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["1st","2nd","3rd","Crew"]}],"xAxis":[{"type":"value","show":true,"position":"left","name":"Count","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"shadow","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["line","bar","tiled","stack"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"title":{"text":"Titanic: Survival Outcome by Cabin Class Across Sex (Sex: Male)","x":"center","y":"bottom","orient":"horizontal"},"grid":{"y2":130}},{"series":[{"name":"No","type":"bar","data":[4,13,106,3]},{"name":"Yes","type":"bar","data":[141,93,90,20]}],"title":{"text":"Titanic: Survival Outcome by Cabin Class Across Sex (Sex: Female)","x":"center","y":"bottom","orient":"horizontal"}}]},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div id="vertical-bar-column-chart" class="section level2">
+<h2><span class="header-section-number">3.3</span> Vertical Bar (Column) Chart</h2>
+<div id="tiled-vertical-bar-column-chart" class="section level3">
+<h3><span class="header-section-number">3.3.1</span> Tiled Vertical Bar (Column) Chart</h3>
+<p>Compared to hbar, you just set <code>type</code> ‘vbar’, or ‘column’.</p>
+<p>Grammar for singular and multiple series are similar to legacy hbar chart.</p>
+<pre class="r"><code>echartr(titanic, Class, Count, Survived, type=&#39;column&#39;) %&gt;%
+    setTitle(&#39;Titanic: Survival Outcome by Cabin Class&#39;) </code></pre>
+<div id="echarts-47febec5ea6746656f10f3cb66bbf60adf373d23" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-47febec5ea6746656f10f3cb66bbf60adf373d23">{"x":{"series":[{"name":"No","type":"bar","data":[122,167,528,673]},{"name":"Yes","type":"bar","data":[203,118,178,212]}],"legend":{"show":true,"data":["No","Yes"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"value","show":true,"position":"left","name":"Count","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"category","show":true,"position":"bottom","name":"Class","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["1st","2nd","3rd","Crew"]}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"shadow","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["line","bar","tiled","stack"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"title":{"text":"Titanic: Survival Outcome by Cabin Class","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="stacked-vertical-bar-column-chart" class="section level3">
+<h3><span class="header-section-number">3.3.2</span> Stacked Vertical Bar (Column) Chart</h3>
+<p>Compared to vbar, you just set <code>subtype</code> ‘stack’.</p>
+<p>Grammar for singular and multiple series are similar to legacy hbar chart.</p>
+<pre class="r"><code>echartr(titanic, Class, Count, Survived, type=&#39;column&#39;, subtype=&#39;stack&#39;) %&gt;%
+    setTitle(&#39;Titanic: Survival Outcome by Cabin Class&#39;) </code></pre>
+<div id="echarts-0001dd4d3e9e4f28b7e82b8947c21a652216d41b" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-0001dd4d3e9e4f28b7e82b8947c21a652216d41b">{"x":{"series":[{"name":"No","type":"bar","data":[122,167,528,673],"stack":"Group"},{"name":"Yes","type":"bar","data":[203,118,178,212],"stack":"Group"}],"legend":{"show":true,"data":["No","Yes"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"value","show":true,"position":"left","name":"Count","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"category","show":true,"position":"bottom","name":"Class","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["1st","2nd","3rd","Crew"]}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"shadow","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["line","bar","tiled","stack"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"title":{"text":"Titanic: Survival Outcome by Cabin Class","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div id="histogram" class="section level2">
+<h2><span class="header-section-number">3.4</span> Histogram</h2>
+<div id="stat-by-frequency" class="section level3">
+<h3><span class="header-section-number">3.4.1</span> Stat by Frequency</h3>
+<p>Histogram is a special form of bar chart, in which you only provide numeric <code>x</code> variable.</p>
+<p><code>type</code> could be ‘histogram’, ‘hist’.</p>
+<pre class="r"><code>echartr(iris, Sepal.Width) %&gt;%
+    setTitle(&#39;Iris: Histogram of Sepal.Width&#39;) </code></pre>
+<div id="echarts-b6c6dc5ff6b9f14bd4fd89b202c383066b3618fc" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-b6c6dc5ff6b9f14bd4fd89b202c383066b3618fc">{"x":{"series":[{"type":"bar","data":[[2.1,4],[2.3,7],[2.5,13],[2.7,23],[2.9,36],[3.1,24],[3.3,18],[3.5,10],[3.7,9],[3.9,3],[4.1,2],[4.3,1]],"barGap":"1%","barWidth":"(document.getElementById('echarts-b6c6dc5ff6b9f14bd4fd89b202c383066b3618fc').offsetWidth-200)/13","barMaxWidth":63}],"yAxis":[{"type":"value","show":true,"position":"left","name":"Freq","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Sepal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"shadow","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["line","bar","tiled","stack"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"title":{"text":"Iris: Histogram of Sepal.Width","x":"center","y":"bottom","orient":"horizontal"}},"evals":["series.0.barWidth"],"jsHooks":[]}</script>
+</div>
+<div id="stat-by-density" class="section level3">
+<h3><span class="header-section-number">3.4.2</span> Stat by Density</h3>
+<p>Sometimes you want a density historam, then set <code>subtype</code> ‘density’.</p>
+<pre class="r"><code>echartr(iris, Sepal.Width, type=&#39;hist&#39;, subtype=&#39;density&#39;) %&gt;%
+    setTitle(&#39;Iris: Histogram of Sepal.Width&#39;) %&gt;% setYAxis(name=&quot;Density&quot;)</code></pre>
+<div id="echarts-ded912bf99695d14a966463692ad4541768f94b1" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-ded912bf99695d14a966463692ad4541768f94b1">{"x":{"series":[{"type":"bar","data":[[2.1,0.133333333333333],[2.3,0.233333333333334],[2.5,0.433333333333333],[2.7,0.766666666666666],[2.9,1.2],[3.1,0.799999999999999],[3.3,0.599999999999999],[3.5,0.333333333333333],[3.7,0.3],[3.9,0.1],[4.1,0.0666666666666663],[4.3,0.0333333333333335]],"barGap":"1%","barWidth":"(document.getElementById('echarts-ded912bf99695d14a966463692ad4541768f94b1').offsetWidth-200)/13","barMaxWidth":63}],"yAxis":[{"type":"value","show":true,"position":"left","name":"Density","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Sepal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"shadow","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["line","bar","tiled","stack"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"title":{"text":"Iris: Histogram of Sepal.Width","x":"center","y":"bottom","orient":"horizontal"}},"evals":["series.0.barWidth"],"jsHooks":[]}</script>
+</div>
+</div>
+</div>
+<div id="futher-setup" class="section level1">
+<h1><span class="header-section-number">4</span> Futher Setup</h1>
+<p>Then you can configure the widgets, add markLines and/or markPoints, fortify the chart.</p>
+<p>You can refer to related functions to play around on your own.</p>
+</div>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+    // active menu
+    var href = window.location.pathname;
+    href = href.substr(href.lastIndexOf('/') + 1);
+    if (href === '') href = './';
+    $('a[href="' + href + '"]').parent().addClass('active');
+});
+</script>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+
+</body>
+</html>

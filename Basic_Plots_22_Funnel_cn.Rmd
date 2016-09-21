@@ -1,0 +1,174 @@
+---
+title: "基础图形Basic Plots 22 - 漏斗图Funnel Chart"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+首先，加载`recharts`:
+```{r}
+library(recharts)
+```
+
+# 介绍Introduction
+
+漏斗图有2种类型:
+
+- 漏斗图
+- 金字塔图
+
+<table id='intro'>
+<tr><td>
+```{r,echo=FALSE}
+cars <- data.table::dcast(mtcars, carb~am, length, value.var='gear')
+cars <- data.table::melt(cars, id='carb')
+names(cars) <- c("carb", "am", "N")
+echartr(cars, carb, N, type='funnel') %>% 
+    setLegend(pos=3) %>%
+    setTheme('infographic', width=400, height=300) %>%
+    setTitle('mtcars: carb distibution by am','funnel')
+```
+</td>
+<td>
+```{r,echo=FALSE}
+echartr(cars, carb, N, type='pyramid') %>% 
+    setLegend(pos=3) %>%
+    setTheme('roma', width=400, height=300) %>%
+    setTitle('mtcars: carb distibution by am','pyramid')
+```
+</td></tr>
+</table>
+
+关键是:
+
+- 文本型`x`和数值型`y`，会使用`data.table::dcast`压缩（`fun=sum`）
+- **`x`用作数据系列，而`series`用于产生多个不同的漏斗图!**
+- 饼图和漏斗图可通过工具箱按钮快速切换
+
+# 用法Function Call
+
+```r
+echartr(data, x, <y>, <series>, <z>, <type>, <subtype>)
+```
+
++--------+--------------------------------------------------------------------+
+| 参数   | 要求                                                     |
++========+====================================================================+
+|**data**| 数据框格式的源数据                           |
++--------+--------------------------------------------------------------------+
+| **x**  | 文本型自变量。`x`的每个水平被处理为一个数据系列。其他类型会被转为因子后计算。如提供多个变量，只传入第一个。 |
++--------+--------------------------------------------------------------------+
+| y      | 数值型应变量。如提供多个变量，只传入第一个。 |
++--------+--------------------------------------------------------------------+
+| series | 转为因子后计算。`series`的每个水平被处理为分组因子，用于产生独立的极坐标系。如提供多个变量，只传入第一个。 |
++--------+--------------------------------------------------------------------+
+|  z     | 时间轴变量，转为因子后计算。如提供多个变量，只传入第一个。 |
++--------+--------------------------------------------------------------------+
+| type   | 'funnel', 'pyramid'. |
++--------+--------------------------------------------------------------------+
+| subtype| - funnel: c("left","center","right") | 
+|        |     + left: funnelAlign为左（左对齐） |
+|        |     + center: funnelAlign为居中 (默认) |
+|        |     + right: funnelAlign为右（右对齐） |
+|        | - pyramid: c("left","center","right")  |
++--------+--------------------------------------------------------------------+
+
+# 举例Showcase
+
+## 数据准备Data Preparation
+
+考察`datasets`包自带数据集`mtcars`。按carb及am的分布如下。
+
+```{r}
+cars <- data.table::dcast(mtcars, carb+am~., length, value.var='gear')
+names(cars) <- c("carb", "am", "N")
+knitr::kable(cars)
+```
+
+## 漏斗图Funnel Chart
+
+### 单个漏斗图Single Funnel
+
+`type`设为'funnel'。
+
+```{r}
+echartr(cars, carb, N, type='funnel') %>% 
+    setTitle('mtcars: carb distibution')
+```
+
+### 多个漏斗图Multiple Funnel
+
+与直角坐标系下不同，漏斗图用`series`作为区分不同极坐标系的分组变量。所以，我们用`am` (有2个水平) 作为`series`，可得到2个漏斗图。
+
+```{r}
+echartr(cars, carb, N, am, type='funnel') %>% 
+    setTitle('mtcars: carb distibution by am')
+```
+
+### 带时间轴With Timeline
+
+需要一个时间轴变量。不妨用'gear'。
+
+```{r}
+cars_gear <- data.table::dcast(mtcars, carb+gear+am~., length, value.var='gear')
+names(cars_gear) <- c("carb", "gear", "am", "N")
+```
+
+为了让时间轴正确显示，我们需要用`expand.grid`扩展数据集，覆盖`x`及`z`各水平的全部组合。
+
+```{r}
+fullData <- with(mtcars, data.frame(
+    expand.grid(unique(carb), unique(gear), unique(am))))
+names(fullData) <- c("carb", "gear", "am")
+cars_gear <- merge(cars_gear, fullData, all.y=TRUE)
+```
+
+```{r}
+echartr(cars_gear, carb, N, am, z=gear, type='funnel') %>% 
+    setTitle('mtcars: carb distibution by am across gear')
+```
+
+### 对齐方式Different Alignment
+
+左对齐。
+
+```{r}
+echartr(cars, carb, N, am, type='funnel', subtype='left') %>% 
+    setTitle('mtcars: carb distibution by am across gear')
+```
+
+## 金字塔图Pyramid Chart
+
+`type`设为'pyramid'。
+
+```{r}
+echartr(cars, carb, N, am, type='pyramid') %>% 
+    setTitle('mtcars: carb distibution by am')
+```
+
+也可以混合`funnel`和`pyramid`。
+
+```{r}
+echartr(cars, carb, N, am, type=c('funnel', 'pyramid')) %>% 
+    setTitle('mtcars: carb distibution by am')
+```
+
+
+```{r}
+echartr(cars, carb, N, am, type=c('funnel', 'pyramid'), 
+        subtype=c('right', 'left')) %>% 
+    setTitle('mtcars: carb distibution by am')
+```
+
+# 其他设定Futher Setup
+
+接下来可以配置控件、添加标注点/标注线，以及美化成图。
+
+参考相关函数，尽情探索吧。
+

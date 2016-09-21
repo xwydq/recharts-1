@@ -1,0 +1,166 @@
+---
+title: "基础图形Basic Plots 23 - 雷达图Radar Chart"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+首先，加载`recharts`:
+```{r}
+library(recharts)
+```
+
+# 介绍Introduction
+
+雷达图包含一种类型：radar
+
+<table id='intro'>
+<tr><td>
+```{r,echo=FALSE}
+cars = mtcars[c('Merc 450SE','Merc 450SL','Merc 450SLC'),
+              c('mpg','disp','hp','qsec','wt','drat')]
+cars$model <- rownames(cars)
+cars <- data.table::melt(cars, id.vars='model')
+names(cars) <- c('model', 'indicator', 'Parameter')
+echartr(cars, indicator, Parameter, model, type='radar') %>%
+        setTitle('Merc 450SE  vs  450SL  vs  450SLC') %>% 
+    setTheme('infographic', width=400, height=300)
+```
+</td>
+<td>
+
+</td></tr>
+</table>
+
+关键是:
+
+- 文本型`x`和数值型`y`，会使用`data.table::dcast`压缩（`fun=sum`）
+- **`x`用作数据系列，而`series`用于产生多个不同的雷达图!**
+- 可以用`setPolar`微调极坐标参数。
+
+# 用法Function Call
+
+```r
+echartr(data, x, <y>, <series>, <z>, <type>, <subtype>)
+```
+
++--------+--------------------------------------------------------------------+
+| 变量   |  要求                                                    |
++========+====================================================================+
+|**data**| 数据框格式的源数据                   |
++--------+--------------------------------------------------------------------+
+| **x**  | 文本型自变量。`x[1,]`的每个水平被处理为极坐标轴，`x[,2]`的每个水平被处理为一个数据系列。其他类型会被转为因子后计算。如提供多个变量，只传入前两个。 |
++--------+--------------------------------------------------------------------+
+| **y**  | 数值型应变量。如提供多个变量，只传入第一个。 |
++--------+--------------------------------------------------------------------+
+| series | 转为因子后计算。`series`的每个水平被处理为分组因子，用于产生独立的极坐标系。如提供多个变量，只传入第一个。  |
++--------+--------------------------------------------------------------------+
+|  z     | 时间轴变量，转为因子后计算。如提供多个变量，只传入第一个。 |
++--------+--------------------------------------------------------------------+
+| type   | 'radar'. |
++--------+--------------------------------------------------------------------+
+| subtype| - radar: "fill" | 
+|        |     + fill: 雷达图填色 (默认不填色) |
++--------+--------------------------------------------------------------------+
+
+# 举例Showcase
+
+## 数据准备Data Preparation
+
+考察`datasets`包自带数据集`mtcars`。我们要考察不同车款(Mercedes-benz 450系列)的c('mpg','disp','hp','qsec','wt','drat')指标。
+
+```{r}
+cars = mtcars[c('Merc 450SE','Merc 450SL','Merc 450SLC'),
+              c('mpg','disp','hp','qsec','wt','drat')]
+cars$model <- rownames(cars)
+cars <- data.table::melt(cars, id.vars='model')
+names(cars) <- c('model', 'indicator', 'Parameter')
+knitr::kable(cars)
+```
+
+## 雷达图Radar Chart
+
+### 单个雷达图Single Radar
+
+`type`设为'radar'，不设置`series`和`x[,2]`。但这样的单雷达图价值不大。
+
+```{r}
+echartr(cars, indicator, Parameter, type='radar')
+```
+
+### 多系列雷达图Radar with Multiple Series
+
+我们一般都要设置数据系列，以便对比。雷达图是极坐标图，数据系列位于`x[,2]`。
+
+```{r}
+echartr(cars, c(indicator, model), Parameter, type='radar', sub='fill') %>%
+    setTitle('Merc 450SE  vs  450SL  vs  450SLC')
+```
+
+## 多个雷达图Multiple Radars
+
+如果不设置`x[,2]`，而是设置`series`，可以获得多个雷达图。
+
+```{r}
+echartr(cars, indicator, Parameter, model, type='radar') %>%
+        setTitle('Merc 450SE  vs  450SL  vs  450SLC')
+```
+
+
+## 带时间轴With Timeline
+
+设置`z`，获得带时间轴的雷达图。
+
+```{r}
+echartr(cars, indicator, Parameter, z=model, type='radar') %>%
+        setTitle('Merc 450SE  vs  450SL  vs  450SLC')
+```
+
+涉及时间轴时，要格外注意。为了让时间轴正常显示，我们需要用`expand.grid`扩展数据集，覆盖x、series和`z`各水平的所有组合情况。
+
+```{r}
+carstat = data.table::dcast(data.table::data.table(mtcars),
+              am + carb + gear ~., mean,
+              value.var=c('mpg','disp','hp','qsec','wt','drat'))
+carstat = data.table::melt(carstat, id=c('am', 'carb', 'gear'))
+names(carstat) <- c('am', 'carb', 'gear', 'indicator', 'Parameter')
+levels(carstat$indicator) <- gsub("_mean_\\.", "",
+                                  levels(carstat$indicator))
+carstat$am <- factor(carstat$am, labels=c('A', 'M'))
+fullData <- data.frame(expand.grid(levels(carstat$indicator),
+            levels(carstat$am), unique(carstat$carb)))
+carstat <- merge(fullData, carstat, all.x=TRUE)
+carstat$carb <- as.factor(carstat$carb)
+carstat$gear <- as.factor(carstat$gear)
+str(carstat)
+```
+
+```{r}
+echartr(carstat, c(indicator, am), Parameter, carb, z=gear, type='radar') %>%
+    setTitle('Merc 450SE  vs  450SL  vs  450SLC')
+```
+
+# 其他设置Futher Setup
+
+## 设置极坐标`setPolar`
+
+雷达图默认构建在多边性极坐标系。可以用`setPolar`改为圆形极坐标系。但仅适用于雷达图。
+
+```{r}
+echartr(cars, indicator, Parameter, model, type='radar') %>%
+        setTitle('Merc 450SE  vs  450SL  vs  450SLC') %>%
+    setPolar(type='circle')
+```
+
+在R控制台键入`?setPolar`查看帮助。
+
+接下来可以配置控件、添加标注点/标注线，以及美化成图。
+
+参考相关函数，尽情探索吧。
+

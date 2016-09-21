@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Widget 02 - Polar</title>
+
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/htmlwidgets-0.7/htmlwidgets.js"></script>
+<script src="libs/echarts-2.2.7/echarts-all.js"></script>
+<script src="libs/echarts-2.2.7/ext/params.js"></script>
+<script src="libs/echarts-2.2.7/ext/loadGeoJSON.js"></script>
+<script src="libs/echarts-binding-0.0.5/echarts.js"></script>
+<script src="libs/echarts-module-2.2.7/base.js"></script>
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 70px;
+}
+p code {
+  white-space: inherit;
+}
+.html-widget-static-bound {
+  margin: auto;
+}
+.alert>p {
+  margin-bottom: 10.5px;
+}
+</style>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/default.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="./">recharts</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="./">Home</a></li>
+        <li><a href="index_cn.html">首页</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="https://github.com/madlogos/recharts" title="View Source on Github"><i class="fa fa-github fa-lg"></i></a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</nav><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Widget 02 - Polar</h1>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction"><span class="toc-section-number">1</span> Introduction</a></li>
+<li><a href="#function-call"><span class="toc-section-number">2</span> Function Call</a></li>
+<li><a href="#showcase"><span class="toc-section-number">3</span> Showcase</a><ul>
+<li><a href="#data-preparation"><span class="toc-section-number">3.1</span> Data Preparation</a></li>
+<li><a href="#modification"><span class="toc-section-number">3.2</span> Modification</a></li>
+</ul></li>
+<li><a href="#references"><span class="toc-section-number">4</span> References</a></li>
+</ul>
+</div>
+
+<p>First, you should load <code>recharts</code>:</p>
+<pre class="r"><code>library(recharts)</code></pre>
+<div id="introduction" class="section level1">
+<h1><span class="header-section-number">1</span> Introduction</h1>
+<p>Radar charts are based on Polar Coordinate System, which calls for center and radius. When you generate an Echarts object of radar chart using <code>echartr</code>, you can then modify the axes by <code>setPolar</code>.</p>
+</div>
+<div id="function-call" class="section level1">
+<h1><span class="header-section-number">2</span> Function Call</h1>
+<pre class="r"><code>setPolar(chart, polarIndex = NULL, center = c(&quot;50%&quot;, &quot;50%&quot;),
+  radius = &quot;75%&quot;, startAngle = 90, splitNumber = 5, boundaryGap = c(0,
+  0), scale = FALSE, axisLine = NULL, axisLabel = NULL,
+  splitLine = NULL, splitArea = NULL, type = c(&quot;polygon&quot;, &quot;circle&quot;),
+  indicator = NULL, axisName = NULL, ...)</code></pre>
+<table>
+<colgroup>
+<col width="17%" />
+<col width="82%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Arg</th>
+<th align="left">Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><p><strong>chart</strong></p></td>
+<td align="left"><p>Echarts object generated by <code>echartR</code> or <code>echart</code>.</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>PolarIndex</p></td>
+<td align="left"><p>Integer vector. The index of the polar systems you want to set. Default NULL.</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>center</p></td>
+<td align="left"><p>Vector of the x, y position of the polar center. Could be numeric or character (percent form) vectors of length 2. Default c(‘50%’, ‘50%’).</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>radius</p></td>
+<td align="left"><p>The radius of the polar system, could be numeric or character (percent form). Default ‘75%’.</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>startAngle</p></td>
+<td align="left"><p>Numeric (-180 ~ 180). The start angle. Default 90.</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>splitNumber</p></td>
+<td align="left"><p>Numeric. The number of sections to divide. Default 5.</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>boundaryGap</p></td>
+<td align="left"><p>Numeric vector of length 2. The gapping policy of the axis. Default <code>c(0, 0)</code>.</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>scale</p></td>
+<td align="left"><p>Logical. Whether to ignore zero and zoom toward the range of _min and _max.</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>axisLine</p></td>
+<td align="left"><p>List. Axis line styles. You can set its show, onZero, lineStyle features. Default <code>list(show=TRUE)</code>.</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>axisLabel</p></td>
+<td align="left"><p>List. Axis label styles. You can set its <code>show, rotate, margin</code>, <code>clickable, formatter, textStyle</code> features. Default <code>list(show=FALSE)</code>.</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>splitLine</p></td>
+<td align="left"><p>List. Split line styles. You can set its <code>show</code>, <code>lineStyle</code> features. Default <code>list(show=TRUE)</code>.</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>splitArea</p></td>
+<td align="left"><p>List. Split area styles. You can set its <code>show</code>, <code>onGap</code>, <code>areaStyle</code> features. Default <code>list(show=TRUE)</code>.</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>type</p></td>
+<td align="left"><p>Character, ‘polygon’ or ‘circle’. The type of the polar shape. Default ‘polygon’..</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>indicator</p></td>
+<td align="left"><p>List. The radar indicator and labels. The basic structure is <code>list(list(text='...',</code> <code>min=..., max=...,</code> <code>axisLabel=list(...)),</code> <code>list(text='...', min=..., max=...),</code> <code>list(...), ...)</code>. Default is empty.</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>axisName</p></td>
+<td align="left"><p>List. The name of the axis. You can set its <code>show</code>, <code>formatter</code>, <code>textStyle</code> features. Default <code>list(show=TRUE, formatter=NULL,</code> <code>textStyle= list(color='#333'))</code>.</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>…</p></td>
+<td align="left"><p>Elipsis.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="showcase" class="section level1">
+<h1><span class="header-section-number">3</span> Showcase</h1>
+<div id="data-preparation" class="section level2">
+<h2><span class="header-section-number">3.1</span> Data Preparation</h2>
+<p>Let’s use <code>mtcars</code> to generate an Echarts objects <code>g</code>:</p>
+<pre class="r"><code>require(data.table)</code></pre>
+<pre><code>## Loading required package: data.table</code></pre>
+<pre class="r"><code>cars = mtcars[c(&#39;Merc 450SE&#39;,&#39;Merc 450SL&#39;,&#39;Merc 450SLC&#39;),
+              c(&#39;mpg&#39;,&#39;disp&#39;,&#39;hp&#39;,&#39;qsec&#39;,&#39;wt&#39;,&#39;drat&#39;)]
+cars$model &lt;- rownames(cars)
+cars &lt;- data.table::melt(cars, id.vars=&#39;model&#39;)
+names(cars) &lt;- c(&#39;model&#39;, &#39;indicator&#39;, &#39;Parameter&#39;)
+g &lt;- echartr(cars, indicator, Parameter, model, type=&#39;radar&#39;) %&gt;%
+        setTitle(&#39;Merc 450SE  vs  450SL  vs  450SLC&#39;)</code></pre>
+</div>
+<div id="modification" class="section level2">
+<h2><span class="header-section-number">3.2</span> Modification</h2>
+<p>You can change the three radars one by one using <code>setPolar</code>.</p>
+<pre class="r"><code>g %&gt;% setPolar(1, center=c(&#39;20%&#39;, &#39;50%&#39;), radius=&#39;30%&#39;, splitNumber=10) %&gt;%
+      setPolar(2, center=c(&#39;50%&#39;, &#39;50%&#39;), radius=&#39;35%&#39;, type=&#39;circle&#39;) %&gt;%
+      setPolar(3, center=c(&#39;80%&#39;, &#39;50%&#39;), radius=&#39;30%&#39;, 
+            splitArea=list(show=FALSE), axisLabel=list(show=TRUE))</code></pre>
+<table>
+<tr>
+<td>
+<div id="echarts-2fb14acd8b4f142d3851e50235118db376d24b7a" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-2fb14acd8b4f142d3851e50235118db376d24b7a">{"x":{"series":[{"type":"radar","symbol":"none","name":"Merc 450SE","data":[{"name":"Parameter","value":[16.4,275.8,180,17.4,4.07,3.07]}]},{"type":"radar","symbol":"none","name":"Merc 450SL","data":[{"name":"Parameter","value":[17.3,275.8,180,17.6,3.73,3.07]}],"polarIndex":1},{"type":"radar","symbol":"none","name":"Merc 450SLC","data":[{"name":"Parameter","value":[15.2,275.8,180,18,3.78,3.07]}],"polarIndex":2}],"legend":{"show":true,"data":["Parameter"],"x":"left","y":"top","orient":"horizontal"},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"polar":[{"center":["27.5%","27.5%"],"radius":"44.25%","indicator":[{"text":"mpg","max":20.76},{"text":"disp","max":330.96},{"text":"hp","max":216},{"text":"qsec","max":21.6},{"text":"wt","max":4.884},{"text":"drat","max":3.684}]},{"center":["72.5%","27.5%"],"radius":"44.25%","indicator":[{"text":"mpg","max":20.76},{"text":"disp","max":330.96},{"text":"hp","max":216},{"text":"qsec","max":21.6},{"text":"wt","max":4.884},{"text":"drat","max":3.684}]},{"center":["27.5%","72.5%"],"radius":"44.25%","indicator":[{"text":"mpg","max":20.76},{"text":"disp","max":330.96},{"text":"hp","max":216},{"text":"qsec","max":21.6},{"text":"wt","max":4.884},{"text":"drat","max":3.684}]}],"title":{"text":"Merc 450SE  vs  450SL  vs  450SLC","subtext":"","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</td>
+<td>
+<div id="echarts-cdd21659f693678a16182b38f5bc72d5d8b21347" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-cdd21659f693678a16182b38f5bc72d5d8b21347">{"x":{"series":[{"type":"radar","symbol":"none","name":"Merc 450SE","data":[{"name":"Parameter","value":[16.4,275.8,180,17.4,4.07,3.07]}]},{"type":"radar","symbol":"none","name":"Merc 450SL","data":[{"name":"Parameter","value":[17.3,275.8,180,17.6,3.73,3.07]}],"polarIndex":1},{"type":"radar","symbol":"none","name":"Merc 450SLC","data":[{"name":"Parameter","value":[15.2,275.8,180,18,3.78,3.07]}],"polarIndex":2}],"legend":{"show":true,"data":["Parameter"],"x":"left","y":"top","orient":"horizontal"},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"polar":[{"center":["20%","50%"],"radius":"30%","indicator":[{"text":"mpg","max":20.76},{"text":"disp","max":330.96},{"text":"hp","max":216},{"text":"qsec","max":21.6},{"text":"wt","max":4.884},{"text":"drat","max":3.684}],"splitNumber":10},{"center":["50%","50%"],"radius":"35%","indicator":[{"text":"mpg","max":20.76},{"text":"disp","max":330.96},{"text":"hp","max":216},{"text":"qsec","max":21.6},{"text":"wt","max":4.884},{"text":"drat","max":3.684}],"type":"circle"},{"center":["80%","50%"],"radius":"30%","indicator":[{"text":"mpg","max":20.76},{"text":"disp","max":330.96},{"text":"hp","max":216},{"text":"qsec","max":21.6},{"text":"wt","max":4.884},{"text":"drat","max":3.684}],"axisLabel":{"show":true},"splitArea":{"show":false}}],"title":{"text":"Merc 450SE  vs  450SL  vs  450SLC","subtext":"","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</td>
+</tr>
+</table>
+<p>Or change all of the radars at one time.</p>
+<pre class="r"><code>g %&gt;% setPolar(splitNumber=10, type=&#39;circle&#39;, splitArea=list(
+              areaStyle=areaStyle(color=c(&#39;white&#39;, &#39;lightblue&#39;))))</code></pre>
+<table>
+<tr>
+<td>
+<div id="echarts-b81c443dcaf529f359ea0a38f345a3a51fff2ada" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-b81c443dcaf529f359ea0a38f345a3a51fff2ada">{"x":{"series":[{"type":"radar","symbol":"none","name":"Merc 450SE","data":[{"name":"Parameter","value":[16.4,275.8,180,17.4,4.07,3.07]}]},{"type":"radar","symbol":"none","name":"Merc 450SL","data":[{"name":"Parameter","value":[17.3,275.8,180,17.6,3.73,3.07]}],"polarIndex":1},{"type":"radar","symbol":"none","name":"Merc 450SLC","data":[{"name":"Parameter","value":[15.2,275.8,180,18,3.78,3.07]}],"polarIndex":2}],"legend":{"show":true,"data":["Parameter"],"x":"left","y":"top","orient":"horizontal"},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"polar":[{"center":["27.5%","27.5%"],"radius":"44.25%","indicator":[{"text":"mpg","max":20.76},{"text":"disp","max":330.96},{"text":"hp","max":216},{"text":"qsec","max":21.6},{"text":"wt","max":4.884},{"text":"drat","max":3.684}]},{"center":["72.5%","27.5%"],"radius":"44.25%","indicator":[{"text":"mpg","max":20.76},{"text":"disp","max":330.96},{"text":"hp","max":216},{"text":"qsec","max":21.6},{"text":"wt","max":4.884},{"text":"drat","max":3.684}]},{"center":["27.5%","72.5%"],"radius":"44.25%","indicator":[{"text":"mpg","max":20.76},{"text":"disp","max":330.96},{"text":"hp","max":216},{"text":"qsec","max":21.6},{"text":"wt","max":4.884},{"text":"drat","max":3.684}]}],"title":{"text":"Merc 450SE  vs  450SL  vs  450SLC","subtext":"","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</td>
+<td>
+<div id="echarts-f64e383ac261b934e950e0abd2a3ab484372af8c" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-f64e383ac261b934e950e0abd2a3ab484372af8c">{"x":{"series":[{"type":"radar","symbol":"none","name":"Merc 450SE","data":[{"name":"Parameter","value":[16.4,275.8,180,17.4,4.07,3.07]}]},{"type":"radar","symbol":"none","name":"Merc 450SL","data":[{"name":"Parameter","value":[17.3,275.8,180,17.6,3.73,3.07]}],"polarIndex":1},{"type":"radar","symbol":"none","name":"Merc 450SLC","data":[{"name":"Parameter","value":[15.2,275.8,180,18,3.78,3.07]}],"polarIndex":2}],"legend":{"show":true,"data":["Parameter"],"x":"left","y":"top","orient":"horizontal"},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"polar":[{"center":["27.5%","27.5%"],"radius":"44.25%","indicator":[{"text":"mpg","max":20.76},{"text":"disp","max":330.96},{"text":"hp","max":216},{"text":"qsec","max":21.6},{"text":"wt","max":4.884},{"text":"drat","max":3.684}],"splitNumber":10,"splitArea":{"areaStyle":{"color":["white","lightblue"]}},"type":"circle"},{"center":["72.5%","27.5%"],"radius":"44.25%","indicator":[{"text":"mpg","max":20.76},{"text":"disp","max":330.96},{"text":"hp","max":216},{"text":"qsec","max":21.6},{"text":"wt","max":4.884},{"text":"drat","max":3.684}],"splitNumber":10,"splitArea":{"areaStyle":{"color":["white","lightblue"]}},"type":"circle"},{"center":["27.5%","72.5%"],"radius":"44.25%","indicator":[{"text":"mpg","max":20.76},{"text":"disp","max":330.96},{"text":"hp","max":216},{"text":"qsec","max":21.6},{"text":"wt","max":4.884},{"text":"drat","max":3.684}],"splitNumber":10,"splitArea":{"areaStyle":{"color":["white","lightblue"]}},"type":"circle"}],"title":{"text":"Merc 450SE  vs  450SL  vs  450SLC","subtext":"","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div id="references" class="section level1">
+<h1><span class="header-section-number">4</span> References</h1>
+<p><a href="http://echarts.baidu.com/echarts2/doc/option.html#title~polar" class="uri">http://echarts.baidu.com/echarts2/doc/option.html#title~polar</a></p>
+</div>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+    // active menu
+    var href = window.location.pathname;
+    href = href.substr(href.lastIndexOf('/') + 1);
+    if (href === '') href = './';
+    $('a[href="' + href + '"]').parent().addClass('active');
+});
+</script>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+
+</body>
+</html>

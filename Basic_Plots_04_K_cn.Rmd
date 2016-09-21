@@ -1,0 +1,94 @@
+---
+title: "基础图类Basic Plots 04 - 蜡烛图Candlestick"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+首先，加载`recharts`:
+```{r}
+library(recharts)
+```
+
+# 介绍Introduction
+
+蜡烛图也叫K线图。
+
+<table id='intro'>
+<tr><td>
+```{r,echo=FALSE}
+data(stock)
+echartr(stock, as.character(date), c("open", "close", "low", "high"), type='k') %>% 
+    setTheme('infographic', width=400, height=300) %>% 
+    setTitle('Shanghai Stock Index 2013 1H') %>% setXAxis(name='Date') %>%
+    setYAxis(name="Price")
+```
+</td>
+<td>
+</table>
+
+关键是：
+
+- 文本型`x` 
+- 数值型'y' (4列) 按'开盘'、'收盘'、'最低价'、'最高价'顺序排列
+
+# 用法Function Call
+
+```r
+echartr(data, x, y, <z>, <type>)
+```
+
++--------+--------------------------------------------------------------------+
+| 参数   |  要求                                                       |
++========+====================================================================+
+|**data**| 数据框格式的源数据                          |
++--------+--------------------------------------------------------------------+
+| **x**  | 文本型自变量，如提供多个变量，只传入第一个。 |
++--------+--------------------------------------------------------------------+
+| **y**  | 数值型自变量，只传入前四列且必须按'开盘'、'收盘'、'最低价'、'最高价'顺序排列。 |
++--------+--------------------------------------------------------------------+
+|  z     | 时间轴变量，转为因子计算。如提供多个变量，只传入第一个。 |
++--------+--------------------------------------------------------------------+
+| type   | 'k' 或 'candlestick' |
++--------+--------------------------------------------------------------------+
+
+
+# 举例Showcase
+
+## 基本图形Basic Plot
+
+```{r}
+echartr(stock, as.character(date), c(open, close, low, high), type='k') %>%
+    setXAxis(name='Date', axisLabel=list(rotate=30)) %>%
+    setYAxis(name="Price")
+```
+
+## 带时间轴With Timeline
+
+还记得[快速入门](index_cn.html)中的特别注意事项吗？我们要修补一下数据，让它包含`x`和`z`各自所有水平的完整组合。
+
+```{r}
+stock$Month <- format(stock$date, '%m')
+stock$Day <- format(stock$date, '%d')
+fullData <- data.frame(expand.grid(unique(stock$Month), unique(stock$Day)))
+names(fullData) <- c("Month", "Day")
+stock <- merge(stock, fullData, all.y=TRUE)
+```
+
+只有这样时间轴才正常显示。
+```{r}
+echartr(stock, Day, c(open, close, low, high), z=Month, type='k') %>%
+    setYAxis(name="Price")
+```
+
+# 其他设定Futher Setup
+
+接下来可以配置控件、添加标注点/标注线，以及美化成图。
+
+参考相关函数，尽情探索吧。
+

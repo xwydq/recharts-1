@@ -1,0 +1,138 @@
+---
+title: "控件Widget 02 - 极坐标Polar"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+首先，加载`recharts`:
+```{r}
+library(recharts)
+```
+
+# 介绍Introduction
+
+雷达图基于极坐标系，需要定义中心和半径。用`echartr`生成echarts对象后，可以用`setPolar`调整坐标。 
+
+# 用法Function Call
+
+```r
+setPolar(chart, polarIndex = NULL, center = c("50%", "50%"),
+  radius = "75%", startAngle = 90, splitNumber = 5, boundaryGap = c(0,
+  0), scale = FALSE, axisLine = NULL, axisLabel = NULL,
+  splitLine = NULL, splitArea = NULL, type = c("polygon", "circle"),
+  indicator = NULL, axisName = NULL, ...)
+```
+
++-------------+----------------------------------------------------------------+
+|   参数      |  要求                                             |
++=============+================================================================+
+|**chart**    | `echartR` 或 `echart`生成的Echarts对象.  |
++-------------+----------------------------------------------------------------+
+| PolarIndex  | 整型向量，所要调整的极坐标系索引值。默认为NULL. |
++-------------+----------------------------------------------------------------+
+| center      | 极坐标系的x, y位置向量，可以是长度为2的数值或文本型 (百分比格式) 向量，默认为c('50%', '50%'). |
++-------------+----------------------------------------------------------------+
+| radius      | 极坐标系的半径，可以是长度为2的数值或文本型 (百分比格式)，默认为'75%'. |
++-------------+----------------------------------------------------------------+
+| startAngle  | 数值型 (-180 ~ 180). 起始角度，默认为90. |
++-------------+----------------------------------------------------------------+
+| splitNumber | 数值型，切分段数，默认为5. |
++-------------+----------------------------------------------------------------+
+| boundaryGap | 长度为2 的数值型向量，坐标轴留空策略，默认为`c(0, 0)`. |
++-------------+----------------------------------------------------------------+
+| scale       | 逻辑型。是否忽略零值，缩放到最小、最大区间内. 默认为TRUE |
++-------------+----------------------------------------------------------------+
+| axisLine    | 列表。坐标轴线条样式，可以设置show, onZero, lineStyle属性。默认为 `list(show=TRUE)`. |
++-------------+----------------------------------------------------------------+
+| axisLabel   | 列表。坐标轴标签样式，可设置`show, rotate, margin`, `clickable, formatter, textStyle` 属性. 默认为 `list(show=FALSE)`. |
++-------------+----------------------------------------------------------------+
+| splitLine   | 列表，分割线样式。可设置 `show`, `lineStyle` 属性。默认为`list(show=TRUE)`. |
++-------------+----------------------------------------------------------------+
+| splitArea   | 列表，分割区域样式。可设置`show`, `onGap`, `areaStyle`属性。 默认为`list(show=TRUE)`. |
++-------------+----------------------------------------------------------------+
+| type        | 文本，'polygon'或'circle'。极坐标系形状，默认为'polygon'. 
++-------------+----------------------------------------------------------------+
+| indicator   | 列表，雷达指示器和标签，基本结构为`list(list(text='...',` `min=..., max=...,` `axisLabel=list(...)),` `list(text='...', min=..., max=...),` `list(...), ...)`. 默认为空。
++-------------+----------------------------------------------------------------+
+| axisName    | 列表，极坐标轴名称，可设置`show`, `formatter`, `textStyle`属性，默认为`list(show=TRUE, formatter=NULL,` `textStyle= list(color='#333'))`.  |
++-------------+----------------------------------------------------------------+
+| ...         | 省略号 |
++-------------+----------------------------------------------------------------+
+
+
+# 举例Showcase
+
+## 数据准备Data Preparation
+
+用`mtcars`数据集生成Echarts对象`g`: 
+
+```{r}
+require(data.table)
+cars = mtcars[c('Merc 450SE','Merc 450SL','Merc 450SLC'),
+              c('mpg','disp','hp','qsec','wt','drat')]
+cars$model <- rownames(cars)
+cars <- data.table::melt(cars, id.vars='model')
+names(cars) <- c('model', 'indicator', 'Parameter')
+g <- echartr(cars, indicator, Parameter, model, type='radar') %>%
+        setTitle('Merc 450SE  vs  450SL  vs  450SLC')
+```
+
+
+## 修饰Modification
+
+可以用`setPolar`逐一修改三个雷达图。
+
+```r
+g %>% setPolar(1, center=c('20%', '50%'), radius='30%', splitNumber=10) %>%
+      setPolar(2, center=c('50%', '50%'), radius='35%', type='circle') %>%
+      setPolar(3, center=c('80%', '50%'), radius='30%', 
+            splitArea=list(show=FALSE), axisLabel=list(show=TRUE))
+```
+
+<table>
+<tr><td>
+```{r, echo=FALSE}
+g %>% setTheme(width=400, height=300)
+```
+</td><td>
+```{r, echo=FALSE}
+g %>% setPolar(1, center=c('20%', '50%'), radius='30%', splitNumber=10) %>%
+      setPolar(2, center=c('50%', '50%'), radius='35%', type='circle') %>%
+      setPolar(3, center=c('80%', '50%'), radius='30%', 
+            splitArea=list(show=FALSE), axisLabel=list(show=TRUE)) %>%
+    setTheme(width=400, height=300)
+```
+</td></tr>
+</table>
+
+或一次性修改三个雷达图。
+
+```r
+g %>% setPolar(splitNumber=10, type='circle', splitArea=list(
+              areaStyle=areaStyle(color=c('white', 'lightblue'))))
+```
+
+<table>
+<tr><td>
+```{r,echo=FALSE}
+g %>% setTheme(width=400, height=300)
+```
+</td><td>
+```{r,echo=FALSE}
+g %>% setPolar(splitNumber=10, type='circle', splitArea=list(
+              areaStyle=areaStyle(color=c('white', 'lightblue')))) %>% 
+    setTheme(width=400, height=300)
+```
+</td></tr>
+</table>
+
+# 参考资料
+
+<http://echarts.baidu.com/echarts2/doc/option.html#title~polar>

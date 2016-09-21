@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>基础图形Basic Plots 21 - 词云WordCloud</title>
+
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/htmlwidgets-0.7/htmlwidgets.js"></script>
+<script src="libs/echarts-2.2.7/echarts-all.js"></script>
+<script src="libs/echarts-2.2.7/ext/params.js"></script>
+<script src="libs/echarts-2.2.7/ext/loadGeoJSON.js"></script>
+<script src="libs/echarts-binding-0.0.5/echarts.js"></script>
+<script src="libs/echarts-module-2.2.7/base.js"></script>
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 70px;
+}
+p code {
+  white-space: inherit;
+}
+.html-widget-static-bound {
+  margin: auto;
+}
+.alert>p {
+  margin-bottom: 10.5px;
+}
+</style>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/default.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="./">recharts</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="./">Home</a></li>
+        <li><a href="index_cn.html">首页</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="https://github.com/madlogos/recharts" title="View Source on Github"><i class="fa fa-github fa-lg"></i></a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</nav><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">基础图形Basic Plots 21 - 词云WordCloud</h1>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction"><span class="toc-section-number">1</span> 介绍Introduction</a></li>
+<li><a href="#function-call"><span class="toc-section-number">2</span> 用法Function Call</a></li>
+<li><a href="#showcase"><span class="toc-section-number">3</span> 举例Showcase</a><ul>
+<li><a href="#data-preparation"><span class="toc-section-number">3.1</span> 数据准备Data Preparation</a></li>
+<li><a href="#basic-plot"><span class="toc-section-number">3.2</span> 基本图形Basic Plot</a></li>
+<li><a href="#color-by-series"><span class="toc-section-number">3.3</span> 按数据系列着色Color by Series</a></li>
+<li><a href="#with-timeline"><span class="toc-section-number">3.4</span> 带时间轴With Timeline</a></li>
+</ul></li>
+<li><a href="#futher-setup"><span class="toc-section-number">4</span> 其他设定Futher Setup</a><ul>
+<li><a href="#settheme"><span class="toc-section-number">4.1</span> 设置主题<code>setTheme</code></a></li>
+</ul></li>
+</ul>
+</div>
+
+<p>首先，加载<code>recharts</code>:</p>
+<pre class="r"><code>library(recharts)</code></pre>
+<div id="introduction" class="section level1">
+<h1><span class="header-section-number">1</span> 介绍Introduction</h1>
+<p>词云只有一种类型: wordCloud</p>
+<table id='intro'>
+<tr>
+<td>
+<div id="echarts-46247af6257841e19330802e63d166332c7bd5de" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-46247af6257841e19330802e63d166332c7bd5de">{"x":{"series":[{"data":[{"name":"MH370残骸找到","value":5934,"itemStyle":{"normal":{"color":"#30e0e0"}}},{"name":"note7国行爆炸","value":6824,"itemStyle":{"normal":{"color":"#ffd700"}}},{"name":"包贝尔伴娘门事件","value":73926,"itemStyle":{"normal":{"color":"#1e90ff"}}},{"name":"宝马女撞卡宴男","value":3933,"itemStyle":{"normal":{"color":"#ff69b4"}}},{"name":"超模化身水果走秀","value":19974,"itemStyle":{"normal":{"color":"#ffd700"}}},{"name":"吃帝王蟹疑被掉包","value":11883,"itemStyle":{"normal":{"color":"#ff00ff"}}},{"name":"崔永元谈抑郁症","value":100591,"itemStyle":{"normal":{"color":"#ffd700"}}},{"name":"大话3遭吐槽","value":11529,"itemStyle":{"normal":{"color":"#3cb371"}}},{"name":"大妈水源地洗澡","value":4525,"itemStyle":{"normal":{"color":"#6495ed"}}},{"name":"第68届艾美奖","value":5511,"itemStyle":{"normal":{"color":"#6495ed"}}},{"name":"杜若溪片场病倒","value":9583,"itemStyle":{"normal":{"color":"#ff00ff"}}},{"name":"金星晒照被批脚丑","value":24020,"itemStyle":{"normal":{"color":"#da70d6"}}},{"name":"连撞三车称遇到鬼","value":33441,"itemStyle":{"normal":{"color":"#32cd32"}}},{"name":"两车高速飚车对撞","value":261061,"itemStyle":{"normal":{"color":"#b8860b"}}},{"name":"两男争论月亮打架","value":2037,"itemStyle":{"normal":{"color":"#b8860b"}}},{"name":"权志龙恋情疑曝光","value":40839,"itemStyle":{"normal":{"color":"#6b8e23"}}},{"name":"陕西现冥界之花","value":19730,"itemStyle":{"normal":{"color":"#da70d6"}}},{"name":"少女疑被协警掐死","value":28203,"itemStyle":{"normal":{"color":"#32cd32"}}},{"name":"失踪美女尸体发现","value":26219,"itemStyle":{"normal":{"color":"#ff00ff"}}},{"name":"宋丹丹现场收徒","value":2809,"itemStyle":{"normal":{"color":"#7b68ee"}}},{"name":"台湾货车高速翻覆","value":4341,"itemStyle":{"normal":{"color":"#40e0d0"}}},{"name":"泰国超载客船翻覆","value":4902,"itemStyle":{"normal":{"color":"#b8860b"}}},{"name":"王健林告公众号","value":9606,"itemStyle":{"normal":{"color":"#00fa9a"}}},{"name":"网店召回热水袋","value":3397,"itemStyle":{"normal":{"color":"#3cb371"}}},{"name":"无锡煤气泄漏爆炸","value":1966,"itemStyle":{"normal":{"color":"#1e90ff"}}},{"name":"误将同伴当野猪打","value":39646,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"养老金并轨细则","value":343362,"itemStyle":{"normal":{"color":"#ff69b4"}}},{"name":"英国女王堂弟出柜","value":130141,"itemStyle":{"normal":{"color":"#da70d6"}}},{"name":"圆明园被毁前照片","value":16649,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"浙江破特大诈骗案","value":15253,"itemStyle":{"normal":{"color":"#6495ed"}}}],"textRotation":[0,-45,-90,45,90],"type":"wordCloud","size":["80%","80%"]}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["养老金并轨细则","两车高速飚车对撞","英国女王堂弟出柜","崔永元谈抑郁症","包贝尔伴娘门事件","权志龙恋情疑曝光","误将同伴当野猪打","连撞三车称遇到鬼","少女疑被协警掐死","失踪美女尸体发现","金星晒照被批脚丑","超模化身水果走秀","陕西现冥界之花","圆明园被毁前照片","浙江破特大诈骗案","吃帝王蟹疑被掉包","大话3遭吐槽","王健林告公众号","杜若溪片场病倒","note7国行爆炸","MH370残骸找到","第68届艾美奖","泰国超载客船翻覆","大妈水源地洗澡","台湾货车高速翻覆","宝马女撞卡宴男","网店召回热水袋","宋丹丹现场收徒","两男争论月亮打架","无锡煤气泄漏爆炸"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"theme":"infographic"},"evals":[],"jsHooks":[]}</script>
+</td>
+<td>
+</table>
+<p>关键是:</p>
+<ul>
+<li>文本型<code>x</code>，词列表</li>
+<li>数值型<code>y</code>，词汇的频数</li>
+<li><code>series</code>与图例无关联，而与颜色关联</li>
+</ul>
+</div>
+<div id="function-call" class="section level1">
+<h1><span class="header-section-number">2</span> 用法Function Call</h1>
+<pre class="r"><code>echartr(data, x, y, &lt;z&gt;, &lt;type&gt;)</code></pre>
+<table>
+<colgroup>
+<col width="11%" />
+<col width="88%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">参数</th>
+<th align="left">要求</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><p><strong>data</strong></p></td>
+<td align="left"><p>数据框格式的源数据</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p><strong>x</strong></p></td>
+<td align="left"><p>文本型自变量，其他类型会被转为因子。如提供多个变量，只传入第一个。</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p><strong>y</strong></p></td>
+<td align="left"><p>数值型应变量。如提供多个变量，只传入第一个。</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>series</p></td>
+<td align="left"><p>数据系列变量，转为因子后计算。如提供多个变量，只传入第一个。</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>z</p></td>
+<td align="left"><p>时间轴变量，转为因子后计算。如提供多个变量，只传入第一个。</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>type</p></td>
+<td align="left"><p>‘wordCloud’</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="showcase" class="section level1">
+<h1><span class="header-section-number">3</span> 举例Showcase</h1>
+<div id="data-preparation" class="section level2">
+<h2><span class="header-section-number">3.1</span> 数据准备Data Preparation</h2>
+<p>从百度热词榜获取热词，并解析为数据框，包含热词和频数。</p>
+<p>为此构建一个函数<code>getBaiduHot</code>，解析_百度热词趋势_ 网页。</p>
+<pre class="r"><code>getBaiduHot &lt;- function(url, top=30, HTMLencoding=&#39;GB2312&#39;){
+    baiduhot &lt;- paste0(readLines(url), collapse=&quot;&quot;)
+    charset &lt;- gsub(&#39;^.+charset=([[:alnum:]-]+?)[^[:alnum:]-].+$&#39;, &quot;\\1&quot;, 
+                    baiduhot)
+    if (!is.null(charset)) HTMLencoding &lt;- charset
+    baiduhot &lt;- iconv(baiduhot, from=HTMLencoding)
+    hotword &lt;- gsub(&quot;.+?&lt;a class=\&quot;list-title\&quot;[^&gt;]+?&gt;([^&lt;&gt;]+?)&lt;/a&gt;.+?&lt;span class=\&quot;icon-(rise|fair|fall)\&quot;&gt;(\\d+?)&lt;/span&gt;.+?&quot;,&quot;\\1\t\\3\t\\2\t&quot;, baiduhot)
+    hotword &lt;- enc2native(gsub(&quot;^(.+?)\t{4,}.+$&quot;,&quot;\\1&quot;, hotword))
+    hotword &lt;- t(matrix(unlist(strsplit(hotword,&quot;\t&quot;)), nrow=3))
+    hotword &lt;- as.data.frame(hotword, stringsAsFactors=FALSE)
+    names(hotword) &lt;- c(&quot;Keyword&quot;, &quot;Freq&quot;, &quot;Trend&quot;)
+    hotword$Freq &lt;- as.numeric(hotword$Freq)
+    hotword &lt;- hotword[order(hotword$Freq, decreasing=TRUE),]
+    return(hotword[1:top,])
+}
+hotword &lt;- getBaiduHot(&quot;http://top.baidu.com/buzz?b=1&quot;)
+knitr::kable(hotword)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="left">Keyword</th>
+<th align="right">Freq</th>
+<th align="left">Trend</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">14</td>
+<td align="left">养老金并轨细则</td>
+<td align="right">343362</td>
+<td align="left">rise</td>
+</tr>
+<tr class="even">
+<td align="left">15</td>
+<td align="left">两车高速飚车对撞</td>
+<td align="right">261061</td>
+<td align="left">rise</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">英国女王堂弟出柜</td>
+<td align="right">130141</td>
+<td align="left">rise</td>
+</tr>
+<tr class="even">
+<td align="left">38</td>
+<td align="left">崔永元谈抑郁症</td>
+<td align="right">100591</td>
+<td align="left">fall</td>
+</tr>
+<tr class="odd">
+<td align="left">6</td>
+<td align="left">包贝尔伴娘门事件</td>
+<td align="right">73926</td>
+<td align="left">fall</td>
+</tr>
+<tr class="even">
+<td align="left">39</td>
+<td align="left">权志龙恋情疑曝光</td>
+<td align="right">40839</td>
+<td align="left">fall</td>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
+<td align="left">误将同伴当野猪打</td>
+<td align="right">39646</td>
+<td align="left">rise</td>
+</tr>
+<tr class="even">
+<td align="left">9</td>
+<td align="left">连撞三车称遇到鬼</td>
+<td align="right">33441</td>
+<td align="left">fall</td>
+</tr>
+<tr class="odd">
+<td align="left">10</td>
+<td align="left">少女疑被协警掐死</td>
+<td align="right">28203</td>
+<td align="left">fall</td>
+</tr>
+<tr class="even">
+<td align="left">8</td>
+<td align="left">失踪美女尸体发现</td>
+<td align="right">26219</td>
+<td align="left">fall</td>
+</tr>
+<tr class="odd">
+<td align="left">16</td>
+<td align="left">金星晒照被批脚丑</td>
+<td align="right">24020</td>
+<td align="left">fall</td>
+</tr>
+<tr class="even">
+<td align="left">4</td>
+<td align="left">超模化身水果走秀</td>
+<td align="right">19974</td>
+<td align="left">rise</td>
+</tr>
+<tr class="odd">
+<td align="left">11</td>
+<td align="left">陕西现冥界之花</td>
+<td align="right">19730</td>
+<td align="left">fall</td>
+</tr>
+<tr class="even">
+<td align="left">7</td>
+<td align="left">圆明园被毁前照片</td>
+<td align="right">16649</td>
+<td align="left">fall</td>
+</tr>
+<tr class="odd">
+<td align="left">5</td>
+<td align="left">浙江破特大诈骗案</td>
+<td align="right">15253</td>
+<td align="left">fall</td>
+</tr>
+<tr class="even">
+<td align="left">17</td>
+<td align="left">吃帝王蟹疑被掉包</td>
+<td align="right">11883</td>
+<td align="left">fall</td>
+</tr>
+<tr class="odd">
+<td align="left">18</td>
+<td align="left">大话3遭吐槽</td>
+<td align="right">11529</td>
+<td align="left">fall</td>
+</tr>
+<tr class="even">
+<td align="left">13</td>
+<td align="left">王健林告公众号</td>
+<td align="right">9606</td>
+<td align="left">fall</td>
+</tr>
+<tr class="odd">
+<td align="left">12</td>
+<td align="left">杜若溪片场病倒</td>
+<td align="right">9583</td>
+<td align="left">fall</td>
+</tr>
+<tr class="even">
+<td align="left">19</td>
+<td align="left">note7国行爆炸</td>
+<td align="right">6824</td>
+<td align="left">fall</td>
+</tr>
+<tr class="odd">
+<td align="left">21</td>
+<td align="left">MH370残骸找到</td>
+<td align="right">5934</td>
+<td align="left">fall</td>
+</tr>
+<tr class="even">
+<td align="left">31</td>
+<td align="left">第68届艾美奖</td>
+<td align="right">5511</td>
+<td align="left">fall</td>
+</tr>
+<tr class="odd">
+<td align="left">40</td>
+<td align="left">泰国超载客船翻覆</td>
+<td align="right">4902</td>
+<td align="left">fall</td>
+</tr>
+<tr class="even">
+<td align="left">22</td>
+<td align="left">大妈水源地洗澡</td>
+<td align="right">4525</td>
+<td align="left">fall</td>
+</tr>
+<tr class="odd">
+<td align="left">3</td>
+<td align="left">台湾货车高速翻覆</td>
+<td align="right">4341</td>
+<td align="left">rise</td>
+</tr>
+<tr class="even">
+<td align="left">27</td>
+<td align="left">宝马女撞卡宴男</td>
+<td align="right">3933</td>
+<td align="left">fall</td>
+</tr>
+<tr class="odd">
+<td align="left">20</td>
+<td align="left">网店召回热水袋</td>
+<td align="right">3397</td>
+<td align="left">fall</td>
+</tr>
+<tr class="even">
+<td align="left">34</td>
+<td align="left">宋丹丹现场收徒</td>
+<td align="right">2809</td>
+<td align="left">fall</td>
+</tr>
+<tr class="odd">
+<td align="left">30</td>
+<td align="left">两男争论月亮打架</td>
+<td align="right">2037</td>
+<td align="left">fall</td>
+</tr>
+<tr class="even">
+<td align="left">29</td>
+<td align="left">无锡煤气泄漏爆炸</td>
+<td align="right">1966</td>
+<td align="left">fall</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="basic-plot" class="section level2">
+<h2><span class="header-section-number">3.2</span> 基本图形Basic Plot</h2>
+<p>只要提供<code>x</code>和<code>y</code>。</p>
+<pre class="r"><code>echartr(hotword, Keyword, Freq, type=&#39;wordCloud&#39;) %&gt;% 
+    setTitle(&#39;Baidu Hot Word Top30 (realtime)&#39;, as.character(Sys.time()))</code></pre>
+<div id="echarts-a333065d61d9f744d719e01c1a20652fe5f51831" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-a333065d61d9f744d719e01c1a20652fe5f51831">{"x":{"series":[{"data":[{"name":"MH370残骸找到","value":5934,"itemStyle":{"normal":{"color":"#32cd32"}}},{"name":"note7国行爆炸","value":6824,"itemStyle":{"normal":{"color":"#3cb371"}}},{"name":"包贝尔伴娘门事件","value":73926,"itemStyle":{"normal":{"color":"#ffd700"}}},{"name":"宝马女撞卡宴男","value":3933,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"超模化身水果走秀","value":19974,"itemStyle":{"normal":{"color":"#ba55d3"}}},{"name":"吃帝王蟹疑被掉包","value":11883,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"崔永元谈抑郁症","value":100591,"itemStyle":{"normal":{"color":"#00fa9a"}}},{"name":"大话3遭吐槽","value":11529,"itemStyle":{"normal":{"color":"#00fa9a"}}},{"name":"大妈水源地洗澡","value":4525,"itemStyle":{"normal":{"color":"#6b8e23"}}},{"name":"第68届艾美奖","value":5511,"itemStyle":{"normal":{"color":"#ff69b4"}}},{"name":"杜若溪片场病倒","value":9583,"itemStyle":{"normal":{"color":"#ffd700"}}},{"name":"金星晒照被批脚丑","value":24020,"itemStyle":{"normal":{"color":"#00fa9a"}}},{"name":"连撞三车称遇到鬼","value":33441,"itemStyle":{"normal":{"color":"#7b68ee"}}},{"name":"两车高速飚车对撞","value":261061,"itemStyle":{"normal":{"color":"#6b8e23"}}},{"name":"两男争论月亮打架","value":2037,"itemStyle":{"normal":{"color":"#00fa9a"}}},{"name":"权志龙恋情疑曝光","value":40839,"itemStyle":{"normal":{"color":"#32cd32"}}},{"name":"陕西现冥界之花","value":19730,"itemStyle":{"normal":{"color":"#b8860b"}}},{"name":"少女疑被协警掐死","value":28203,"itemStyle":{"normal":{"color":"#da70d6"}}},{"name":"失踪美女尸体发现","value":26219,"itemStyle":{"normal":{"color":"#cd5c5c"}}},{"name":"宋丹丹现场收徒","value":2809,"itemStyle":{"normal":{"color":"#da70d6"}}},{"name":"台湾货车高速翻覆","value":4341,"itemStyle":{"normal":{"color":"#6b8e23"}}},{"name":"泰国超载客船翻覆","value":4902,"itemStyle":{"normal":{"color":"#ff6347"}}},{"name":"王健林告公众号","value":9606,"itemStyle":{"normal":{"color":"#6495ed"}}},{"name":"网店召回热水袋","value":3397,"itemStyle":{"normal":{"color":"#ffa500"}}},{"name":"无锡煤气泄漏爆炸","value":1966,"itemStyle":{"normal":{"color":"#1e90ff"}}},{"name":"误将同伴当野猪打","value":39646,"itemStyle":{"normal":{"color":"#ff69b4"}}},{"name":"养老金并轨细则","value":343362,"itemStyle":{"normal":{"color":"#ffa500"}}},{"name":"英国女王堂弟出柜","value":130141,"itemStyle":{"normal":{"color":"#1e90ff"}}},{"name":"圆明园被毁前照片","value":16649,"itemStyle":{"normal":{"color":"#b8860b"}}},{"name":"浙江破特大诈骗案","value":15253,"itemStyle":{"normal":{"color":"#ba55d3"}}}],"textRotation":[0,-45,-90,45,90],"type":"wordCloud","size":["80%","80%"]}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["养老金并轨细则","两车高速飚车对撞","英国女王堂弟出柜","崔永元谈抑郁症","包贝尔伴娘门事件","权志龙恋情疑曝光","误将同伴当野猪打","连撞三车称遇到鬼","少女疑被协警掐死","失踪美女尸体发现","金星晒照被批脚丑","超模化身水果走秀","陕西现冥界之花","圆明园被毁前照片","浙江破特大诈骗案","吃帝王蟹疑被掉包","大话3遭吐槽","王健林告公众号","杜若溪片场病倒","note7国行爆炸","MH370残骸找到","第68届艾美奖","泰国超载客船翻覆","大妈水源地洗澡","台湾货车高速翻覆","宝马女撞卡宴男","网店召回热水袋","宋丹丹现场收徒","两男争论月亮打架","无锡煤气泄漏爆炸"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"title":{"text":"Baidu Hot Word Top30 (realtime)","subtext":"2016-09-19 21:09:51","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="color-by-series" class="section level2">
+<h2><span class="header-section-number">3.3</span> 按数据系列着色Color by Series</h2>
+<p>我们希望将热词分组。定义一个<code>series</code>变量’Trend’。’rise’系列和’fall’系列用不同的颜色标注。</p>
+<pre class="r"><code>echartr(hotword, Keyword, Freq, Trend, type=&#39;wordCloud&#39;) %&gt;% 
+    setTitle(&#39;Baidu Hot Word Top30 (realtime)&#39;, as.character(Sys.time()))</code></pre>
+<div id="echarts-2969f8222a63a7e79a28527aca2102a3002132e7" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-2969f8222a63a7e79a28527aca2102a3002132e7">{"x":{"series":[{"data":[{"name":"MH370残骸找到","value":5934,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"note7国行爆炸","value":6824,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"包贝尔伴娘门事件","value":73926,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"宝马女撞卡宴男","value":3933,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"超模化身水果走秀","value":19974,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"吃帝王蟹疑被掉包","value":11883,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"崔永元谈抑郁症","value":100591,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"大话3遭吐槽","value":11529,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"大妈水源地洗澡","value":4525,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"第68届艾美奖","value":5511,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"杜若溪片场病倒","value":9583,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"金星晒照被批脚丑","value":24020,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"连撞三车称遇到鬼","value":33441,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"两车高速飚车对撞","value":261061,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"两男争论月亮打架","value":2037,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"权志龙恋情疑曝光","value":40839,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"陕西现冥界之花","value":19730,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"少女疑被协警掐死","value":28203,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"失踪美女尸体发现","value":26219,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"宋丹丹现场收徒","value":2809,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"台湾货车高速翻覆","value":4341,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"泰国超载客船翻覆","value":4902,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"王健林告公众号","value":9606,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"网店召回热水袋","value":3397,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"无锡煤气泄漏爆炸","value":1966,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"误将同伴当野猪打","value":39646,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"养老金并轨细则","value":343362,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"英国女王堂弟出柜","value":130141,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"圆明园被毁前照片","value":16649,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"浙江破特大诈骗案","value":15253,"itemStyle":{"normal":{"color":"#ff7f50"}}}],"textRotation":[0,-45,45,90],"type":"wordCloud","size":["80%","80%"]}],"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["养老金并轨细则","两车高速飚车对撞","英国女王堂弟出柜","崔永元谈抑郁症","包贝尔伴娘门事件","权志龙恋情疑曝光","误将同伴当野猪打","连撞三车称遇到鬼","少女疑被协警掐死","失踪美女尸体发现","金星晒照被批脚丑","超模化身水果走秀","陕西现冥界之花","圆明园被毁前照片","浙江破特大诈骗案","吃帝王蟹疑被掉包","大话3遭吐槽","王健林告公众号","杜若溪片场病倒","note7国行爆炸","MH370残骸找到","第68届艾美奖","泰国超载客船翻覆","大妈水源地洗澡","台湾货车高速翻覆","宝马女撞卡宴男","网店召回热水袋","宋丹丹现场收徒","两男争论月亮打架","无锡煤气泄漏爆炸"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"title":{"text":"Baidu Hot Word Top30 (realtime)","subtext":"2016-09-19 21:09:51","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="with-timeline" class="section level2">
+<h2><span class="header-section-number">3.4</span> 带时间轴With Timeline</h2>
+<p>比较实时、今日和七日热词趋势。</p>
+<p>首先，获取今日和七日两个榜单的网页并转为数据框，合并。</p>
+<pre class="r"><code>hotword$z &lt;- &#39;Realtime&#39;
+hotword1 &lt;- getBaiduHot(&quot;http://top.baidu.com/buzz?b=341&amp;fr=topbuzz_b1&quot;)
+hotword1$z &lt;- &#39;Today&#39;
+hotword2 &lt;- getBaiduHot(&quot;http://top.baidu.com/buzz?b=42&amp;c=513&amp;fr=topbuzz_b341&quot;)
+hotword2$z &lt;- &#39;7-days&#39;
+hotword &lt;- do.call(&#39;rbind&#39;, list(hotword, hotword1, hotword2))
+hotword$z &lt;- factor(hotword$z, levels=c(&#39;Realtime&#39;, &#39;Today&#39;, &#39;7-days&#39;))</code></pre>
+<p>然后作图。</p>
+<pre class="r"><code>g &lt;- echartr(hotword, Keyword, Freq, z=z, type=&#39;wordCloud&#39;) %&gt;% 
+    setTitle(&#39;Baidu Hot Word Top30&#39;)
+g</code></pre>
+<div id="echarts-23ac13b2819f79daf05dec5f6a982e3b0796ae93" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-23ac13b2819f79daf05dec5f6a982e3b0796ae93">{"x":{"timeline":{"type":"number","data":["Realtime","Today","7-days"],"x":80,"x2":80,"y2":50},"options":[{"series":[{"data":[{"name":"MH370残骸找到","value":5934,"itemStyle":{"normal":{"color":"#3cb371"}}},{"name":"note7国行爆炸","value":6824,"itemStyle":{"normal":{"color":"#ff69b4"}}},{"name":"包贝尔伴娘门事件","value":73926,"itemStyle":{"normal":{"color":"#da70d6"}}},{"name":"宝马女撞卡宴男","value":3933,"itemStyle":{"normal":{"color":"#ff69b4"}}},{"name":"超模化身水果走秀","value":19974,"itemStyle":{"normal":{"color":"#ffa500"}}},{"name":"吃帝王蟹疑被掉包","value":11883,"itemStyle":{"normal":{"color":"#da70d6"}}},{"name":"崔永元谈抑郁症","value":100591,"itemStyle":{"normal":{"color":"#30e0e0"}}},{"name":"大话3遭吐槽","value":11529,"itemStyle":{"normal":{"color":"#cd5c5c"}}},{"name":"大妈水源地洗澡","value":4525,"itemStyle":{"normal":{"color":"#cd5c5c"}}},{"name":"第68届艾美奖","value":5511,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"杜若溪片场病倒","value":9583,"itemStyle":{"normal":{"color":"#ffa500"}}},{"name":"金星晒照被批脚丑","value":24020,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"连撞三车称遇到鬼","value":33441,"itemStyle":{"normal":{"color":"#ff69b4"}}},{"name":"两车高速飚车对撞","value":261061,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"两男争论月亮打架","value":2037,"itemStyle":{"normal":{"color":"#ba55d3"}}},{"name":"权志龙恋情疑曝光","value":40839,"itemStyle":{"normal":{"color":"#6495ed"}}},{"name":"陕西现冥界之花","value":19730,"itemStyle":{"normal":{"color":"#cd5c5c"}}},{"name":"少女疑被协警掐死","value":28203,"itemStyle":{"normal":{"color":"#32cd32"}}},{"name":"失踪美女尸体发现","value":26219,"itemStyle":{"normal":{"color":"#30e0e0"}}},{"name":"宋丹丹现场收徒","value":2809,"itemStyle":{"normal":{"color":"#ffa500"}}},{"name":"台湾货车高速翻覆","value":4341,"itemStyle":{"normal":{"color":"#ba55d3"}}},{"name":"泰国超载客船翻覆","value":4902,"itemStyle":{"normal":{"color":"#ffd700"}}},{"name":"王健林告公众号","value":9606,"itemStyle":{"normal":{"color":"#32cd32"}}},{"name":"网店召回热水袋","value":3397,"itemStyle":{"normal":{"color":"#ffd700"}}},{"name":"无锡煤气泄漏爆炸","value":1966,"itemStyle":{"normal":{"color":"#ff69b4"}}},{"name":"误将同伴当野猪打","value":39646,"itemStyle":{"normal":{"color":"#6495ed"}}},{"name":"养老金并轨细则","value":343362,"itemStyle":{"normal":{"color":"#1e90ff"}}},{"name":"英国女王堂弟出柜","value":130141,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"圆明园被毁前照片","value":16649,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"浙江破特大诈骗案","value":15253,"itemStyle":{"normal":{"color":"#87cefa"}}}],"textRotation":[0,-45,-90,45,90],"type":"wordCloud","size":["80%","80%"]}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["养老金并轨细则","两车高速飚车对撞","英国女王堂弟出柜","崔永元谈抑郁症","包贝尔伴娘门事件","权志龙恋情疑曝光","误将同伴当野猪打","连撞三车称遇到鬼","少女疑被协警掐死","失踪美女尸体发现","金星晒照被批脚丑","超模化身水果走秀","陕西现冥界之花","圆明园被毁前照片","浙江破特大诈骗案","吃帝王蟹疑被掉包","大话3遭吐槽","王健林告公众号","杜若溪片场病倒","note7国行爆炸","MH370残骸找到","第68届艾美奖","泰国超载客船翻覆","大妈水源地洗澡","台湾货车高速翻覆","宝马女撞卡宴男","网店召回热水袋","宋丹丹现场收徒","两男争论月亮打架","无锡煤气泄漏爆炸","陈乔恩遭网友炮轰","乔任梁意外死亡","老赖欠2亿住豪宅","奶茶妹妹抱女出镜","朝鲜向9国求援","日美联合巡航南海","乐视手机","陈志成现身道歉","皇家一号包间被拆","用胶带绑人致死","王子访校官员倒地","一周上万电话轰炸","保险合同期104年","陈楚生与儿子合唱","台风路径实时发布系统","章子怡带娃工作","浙江56万人受灾","黄晓明祝福范冰冰","中超","中国留学生炒房","王明方病逝","美国纽约发生爆炸","奶茶妹妹抱娃现身","闯入火车线路被撞","男婴终身免费乘机","邓超谈王宝强","曝郑爽炸鸡店被砸","夫妇偶遇夭折儿子","六小龄童再被死亡","男生搬行李肺炸了","夫妻因王宝强打架","高晓松遇机智空姐","报纸整版空白走红","杨幂进部队当新兵","民警实名举报自杀","曝baby怀孕3月","张亮儿子长腿吸睛","嫩模瘦成皮包骨","文章光头抱女儿","谢霆锋晒全家福","刘子歌将嫁恩师","刘翔求婚初恋成功","滨崎步宣布离婚","非诚导演飙女嘉宾","水原希子走秀遭骂","女子商场内遭扒衣","吴悠昆明被打","作弊抢月饼被开除"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"title":{"text":"Baidu Hot Word Top30 (z: Realtime)","x":"center","y":"bottom","orient":"horizontal"}},{"series":[{"data":[{"name":"note7国行爆炸","value":148737,"itemStyle":{"normal":{"color":"#da70d6"}}},{"name":"保险合同期104年","value":53898,"itemStyle":{"normal":{"color":"#00fa9a"}}},{"name":"宝马女撞卡宴男","value":126750,"itemStyle":{"normal":{"color":"#b8860b"}}},{"name":"陈楚生与儿子合唱","value":50740,"itemStyle":{"normal":{"color":"#40e0d0"}}},{"name":"陈乔恩遭网友炮轰","value":281925,"itemStyle":{"normal":{"color":"#6b8e23"}}},{"name":"陈志成现身道歉","value":63911,"itemStyle":{"normal":{"color":"#7b68ee"}}},{"name":"闯入火车线路被撞","value":29317,"itemStyle":{"normal":{"color":"#1e90ff"}}},{"name":"崔永元谈抑郁症","value":85318,"itemStyle":{"normal":{"color":"#ff6347"}}},{"name":"大妈水源地洗澡","value":31001,"itemStyle":{"normal":{"color":"#b8860b"}}},{"name":"皇家一号包间被拆","value":63711,"itemStyle":{"normal":{"color":"#ba55d3"}}},{"name":"黄晓明祝福范冰冰","value":45096,"itemStyle":{"normal":{"color":"#b8860b"}}},{"name":"老赖欠2亿住豪宅","value":135481,"itemStyle":{"normal":{"color":"#7b68ee"}}},{"name":"乐视手机","value":64471,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"两男争论月亮打架","value":43602,"itemStyle":{"normal":{"color":"#da70d6"}}},{"name":"美国纽约发生爆炸","value":30917,"itemStyle":{"normal":{"color":"#6495ed"}}},{"name":"奶茶妹妹抱女出镜","value":82577,"itemStyle":{"normal":{"color":"#ba55d3"}}},{"name":"奶茶妹妹抱娃现身","value":29903,"itemStyle":{"normal":{"color":"#6495ed"}}},{"name":"乔任梁意外死亡","value":224981,"itemStyle":{"normal":{"color":"#ffd700"}}},{"name":"日美联合巡航南海","value":64579,"itemStyle":{"normal":{"color":"#ff6347"}}},{"name":"陕西现冥界之花","value":530591,"itemStyle":{"normal":{"color":"#6b8e23"}}},{"name":"台风路径实时发布系统","value":50494,"itemStyle":{"normal":{"color":"#3cb371"}}},{"name":"王明方病逝","value":35051,"itemStyle":{"normal":{"color":"#da70d6"}}},{"name":"王子访校官员倒地","value":60984,"itemStyle":{"normal":{"color":"#da70d6"}}},{"name":"一周上万电话轰炸","value":57915,"itemStyle":{"normal":{"color":"#3cb371"}}},{"name":"用胶带绑人致死","value":63305,"itemStyle":{"normal":{"color":"#40e0d0"}}},{"name":"章子怡带娃工作","value":49493,"itemStyle":{"normal":{"color":"#ffd700"}}},{"name":"朝鲜向9国求援","value":70068,"itemStyle":{"normal":{"color":"#40e0d0"}}},{"name":"浙江56万人受灾","value":49346,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"中超","value":44417,"itemStyle":{"normal":{"color":"#b8860b"}}},{"name":"中国留学生炒房","value":36430,"itemStyle":{"normal":{"color":"#32cd32"}}}],"textRotation":[0,-45,-90,45,90],"type":"wordCloud","size":["80%","80%"]}],"title":{"text":"Baidu Hot Word Top30 (z: Today)","x":"center","y":"bottom","orient":"horizontal"}},{"series":[{"data":[{"name":"宝马女撞卡宴男","value":221284,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"报纸整版空白走红","value":372970,"itemStyle":{"normal":{"color":"#cd5c5c"}}},{"name":"滨崎步宣布离婚","value":212920,"itemStyle":{"normal":{"color":"#cd5c5c"}}},{"name":"陈乔恩遭网友炮轰","value":436474,"itemStyle":{"normal":{"color":"#b8860b"}}},{"name":"邓超谈王宝强","value":594661,"itemStyle":{"normal":{"color":"#ffa500"}}},{"name":"非诚导演飙女嘉宾","value":210388,"itemStyle":{"normal":{"color":"#da70d6"}}},{"name":"夫妇偶遇夭折儿子","value":496460,"itemStyle":{"normal":{"color":"#40e0d0"}}},{"name":"夫妻因王宝强打架","value":461665,"itemStyle":{"normal":{"color":"#da70d6"}}},{"name":"高晓松遇机智空姐","value":374789,"itemStyle":{"normal":{"color":"#6495ed"}}},{"name":"刘翔求婚初恋成功","value":225374,"itemStyle":{"normal":{"color":"#3cb371"}}},{"name":"刘子歌将嫁恩师","value":250822,"itemStyle":{"normal":{"color":"#6b8e23"}}},{"name":"六小龄童再被死亡","value":493521,"itemStyle":{"normal":{"color":"#7b68ee"}}},{"name":"民警实名举报自杀","value":341666,"itemStyle":{"normal":{"color":"#ffa500"}}},{"name":"奶茶妹妹抱女出镜","value":501237,"itemStyle":{"normal":{"color":"#ffa500"}}},{"name":"男生搬行李肺炸了","value":485361,"itemStyle":{"normal":{"color":"#40e0d0"}}},{"name":"男婴终身免费乘机","value":596973,"itemStyle":{"normal":{"color":"#da70d6"}}},{"name":"嫩模瘦成皮包骨","value":267214,"itemStyle":{"normal":{"color":"#cd5c5c"}}},{"name":"女子商场内遭扒衣","value":207295,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"曝baby怀孕3月","value":307972,"itemStyle":{"normal":{"color":"#cd5c5c"}}},{"name":"曝郑爽炸鸡店被砸","value":515108,"itemStyle":{"normal":{"color":"#ff6347"}}},{"name":"乔任梁意外死亡","value":496682,"itemStyle":{"normal":{"color":"#ffa500"}}},{"name":"陕西现冥界之花","value":708521,"itemStyle":{"normal":{"color":"#ffa500"}}},{"name":"水原希子走秀遭骂","value":208293,"itemStyle":{"normal":{"color":"#7b68ee"}}},{"name":"文章光头抱女儿","value":266216,"itemStyle":{"normal":{"color":"#6b8e23"}}},{"name":"吴悠昆明被打","value":205420,"itemStyle":{"normal":{"color":"#40e0d0"}}},{"name":"谢霆锋晒全家福","value":258512,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"杨幂进部队当新兵","value":359123,"itemStyle":{"normal":{"color":"#ba55d3"}}},{"name":"张亮儿子长腿吸睛","value":269137,"itemStyle":{"normal":{"color":"#ff6347"}}},{"name":"朝鲜向9国求援","value":681785,"itemStyle":{"normal":{"color":"#6b8e23"}}},{"name":"作弊抢月饼被开除","value":204400,"itemStyle":{"normal":{"color":"#30e0e0"}}}],"textRotation":[0,-45,-90,45,90],"type":"wordCloud","size":["80%","80%"]}],"title":{"text":"Baidu Hot Word Top30 (z: 7-days)","x":"center","y":"bottom","orient":"horizontal"}}]},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div id="futher-setup" class="section level1">
+<h1><span class="header-section-number">4</span> 其他设定Futher Setup</h1>
+<p>接下来可以配置控件、添加标注点/标注线，以及美化成图。</p>
+<div id="settheme" class="section level2">
+<h2><span class="header-section-number">4.1</span> 设置主题<code>setTheme</code></h2>
+<pre class="r"><code>g %&gt;% setTheme(&#39;dark&#39;, palette=&#39;manyeyes&#39;)</code></pre>
+<div id="echarts-2fd5a38eb3d8ca1def3e7e0435c6adad4eadb514" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-2fd5a38eb3d8ca1def3e7e0435c6adad4eadb514">{"x":{"timeline":{"type":"number","data":["Realtime","Today","7-days"],"x":80,"x2":80,"y2":50},"options":[{"series":[{"data":[{"name":"MH370残骸找到","value":5934,"itemStyle":{"normal":{"color":"#cedb9c"}}},{"name":"note7国行爆炸","value":6824,"itemStyle":{"normal":{"color":"#b5cf6b"}}},{"name":"包贝尔伴娘门事件","value":73926,"itemStyle":{"normal":{"color":"#de9ed6"}}},{"name":"宝马女撞卡宴男","value":3933,"itemStyle":{"normal":{"color":"#de9ed6"}}},{"name":"超模化身水果走秀","value":19974,"itemStyle":{"normal":{"color":"#8c6d31"}}},{"name":"吃帝王蟹疑被掉包","value":11883,"itemStyle":{"normal":{"color":"#e7cb94"}}},{"name":"崔永元谈抑郁症","value":100591,"itemStyle":{"normal":{"color":"#bd9e39"}}},{"name":"大话3遭吐槽","value":11529,"itemStyle":{"normal":{"color":"#8ca252"}}},{"name":"大妈水源地洗澡","value":4525,"itemStyle":{"normal":{"color":"#7b4173"}}},{"name":"第68届艾美奖","value":5511,"itemStyle":{"normal":{"color":"#e7969c"}}},{"name":"杜若溪片场病倒","value":9583,"itemStyle":{"normal":{"color":"#bd9e39"}}},{"name":"金星晒照被批脚丑","value":24020,"itemStyle":{"normal":{"color":"#8c6d31"}}},{"name":"连撞三车称遇到鬼","value":33441,"itemStyle":{"normal":{"color":"#8c6d31"}}},{"name":"两车高速飚车对撞","value":261061,"itemStyle":{"normal":{"color":"#cedb9c"}}},{"name":"两男争论月亮打架","value":2037,"itemStyle":{"normal":{"color":"#7b4173"}}},{"name":"权志龙恋情疑曝光","value":40839,"itemStyle":{"normal":{"color":"#7375b5"}}},{"name":"陕西现冥界之花","value":19730,"itemStyle":{"normal":{"color":"#637939"}}},{"name":"少女疑被协警掐死","value":28203,"itemStyle":{"normal":{"color":"#cedb9c"}}},{"name":"失踪美女尸体发现","value":26219,"itemStyle":{"normal":{"color":"#d6616b"}}},{"name":"宋丹丹现场收徒","value":2809,"itemStyle":{"normal":{"color":"#7b4173"}}},{"name":"台湾货车高速翻覆","value":4341,"itemStyle":{"normal":{"color":"#ad494a"}}},{"name":"泰国超载客船翻覆","value":4902,"itemStyle":{"normal":{"color":"#d6616b"}}},{"name":"王健林告公众号","value":9606,"itemStyle":{"normal":{"color":"#7b4173"}}},{"name":"网店召回热水袋","value":3397,"itemStyle":{"normal":{"color":"#bd9e39"}}},{"name":"无锡煤气泄漏爆炸","value":1966,"itemStyle":{"normal":{"color":"#8ca252"}}},{"name":"误将同伴当野猪打","value":39646,"itemStyle":{"normal":{"color":"#9c9ede"}}},{"name":"养老金并轨细则","value":343362,"itemStyle":{"normal":{"color":"#8ca252"}}},{"name":"英国女王堂弟出柜","value":130141,"itemStyle":{"normal":{"color":"#a55194"}}},{"name":"圆明园被毁前照片","value":16649,"itemStyle":{"normal":{"color":"#e7969c"}}},{"name":"浙江破特大诈骗案","value":15253,"itemStyle":{"normal":{"color":"#de9ed6"}}}],"textRotation":[0,-45,-90,45,90],"type":"wordCloud","size":["80%","80%"]}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["养老金并轨细则","两车高速飚车对撞","英国女王堂弟出柜","崔永元谈抑郁症","包贝尔伴娘门事件","权志龙恋情疑曝光","误将同伴当野猪打","连撞三车称遇到鬼","少女疑被协警掐死","失踪美女尸体发现","金星晒照被批脚丑","超模化身水果走秀","陕西现冥界之花","圆明园被毁前照片","浙江破特大诈骗案","吃帝王蟹疑被掉包","大话3遭吐槽","王健林告公众号","杜若溪片场病倒","note7国行爆炸","MH370残骸找到","第68届艾美奖","泰国超载客船翻覆","大妈水源地洗澡","台湾货车高速翻覆","宝马女撞卡宴男","网店召回热水袋","宋丹丹现场收徒","两男争论月亮打架","无锡煤气泄漏爆炸","陈乔恩遭网友炮轰","乔任梁意外死亡","老赖欠2亿住豪宅","奶茶妹妹抱女出镜","朝鲜向9国求援","日美联合巡航南海","乐视手机","陈志成现身道歉","皇家一号包间被拆","用胶带绑人致死","王子访校官员倒地","一周上万电话轰炸","保险合同期104年","陈楚生与儿子合唱","台风路径实时发布系统","章子怡带娃工作","浙江56万人受灾","黄晓明祝福范冰冰","中超","中国留学生炒房","王明方病逝","美国纽约发生爆炸","奶茶妹妹抱娃现身","闯入火车线路被撞","男婴终身免费乘机","邓超谈王宝强","曝郑爽炸鸡店被砸","夫妇偶遇夭折儿子","六小龄童再被死亡","男生搬行李肺炸了","夫妻因王宝强打架","高晓松遇机智空姐","报纸整版空白走红","杨幂进部队当新兵","民警实名举报自杀","曝baby怀孕3月","张亮儿子长腿吸睛","嫩模瘦成皮包骨","文章光头抱女儿","谢霆锋晒全家福","刘子歌将嫁恩师","刘翔求婚初恋成功","滨崎步宣布离婚","非诚导演飙女嘉宾","水原希子走秀遭骂","女子商场内遭扒衣","吴悠昆明被打","作弊抢月饼被开除"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"title":{"text":"Baidu Hot Word Top30 (z: Realtime)","x":"center","y":"bottom","orient":"horizontal"},"color":["#9c9ede"]},{"series":[{"data":[{"name":"note7国行爆炸","value":148737,"itemStyle":{"normal":{"color":"#e7969c"}}},{"name":"保险合同期104年","value":53898,"itemStyle":{"normal":{"color":"#7375b5"}}},{"name":"宝马女撞卡宴男","value":126750,"itemStyle":{"normal":{"color":"#637939"}}},{"name":"陈楚生与儿子合唱","value":50740,"itemStyle":{"normal":{"color":"#de9ed6"}}},{"name":"陈乔恩遭网友炮轰","value":281925,"itemStyle":{"normal":{"color":"#e7ba52"}}},{"name":"陈志成现身道歉","value":63911,"itemStyle":{"normal":{"color":"#ce6dbd"}}},{"name":"闯入火车线路被撞","value":29317,"itemStyle":{"normal":{"color":"#e7969c"}}},{"name":"崔永元谈抑郁症","value":85318,"itemStyle":{"normal":{"color":"#7375b5"}}},{"name":"大妈水源地洗澡","value":31001,"itemStyle":{"normal":{"color":"#cedb9c"}}},{"name":"皇家一号包间被拆","value":63711,"itemStyle":{"normal":{"color":"#4a5584"}}},{"name":"黄晓明祝福范冰冰","value":45096,"itemStyle":{"normal":{"color":"#ad494a"}}},{"name":"老赖欠2亿住豪宅","value":135481,"itemStyle":{"normal":{"color":"#8ca252"}}},{"name":"乐视手机","value":64471,"itemStyle":{"normal":{"color":"#e7cb94"}}},{"name":"两男争论月亮打架","value":43602,"itemStyle":{"normal":{"color":"#b5cf6b"}}},{"name":"美国纽约发生爆炸","value":30917,"itemStyle":{"normal":{"color":"#de9ed6"}}},{"name":"奶茶妹妹抱女出镜","value":82577,"itemStyle":{"normal":{"color":"#cedb9c"}}},{"name":"奶茶妹妹抱娃现身","value":29903,"itemStyle":{"normal":{"color":"#b5cf6b"}}},{"name":"乔任梁意外死亡","value":224981,"itemStyle":{"normal":{"color":"#a55194"}}},{"name":"日美联合巡航南海","value":64579,"itemStyle":{"normal":{"color":"#b5cf6b"}}},{"name":"陕西现冥界之花","value":530591,"itemStyle":{"normal":{"color":"#a55194"}}},{"name":"台风路径实时发布系统","value":50494,"itemStyle":{"normal":{"color":"#cedb9c"}}},{"name":"王明方病逝","value":35051,"itemStyle":{"normal":{"color":"#7375b5"}}},{"name":"王子访校官员倒地","value":60984,"itemStyle":{"normal":{"color":"#8c6d31"}}},{"name":"一周上万电话轰炸","value":57915,"itemStyle":{"normal":{"color":"#8c6d31"}}},{"name":"用胶带绑人致死","value":63305,"itemStyle":{"normal":{"color":"#b5cf6b"}}},{"name":"章子怡带娃工作","value":49493,"itemStyle":{"normal":{"color":"#ce6dbd"}}},{"name":"朝鲜向9国求援","value":70068,"itemStyle":{"normal":{"color":"#637939"}}},{"name":"浙江56万人受灾","value":49346,"itemStyle":{"normal":{"color":"#8c6d31"}}},{"name":"中超","value":44417,"itemStyle":{"normal":{"color":"#a55194"}}},{"name":"中国留学生炒房","value":36430,"itemStyle":{"normal":{"color":"#ce6dbd"}}}],"textRotation":[0,-45,-90,45,90],"type":"wordCloud","size":["80%","80%"]}],"title":{"text":"Baidu Hot Word Top30 (z: Today)","x":"center","y":"bottom","orient":"horizontal"}},{"series":[{"data":[{"name":"宝马女撞卡宴男","value":221284,"itemStyle":{"normal":{"color":"#a55194"}}},{"name":"报纸整版空白走红","value":372970,"itemStyle":{"normal":{"color":"#e7cb94"}}},{"name":"滨崎步宣布离婚","value":212920,"itemStyle":{"normal":{"color":"#b5cf6b"}}},{"name":"陈乔恩遭网友炮轰","value":436474,"itemStyle":{"normal":{"color":"#e7cb94"}}},{"name":"邓超谈王宝强","value":594661,"itemStyle":{"normal":{"color":"#ad494a"}}},{"name":"非诚导演飙女嘉宾","value":210388,"itemStyle":{"normal":{"color":"#637939"}}},{"name":"夫妇偶遇夭折儿子","value":496460,"itemStyle":{"normal":{"color":"#d6616b"}}},{"name":"夫妻因王宝强打架","value":461665,"itemStyle":{"normal":{"color":"#d6616b"}}},{"name":"高晓松遇机智空姐","value":374789,"itemStyle":{"normal":{"color":"#d6616b"}}},{"name":"刘翔求婚初恋成功","value":225374,"itemStyle":{"normal":{"color":"#4a5584"}}},{"name":"刘子歌将嫁恩师","value":250822,"itemStyle":{"normal":{"color":"#bd9e39"}}},{"name":"六小龄童再被死亡","value":493521,"itemStyle":{"normal":{"color":"#7b4173"}}},{"name":"民警实名举报自杀","value":341666,"itemStyle":{"normal":{"color":"#b5cf6b"}}},{"name":"奶茶妹妹抱女出镜","value":501237,"itemStyle":{"normal":{"color":"#bd9e39"}}},{"name":"男生搬行李肺炸了","value":485361,"itemStyle":{"normal":{"color":"#9c9ede"}}},{"name":"男婴终身免费乘机","value":596973,"itemStyle":{"normal":{"color":"#ce6dbd"}}},{"name":"嫩模瘦成皮包骨","value":267214,"itemStyle":{"normal":{"color":"#d6616b"}}},{"name":"女子商场内遭扒衣","value":207295,"itemStyle":{"normal":{"color":"#bd9e39"}}},{"name":"曝baby怀孕3月","value":307972,"itemStyle":{"normal":{"color":"#8c6d31"}}},{"name":"曝郑爽炸鸡店被砸","value":515108,"itemStyle":{"normal":{"color":"#843c39"}}},{"name":"乔任梁意外死亡","value":496682,"itemStyle":{"normal":{"color":"#9c9ede"}}},{"name":"陕西现冥界之花","value":708521,"itemStyle":{"normal":{"color":"#d6616b"}}},{"name":"水原希子走秀遭骂","value":208293,"itemStyle":{"normal":{"color":"#ce6dbd"}}},{"name":"文章光头抱女儿","value":266216,"itemStyle":{"normal":{"color":"#7375b5"}}},{"name":"吴悠昆明被打","value":205420,"itemStyle":{"normal":{"color":"#cedb9c"}}},{"name":"谢霆锋晒全家福","value":258512,"itemStyle":{"normal":{"color":"#ad494a"}}},{"name":"杨幂进部队当新兵","value":359123,"itemStyle":{"normal":{"color":"#7375b5"}}},{"name":"张亮儿子长腿吸睛","value":269137,"itemStyle":{"normal":{"color":"#d6616b"}}},{"name":"朝鲜向9国求援","value":681785,"itemStyle":{"normal":{"color":"#e7cb94"}}},{"name":"作弊抢月饼被开除","value":204400,"itemStyle":{"normal":{"color":"#a55194"}}}],"textRotation":[0,-45,-90,45,90],"type":"wordCloud","size":["80%","80%"]}],"title":{"text":"Baidu Hot Word Top30 (z: 7-days)","x":"center","y":"bottom","orient":"horizontal"}}],"theme":"dark"},"evals":[],"jsHooks":[]}</script>
+<hr />
+<p>参考相关函数，尽情探索吧。</p>
+</div>
+</div>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+    // active menu
+    var href = window.location.pathname;
+    href = href.substr(href.lastIndexOf('/') + 1);
+    if (href === '') href = './';
+    $('a[href="' + href + '"]').parent().addClass('active');
+});
+</script>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+
+</body>
+</html>

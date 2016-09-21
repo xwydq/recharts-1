@@ -1,0 +1,236 @@
+---
+title: "Basic Plots 03 - Line/Area"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+First, you should load `recharts`:
+```{r}
+library(recharts)
+```
+
+# Introduction
+
+Line plot includes 4 basic types:
+
+- line: line
+- curve (smooth line): curve
+- area: area
+- wave (smooth area): wave
+
+<table id='intro'>
+<tr><td>
+```{r,echo=FALSE}
+titanic <- data.table::melt(apply(Titanic, c(1,4), sum))
+names(titanic) <- c('Class', 'Survived', 'Count')
+echartr(titanic, Class, Count, Survived, type='line') %>% setLegend(pos=3) %>%
+    setTheme('infographic', width=400, height=300) %>%
+    setTitle('Titanic: Survival by Cabin Class','line')
+```
+</td>
+<td>
+```{r,echo=FALSE}
+echartr(titanic, Class, Count, Survived, type='curve') %>% 
+    setTheme('roma', width=400, height=300) %>% setLegend(pos=3) %>%
+    setTitle('Titanic: Outcome by Cabin Class','curve')
+```
+</td></tr>
+<tr><td>
+```{r,echo=FALSE}
+echartr(titanic, Class, Count, Survived, type='area') %>% setLegend(pos=3) %>%
+    setTheme('macarons', width=400, height=300) %>%
+    setTitle('Titanic: Survival by Cabin Class','area')
+```
+</td>
+<td>
+```{r,echo=FALSE}
+echartr(titanic, Class, Count, Survived, type='wave') %>% 
+    setTheme('macarons2', width=400, height=300) %>% setLegend(pos=3) %>%
+    setTitle('Titanic: Outcome by Cabin Class','wave')
+```
+</td></tr>
+</table>
+
+The keys are:
+
+- character `x` and numeric `y`
+- each combination level of `x` (and `series`) can only have one `y` data point
+- Tiled and stacked bar/column charts can shift from one to another by clicking type shift buttons in the toolbox widget.
+- Line/area can shift to bar charts easily using buttons in toolbox widget.
+
+# Function Call
+
+```r
+echartr(data, x, y, <series>, <weight>, <z>, <type>, <subtype>)
+```
+
++---------+--------------------------------------------------------------------+
+| Arg     |  Requirement                                                       |
++=========+====================================================================+
+| **data**| source data in the form of data.frame                            |
++---------+--------------------------------------------------------------------+
+| **x**   | character independent variable. Other type will be coerced to factors. Only the first one is accepted if multiple variables are provided. |
++---------+--------------------------------------------------------------------+
+| **y**   | numeric dependent variable. Only the first one is accepted if multiple variables are provided. |
++---------+--------------------------------------------------------------------+
+| series  | data series variable which will be coerced to factors. Only the first one is accepted if multiple variables are provided. |
++---------+--------------------------------------------------------------------+
+| weight  | weight is mapped to the lineWidth of the chart by series |
++---------+--------------------------------------------------------------------+
+|  z      | timeline variable which will be coerced to factors. Only the first one is accepted if multiple variables are provided. |
++---------+--------------------------------------------------------------------+
+| type    | 'line', 'curve', 'area', 'wave' |
++---------+--------------------------------------------------------------------+
+| subtype | - line: c("stack","smooth","dotted","solid","dashed") | 
+|         |      + stack: stacked series |
+|         |      + smooth: smooth line |
+|         |      + dotted: use dotted line |
+|         |      + solid: use solid line (default) |
+|         |      + dashed: use dashed line |
+|         | - curve: c("stack","solid") |
+|         | - area: c("stack","smooth","dotted","solid","dashed")  |
+|         | - wave: c("stack","solid") |
++---------+--------------------------------------------------------------------+
+
+# Showcase
+
+## Data Preparation
+
+Let's look into `airquality` dataset embeded in the package `datasets`. The structure of the data.frame is as below:
+
+```{r}
+aq <- airquality
+aq$Date <- as.Date(paste('1973', aq$Month, aq$Day, sep='-'))
+aq$Day <- as.character(aq$Day)
+aq$Month <- factor(aq$Month, labels=c("May", "Jun", "Jul", "Aug", "Sep"))
+head(aq)
+```
+
+## Line Chart
+
+### Singular Series
+
+`type` is set 'line'.
+
+```{r}
+echartr(aq, Date, Temp, type='line') %>%
+    setTitle('NY Temperature May - Sep 1973')
+```
+
+### Multiple Series
+
+```{r}
+echartr(aq, Day, Temp, Month, type='line') %>%
+    setTitle('NY Temperature May - Sep 1973, by Month') %>% 
+    setSymbols('emptycircle')
+```
+
+### Stacked Line Chart
+
+Set `type` 'line' and `subtype` 'stack'.
+
+```{r}
+echartr(aq, Day, Temp, Month, type='line', subtype='stack') %>%
+    setTitle('NY Temperature May - Sep 1973, by Month') %>% 
+    setSymbols('emptycircle')
+```
+
+### Line Width Mapped to `Weight`
+
+Let the lineWidth linked to the mean of Wind across series (Month).
+
+```{r}
+echartr(aq, Day, Temp, Month, weight=Wind, type='line') %>%
+    setTitle('NY Temperature May - Sep 1973, by Month') %>% 
+    setSymbols('emptycircle')
+```
+
+### Line Chart with Timeline
+
+```{r}
+echartr(aq, Day, Temp, z=Month, type='line') %>%
+    setTitle('NY Temperature May - Sep 1973, by Month') %>% 
+    setSymbols('emptycircle')
+```
+
+## Curve (Smooth Line) Chart
+
+### Tiled Smooth Line Chart
+
+Set `type` 'curve'.
+
+```{r}
+echartr(aq, Day, Temp, Month, type='curve') %>%
+    setTitle('NY Temperature May - Sep 1973, by Month') %>% 
+    setSymbols('emptycircle')
+```
+
+### Stacked Smooth Line Chart
+
+Set `type` 'curve' and `subtype` 'stack'.
+
+```{r}
+echartr(aq, Day, Temp, Month, type='curve', subtype='stack') %>%
+    setTitle('NY Temperature May - Sep 1973, by Month') %>% 
+    setSymbols('emptycircle')
+```
+
+## Area Chart
+
+### Tiled Area Chart
+
+Area chart is exactly the same with line chart except that it has `areaStyle` feature specialized.
+
+Set `type` 'area'.
+
+```{r}
+echartr(aq, Date, Temp, type='area') %>%
+    setTitle('NY Temperature May - Sep 1973') %>% 
+    setSymbols('emptycircle')
+```
+
+### Stacked Area Chart
+
+Set `type` 'area' and `subtype` 'stack'.
+
+```{r}
+echartr(aq, Day, Temp, Month, type='area', subtype='stack') %>%
+    setTitle('NY Temperature May - Sep 1973, by Month') %>% 
+    setSymbols('emptycircle')
+```
+
+## Wave (Smooth Area) Chart
+
+### Tiled Smooth Area Chart
+
+Set `type` 'wave'.
+
+```{r}
+echartr(aq, Date, Temp, type='wave') %>%
+    setTitle('NY Temperature May - Sep 1973') %>% 
+    setSymbols('emptycircle')
+```
+
+### Stacked Smooth Area Chart
+
+Set `type` 'wave' and `subtype` 'stack'.
+
+```{r}
+echartr(aq, Day, Temp, Month, type='wave', subtype='stack') %>%
+    setTitle('NY Temperature May - Sep 1973, by Month') %>% 
+    setSymbols('emptycircle')
+```
+
+# Futher Setup
+
+Then you can configure the widgets, add markLines and/or markPoints, fortify the chart.
+
+You can refer to related functions to play around on your own.
+

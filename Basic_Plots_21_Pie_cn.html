@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>基础图形Basic Plots 21 - 饼图Pie Chart</title>
+
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/htmlwidgets-0.7/htmlwidgets.js"></script>
+<script src="libs/echarts-2.2.7/echarts-all.js"></script>
+<script src="libs/echarts-2.2.7/ext/params.js"></script>
+<script src="libs/echarts-2.2.7/ext/loadGeoJSON.js"></script>
+<script src="libs/echarts-binding-0.0.5/echarts.js"></script>
+<script src="libs/echarts-module-2.2.7/base.js"></script>
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 70px;
+}
+p code {
+  white-space: inherit;
+}
+.html-widget-static-bound {
+  margin: auto;
+}
+.alert>p {
+  margin-bottom: 10.5px;
+}
+</style>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/default.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="./">recharts</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="./">Home</a></li>
+        <li><a href="index_cn.html">首页</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="https://github.com/madlogos/recharts" title="View Source on Github"><i class="fa fa-github fa-lg"></i></a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</nav><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">基础图形Basic Plots 21 - 饼图Pie Chart</h1>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction"><span class="toc-section-number">1</span> 介绍Introduction</a></li>
+<li><a href="#function-call"><span class="toc-section-number">2</span> 用法Function Call</a></li>
+<li><a href="#showcase"><span class="toc-section-number">3</span> 举例Showcase</a><ul>
+<li><a href="#data-preparation"><span class="toc-section-number">3.1</span> 数据准备Data Preparation</a></li>
+<li><a href="#pie-chart"><span class="toc-section-number">3.2</span> 饼图Pie Chart</a><ul>
+<li><a href="#single-pie"><span class="toc-section-number">3.2.1</span> 单个饼图Single Pie</a></li>
+<li><a href="#multiple-pies"><span class="toc-section-number">3.2.2</span> 多个饼图Multiple Pies</a></li>
+<li><a href="#xmultiple-series-without-x"><span class="toc-section-number">3.2.3</span> 多个饼图（不带X）Multiple Series without X</a></li>
+<li><a href="#pies-with-timeline"><span class="toc-section-number">3.2.4</span> 带时间轴的饼图Pies With Timeline</a></li>
+</ul></li>
+<li><a href="#ring-chart"><span class="toc-section-number">3.3</span> 环图Ring Chart</a><ul>
+<li><a href="#regular-ring-chart"><span class="toc-section-number">3.3.1</span> 常规环图Regular Ring Chart</a></li>
+<li><a href="#infographic-ring-chart"><span class="toc-section-number">3.3.2</span> 信息图样环图Infographic Ring Chart</a></li>
+</ul></li>
+<li><a href="#nighingale-rose-chart"><span class="toc-section-number">3.4</span> 南丁格尔玫瑰图Nighingale Rose Chart</a><ul>
+<li><a href="#radius-mode"><span class="toc-section-number">3.4.1</span> 半径模式Radius Mode</a></li>
+</ul></li>
+<li><a href="#area-mode"><span class="toc-section-number">3.5</span> 面积模式Area Mode</a></li>
+</ul></li>
+<li><a href="#futher-setup"><span class="toc-section-number">4</span> 其他设定Futher Setup</a></li>
+</ul>
+</div>
+
+<p>首先，加载<code>recharts</code>:</p>
+<pre class="r"><code>library(recharts)</code></pre>
+<div id="introduction" class="section level1">
+<h1><span class="header-section-number">1</span> 介绍Introduction</h1>
+<p>饼图有3种基本类型:</p>
+<ul>
+<li>饼图: pie</li>
+<li>环图: ring</li>
+<li>南丁格尔玫瑰图: rose</li>
+</ul>
+<table id="intro">
+<tr>
+<td>
+<div id="echarts-5b076cd9c4829f7b9c1348f99440d894a10b0894" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-5b076cd9c4829f7b9c1348f99440d894a10b0894">{"x":{"series":[{"name":"1st","type":"pie","data":[{"name":"No","value":122,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Yes","value":203,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["27.5%","27.5%"],"width":"42.5%","x":"6.25%","radius":"42.5%","max":203,"height":"42.5%","y":"6.25%","selectedMode":null},{"name":"2nd","type":"pie","data":[{"name":"No","value":167,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Yes","value":118,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["72.5%","27.5%"],"width":"42.5%","x":"51.25%","radius":"42.5%","max":167,"height":"42.5%","y":"6.25%","selectedMode":null},{"name":"3rd","type":"pie","data":[{"name":"No","value":528,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Yes","value":178,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["27.5%","72.5%"],"width":"42.5%","x":"6.25%","radius":"42.5%","max":528,"height":"42.5%","y":"51.25%","selectedMode":null},{"name":"Crew","type":"pie","data":[{"name":"No","value":673,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Yes","value":212,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["72.5%","72.5%"],"width":"42.5%","x":"51.25%","radius":"42.5%","max":673,"height":"42.5%","y":"51.25%","selectedMode":null}],"legend":{"show":true,"data":["No","Yes"],"x":"right","y":"center","orient":"vertical"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["No","Yes"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"{a} <br/>{b} : {c} ({d}%)","backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["pie","funnel"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"theme":"infographic","title":{"text":"Titanic: Survival by Cabin Class","subtext":"pie","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</td>
+<td>
+<div id="echarts-4794171b041f143f9213d9265db04641a3d9df8d" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-4794171b041f143f9213d9265db04641a3d9df8d">{"x":{"series":[{"name":"1st","type":"pie","data":[{"name":"No","value":122,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Yes","value":203,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["27.5%","27.5%"],"width":"42.5%","x":"6.25%","radius":["28.3333333333333%","42.5%"],"max":203,"height":"42.5%","y":"6.25%","selectedMode":null,"itemStyle":{"normal":{"label":{"show":true}},"emphasis":{"label":{"show":true,"position":"center","textStyle":{"fontSize":"30","fontWeight":"bold"}}}},"clockWise":false},{"name":"2nd","type":"pie","data":[{"name":"No","value":167,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Yes","value":118,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["72.5%","27.5%"],"width":"42.5%","x":"51.25%","radius":["28.3333333333333%","42.5%"],"max":167,"height":"42.5%","y":"6.25%","selectedMode":null,"itemStyle":{"normal":{"label":{"show":true}},"emphasis":{"label":{"show":true,"position":"center","textStyle":{"fontSize":"30","fontWeight":"bold"}}}},"clockWise":false},{"name":"3rd","type":"pie","data":[{"name":"No","value":528,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Yes","value":178,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["27.5%","72.5%"],"width":"42.5%","x":"6.25%","radius":["28.3333333333333%","42.5%"],"max":528,"height":"42.5%","y":"51.25%","selectedMode":null,"itemStyle":{"normal":{"label":{"show":true}},"emphasis":{"label":{"show":true,"position":"center","textStyle":{"fontSize":"30","fontWeight":"bold"}}}},"clockWise":false},{"name":"Crew","type":"pie","data":[{"name":"No","value":673,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Yes","value":212,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["72.5%","72.5%"],"width":"42.5%","x":"51.25%","radius":["28.3333333333333%","42.5%"],"max":673,"height":"42.5%","y":"51.25%","selectedMode":null,"itemStyle":{"normal":{"label":{"show":true}},"emphasis":{"label":{"show":true,"position":"center","textStyle":{"fontSize":"30","fontWeight":"bold"}}}},"clockWise":false}],"legend":{"show":true,"data":["No","Yes"],"x":"right","y":"center","orient":"vertical"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["No","Yes"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"{a} <br/>{b} : {c} ({d}%)","backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["pie","funnel"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"theme":"roma","title":{"text":"Titanic: Outcome by Cabin Class","subtext":"ring","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</td>
+</tr>
+<tr>
+<td>
+<div id="echarts-6090041dd0757cc2da83ad575fb1f2962ea46205" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-6090041dd0757cc2da83ad575fb1f2962ea46205">{"x":{"series":[{"name":"1st","type":"pie","data":[{"name":"No","value":122,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Yes","value":203,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["27.5%","27.5%"],"width":"42.5%","x":"6.25%","radius":"42.5%","max":203,"height":"42.5%","y":"6.25%","selectedMode":null},{"name":"2nd","type":"pie","data":[{"name":"No","value":167,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Yes","value":118,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["72.5%","27.5%"],"width":"42.5%","x":"51.25%","radius":"42.5%","max":167,"height":"42.5%","y":"6.25%","selectedMode":null},{"name":"3rd","type":"pie","data":[{"name":"No","value":528,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Yes","value":178,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["27.5%","72.5%"],"width":"42.5%","x":"6.25%","radius":"42.5%","max":528,"height":"42.5%","y":"51.25%","selectedMode":null},{"name":"Crew","type":"pie","data":[{"name":"No","value":673,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Yes","value":212,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["72.5%","72.5%"],"width":"42.5%","x":"51.25%","radius":"42.5%","max":673,"height":"42.5%","y":"51.25%","selectedMode":null}],"legend":{"show":true,"data":["No","Yes"],"x":"right","y":"center","orient":"vertical"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["No","Yes"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"{a} <br/>{b} : {c} ({d}%)","backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["pie","funnel"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"theme":"macarons2","title":{"text":"Titanic: Outcome by Cabin Class","subtext":"rose","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</td>
+<td>
+</td>
+</tr>
+</table>
+<p>关键是:</p>
+<ul>
+<li>文本型<code>x</code>和数值型<code>y</code>，会使用<code>data.table::dcast</code>压缩（<code>fun=sum</code>）</li>
+<li><strong><code>x</code>用作数据系列，而<code>series</code>用于产生多个不同的饼图!</strong></li>
+<li>饼图和漏斗图可通过工具箱按钮快速切换</li>
+</ul>
+</div>
+<div id="function-call" class="section level1">
+<h1><span class="header-section-number">2</span> 用法Function Call</h1>
+<pre class="r"><code>echartr(data, x, &lt;y&gt;, &lt;series&gt;, &lt;z&gt;, &lt;type&gt;, &lt;subtype&gt;)</code></pre>
+<table>
+<colgroup>
+<col width="11%" />
+<col width="88%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">参数</th>
+<th align="left">要求</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><p><strong>data</strong></p></td>
+<td align="left"><p>数据框格式的源数据</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p><strong>x</strong></p></td>
+<td align="left"><p>文本型自变量。<code>x</code>的每个水平被处理为一个数据系列。其他类型会被转为因子后计算。如提供多个变量，只传入第一个。</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>y</p></td>
+<td align="left"><p>数值型应变量。如提供多个变量，只传入第一个。</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>series</p></td>
+<td align="left"><p>转为因子后计算。<code>series</code>的每个水平被处理为分组因子，用于产生独立的饼图。如提供多个变量，只传入第一个。</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>z</p></td>
+<td align="left"><p>时间轴变量，转为因子后计算。如提供多个变量，只传入第一个。</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>type</p></td>
+<td align="left"><p>‘pie’, ‘ring’, ‘rose’.</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>subtype</p></td>
+<td align="left"><ul>
+<li>pie: c(“multi”,“clock”,“clockwise”)
+<ul>
+<li>multi: 多选模式</li>
+<li>clock/clokwise: 饼图顺时针显示</li>
+</ul></li>
+<li>ring: c(“info”,“multi”,“clock”,“clockwise”)
+<ul>
+<li>info: 信息图样式环图</li>
+</ul></li>
+<li>rose: c(“area”,“radius”,“multi”,“clock”,“clockwise”)
+<ul>
+<li>area: 面积模式玫瑰图</li>
+<li>radius: 半径模式玫瑰图</li>
+</ul></li>
+</ul></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="showcase" class="section level1">
+<h1><span class="header-section-number">3</span> 举例Showcase</h1>
+<div id="data-preparation" class="section level2">
+<h2><span class="header-section-number">3.1</span> 数据准备Data Preparation</h2>
+<p>考察<code>datasets</code>包自带的数据集<code>Titanic</code>。不同舱别生存人数如下：</p>
+<pre class="r"><code>titanic &lt;- data.table::melt(apply(Titanic, c(1,4), sum))
+names(titanic) &lt;- c(&#39;Class&#39;, &#39;Survived&#39;, &#39;Count&#39;)
+knitr::kable(titanic)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Class</th>
+<th align="left">Survived</th>
+<th align="right">Count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1st</td>
+<td align="left">No</td>
+<td align="right">122</td>
+</tr>
+<tr class="even">
+<td align="left">2nd</td>
+<td align="left">No</td>
+<td align="right">167</td>
+</tr>
+<tr class="odd">
+<td align="left">3rd</td>
+<td align="left">No</td>
+<td align="right">528</td>
+</tr>
+<tr class="even">
+<td align="left">Crew</td>
+<td align="left">No</td>
+<td align="right">673</td>
+</tr>
+<tr class="odd">
+<td align="left">1st</td>
+<td align="left">Yes</td>
+<td align="right">203</td>
+</tr>
+<tr class="even">
+<td align="left">2nd</td>
+<td align="left">Yes</td>
+<td align="right">118</td>
+</tr>
+<tr class="odd">
+<td align="left">3rd</td>
+<td align="left">Yes</td>
+<td align="right">178</td>
+</tr>
+<tr class="even">
+<td align="left">Crew</td>
+<td align="left">Yes</td>
+<td align="right">212</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="pie-chart" class="section level2">
+<h2><span class="header-section-number">3.2</span> 饼图Pie Chart</h2>
+<div id="single-pie" class="section level3">
+<h3><span class="header-section-number">3.2.1</span> 单个饼图Single Pie</h3>
+<p><code>type</code>设为’pie’。</p>
+<pre class="r"><code>echartr(titanic, Class, Count, type=&#39;pie&#39;) %&gt;%
+    setTitle(&#39;Titanic: N by Cabin Class&#39;)</code></pre>
+<div id="echarts-3f57a7876fa2f96db48b380f81699b664d1cbee7" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-3f57a7876fa2f96db48b380f81699b664d1cbee7">{"x":{"series":[{"name":"Proportion","type":"pie","data":[{"name":"1st","value":325,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"2nd","value":285,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"3rd","value":706,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Crew","value":885,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["50%","50%"],"width":"90%","x":"5%","radius":"90%","max":885,"height":"70%","y":"15%","selectedMode":null}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["1st","2nd","3rd","Crew"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"{a} <br/>{b} : {c} ({d}%)","backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["pie","funnel"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["1st","2nd","3rd","Crew"],"x":"left","y":"top","orient":"horizontal"},"title":{"text":"Titanic: N by Cabin Class","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="multiple-pies" class="section level3">
+<h3><span class="header-section-number">3.2.2</span> 多个饼图Multiple Pies</h3>
+<p>与直角坐标系下不同，饼图用<code>series</code>作为区分不同极坐标系的分组变量。所以当我们把<code>Class</code> (有4个水平) 作为<code>series</code>，可以得到4个饼图。</p>
+<pre class="r"><code>echartr(titanic, Survived, Count, Class, type=&#39;pie&#39;) %&gt;%
+    setTitle(&#39;Titanic: Survival Outcome by Cabin Class&#39;)</code></pre>
+<div id="echarts-44ce17a3f4dfae38bf99068bab45f3a9f8929230" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-44ce17a3f4dfae38bf99068bab45f3a9f8929230">{"x":{"series":[{"name":"1st","type":"pie","data":[{"name":"No","value":122,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Yes","value":203,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["27.5%","27.5%"],"width":"42.5%","x":"6.25%","radius":"42.5%","max":203,"height":"42.5%","y":"6.25%","selectedMode":null},{"name":"2nd","type":"pie","data":[{"name":"No","value":167,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Yes","value":118,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["72.5%","27.5%"],"width":"42.5%","x":"51.25%","radius":"42.5%","max":167,"height":"42.5%","y":"6.25%","selectedMode":null},{"name":"3rd","type":"pie","data":[{"name":"No","value":528,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Yes","value":178,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["27.5%","72.5%"],"width":"42.5%","x":"6.25%","radius":"42.5%","max":528,"height":"42.5%","y":"51.25%","selectedMode":null},{"name":"Crew","type":"pie","data":[{"name":"No","value":673,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Yes","value":212,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["72.5%","72.5%"],"width":"42.5%","x":"51.25%","radius":"42.5%","max":673,"height":"42.5%","y":"51.25%","selectedMode":null}],"legend":{"show":true,"data":["No","Yes"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["No","Yes"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"{a} <br/>{b} : {c} ({d}%)","backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["pie","funnel"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"title":{"text":"Titanic: Survival Outcome by Cabin Class","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="xmultiple-series-without-x" class="section level3">
+<h3><span class="header-section-number">3.2.3</span> 多个饼图（不带X）Multiple Series without X</h3>
+<p>如果只提供<code>series</code>和<code>y</code>会怎么样？我们会得到多个两分类饼图。</p>
+<pre class="r"><code>echartr(titanic, y=Count, series=Class, type=&#39;pie&#39;) %&gt;%
+    setTitle(&#39;Titanic: Propotion of Each Cabin Class&#39;)</code></pre>
+<div id="echarts-a26228719efb136994b3edcb0c340f523897aa58" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-a26228719efb136994b3edcb0c340f523897aa58">{"x":{"series":[{"name":"1st","type":"pie","data":[{"name":"1st","value":325,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"","value":1876,"itemStyle":{"normal":{"color":"#ccc","label":{"show":false,"position":"center"},"labelLine":{"show":false}},"emphasis":{"color":"rgba(0,0,0,0)"}}}],"center":["27.5%","27.5%"],"width":"42.5%","x":"6.25%","radius":"42.5%","max":1876,"height":"42.5%","y":"6.25%","selectedMode":null},{"name":"2nd","type":"pie","data":[{"name":"2nd","value":285,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"","value":1916,"itemStyle":{"normal":{"color":"#ccc","label":{"show":false,"position":"center"},"labelLine":{"show":false}},"emphasis":{"color":"rgba(0,0,0,0)"}}}],"center":["72.5%","27.5%"],"width":"42.5%","x":"51.25%","radius":"42.5%","max":1916,"height":"42.5%","y":"6.25%","selectedMode":null},{"name":"3rd","type":"pie","data":[{"name":"3rd","value":706,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"","value":1495,"itemStyle":{"normal":{"color":"#ccc","label":{"show":false,"position":"center"},"labelLine":{"show":false}},"emphasis":{"color":"rgba(0,0,0,0)"}}}],"center":["27.5%","72.5%"],"width":"42.5%","x":"6.25%","radius":"42.5%","max":1495,"height":"42.5%","y":"51.25%","selectedMode":null},{"name":"Crew","type":"pie","data":[{"name":"Crew","value":885,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"","value":1316,"itemStyle":{"normal":{"color":"#ccc","label":{"show":false,"position":"center"},"labelLine":{"show":false}},"emphasis":{"color":"rgba(0,0,0,0)"}}}],"center":["72.5%","72.5%"],"width":"42.5%","x":"51.25%","radius":"42.5%","max":1316,"height":"42.5%","y":"51.25%","selectedMode":null}],"legend":{"show":true,"data":["1st","2nd","3rd","Crew"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"value","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"{a} <br/>{b} : {c} ({d}%)","backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["pie","funnel"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"title":{"text":"Titanic: Propotion of Each Cabin Class","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="pies-with-timeline" class="section level3">
+<h3><span class="header-section-number">3.2.4</span> 带时间轴的饼图Pies With Timeline</h3>
+<p>需要一个时间轴变量。不妨用’sex’。</p>
+<pre class="r"><code>titanic_sex &lt;- data.table::melt(apply(Titanic, c(1,2,4), sum))
+names(titanic_sex)[4] &lt;- &quot;Count&quot;
+knitr::kable(titanic_sex)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Class</th>
+<th align="left">Sex</th>
+<th align="left">Survived</th>
+<th align="right">Count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1st</td>
+<td align="left">Male</td>
+<td align="left">No</td>
+<td align="right">118</td>
+</tr>
+<tr class="even">
+<td align="left">2nd</td>
+<td align="left">Male</td>
+<td align="left">No</td>
+<td align="right">154</td>
+</tr>
+<tr class="odd">
+<td align="left">3rd</td>
+<td align="left">Male</td>
+<td align="left">No</td>
+<td align="right">422</td>
+</tr>
+<tr class="even">
+<td align="left">Crew</td>
+<td align="left">Male</td>
+<td align="left">No</td>
+<td align="right">670</td>
+</tr>
+<tr class="odd">
+<td align="left">1st</td>
+<td align="left">Female</td>
+<td align="left">No</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">2nd</td>
+<td align="left">Female</td>
+<td align="left">No</td>
+<td align="right">13</td>
+</tr>
+<tr class="odd">
+<td align="left">3rd</td>
+<td align="left">Female</td>
+<td align="left">No</td>
+<td align="right">106</td>
+</tr>
+<tr class="even">
+<td align="left">Crew</td>
+<td align="left">Female</td>
+<td align="left">No</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">1st</td>
+<td align="left">Male</td>
+<td align="left">Yes</td>
+<td align="right">62</td>
+</tr>
+<tr class="even">
+<td align="left">2nd</td>
+<td align="left">Male</td>
+<td align="left">Yes</td>
+<td align="right">25</td>
+</tr>
+<tr class="odd">
+<td align="left">3rd</td>
+<td align="left">Male</td>
+<td align="left">Yes</td>
+<td align="right">88</td>
+</tr>
+<tr class="even">
+<td align="left">Crew</td>
+<td align="left">Male</td>
+<td align="left">Yes</td>
+<td align="right">192</td>
+</tr>
+<tr class="odd">
+<td align="left">1st</td>
+<td align="left">Female</td>
+<td align="left">Yes</td>
+<td align="right">141</td>
+</tr>
+<tr class="even">
+<td align="left">2nd</td>
+<td align="left">Female</td>
+<td align="left">Yes</td>
+<td align="right">93</td>
+</tr>
+<tr class="odd">
+<td align="left">3rd</td>
+<td align="left">Female</td>
+<td align="left">Yes</td>
+<td align="right">90</td>
+</tr>
+<tr class="even">
+<td align="left">Crew</td>
+<td align="left">Female</td>
+<td align="left">Yes</td>
+<td align="right">20</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>echartr(titanic_sex, Survived, Count, Class, z=Sex, type=&#39;pie&#39;) %&gt;% 
+    setTitle(&quot;Titanic: Survival Outcome by Cabin Class Across Sex&quot;) %&gt;%
+    setPolar(radius=&#39;30%&#39;)</code></pre>
+<div id="echarts-9ef3d538a123a926f68a5386c13096cffd3bd883" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-9ef3d538a123a926f68a5386c13096cffd3bd883">{"x":{"timeline":{"type":"number","data":["Male","Female"],"x":80,"x2":80,"y2":50},"options":[{"series":[{"name":"1st","type":"pie","data":[{"name":"No","value":118,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Yes","value":62,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["27.5%","25%"],"width":"37.5%","x":"8.75%","radius":"37.5%","max":118,"height":"37.5%","y":"6.25%","selectedMode":null},{"name":"2nd","type":"pie","data":[{"name":"No","value":154,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Yes","value":25,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["72.5%","25%"],"width":"37.5%","x":"53.75%","radius":"37.5%","max":154,"height":"37.5%","y":"6.25%","selectedMode":null},{"name":"3rd","type":"pie","data":[{"name":"No","value":422,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Yes","value":88,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["27.5%","65%"],"width":"37.5%","x":"8.75%","radius":"37.5%","max":422,"height":"37.5%","y":"46.25%","selectedMode":null},{"name":"Crew","type":"pie","data":[{"name":"No","value":670,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Yes","value":192,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["72.5%","65%"],"width":"37.5%","x":"53.75%","radius":"37.5%","max":670,"height":"37.5%","y":"46.25%","selectedMode":null}],"legend":{"show":true,"data":["No","Yes"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["No","Yes"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"{a} <br/>{b} : {c} ({d}%)","backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["pie","funnel"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"title":{"text":"Titanic: Survival Outcome by Cabin Class Across Sex (Sex: Male)","x":"center","y":"bottom","orient":"horizontal"}},{"series":[{"name":"1st","type":"pie","data":[{"name":"No","value":4,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Yes","value":141,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["27.5%","25%"],"width":"37.5%","x":"8.75%","radius":"37.5%","max":141,"height":"37.5%","y":"6.25%","selectedMode":null},{"name":"2nd","type":"pie","data":[{"name":"No","value":13,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Yes","value":93,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["72.5%","25%"],"width":"37.5%","x":"53.75%","radius":"37.5%","max":93,"height":"37.5%","y":"6.25%","selectedMode":null},{"name":"3rd","type":"pie","data":[{"name":"No","value":106,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Yes","value":90,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["27.5%","65%"],"width":"37.5%","x":"8.75%","radius":"37.5%","max":106,"height":"37.5%","y":"46.25%","selectedMode":null},{"name":"Crew","type":"pie","data":[{"name":"No","value":3,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Yes","value":20,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["72.5%","65%"],"width":"37.5%","x":"53.75%","radius":"37.5%","max":20,"height":"37.5%","y":"46.25%","selectedMode":null}],"title":{"text":"Titanic: Survival Outcome by Cabin Class Across Sex (Sex: Female)","x":"center","y":"bottom","orient":"horizontal"}}]},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div id="ring-chart" class="section level2">
+<h2><span class="header-section-number">3.3</span> 环图Ring Chart</h2>
+<div id="regular-ring-chart" class="section level3">
+<h3><span class="header-section-number">3.3.1</span> 常规环图Regular Ring Chart</h3>
+<p><code>type</code>设为’ring’。</p>
+<pre class="r"><code>echartr(titanic, Survived, Count, Class, type=&#39;ring&#39;) %&gt;%
+    setTitle(&#39;Titanic: Survival Outcome by Cabin Class&#39;)</code></pre>
+<div id="echarts-a25ac03804cfee713075540fac4868d6ffc95f88" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-a25ac03804cfee713075540fac4868d6ffc95f88">{"x":{"series":[{"name":"1st","type":"pie","data":[{"name":"No","value":122,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Yes","value":203,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["27.5%","27.5%"],"width":"42.5%","x":"6.25%","radius":["28.3333333333333%","42.5%"],"max":203,"height":"42.5%","y":"6.25%","selectedMode":null,"itemStyle":{"normal":{"label":{"show":true}},"emphasis":{"label":{"show":true,"position":"center","textStyle":{"fontSize":"30","fontWeight":"bold"}}}},"clockWise":false},{"name":"2nd","type":"pie","data":[{"name":"No","value":167,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Yes","value":118,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["72.5%","27.5%"],"width":"42.5%","x":"51.25%","radius":["28.3333333333333%","42.5%"],"max":167,"height":"42.5%","y":"6.25%","selectedMode":null,"itemStyle":{"normal":{"label":{"show":true}},"emphasis":{"label":{"show":true,"position":"center","textStyle":{"fontSize":"30","fontWeight":"bold"}}}},"clockWise":false},{"name":"3rd","type":"pie","data":[{"name":"No","value":528,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Yes","value":178,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["27.5%","72.5%"],"width":"42.5%","x":"6.25%","radius":["28.3333333333333%","42.5%"],"max":528,"height":"42.5%","y":"51.25%","selectedMode":null,"itemStyle":{"normal":{"label":{"show":true}},"emphasis":{"label":{"show":true,"position":"center","textStyle":{"fontSize":"30","fontWeight":"bold"}}}},"clockWise":false},{"name":"Crew","type":"pie","data":[{"name":"No","value":673,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Yes","value":212,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["72.5%","72.5%"],"width":"42.5%","x":"51.25%","radius":["28.3333333333333%","42.5%"],"max":673,"height":"42.5%","y":"51.25%","selectedMode":null,"itemStyle":{"normal":{"label":{"show":true}},"emphasis":{"label":{"show":true,"position":"center","textStyle":{"fontSize":"30","fontWeight":"bold"}}}},"clockWise":false}],"legend":{"show":true,"data":["No","Yes"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["No","Yes"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"{a} <br/>{b} : {c} ({d}%)","backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["pie","funnel"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"title":{"text":"Titanic: Survival Outcome by Cabin Class","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="infographic-ring-chart" class="section level3">
+<h3><span class="header-section-number">3.3.2</span> 信息图样环图Infographic Ring Chart</h3>
+<p>信息图样环图是特例。需要一步步小心地配置。</p>
+<pre class="r"><code>ds &lt;- data.frame(q=c(&#39;68% feel good&#39;, &#39;29% feel bad&#39;, &#39;3% have no feelings&#39;),
+              a=c(68, 29, 3))</code></pre>
+<p>构建底图。</p>
+<pre class="r"><code>g &lt;- echartr(ds, q, a, type=&#39;ring&#39;, subtype=&#39;info&#39;) %&gt;% 
+    setTheme(&#39;macarons&#39;, width=800, height=600) %&gt;%
+    setTitle(&#39;How do you feel?&#39;,&#39;ring_info&#39;, 
+             pos=c(&#39;center&#39;,&#39;center&#39;, &#39;horizontal&#39;))
+g</code></pre>
+<div id="echarts-6816676b41dc978306ac053269f1a4b5d8d81420" style="width:800px;height:600px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-6816676b41dc978306ac053269f1a4b5d8d81420">{"x":{"series":[{"name":"68% feel good","type":"pie","data":[{"name":"68% feel good","value":68,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"","value":32,"itemStyle":{"normal":{"color":"rgba(0,0,0,0)","label":{"show":false},"labelLine":{"show":false}},"emphasis":{"color":"rgba(0,0,0,0)"}}}],"center":["50%","50%"],"width":"42.5%","x":"6.25%","radius":["80%","66.6666666666667%"],"max":68,"height":"42.5%","y":"6.25%","selectedMode":null,"itemStyle":{"normal":{"label":{"show":true}},"emphasis":{"label":{"show":true,"position":"center","textStyle":{"fontSize":"30","fontWeight":"bold"}}}},"clockWise":false},{"name":"29% feel bad","type":"pie","data":[{"name":"29% feel bad","value":29,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"","value":71,"itemStyle":{"normal":{"color":"rgba(0,0,0,0)","label":{"show":false},"labelLine":{"show":false}},"emphasis":{"color":"rgba(0,0,0,0)"}}}],"center":["50%","50%"],"width":"42.5%","x":"51.25%","radius":["66.6666666666667%","53.3333333333333%"],"max":71,"height":"42.5%","y":"6.25%","selectedMode":null,"itemStyle":{"normal":{"label":{"show":true}},"emphasis":{"label":{"show":true,"position":"center","textStyle":{"fontSize":"30","fontWeight":"bold"}}}},"clockWise":false},{"name":"3% have no feelings","type":"pie","data":[{"name":"3% have no feelings","value":3,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"","value":97,"itemStyle":{"normal":{"color":"rgba(0,0,0,0)","label":{"show":false},"labelLine":{"show":false}},"emphasis":{"color":"rgba(0,0,0,0)"}}}],"center":["50%","50%"],"width":"42.5%","x":"6.25%","radius":["53.3333333333333%","40%"],"max":97,"height":"42.5%","y":"51.25%","selectedMode":null,"itemStyle":{"normal":{"label":{"show":true}},"emphasis":{"label":{"show":true,"position":"center","textStyle":{"fontSize":"30","fontWeight":"bold"}}}},"clockWise":false}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["68% feel good","29% feel bad","3% have no feelings"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"{a} <br/>{b} : {c} ({d}%)","backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["pie","funnel"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["68% feel good","29% feel bad","3% have no feelings"],"x":"left","y":"top","orient":"horizontal"},"theme":"macarons","title":{"text":"How do you feel?","subtext":"ring_info","x":"center","y":"center","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+<p>但图例的位置不对。所以我们首先设置<code>pos=c('center','top','vertical')</code>，然后用<code>relocLegend</code>微调其位置。</p>
+<blockquote>
+<p>每调用一次控件配置函数，<code>echartr</code>就会用<code>tuneGrid</code>函数自动调整各控件的尺寸、位置。所以，如果你用<code>setLegend</code>设置图例的尺寸和位置，会被后续的自动配置覆盖。建议把<code>relocWidget</code>放在链式调用的末尾。</p>
+</blockquote>
+<pre class="r"><code>width = 800
+height = 600
+g %&gt;% setLegend(pos=c(&#39;center&#39;,&#39;top&#39;,&#39;vertical&#39;), itemGap=height/25) %&gt;%
+    relocLegend(x=width/2, y=height/8)</code></pre>
+<div id="echarts-9a6c645039f4e7af23f30d9af115f3482a06f2bd" style="width:800px;height:600px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-9a6c645039f4e7af23f30d9af115f3482a06f2bd">{"x":{"series":[{"name":"68% feel good","type":"pie","data":[{"name":"68% feel good","value":68,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"","value":32,"itemStyle":{"normal":{"color":"rgba(0,0,0,0)","label":{"show":false},"labelLine":{"show":false}},"emphasis":{"color":"rgba(0,0,0,0)"}}}],"center":["50%","50%"],"width":"42.5%","x":"6.25%","radius":["80%","66.6666666666667%"],"max":68,"height":"42.5%","y":"6.25%","selectedMode":null,"itemStyle":{"normal":{"label":{"show":true}},"emphasis":{"label":{"show":true,"position":"center","textStyle":{"fontSize":"30","fontWeight":"bold"}}}},"clockWise":false},{"name":"29% feel bad","type":"pie","data":[{"name":"29% feel bad","value":29,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"","value":71,"itemStyle":{"normal":{"color":"rgba(0,0,0,0)","label":{"show":false},"labelLine":{"show":false}},"emphasis":{"color":"rgba(0,0,0,0)"}}}],"center":["50%","50%"],"width":"42.5%","x":"51.25%","radius":["66.6666666666667%","53.3333333333333%"],"max":71,"height":"42.5%","y":"6.25%","selectedMode":null,"itemStyle":{"normal":{"label":{"show":true}},"emphasis":{"label":{"show":true,"position":"center","textStyle":{"fontSize":"30","fontWeight":"bold"}}}},"clockWise":false},{"name":"3% have no feelings","type":"pie","data":[{"name":"3% have no feelings","value":3,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"","value":97,"itemStyle":{"normal":{"color":"rgba(0,0,0,0)","label":{"show":false},"labelLine":{"show":false}},"emphasis":{"color":"rgba(0,0,0,0)"}}}],"center":["50%","50%"],"width":"42.5%","x":"6.25%","radius":["53.3333333333333%","40%"],"max":97,"height":"42.5%","y":"51.25%","selectedMode":null,"itemStyle":{"normal":{"label":{"show":true}},"emphasis":{"label":{"show":true,"position":"center","textStyle":{"fontSize":"30","fontWeight":"bold"}}}},"clockWise":false}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["68% feel good","29% feel bad","3% have no feelings"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"{a} <br/>{b} : {c} ({d}%)","backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["pie","funnel"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["68% feel good","29% feel bad","3% have no feelings"],"x":400,"y":75,"orient":"vertical","itemGap":24},"theme":"macarons","title":{"text":"How do you feel?","subtext":"ring_info","x":"center","y":"center","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div id="nighingale-rose-chart" class="section level2">
+<h2><span class="header-section-number">3.4</span> 南丁格尔玫瑰图Nighingale Rose Chart</h2>
+<div id="radius-mode" class="section level3">
+<h3><span class="header-section-number">3.4.1</span> 半径模式Radius Mode</h3>
+<p><code>type</code>设为’rose’，<code>subtype</code>设为’radius’。</p>
+<pre class="r"><code>echartr(titanic_sex, Class, Count, Survived, type=&#39;rose&#39;, subtype=&#39;radius&#39;) %&gt;%
+    setTitle(&#39;Titanic: Survival Outcome by Cabin Class&#39;) </code></pre>
+<div id="echarts-8db1dac3349cbbb8b9aadaa7fcc667ef103091c7" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-8db1dac3349cbbb8b9aadaa7fcc667ef103091c7">{"x":{"series":[{"name":"No","type":"pie","data":[{"name":"1st","value":122,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"2nd","value":167,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"3rd","value":528,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Crew","value":673,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["27.5%","50%"],"width":"42.5%","x":"6.25%","radius":["8.5%","42.5%"],"max":673,"height":"70%","y":"15%","selectedMode":null,"roseType":"radius"},{"name":"Yes","type":"pie","data":[{"name":"1st","value":203,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"2nd","value":118,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"3rd","value":178,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Crew","value":212,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["72.5%","50%"],"width":"42.5%","x":"51.25%","radius":["8.5%","42.5%"],"max":212,"height":"70%","y":"15%","selectedMode":null,"roseType":"radius"}],"legend":{"show":true,"data":["1st","2nd","3rd","Crew"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["1st","2nd","3rd","Crew"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"{a} <br/>{b} : {c} ({d}%)","backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["pie","funnel"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"title":{"text":"Titanic: Survival Outcome by Cabin Class","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div id="area-mode" class="section level2">
+<h2><span class="header-section-number">3.5</span> 面积模式Area Mode</h2>
+<p><code>type</code>设为’rose’，<code>subtype</code>设为’area’。</p>
+<pre class="r"><code>echartr(titanic_sex, Class, Count, Survived, type=&#39;rose&#39;, subtype=&#39;area&#39;) %&gt;%
+    setTitle(&#39;Titanic: Survival Outcome by Cabin Class&#39;) </code></pre>
+<div id="echarts-57089e6ba8b8c11b827395bc62c2a6a3e6170869" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-57089e6ba8b8c11b827395bc62c2a6a3e6170869">{"x":{"series":[{"name":"No","type":"pie","data":[{"name":"1st","value":122,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"2nd","value":167,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"3rd","value":528,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Crew","value":673,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["27.5%","50%"],"width":"42.5%","x":"6.25%","radius":["8.5%","42.5%"],"max":673,"height":"70%","y":"15%","selectedMode":null,"roseType":"area"},{"name":"Yes","type":"pie","data":[{"name":"1st","value":203,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"2nd","value":118,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"3rd","value":178,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Crew","value":212,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["72.5%","50%"],"width":"42.5%","x":"51.25%","radius":["8.5%","42.5%"],"max":212,"height":"70%","y":"15%","selectedMode":null,"roseType":"area"}],"legend":{"show":true,"data":["1st","2nd","3rd","Crew"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["1st","2nd","3rd","Crew"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"{a} <br/>{b} : {c} ({d}%)","backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["pie","funnel"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"title":{"text":"Titanic: Survival Outcome by Cabin Class","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div id="futher-setup" class="section level1">
+<h1><span class="header-section-number">4</span> 其他设定Futher Setup</h1>
+<p>接下来可以配置控件、添加标注点/标注线，以及美化成图。</p>
+<p>参考相关函数，尽情探索吧。</p>
+</div>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+    // active menu
+    var href = window.location.pathname;
+    href = href.substr(href.lastIndexOf('/') + 1);
+    if (href === '') href = './';
+    $('a[href="' + href + '"]').parent().addClass('active');
+});
+</script>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+
+</body>
+</html>
