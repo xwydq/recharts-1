@@ -119,14 +119,14 @@ tooltipJS <- function(type) {
                 sName = params[0].seriesName;
             }
        } else {
-            if (params.value.length > 1) {
-                text1 = params.value[0];
+            if (params[0].value.length > 1) {
+                text1 = params[0].value[0];
             } else {
-                text1 = params.value
+                text1 = params[0].value;
             }
-            text = params.name;
-            if (params.seriesName) {
-                sName = params.seriesName;
+            text = params[0].name;
+            if (params[0].seriesName) {
+                sName = params[0].seriesName;
             }
        }
        if (params.length > 1){
@@ -149,20 +149,15 @@ tooltipJS <- function(type) {
                 }
            }
        } else {
-           if (params.seriesName){
-               text += "<br/>" + params.seriesName + " :  " + text1;
-               if (params.value.length > 1){
-                    for (j = 1; j < params.value.length; j++){
-                        text += ", " + params.value[j];
-                    }
-               }
+           if (params[0].seriesName){
+               text += "<br/>" + params[0].seriesName + " :  " + text1;
            } else {
-               text = text1;
-               if (params.value.length > 1){
-                    for (j = 1; j < params.value.length; j++){
-                        text += ", " + params.value[j];
-                    }
-               }
+               text += " :  " + text1;
+           }
+           if (params[0].value.length > 1){
+                for (j = 1; j < params[0].value.length; j++){
+                    text += ", " + params[0].value[j];
+                }
            }
        }
        return text;
@@ -190,7 +185,7 @@ tooltipJS <- function(type) {
             if (params.value.length > 1) {
                 text1 = params.value[0];
             } else {
-                text1 = params.value
+                text1 = params.value;
             }
             sDate = new Date(text1);
             text = params.name;
@@ -236,18 +231,13 @@ tooltipJS <- function(type) {
        } else {
            if (params.seriesName) {
                text += "<br/>" + params.seriesName + " :  " + text1;
-               if (params.value.length > 1){
-                    for (j = 1; j < params.value.length; j++) {
-                        text += ", " + params.value[j];
-                    }
-               }
            } else {
                text = text1;
-               if (params.value.length > 1) {
-                    for (j = 1; j < params.value.length; j++) {
-                        text += ", " + params.value[j];
-                    }
-               }
+           }
+           if (params.value.length > 1){
+                for (j = 1; j < params.value.length; j++) {
+                    text += ", " + params.value[j];
+                }
            }
        }
        return text;

@@ -252,9 +252,8 @@ series_line = function(lst, type, subtype, return=NULL, ...) {
         for (i in smoothIdx) obj[[i]][['smooth']] <- TRUE
     for (i in seq_along(obj)){
         obj[[i]]$showAllSymbol <- TRUE
-        obj[[i]]$symbolSize <- 0
+        #obj[[i]]$symbolSize <- 0
     }
-
 
     if (is.null(return)){
         return(obj)

@@ -409,7 +409,7 @@ getYFromEChart <- function(chart, ...){
 #'  'YlGn', 'YlGnBu', 'YlOrBr', 'YlOrRd'} \cr
 #'  \item \link{ggthemes} palettes: \code{'calc', 'economist', 'economist_white', 'economist_stata',
 #'  'excel', 'exel_fill', 'excel_line', 'excel_new', 'few', 'fivethirtyeight', '538', 'manyeyes',
-#'  'gdocs', 'pander', 'tableau', 'stata', 'stata1','stata1r','statamono', 'ptol',
+#'  'gdocs', 'pander', 'tableau', 'stata', 'stata1', 'stata1r', 'statamono', 'ptol',
 #'  'tableau20', 'tableau10medium', 'tableaugray', 'tableauprgy', 'tableaublrd',
 #'  'tableaugnor', 'tableaucyclic', 'tableau10light', 'tableaublrd12', 'tableauprgy12',
 #'  'tableaugnor12', 'hc', 'darkunica', 'solarized', 'solarized_red', 'solarized_yellow',
@@ -790,8 +790,12 @@ reElementId <- function(chart, seed=NULL){
 
 convTimestamp <- function(time, from='R', to='JS'){
     stopifnot(inherits(time, c("numeric", "Date", "POSIXct", "POSIXlt")))
-    if (from=='R' && to=='JS')
-        return(as.numeric(as.POSIXct(time, orig="1970-01-01")) * 1000)
+    if (from=='R' && to=='JS'){
+        time <- as.POSIXlt(time, orig="1970-01-01")
+        gmtoff <- ifnull(as.POSIXlt(Sys.time(), orig='1970-01-01')$gmtoff, 0)
+        time <- as.numeric(time) - gmtoff
+        return(time * 1000)
+    }
     if (from=='JS' && to=='R')
         return(as.POSIXct(time/1000, orig="1970-01-01"))
 }
