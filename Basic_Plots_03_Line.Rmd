@@ -121,7 +121,7 @@ head(aq)
 
 ```{r}
 echartr(aq, Date, Temp, type='line') %>%
-    setTitle('NY Temperature May - Sep 1973')
+    setTitle('NY Temperature May - Sep 1973') %>% setSymbols('none')
 ```
 
 ### Multiple Series

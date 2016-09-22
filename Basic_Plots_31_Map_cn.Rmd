@@ -112,14 +112,16 @@ echartr(data, <x>, <y>, <series>, <lng>, <lat>, <z>, <type>, <subtype>)
 +--------+--------------------------------------------------------------------+
 | type   | 'map_world', 'map_world_multi', 'map_china', 'map_china_multi'. |
 +--------+--------------------------------------------------------------------+
-| subtype| - map_world: c("sum", "average", [country names]) | 
+| subtype| - map_world: c("sum", "average", `/country names/`) | 
 |        |     + sum: 求和法计算 (默认算法). |
 |        |     + average: 平均法计算 |
-|        |     + [country names]: 一组Echarts可接受的合法值。参考下文的'有效国家名'。 |
-|        | - map_world_multi: c("sum", "average", [country names]) | 
-|        | - map_china: c("sum", "average", [China province names]) | 
-|        |     + [China province names]: 一组Echarts可接受的合法值。参考下文的'有效中国省份名' |
-|        | - map_china_multi: c("sum", "average", <China province names>) | 
+|        |     + move: `roam`方法设为'move' |
+|        |     + scale: `roam`方法设为'scale' |
+|        |     + `/country names/`: 一组Echarts可接受的合法值。参考下文的'有效国家名'。 |
+|        | - map_world_multi: c("sum", "average", "move", "scale", `/country names/`) | 
+|        | - map_china: c("sum", "average", "move", "scale", `/China province names/`) | 
+|        |     + `/China province names/`: 一组Echarts可接受的合法值。参考下文的'有效中国省份名' |
+|        | - map_china_multi: c("sum", "average", "move", "scale", `/China province names/`) | 
 +--------+--------------------------------------------------------------------+
 
 - **有效国家名:**
@@ -196,12 +198,11 @@ echartr(worldgdp, country, GDP, type="map_world") %>%
     setTitle("World GDP Top 20, 2014")
 ```
 
-然而点标注信息性不强，可以映射值域选择，给地图区块填色。
+然而点标注信息性不强，可以映射值域选择，给地图区块填色。顺便把地图漫游模式改为'move'并'scale'。
 
 ```{r}
-echartr(worldgdp, country, GDP, type="map_world") %>%
-    setDataRange(splitNumber=0, 
-                 color=getColFromPal('rainbow')) %>%
+echartr(worldgdp, country, GDP, type="map_world", subtype="move + scale") %>%
+    setDataRange(splitNumber=0, color=getColFromPal('rainbow')) %>%
     setTitle("World GDP Top 20, 2014")
 ```
 
