@@ -121,7 +121,7 @@ labels shown in this axis. Default NULL. You can even pass in a complicated list
 When an echart object is generated, you can modify it by setting axis using
 \code{\link{\%>\%}}. \cr \cr
 You can use work functions \code{setXAxis}, \code{setYAxis}, \code{setX1Axis},
-\code{setY1Axis}.\cr \cr
+\code{setY1Axis}. \cr \cr
 This function modified a few default options for the axis component in
 ECharts:
 \enumerate{

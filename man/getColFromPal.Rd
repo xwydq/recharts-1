@@ -16,7 +16,7 @@ getColFromPal(palname = NULL, n = 6)
  'YlGn', 'YlGnBu', 'YlOrBr', 'YlOrRd'} \cr
  \item \link{ggthemes} palettes: \code{'calc', 'economist', 'economist_white', 'economist_stata',
  'excel', 'exel_fill', 'excel_line', 'excel_new', 'few', 'fivethirtyeight', '538', 'manyeyes',
- 'gdocs', 'pander', 'tableau', 'stata', 'stata1','stata1r','statamono', 'ptol',
+ 'gdocs', 'pander', 'tableau', 'stata', 'stata1', 'stata1r', 'statamono', 'ptol',
  'tableau20', 'tableau10medium', 'tableaugray', 'tableauprgy', 'tableaublrd',
  'tableaugnor', 'tableaucyclic', 'tableau10light', 'tableaublrd12', 'tableauprgy12',
  'tableaugnor12', 'hc', 'darkunica', 'solarized', 'solarized_red', 'solarized_yellow',

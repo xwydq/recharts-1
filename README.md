@@ -1,3 +1,5 @@
+v 0.0.6
+
 # An R Interface to Baidu Echarts2
 
 [Echarts2](http://http://echarts.baidu.com/echarts2) is an open source d3-js library developed by Baidu Inc. for interactive charts. Compared to other popular d3-js libraries, Echarts is more Chinese-friendly. The latest stable release of Echarts2 is 2.2.7. The most up-to-date version is Echarts 3.2.3. 
@@ -72,7 +74,7 @@ Finally, you can use `relocWidget`functions to relocate/resize the echarts objec
 
 ### Achievements
 
-Current version is 0.0.5. 
+Current version is 0.0.6. 
 
 - Major part of core function `echartr`
 - Major part of widget functions `setTitle`, `setLegend`, `setDataRange`, `setDataZoom`, `setToolbox`, `setTimeline`, `setRoam`
@@ -208,7 +210,7 @@ Echarts对象其实是一个S3列表，包括下列元素：
 
 ### 成果
 
-当前版本0.0.5. 
+当前版本0.0.6. 
 
 - 核心函数`echartr`的主体
 - 控件函数`setTitle`, `setLegend`, `setDataRange`, `setDataZoom`, `setToolbox`, `setTimeline`, `setRoam`的主体
