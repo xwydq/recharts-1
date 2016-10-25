@@ -28,7 +28,7 @@ setTT(chart, series = NULL, timeslots = NULL, trigger = NULL,
 or \code{1:2}}
 
 \item{timeslots}{A vector of time slices indices or names, e.g., \code{c(1990, 1992)}
-or \code{c(1,3)}. You can also use \code{z} as a short form of \code{timeslots}.}
+or \code{c(1,3)}. You can also use \code{t} as a short form of \code{timeslots}.}
 
 \item{trigger}{Type of trigger, \code{'item'}, or \code{'axis'}.}
 
@@ -147,15 +147,15 @@ bg <- rbind(bg, 0.7)  # extend the color matrix with alpha 0.7
 bgCol <- unname(apply(bg, 2, rgba))  # get rgba colors with alpha
 iris$tag <- 1 + as.integer(row.names(iris)) \%\% 3
 iris <- iris[order(iris$tag),]
-g1 <- echartR(iris, Sepal.Width, Petal.Width, series=Species, z=tag)
+g1 <- echartR(iris, Sepal.Width, Petal.Width, series=Species, t=tag)
 g1 \%>\% setTooltip(series='setosa', bgColor=bgCol[1]) \%>\%
        setTooltip(series=2, bgColor=bgCol[2]) \%>\%
        setTooltip(series=3, bgColor=bgCol[3]) \%>\%
-       setTooltip(z=1, borderColor='red', borderWidth=3) \%>\%
-       setTooltip(z=2, borderColor='gold', borderWidth=3) \%>\%
-       setTooltip(z=3, borderColor='green', borderWidth=3)
+       setTooltip(t=1, borderColor='red', borderWidth=3) \%>\%
+       setTooltip(t=2, borderColor='gold', borderWidth=3) \%>\%
+       setTooltip(t=3, borderColor='green', borderWidth=3)
 
-g1 \%>\% setTooltip(series=2, z=2, bgColor='blue')
+g1 \%>\% setTooltip(series=2, t=2, bgColor='blue')
 # tooltip format of series 2 in the 2nd timeslot is changed to bg blue,
 # while it in the 3rd timeslot is reset to default
 }

@@ -3,7 +3,7 @@ id,name,type,subtype,misc
 2,^(bubble)$,scatter,,bubble
 3,^(bar|hbar)$,bar,"""stack""",flip
 4,^(vbar|column)$,bar,"""stack""",
-5,^(histogram|hist)$,bar,"c(""count"",""freq"",""density"")",hist
+5,^(histogram|hist)$,hist,"c(""count"",""freq"",""density"")",
 6,^(line)$,line,"c(""stack"",""smooth"",""dotted"",""solid"",""dashed"")",
 7,^(curve)$,line,"c(""stack"",""solid"")",smooth
 8,^(area)$,line,"c(""stack"",""smooth"",""dotted"",""solid"",""dashed"")",fill

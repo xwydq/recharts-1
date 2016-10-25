@@ -55,7 +55,7 @@ subtitles using \code{\link{\%>\%}}.
 }
 \details{
 In echarts with timeline, you can set \code{title, subtitle, link, sublink, bgColor,
-borderColor, borderWidth} as vectors of the same length as \code{z}. For \code{textSytle,
+borderColor, borderWidth} as vectors of the same length as \code{t}. For \code{textSytle,
 subtextStyle}, you need to pack the user-defined lists in a list.
 }
 \examples{
@@ -76,7 +76,7 @@ g \%>\% setTitle(
 
 
 ## echarts with timeline
-g1 <- iris \%>\% echartR(x=Sepal.Width, y=Petal.Width, z=Species, type='scatter')
+g1 <- iris \%>\% echartR(x=Sepal.Width, y=Petal.Width, t=Species, type='scatter')
 
 ## simple titles/subtitles
 g1 \%>\% setTitle(

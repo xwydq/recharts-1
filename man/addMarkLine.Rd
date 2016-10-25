@@ -43,7 +43,7 @@ overideML(chart, ...)
 If set NULL, then apply the \code{markPoint} to all the series.}
 
 \item{timeslots}{Numeric (timeslot index) or character (timeslot name), numeric is preferred.
-If set NULL, then apply the \code{markPoint} to all the timeslots. You can use \code{z}
+If set NULL, then apply the \code{markPoint} to all the timeslots. You can use \code{t}
 for short.}
 
 \item{data}{Data.frame, the data of the \code{markLine}s. It must contain the

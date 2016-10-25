@@ -1,8 +1,10 @@
-v 0.0.6
+v 0.1
+
+[中文](#百度echarts2的r语言接口)
 
 # An R Interface to Baidu Echarts2
 
-[Echarts2](http://http://echarts.baidu.com/echarts2) is an open source d3-js library developed by Baidu Inc. for interactive charts. Compared to other popular d3-js libraries, Echarts is more Chinese-friendly. The latest stable release of Echarts2 is 2.2.7. The most up-to-date version is Echarts 3.2.3. 
+[Echarts2](http://http://echarts.baidu.com/echarts2) is an open source javascript visualization library developed by Baidu Inc. for interactive charts. Compared to other popular js libraries, Echarts is more Chinese-friendly. The latest stable release of Echarts2 is 2.2.7. The most up-to-date version is Echarts 3.2.3. 
 
 This package is to facilitate `R` users to make use of Echarts2 library (Echarts3 is not supported yet). A hello world example is as below:
 
@@ -138,7 +140,7 @@ Under the terms of [MIT](http://www.opensource.org/licenses/mit-license.php) + f
 
 # 百度Echarts2的R语言接口
 
-[Echarts2](http://http://echarts.baidu.com/echarts2)是百度发布的一个开源d3-js库，用于创建交互图。与其他流行的d3-js库相比，Echarts对中文更友好。Echarts2最新的发布版为2.2.7，而Echarts家族的最新版本为3.2.3。
+[Echarts2](http://http://echarts.baidu.com/echarts2)是百度发布的一个开源javascript图形库，用于创建交互图。与其他流行的js库相比，Echarts对中文更友好。Echarts2最新的发布版为2.2.7，而Echarts家族的最新版本为3.2.3。
 
 该加载包是为了便利`R`用户使用Echarts2库 (目前仍不支持Echarts3). 下面是一个hello world案例：
 

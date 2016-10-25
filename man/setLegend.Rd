@@ -57,7 +57,7 @@ g \%>\% setLegend(selected=levels(iris$Species)[1:2],
                                fontWeight='bold', fontSize=16))
 
 # With Timeline
-g1 <- iris \%>\% echartR(x=Sepal.Width, y=Petal.Width, z=Species, type='scatter')
+g1 <- iris \%>\% echartR(x=Sepal.Width, y=Petal.Width, t=Species, type='scatter')
 g1 \%>\% setLegend(pos=12, selected='none',
                  textStyle=list(fontFamily='Courier New', fontSize=16))
 }

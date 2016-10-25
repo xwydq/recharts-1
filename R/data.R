@@ -87,19 +87,10 @@ series_bar <- function(lst, type, subtype, return=NULL, ...){
     data <- cbind(lst$y[,1], lst$x[,1])
 
     if (!'y' %in% names(lst)) {  # y is null, then...
-        if (any(grepl('hist', type$misc))){  # histogram
-            hist <- hist(data[,1], plot=FALSE)
-            if ('density' %in% subtype[[1]]){
-                data <- as.matrix(cbind(hist$density, hist$mids))  # y, x
-            }else{
-                data <- as.matrix(cbind(hist$counts, hist$mids))  # y, x
-            }
-        }else{ # simply run freq of x
-            if (is.numeric(data[,1])){
-                data <- as.matrix(as.data.frame(table(data[,1])))
-            }else{
-                data <- as.matrix(table(data[,1]))
-            }
+        if (is.numeric(data[,1])){
+            data <- as.matrix(as.data.frame(table(data[,1])))
+        }else{
+            data <- as.matrix(table(data[,1]))
         }
     }
 
@@ -183,10 +174,35 @@ series_bar <- function(lst, type, subtype, return=NULL, ...){
     }
 }
 
+series_hist <- function(lst, type, subtype, return=NULL, ...){
+    # example:
+    data <- lst$x[,1]
+
+    hist <- hist(data, plot=FALSE)
+    if ('density' %in% subtype[[1]]){
+        data <- as.matrix(cbind(hist$density, hist$mids))  # y, x
+    }else{
+        data <- as.matrix(cbind(hist$counts, hist$mids))  # y, x
+    }
+
+    obj <- list(list(type='bar', data=asEchartData(data[,2:1])))
+    obj[[1]]$barGap = '1%'
+    obj[[1]]$barWidth = JS(paste0(
+        "(document.getElementById('temp').offsetWidth-200)/",
+        length(hist$breaks)))
+    obj[[1]]$barMaxWidth = floor(820 / length(hist$breaks))
+
+    if (is.null(return)){
+        return(obj)
+    }else{
+        return(obj[intersect(names(obj), return)])
+    }
+}
+
 series_line = function(lst, type, subtype, return=NULL, ...) {
     # Example:
-    # g=echartr(airquality, as.character(Day), Temp,z=Month, type='curve')
-    # g=echartr(airquality, as.character(Day), Temp,z=Month, type='area_smooth')
+    # g=echartr(airquality, as.character(Day), Temp,t=Month, type='curve')
+    # g=echartr(airquality, as.character(Day), Temp,t=Month, type='area_smooth')
     lst <- mergeList(list(series=NULL), lst)
     data <- cbind(lst$y[,1], lst$x[,1])
 
@@ -292,7 +308,8 @@ series_pie <- function(lst, type, subtype, return=NULL, ...){
     #       relocLegend(x=JS(paste0(dev.width,"/2")), y=JS(paste0(dev.height,"/10")))
 
     if (is.null(lst$y)) stop('pie/funnel charts need y!')
-    if (is.null(lst$x) && is.null(lst$series)) stop('pie/funnel charts need either x or series!')
+    if (is.null(lst$x) && is.null(lst$series))
+        stop('pie/funnel charts need either x or series!')
     data <- data.frame(lst$y[,1])
     if (!is.null(lst$x)){
         data[,2] <- if (matchSubtype('info', subtype))
@@ -305,9 +322,9 @@ series_pie <- function(lst, type, subtype, return=NULL, ...){
         series <- if (matchSubtype('info', subtype))
             as.character(unique(lst$series[,1])) else c('TRUE','FALSE')
     }
-    if (!is.null(lst$series)){
-        data[,3] <- lst$series[,1]
-        pies <- as.character(unique(lst$series[,1]))
+    if (!is.null(lst$facet)){
+        data[,3] <- lst$facet[,1]
+        pies <- as.character(unique(lst$facet[,1]))
     }else{
         data[,3] <- if (matchSubtype('info', subtype))
             lst$x[,1] else 'Proportion'
@@ -321,15 +338,15 @@ series_pie <- function(lst, type, subtype, return=NULL, ...){
         }
 
     }
-    names(data) <- c('y', 'x', 'series')
-    data <- data.table::dcast(data, x~series, sum, value.var='y')
+    names(data) <- c('y', 'x', 'facet')
+    data <- data.table::dcast(data, x~facet, sum, value.var='y')
 
     if (all(data$x == 'TRUE')) {
         sum.prop <- sum(data[data$x == 'TRUE', 2:ncol(data)], na.rm=TRUE)
         data[nrow(data)+1, ] <- c('FALSE', sum.prop - data[data$x == 'TRUE',
                                                            2:ncol(data)])
     }
-    if (is.null(lst$z)){
+    if (is.null(lst$t)){
         layouts <- autoMultiPolarChartLayout(length(pies))
     }else{
         layouts <- autoMultiPolarChartLayout(length(pies), bottom=15)
@@ -446,7 +463,7 @@ series_radar <- function(lst, type, subtype, return=NULL, ...){
     # echartr(cars, c(indicator, model), Parameter, type='target') %>%
     #         setSymbols('none')
     #
-    # echartr(cars, indicator, Parameter, z=model, type='radar')
+    # echartr(cars, indicator, Parameter, t=model, type='radar')
     # ----------------
     #
     # carstat = data.table::dcast(data.table::data.table(mtcars),
@@ -461,14 +478,14 @@ series_radar <- function(lst, type, subtype, return=NULL, ...){
     #             levels(carstat$am), unique(carstat$carb)))
     # carstat <- merge(fullData, carstat, all.x=TRUE)
     # echartr(carstat, c(indicator, am),
-    #         Parameter, carb, z=gear, type='radar')
+    #         Parameter, carb, t=gear, type='radar')
 
-    # x[,1] is x, x[,2] is series; y[,1] is y; series[,1] is polorIndex
+    # x[,1] is x, series[,2] is series; y[,1] is y; facet[,1] is polorIndex
     if (is.null(lst$y) || is.null(lst$x)) stop('radar charts need x and y!')
-    ds <- data.frame(lst$y[,1], lst$x[,1:(ifelse(ncol(lst$x) > 1, 2, 1))])
-    if (ncol(lst$x) == 1) ds[,ncol(ds)+1] <- names(lst$y)[1]
-    if (is.null(lst$series)) ds[,ncol(ds)+1] <- 0
-    else ds[,ncol(ds)+1] <- lst$series[,1]
+    ds <- data.frame(lst$y[,1], lst$x[,1])
+    ds[,ncol(ds)+1] <- if (is.null(lst$series)) names(lst$y)[1] else
+        lst$series[,1]
+    ds[,ncol(ds)+1] <- if (is.null(lst$facet)) 0 else lst$facet[,1]
     names(ds) <- c('y', 'x', 'series', 'index')
     ds$x <- as.factor(ds$x)
     ds$series <- as.factor(ds$series)
@@ -477,17 +494,10 @@ series_radar <- function(lst, type, subtype, return=NULL, ...){
     data <- data.table::dcast(ds, index+x+series~., sum, value.var='y')
     names(data) <- c('index', 'x', 'series', 'y')
     fullData <- data.frame(expand.grid(
-        if (is.null(lst$series)) levels(ds$index) else
-            if (is.factor(lst$series[,1])) levels(lst$series[,1]) else
-                unique(lst$series[,1]),
+        if (is.null(lst$facet)) levels(ds$index) else
+            if (is.factor(lst$facet[,1])) levels(lst$facet[,1]) else
+                unique(lst$facet[,1]),
             levels(ds$x), levels(ds$series)))
-    if (ncol(lst$x) > 1) if (is.factor(lst$x[,2])){
-        fullData <- data.frame(expand.grid(
-            if (is.null(lst$series)) levels(ds$index) else
-                if (is.factor(lst$series[,1])) levels(lst$series[,1]) else
-                    unique(lst$series[,1]),
-            levels(ds$x), levels(lst$x[,2])))
-    }
 
     names(fullData) <- c('index', 'x', 'series')
     data <- merge(fullData, data, all.x=TRUE, sort=FALSE)
@@ -649,9 +659,9 @@ series_gauge <- function(lst, type, subtype, return=NULL, ...){
     if (is.null(lst$x) || is.null(lst$y))
         stop('gauge charts need x and y!')
     data <- data.frame(y=lst$y[,1], x=lst$x[,1])
-    data$series <- if (is.null(lst$series)) '' else lst$series[,1]
-    nSeries <- length(unique(data$series))
-    layouts <- autoMultiPolarChartLayout(nSeries)
+    data$facet <- if (is.null(lst$facet)) '' else lst$facet[,1]
+    nGauge <- length(unique(data$facet))
+    layouts <- autoMultiPolarChartLayout(nGauge)
     rows <- layouts$rows
     cols <- layouts$cols
     cols <- layouts$cols
@@ -665,9 +675,9 @@ series_gauge <- function(lst, type, subtype, return=NULL, ...){
             unlist(lapply(fullMeta, function(l) unlist(l$y))))
     }
 
-    out <- lapply(unique(data$series), function(series){
-        dt <- data[data$series==series,]
-        idx <- which(unique(data$series)==series)
+    out <- lapply(unique(data$facet), function(f){
+        dt <- data[data$facet==f,]
+        idx <- which(unique(data$facet)==f)
         iType <- type[idx,]
         o <- list(type=iType$type, center=paste0(centers[idx,], '%'),
                   radius=paste0(radius, '%'),
@@ -675,9 +685,9 @@ series_gauge <- function(lst, type, subtype, return=NULL, ...){
                       list(name=unname(as.character(row['x'])),
                            value=unname(as.numeric(row['y'])))
                   })))
-        if (series != '') o[['name']] <- unname(series)
+        if (f != '') o[['name']] <- unname(f)
         if ('fullMeta' %in% names(list(...))){
-            o[['max']] <- max(as.numeric(meta[meta[,1]==series, 2]), na.rm=TRUE)
+            o[['max']] <- max(as.numeric(meta[meta[,1]==f, 2]), na.rm=TRUE)
         }else{
             o[['max']] <- max(dt$y[dt$x==dt$x[1]], na.rm=TRUE)
         }
@@ -692,16 +702,16 @@ series_gauge <- function(lst, type, subtype, return=NULL, ...){
 }
 
 series_map <- function(lst, type, subtype, return=NULL, ...){
-    # x[,1] x; x[,2] series; y[,1] value; y[,2] selected; series[,1] multi-maps
+    # x[,1] x; series[,1] series; y[,1] value; y[,2] selected; facet[,1] multi-maps
 
     # Example:
     # echartr(NULL, type="map_china")
     x <- if (is.null(lst$x)) NA else lst$x[,1]
-    series <- if (is.null(lst$x)) '' else if (ncol(lst$x) > 1) lst$x[,2] else ''
+    series <- if (is.null(lst$series)) '' else lst$series[,1]
     y <- if (is.null(lst$y)) NA else lst$y[,1]
     sel <- if (is.null(lst$y)) FALSE else
         if (ncol(lst$y) > 1) as.logical(lst$y[,2]) else FALSE
-    idx <- if (is.null(lst$series)) '' else lst$series[,1]
+    idx <- if (is.null(lst$facet)) '' else lst$facet[,1]
     data <- data.frame(y, x, series, sel, idx, stringsAsFactors=FALSE)
 
     # special case: geoJSON
@@ -711,7 +721,7 @@ series_map <- function(lst, type, subtype, return=NULL, ...){
     }
 
     # two modes: series - mono map mulit series; split - multi map mono series
-    mode <- if (is.null(lst$series)) 'series' else 'split'
+    mode <- if (is.null(lst$facet)) 'series' else 'split'
     lvlSeries <- if (mode=='series') as.character(unique(data$series)) else
         as.character(unique(data$idx))
     nSeries <- length(lvlSeries)
@@ -723,7 +733,7 @@ series_map <- function(lst, type, subtype, return=NULL, ...){
 
     #layouts
     if (mode=='split'){
-        if (is.null(lst$z)){
+        if (is.null(lst$t)){
             layouts <- autoMultiPolarChartLayout(nSeries, col.max=4)
         }else{
             layouts <- autoMultiPolarChartLayout(nSeries, bottom=15, col.max=4)
@@ -941,19 +951,19 @@ series_tree <- function(lst, type, subtype, return=NULL, ...){
     data <- data.frame(value=lst$y[,1], name=lst$x[,1],
                        parent=if (ncol(lst$x)<2) NA else lst$x[,2])
 
-    data$series <- if (is.null(lst$series)) '' else lst$series[,1]
-    nSeries <- length(unique(data$series))
-    if (nSeries > 4) warning('Too many series! The layout will be messy!')
+    data$facet <- if (is.null(lst$facet)) '' else lst$facet[,1]
+    nTree <- length(unique(data$facet))
+    if (nTree > 4) warning('Too many facets! The layout will be messy!')
 
-    out <- lapply(unique(data$series), function(series){
-        idx <- which(unique(data$series) == series)
-        dt <- data[data$series == series, c('name', 'value', 'parent')]
+    out <- lapply(unique(data$facet), function(f){
+        idx <- which(unique(data$facet) == f)
+        dt <- data[data$facet == f, c('name', 'value', 'parent')]
         iType <- type[idx,]
         iSubtype <- subtype[[idx]]
         orient <- ifelse(grepl('horizontal', iType$misc), 'horizontal', 'vertical')
         inv <- grepl('inv', iType$misc)
-        center <- list(paste0(5+90/nSeries*(idx-0.5), '%'), '50%')
-        size <- list(paste0((90-nSeries*5)/nSeries, '%'), '80%')
+        center <- list(paste0(5+90/nTree*(idx-0.5), '%'), '50%')
+        size <- list(paste0((90-nTree*5)/nTree, '%'), '80%')
         lineType <- ifelse('broken' %in% iSubtype, 'broken',
                            ifelse('dotted' %in% iSubtype, 'dotted',
                                   ifelse('solid' %in% iSubtype, 'solid',
@@ -964,17 +974,16 @@ series_tree <- function(lst, type, subtype, return=NULL, ...){
                   direction=ifelse(inv, 'inverse', ''),
                   data=parseTreeNodes(dt)
         )
-        if (series != '') o$name <- as.character(series) else
+        if (f != '') o$name <- as.character(f) else
             if (iType$type=='treemap') o$name <- as.character(names(lst$x))[1]
         if (iType$type == 'tree'){
             o$nodePadding <- 1
             o$rootLocation <- list(
                 x=ifelse(orient=='vertical',
-                         paste0(10+80/nSeries*(idx-0.5), '%'),
-                         ifelse(inv, paste0(10+80/nSeries*(idx), '%'),
-                                paste0(10+80/nSeries*(idx-1), '%'))),
-                y=ifelse(orient=='vertical', ifelse(inv, '90%', '10%'),
-                         '50%'))
+                         paste0(10+80/nTree * (idx-0.5), '%'),
+                         ifelse(inv, paste0(10+80/nTree * (idx), '%'),
+                                paste0(10+80/nTree * (idx-1), '%'))),
+                y=ifelse(orient=='vertical', ifelse(inv, '90%', '10%'), '50%'))
             o$itemStyle=list(normal=list(
                 label=list(show=FALSE, formatter="{b}"),
                 lineStyle=list(

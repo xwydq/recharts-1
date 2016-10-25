@@ -14,7 +14,7 @@ setSeries(chart, series = NULL, timeslots = NULL, ...)
 is not in the existing series list, it will be treated as new}
 
 \item{timeslots}{vector of timeslots, either name or index of timeline variable
-\code{z}. But you cannot use \code{z} as \code{timeslots} for short in \code{setSeries}.}
+\code{t}. But you cannot use \code{t} as \code{timeslots} for short in \code{setSeries}.}
 
 \item{...}{The params to pass to the echarts object for modification. \cr
 The generic params include:

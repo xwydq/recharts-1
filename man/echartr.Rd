@@ -6,12 +6,12 @@
 \title{Framework Function to Create An Echarts Object}
 \usage{
 echartr(data, x = NULL, y = NULL, series = NULL, weight = NULL,
-  z = NULL, lat = NULL, lng = NULL, type = "auto", subtype = NULL,
-  ...)
+  facet = NULL, t = NULL, lat = NULL, lng = NULL, type = "auto",
+  subtype = NULL, ...)
 
 echartR(data, x = NULL, y = NULL, series = NULL, weight = NULL,
-  z = NULL, lat = NULL, lng = NULL, type = "auto", subtype = NULL,
-  ...)
+  facet = NULL, t = NULL, lat = NULL, lng = NULL, type = "auto",
+  subtype = NULL, ...)
 }
 \arguments{
 \item{data}{data.frame.}
@@ -20,20 +20,16 @@ echartR(data, x = NULL, y = NULL, series = NULL, weight = NULL,
 
 \item{y}{dependent variable(s). Most charts calls for one, but some calls for more.}
 
-\item{series}{data series variables.
-\describe{
-  \item{single coordinate system}{In Cartesian Coordinate System (bar, scatter, k, ...) and
-  some other charts (venn), series represents data series. Different data series
-  are displayed in the same coordinate system}
-  \item{multiple coordinate system}{In polar coordinate system (pie, radar, ...) and
-  some other charts (map, tree, ...), series represents index of coordinate system.
-  Different coordinate system indices are displayed in paralell coordinate systems.}
-}}
+\item{series}{data series variables.}
 
 \item{weight}{In some charts (bar, bubble, line, ...), weight represents the size
 of the graph elements.}
 
-\item{z}{timeline variable. When \code{z} is defined, recharts builds a timeline
+\item{facet}{facet variable to divide the canvas. It takes effect in multiple
+coordinate system charts (e.g., polar coordinate system (pie, radar, ...) and
+some other charts (e.g., map, tree, ...)).}
+
+\item{t}{timeline variable. When \code{t} is defined, recharts builds a timeline
 widget to show the changes along with time.}
 
 \item{lat}{latitude variable (-180 ~ 180) for map/heatmap}

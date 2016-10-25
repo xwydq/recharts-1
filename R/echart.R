@@ -95,17 +95,12 @@ eChart = echart
 #' @param x independent variable(s). Some charts calls for one, some calls for two.
 #' @param y dependent variable(s). Most charts calls for one, but some calls for more.
 #' @param series data series variables.
-#' \describe{
-#'   \item{single coordinate system}{In Cartesian Coordinate System (bar, scatter, k, ...) and
-#'   some other charts (venn), series represents data series. Different data series
-#'   are displayed in the same coordinate system}
-#'   \item{multiple coordinate system}{In polar coordinate system (pie, radar, ...) and
-#'   some other charts (map, tree, ...), series represents index of coordinate system.
-#'   Different coordinate system indices are displayed in paralell coordinate systems.}
-#' }
 #' @param weight In some charts (bar, bubble, line, ...), weight represents the size
 #' of the graph elements.
-#' @param z timeline variable. When \code{z} is defined, recharts builds a timeline
+#' @param facet facet variable to divide the canvas. It takes effect in multiple
+#' coordinate system charts (e.g., polar coordinate system (pie, radar, ...) and
+#' some other charts (e.g., map, tree, ...)).
+#' @param t timeline variable. When \code{t} is defined, recharts builds a timeline
 #' widget to show the changes along with time.
 #' @param lat latitude variable (-180 ~ 180) for map/heatmap
 #' @param lng longitude variable (-90 ~ 90) for map/heatmap
@@ -156,15 +151,15 @@ eChart = echart
 #' @references
 #' Online Manual: \url{http://madlogos.github.io/recharts}
 echartr = function(
-    data, x = NULL, y = NULL, series = NULL, weight = NULL, z = NULL,
-    lat = NULL, lng = NULL, type = 'auto', subtype = NULL, ...
+    data, x = NULL, y = NULL, series = NULL, weight = NULL, facet = NULL,
+    t = NULL, lat = NULL, lng = NULL, type = 'auto', subtype = NULL, ...
 ) {
     options(encoding="native.enc")
     if (is.null(data)){
         data <- data.frame(x='', stringsAsFactors=FALSE)
         dataVars <- list('x')
         xvarRaw <- 'x'
-        hasZ <- FALSE
+        hasT <- FALSE
         xlab <- ylab <- ''
     }else{
         lapply(seq_along(names(data)), function(j){
@@ -176,7 +171,7 @@ echartr = function(
         #------------- get all arguments as a list-----------------
         vArgs <- as.list(match.call(expand.dots=TRUE))
         dataVars <- intersect(names(vArgs),
-                              c('x', 'y', 'z', 'series', 'weight', 'lat', 'lng'))
+                              c('x', 'y', 't', 'series', 'weight', 'facet', 'lat', 'lng'))
         vArgsRaw <- vArgs[dataVars]  # original arg names
         vArgs <- lapply(vArgsRaw, function(v) {
             symbols = all.names(v)
@@ -193,7 +188,7 @@ echartr = function(
                                sapply(vArgsRaw, deparse), ", data, eval=FALSE)")))
         eval(parse(text=paste0(names(vArgsRaw), " <- evalVarArg(",
                                sapply(vArgsRaw, deparse), ", data)")))
-        hasZ <- ! is.null(z)
+        hasT <- ! is.null(t)
         if (!is.null(series))
             for (i in seq_along(seriesvar))
                 if (!is.factor(data[,seriesvar[i]]))
@@ -224,26 +219,26 @@ echartr = function(
         #                      substitute(df, parent.frame()), ")")
         eval(parse(text=paste0("list(", paste(assignment, collapse=", "), ")")))
     }
-    if (hasZ){
-        uniZ <- unique(z[,1])
-        if (is.factor(uniZ)) uniZ <- as.character(uniZ)
-        zSize <- unique(table(data[,zvar]))
+    if (hasT){
+        uniT <- unique(t[,1])
+        if (is.factor(uniT)) uniT <- as.character(uniT)
+        tSize <- unique(table(data[,tvar]))
 
-        # timeslices not in equal size across z, suppl it
-        if (length(zSize) > 1 && is.character(x[,1])) {
-            expandData <- data.frame(expand.grid(unique(x[,1]), unique(z[,1]),
+        # timeslices not in equal size across t, suppl it
+        if (length(tSize) > 1 && is.character(x[,1])) {
+            expandData <- data.frame(expand.grid(unique(x[,1]), unique(t[,1]),
                                                  stringsAsFactors=FALSE))
-            names(expandData) <- c(xvar[1], zvar[1])
+            names(expandData) <- c(xvar[1], tvar[1])
             data <- merge(expandData, data, all.x=TRUE, sort=FALSE)
-            data <- data[order(data[,zvar[1]]),]
+            data <- data[order(data[,tvar[1]]),]
         }
 
-        dataByZ <- split(data, as.factor(data[,zvar[1]]))
+        dataByZ <- split(data, as.factor(data[,tvar[1]]))
         metaData <- lapply(dataByZ, .makeMetaDataList)
-        names(metaData) <- uniZ
-        if (! identical(unique(z[,1]), sort(unique(z[,1]))) &&
-            ! identical(unique(z[,1]), sort(unique(z[,1]), TRUE)))
-            warning("z is not in order, the chart may not show properly!")
+        names(metaData) <- uniT
+        if (! identical(unique(t[,1]), sort(unique(t[,1]))) &&
+            ! identical(unique(t[,1]), sort(unique(t[,1]), TRUE)))
+            warning("t is not in order, the chart may not show properly!")
     }else{
         metaData <- .makeMetaDataList(data)
     }
@@ -325,7 +320,7 @@ echartr = function(
 
     ## check types
     if (nlevels(as.factor(dfType$type)) > 1){
-        if (!all(grepl("^(line|bar|scatter|k)", dfType$type) ||
+        if (!all(grepl("^(line|bar|hist|scatter|k)", dfType$type) ||
                  grepl("^(funnel|pie)", dfType$type) ||
                  grepl("^(force|chord)", dfType$type) ||
                  grepl("^(tree|treemap)", dfType$type)))
@@ -337,12 +332,12 @@ echartr = function(
     #                   dfType[, "xyflip"]))
 
     # ---------------------------params list----------------------
-    .makeSeriesList <- function(z){  # each timeline create a options list
+    .makeSeriesList <- function(t){  # each timeline create a options list
         #browser()
         series_fun = getFromNamespace(paste0('series_', dfType$type[1]),
                                     'recharts')
 
-        if (is.null(z)){  # no timeline
+        if (is.null(t)){  # no timeline
             time_metaData = lapply(metaData, function(df){
                 data.frame(lapply(df, function(col) {
                     if (inherits(col, c("Date", "POSIXlt", "POSIXlt")))
@@ -362,18 +357,18 @@ echartr = function(
                 })
             })
             out <- structure(list(
-                series = series_fun(time_metaData[[z]], type=dfType,
+                series = series_fun(time_metaData[[t]], type=dfType,
                                     subtype=lstSubtype, fullMeta=metaData)
-            ), meta = metaData[[z]])
+            ), meta = metaData[[t]])
         }
 
         return(out)
     }
 
-    if (hasZ){  ## has timeline
+    if (hasT){  ## has timeline
         params = list(
-            timeline=structure(list(), sliceby=zvar),
-            options=lapply(1:length(uniZ), .makeSeriesList)
+            timeline=structure(list(), sliceby=tvar),
+            options=lapply(1:length(uniT), .makeSeriesList)
         )
         if (!is.null(series))
             params$options[[1]]$legend <- list(
@@ -393,8 +388,8 @@ echartr = function(
         dependencies = lapply(c('base', unique(dfType$type)), getDependency)
     )
 
-    if (hasZ)
-        chart <- chart %>% setTimeline(show=TRUE, data=uniZ)
+    if (hasT)
+        chart <- chart %>% setTimeline(show=TRUE, data=uniT)
     if (!is.null(geoJSON)) chart$geoJSON <- geoJSON
 
     if (any(dfType$type %in% c('map'))){
@@ -402,7 +397,7 @@ echartr = function(
     }else if (any(dfType$type %in% c('heatmap'))){
         chart <- chart %>% setXAxis(show=FALSE) %>% setYAxis(show=FALSE) %>%
             setGrid(borderWidth=0)
-    }else if (any(dfType$type %in% c('line', 'bar', 'scatter', 'k', 'eventRiver'))){
+    }else if (any(dfType$type %in% c('line', 'bar', 'hist', 'scatter', 'k', 'eventRiver'))){
         if (!any(dfType$type %in% c('eventRiver')))
             chart <- chart %>% setYAxis(name = ylab[[1]])
         chart <- chart %>% setXAxis(name = xlab[[1]]) %>%

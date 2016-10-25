@@ -54,7 +54,7 @@ g <- iris \%>\% echartR(x=Sepal.Width, y=Petal.Width, series=Species, type='scat
 g \%>\% setDataZoom(fill=rgba(c(col2rgb('gold'), 0.3)),
                   handle=rgba(c(col2rgb('gold'), 1)))
 
-g1 <- iris \%>\% echartR(x=Sepal.Width, y=Petal.Width, z=Species, type='scatter')
+g1 <- iris \%>\% echartR(x=Sepal.Width, y=Petal.Width, t=Species, type='scatter')
 g1 \%>\% setDataZoom(fill=rgba(c(col2rgb('lightgreen'), 0.2)),
                   handle=rgba(c(col2rgb('darkgreen'), 0.5)))
 }
