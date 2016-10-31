@@ -8,16 +8,14 @@ output:
 
 ---
 
-<div class="alert alert-warning">
+Note:</strong> This package was forked from [Yihui Xie](https://github.com/yihui/recharts) and is based on the last release of Baidu Echarts2 (v2.2.7). The documentation here always reflects the latest development version of **recharts** on [Github](https://github.com/madlogos/recharts). The package [recharts2](http://github.com/madlogos/recharts2) that is based on Echarts3 is still under development.
 
-<strong>Note:</strong> This package is still under active development. It is based on the last release of Baidu Echarts2 (v2.2.7). The documentation here always reflects the latest development version of **recharts** on [Github](https://github.com/madlogos/recharts). To install the package:
+To install the package:
 
 ```r
 if (!require(devtools)) library(devtools)
 install_github("madlogos/recharts")
 ```
-
-</div>
 
 # Knowledge Map of the Guidance
 
@@ -79,7 +77,7 @@ The R package **recharts** provides an interface to the JavaScript library [ECha
 
 ```{r}
 library(recharts)
-echartr(iris, ~Sepal.Length, ~Sepal.Width, series = ~Species)
+echartr(iris, Sepal.Length, Sepal.Width, series = Species)
 ```
 
 The **recharts** package was built on top of [**htmlwidgets**](http://htmlwidgets.org), which can save us a lot of time on managing JavaScript dependencies and dealing with different types of output documents such as R Markdown and Shiny. You just create a chart, and we will take care of the rest of things when the chart is renderd in R Markdown, Shiny, or the R console / RStudio.
@@ -129,14 +127,12 @@ str(args(echartr))
 |  y        | dependent variable(s). One or more columns of `data`. Always numeric. |
 +-----------+------------------------------------------------------------------+
 |  series   | series variable. A column of `data` which is treated as factors.   |
-|           |
-|           | - In Cartesian coordinate system charts, `series` is data series (linked with legends).   |
-|           | - In polar coordinate system charts, `series` is linked with polar systems. |
-|           | - In other chart types, mono-coordinate system charts refer to Cartesian coordinat system examples, while multi-coordinates system charts refer to polar system examples. |
 +-----------+------------------------------------------------------------------+
 |  weight   | weight variable used in bubble, bar/column, line/area chart, linking with the size of graph elements. |
 +-----------+------------------------------------------------------------------+
-|  z        | time variable. If `z` is assigned, a timeline widget will display. |
+|  facet    | facet variable to devide the canvas into facets. Only applicable for multi-coordinate system charts (e.g., pie charts). |
++-----------+------------------------------------------------------------------+
+|  t        | time variable. If `t` is assigned, a timeline widget will display. |
 +-----------+------------------------------------------------------------------+
 |  lat      | latitude variable for map/heatmap. |
 +-----------+------------------------------------------------------------------+
@@ -184,8 +180,6 @@ Data must be a data.frame. The data series and timeline will display in the orig
 
 When it comes to timeline (`z`), you must be very cautious. All the combination sets of `x`, `y`, `series`, `weight` should be exactly equal across all the levels of `z`. Otherwise you will find confusious overlap of graphs across timeline.
 
-You should pay special attention to `series`, as it behaves differently in mono-coordinate-system charts (those under Cartesian coordinate system) and multi-coordinate-system charts (those under polar coordinate system). In the former scenario, `series` represents data series. But in the latter scenario, `series` represents index of coordinate systems while `x[,2]` represents data series. That's because `type` and `subtype` are mapped to the levels of `series`, and in multi-coordinate-system charts, users tend to map different types/subtypes to differnt charts instead of different data series. 
-
 #### Type And Subtype
 `recharts` supports mixed chart types in some cases, e.g., bar and line.
 
@@ -219,20 +213,22 @@ The above command made an Echarts object `g` containing two series: 'Automatic' 
 
 ```
 - x
-    - series
-        - list 1
-            - name: 'Automatic'
-            - data: ...
-            - type: 'scatter'
-        - list 2
-            - name: 'Manual'
-            - data: ...
-            - type: 'scatter'
-    - legend
-    - xAxis
-    - yAxis
-    - tooltip
-    ...
+  +-- series
+  |   +--- list 1
+  |   |    +---- name: 'Automatic'
+  |   |    +---- data: ...
+  |   |    +---- type: 'scatter'
+  |   +--- list 2
+  |   |    +---- name: 'Manual'
+  |   |    +---- data: ...
+  |   |    +---- type: 'scatter'
+  |   +--- ...
+  +-- legend
+  +-- xAxis
+  +-- yAxis
+  +-- grid  
+  +-- tooltip
+  +-- ...
 ```
 
 If you want to customize the definition of the series directly, you can call the low-level function `setSeries`.
@@ -421,4 +417,4 @@ enquote(g)
 
 # Finale
 
-Normally we do not want R users to specify a long list of options like that. As R users, you are more familiar with (and often work with) data structures like data frames, matrices, tables, and so on. Ideally we hope you can just pass a familiar data object, and we configure ECharts automatically for you whenever possible. We are still _far away_ from our goal at this moment, but we will be happy to know your feedback, and you are welcome to contribute code through [Github pull requests](https://github.com/madlogos/recharts).
+Normally we do not want R users to specify a long list of options like that. As R users, you are more familiar with (and often work with) data structures like data frames, matrices, tables, and so on. Ideally we hope you can just pass a familiar data object, and we configure ECharts automatically for you whenever possible. We will be happy to know your feedback, and you are welcome to contribute code through [Github pull requests](https://github.com/madlogos/recharts).

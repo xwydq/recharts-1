@@ -57,7 +57,7 @@ The keys are:
 # Function Call
 
 ```r
-echartr(data, x, <y>, <series>, <z>, <type>, <subtype>)
+echartr(data, x, <y>, <series>, <t>, <type>, <subtype>)
 ```
 
 +--------+--------------------------------------------------------------------+
@@ -71,7 +71,7 @@ echartr(data, x, <y>, <series>, <z>, <type>, <subtype>)
 +--------+--------------------------------------------------------------------+
 | series | series variable which will be coerced to factors. Only the first one is accepted if multiple variables are provided. |
 +--------+--------------------------------------------------------------------+
-|  z     | timeline variable which will be coerced to factors. Only the first one is accepted if multiple variables are provided. |
+|  t     | timeline variable which will be coerced to factors. Only the first one is accepted if multiple variables are provided. |
 +--------+--------------------------------------------------------------------+
 | type   | 'force'/'force_curve', 'force_line'. |
 +--------+--------------------------------------------------------------------+
@@ -163,7 +163,7 @@ echartr(yu, c(source, target), weight, relation, type='force_line') %>%
 Let's use `year` columns as timeline.
 
 ```{r}
-echartr(deutsch, c(club, player), weight, role, z=year,
+echartr(deutsch, c(club, player), weight, role, t=year,
         type='force', sub='arrow') %>% 
   setTitle('Club Orientation of Deutsch Soccer Team')
 ```

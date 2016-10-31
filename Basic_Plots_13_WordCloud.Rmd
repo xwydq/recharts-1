@@ -54,7 +54,7 @@ The keys are:
 # Function Call
 
 ```r
-echartr(data, x, y, <z>, <type>)
+echartr(data, x, y, <t>, <type>)
 ```
 
 +--------+--------------------------------------------------------------------+
@@ -68,7 +68,7 @@ echartr(data, x, y, <z>, <type>)
 +--------+--------------------------------------------------------------------+
 | series | data series variable which will be coerced to factors. Only the first one is accepted if multiple variables are provided. |
 +---------+--------------------------------------------------------------------+
-|  z     | timeline variable which will be coerced to factors. Only the first one is accepted if multiple variables are provided. |
+|  t     | timeline variable which will be coerced to factors. Only the first one is accepted if multiple variables are provided. |
 +--------+--------------------------------------------------------------------+
 | type   | 'wordCloud' |
 +--------+--------------------------------------------------------------------+
@@ -127,19 +127,19 @@ Let's compare realtime, today, and 7-days hotwords.
 First, get the other two web pages and rbind the datasets.
 
 ```{r}
-hotword$z <- 'Realtime'
+hotword$t <- 'Realtime'
 hotword1 <- getBaiduHot("http://top.baidu.com/buzz?b=341&fr=topbuzz_b1")
-hotword1$z <- 'Today'
+hotword1$t <- 'Today'
 hotword2 <- getBaiduHot("http://top.baidu.com/buzz?b=42&c=513&fr=topbuzz_b341")
-hotword2$z <- '7-days'
+hotword2$t <- '7-days'
 hotword <- do.call('rbind', list(hotword, hotword1, hotword2))
-hotword$z <- factor(hotword$z, levels=c('Realtime', 'Today', '7-days'))
+hotword$t <- factor(hotword$t, levels=c('Realtime', 'Today', '7-days'))
 ```
 
 Then come up with the chart.
 
 ```{r}
-g <- echartr(hotword, Keyword, Freq, z=z, type='wordCloud') %>% 
+g <- echartr(hotword, Keyword, Freq, t=t, type='wordCloud') %>% 
     setTitle('Baidu Hot Word Top30')
 g
 ```

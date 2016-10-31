@@ -21,10 +21,9 @@
 <script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <script src="libs/htmlwidgets-0.7/htmlwidgets.js"></script>
 <script src="libs/echarts-2.2.7/echarts-all.js"></script>
-<script src="libs/echarts-2.2.7/ext/params.js"></script>
-<script src="libs/echarts-2.2.7/ext/loadGeoJSON.js"></script>
-<script src="libs/echarts-binding-0.0.5/echarts.js"></script>
-<script src="libs/echarts-module-2.2.7/base.js"></script>
+<script src="libs/charts-ext-2.2.7/main.js"></script>
+<script src="libs/charts-ext-2.2.7/BMap.js"></script>
+<script src="libs/echarts-binding-0.1/echarts.js"></script>
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
@@ -117,6 +116,7 @@ button.code-folding-btn:focus {
 </style>
 
 
+
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
@@ -188,8 +188,8 @@ $(document).ready(function () {
 <table id='intro'>
 <tr>
 <td>
-<div id="echarts-105d583716c21d1e1760f796b89f71d83d29163a" style="width:400px;height:300px;" class="echarts html-widget"></div>
-<script type="application/json" data-for="echarts-105d583716c21d1e1760f796b89f71d83d29163a">{"x":{"series":[{"data":[{"name":"MH370残骸找到","value":30957,"itemStyle":{"normal":{"color":"#00fa9a"}}},{"name":"note7国行爆炸","value":46434,"itemStyle":{"normal":{"color":"#ff00ff"}}},{"name":"TFboys粉丝被打","value":14941,"itemStyle":{"normal":{"color":"#6495ed"}}},{"name":"保险合同期104年","value":2860,"itemStyle":{"normal":{"color":"#ff69b4"}}},{"name":"宝马女撞卡宴男","value":8107,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"残奥会运动员身亡","value":131407,"itemStyle":{"normal":{"color":"#ffd700"}}},{"name":"出租车遭持刀抢劫","value":10305,"itemStyle":{"normal":{"color":"#ba55d3"}}},{"name":"崔永元谈抑郁症","value":280670,"itemStyle":{"normal":{"color":"#6b8e23"}}},{"name":"大妈水源地洗澡","value":28132,"itemStyle":{"normal":{"color":"#ff69b4"}}},{"name":"皇家一号包间被拆","value":1696,"itemStyle":{"normal":{"color":"#40e0d0"}}},{"name":"老赖欠2亿住豪宅","value":8471,"itemStyle":{"normal":{"color":"#32cd32"}}},{"name":"两男争论月亮打架","value":39727,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"林志玲否认复合","value":7991,"itemStyle":{"normal":{"color":"#7b68ee"}}},{"name":"硫酸槽罐车侧翻","value":8780,"itemStyle":{"normal":{"color":"#ffa500"}}},{"name":"美国纽约发生爆炸","value":9987,"itemStyle":{"normal":{"color":"#6495ed"}}},{"name":"奶茶妹妹抱女出镜","value":2015,"itemStyle":{"normal":{"color":"#ff6347"}}},{"name":"权志龙恋情疑曝光","value":14849,"itemStyle":{"normal":{"color":"#3cb371"}}},{"name":"日本侵略档案公布","value":13733,"itemStyle":{"normal":{"color":"#7b68ee"}}},{"name":"厦门灾后重建","value":3066,"itemStyle":{"normal":{"color":"#40e0d0"}}},{"name":"陕西现冥界之花","value":10143,"itemStyle":{"normal":{"color":"#ffa500"}}},{"name":"深圳处罚冲绿灯","value":5784,"itemStyle":{"normal":{"color":"#30e0e0"}}},{"name":"私家车被喷红油漆","value":10108,"itemStyle":{"normal":{"color":"#00fa9a"}}},{"name":"宋丹丹现场收徒","value":16190,"itemStyle":{"normal":{"color":"#6495ed"}}},{"name":"王子访校官员倒地","value":2775,"itemStyle":{"normal":{"color":"#ffd700"}}},{"name":"王祖贤晒自拍美照","value":62053,"itemStyle":{"normal":{"color":"#ba55d3"}}},{"name":"小区边现圈地放羊","value":9994,"itemStyle":{"normal":{"color":"#ffa500"}}},{"name":"孕妇小区流浪数月","value":3809,"itemStyle":{"normal":{"color":"#00fa9a"}}},{"name":"章子怡带娃工作","value":96324,"itemStyle":{"normal":{"color":"#ffa500"}}},{"name":"中国留学生炒房","value":10310,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"租客洗澡中毒死亡","value":4607,"itemStyle":{"normal":{"color":"#40e0d0"}}}],"textRotation":[0,-45,-90,45,90],"type":"wordCloud","size":["80%","80%"]}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["崔永元谈抑郁症","残奥会运动员身亡","章子怡带娃工作","王祖贤晒自拍美照","note7国行爆炸","两男争论月亮打架","MH370残骸找到","大妈水源地洗澡","宋丹丹现场收徒","TFboys粉丝被打","权志龙恋情疑曝光","日本侵略档案公布","中国留学生炒房","出租车遭持刀抢劫","陕西现冥界之花","私家车被喷红油漆","小区边现圈地放羊","美国纽约发生爆炸","硫酸槽罐车侧翻","老赖欠2亿住豪宅","宝马女撞卡宴男","林志玲否认复合","深圳处罚冲绿灯","租客洗澡中毒死亡","孕妇小区流浪数月","厦门灾后重建","保险合同期104年","王子访校官员倒地","奶茶妹妹抱女出镜","皇家一号包间被拆"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"theme":"infographic"},"evals":[],"jsHooks":[]}</script>
+<div id="echarts-1d04ca76b45ce3e77e5f89d6b701802e9581d952" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-1d04ca76b45ce3e77e5f89d6b701802e9581d952">{"x":{"series":[{"data":[{"name":"阿娇晒照五官精致","value":2812,"itemStyle":{"normal":{"color":"#da70d6"}}},{"name":"扮无脸男吓哭同学","value":11477,"itemStyle":{"normal":{"color":"#ffd700"}}},{"name":"北京新推学生校服","value":2895,"itemStyle":{"normal":{"color":"#40e0d0"}}},{"name":"餐厅交浪费保证金","value":23681,"itemStyle":{"normal":{"color":"#ffd700"}}},{"name":"陈赫被曝已经停工","value":13117,"itemStyle":{"normal":{"color":"#ff00ff"}}},{"name":"大亨涉骗贷312亿","value":2266,"itemStyle":{"normal":{"color":"#3cb371"}}},{"name":"反腐追逃2210人","value":6128,"itemStyle":{"normal":{"color":"#ff69b4"}}},{"name":"房天下遭起诉","value":17783,"itemStyle":{"normal":{"color":"#00fa9a"}}},{"name":"巨野法院力挺马蓉","value":64687,"itemStyle":{"normal":{"color":"#ffd700"}}},{"name":"老公砸家具妻砸车","value":2699,"itemStyle":{"normal":{"color":"#6b8e23"}}},{"name":"梁博曝好声音剧本","value":63833,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"两女和狗围攻老人","value":4642,"itemStyle":{"normal":{"color":"#ff6347"}}},{"name":"两岁幼童头卡护栏","value":28353,"itemStyle":{"normal":{"color":"#6b8e23"}}},{"name":"每万人中6人染艾","value":2827,"itemStyle":{"normal":{"color":"#b8860b"}}},{"name":"男子和大熊猫扭打","value":6701,"itemStyle":{"normal":{"color":"#1e90ff"}}},{"name":"男子诈骗老人百万","value":24433,"itemStyle":{"normal":{"color":"#ff69b4"}}},{"name":"农民挖巨无霸红薯","value":132934,"itemStyle":{"normal":{"color":"#ffa500"}}},{"name":"女大学生裸身坠亡","value":49238,"itemStyle":{"normal":{"color":"#cd5c5c"}}},{"name":"女子被诬陷为小偷","value":68761,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"女子散步遭流弹击","value":12321,"itemStyle":{"normal":{"color":"#6495ed"}}},{"name":"蛇精男纯天然旧照","value":12762,"itemStyle":{"normal":{"color":"#00fa9a"}}},{"name":"市长给群众留号码","value":10945,"itemStyle":{"normal":{"color":"#40e0d0"}}},{"name":"双胞胎共用驾照","value":115874,"itemStyle":{"normal":{"color":"#7b68ee"}}},{"name":"孙杨真人秀被忽悠","value":4862,"itemStyle":{"normal":{"color":"#30e0e0"}}},{"name":"佟大为直播秀厨艺","value":99230,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"新郎红布遮挡游街","value":2523,"itemStyle":{"normal":{"color":"#6495ed"}}},{"name":"徐璐素颜现身机场","value":186623,"itemStyle":{"normal":{"color":"#40e0d0"}}},{"name":"许晴晒剧组片场照","value":80143,"itemStyle":{"normal":{"color":"#da70d6"}}},{"name":"中游客捕海胆生吃","value":2198,"itemStyle":{"normal":{"color":"#b8860b"}}},{"name":"重庆煤矿瓦斯爆炸","value":39187,"itemStyle":{"normal":{"color":"#ffd700"}}}],"textRotation":[0,-45,-90,45,90],"type":"wordCloud","size":["80%","80%"]}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["徐璐素颜现身机场","农民挖巨无霸红薯","双胞胎共用驾照","佟大为直播秀厨艺","许晴晒剧组片场照","女子被诬陷为小偷","巨野法院力挺马蓉","梁博曝好声音剧本","女大学生裸身坠亡","重庆煤矿瓦斯爆炸","两岁幼童头卡护栏","男子诈骗老人百万","餐厅交浪费保证金","房天下遭起诉","陈赫被曝已经停工","蛇精男纯天然旧照","女子散步遭流弹击","扮无脸男吓哭同学","市长给群众留号码","男子和大熊猫扭打","反腐追逃2210人","孙杨真人秀被忽悠","两女和狗围攻老人","北京新推学生校服","每万人中6人染艾","阿娇晒照五官精致","老公砸家具妻砸车","新郎红布遮挡游街","大亨涉骗贷312亿","中游客捕海胆生吃"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"theme":"infographic"},"evals":[],"jsHooks":[]}</script>
 </td>
 <td>
 </table>
@@ -202,7 +202,7 @@ $(document).ready(function () {
 </div>
 <div id="function-call" class="section level1">
 <h1><span class="header-section-number">2</span> Function Call</h1>
-<pre class="r"><code>echartr(data, x, y, &lt;z&gt;, &lt;type&gt;)</code></pre>
+<pre class="r"><code>echartr(data, x, y, &lt;t&gt;, &lt;type&gt;)</code></pre>
 <table>
 <colgroup>
 <col width="11%" />
@@ -232,7 +232,7 @@ $(document).ready(function () {
 <td align="left"><p>data series variable which will be coerced to factors. Only the first one is accepted if multiple variables are provided.</p></td>
 </tr>
 <tr class="odd">
-<td align="left"><p>z</p></td>
+<td align="left"><p>t</p></td>
 <td align="left"><p>timeline variable which will be coerced to factors. Only the first one is accepted if multiple variables are provided.</p></td>
 </tr>
 <tr class="even">
@@ -276,184 +276,184 @@ knitr::kable(hotword)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">8</td>
-<td align="left">崔永元谈抑郁症</td>
-<td align="right">280670</td>
+<td align="left">1</td>
+<td align="left">徐璐素颜现身机场</td>
+<td align="right">186623</td>
 <td align="left">rise</td>
 </tr>
 <tr class="even">
-<td align="left">1</td>
-<td align="left">残奥会运动员身亡</td>
-<td align="right">131407</td>
+<td align="left">2</td>
+<td align="left">农民挖巨无霸红薯</td>
+<td align="right">132934</td>
 <td align="left">rise</td>
 </tr>
 <tr class="odd">
-<td align="left">11</td>
-<td align="left">章子怡带娃工作</td>
-<td align="right">96324</td>
+<td align="left">7</td>
+<td align="left">双胞胎共用驾照</td>
+<td align="right">115874</td>
 <td align="left">rise</td>
 </tr>
 <tr class="even">
 <td align="left">4</td>
-<td align="left">王祖贤晒自拍美照</td>
-<td align="right">62053</td>
-<td align="left">fall</td>
-</tr>
-<tr class="odd">
-<td align="left">7</td>
-<td align="left">note7国行爆炸</td>
-<td align="right">46434</td>
-<td align="left">rise</td>
-</tr>
-<tr class="even">
-<td align="left">9</td>
-<td align="left">两男争论月亮打架</td>
-<td align="right">39727</td>
+<td align="left">佟大为直播秀厨艺</td>
+<td align="right">99230</td>
 <td align="left">rise</td>
 </tr>
 <tr class="odd">
-<td align="left">10</td>
-<td align="left">MH370残骸找到</td>
-<td align="right">30957</td>
-<td align="left">rise</td>
-</tr>
-<tr class="even">
-<td align="left">21</td>
-<td align="left">大妈水源地洗澡</td>
-<td align="right">28132</td>
-<td align="left">rise</td>
-</tr>
-<tr class="odd">
-<td align="left">5</td>
-<td align="left">宋丹丹现场收徒</td>
-<td align="right">16190</td>
+<td align="left">20</td>
+<td align="left">许晴晒剧组片场照</td>
+<td align="right">80143</td>
 <td align="left">fall</td>
 </tr>
 <tr class="even">
-<td align="left">12</td>
-<td align="left">TFboys粉丝被打</td>
-<td align="right">14941</td>
-<td align="left">rise</td>
-</tr>
-<tr class="odd">
-<td align="left">2</td>
-<td align="left">权志龙恋情疑曝光</td>
-<td align="right">14849</td>
-<td align="left">fall</td>
-</tr>
-<tr class="even">
-<td align="left">23</td>
-<td align="left">日本侵略档案公布</td>
-<td align="right">13733</td>
-<td align="left">fall</td>
-</tr>
-<tr class="odd">
-<td align="left">14</td>
-<td align="left">中国留学生炒房</td>
-<td align="right">10310</td>
-<td align="left">rise</td>
-</tr>
-<tr class="even">
-<td align="left">27</td>
-<td align="left">出租车遭持刀抢劫</td>
-<td align="right">10305</td>
-<td align="left">rise</td>
-</tr>
-<tr class="odd">
-<td align="left">6</td>
-<td align="left">陕西现冥界之花</td>
-<td align="right">10143</td>
-<td align="left">rise</td>
-</tr>
-<tr class="even">
-<td align="left">35</td>
-<td align="left">私家车被喷红油漆</td>
-<td align="right">10108</td>
-<td align="left">fall</td>
-</tr>
-<tr class="odd">
 <td align="left">3</td>
-<td align="left">小区边现圈地放羊</td>
-<td align="right">9994</td>
-<td align="left">rise</td>
-</tr>
-<tr class="even">
-<td align="left">16</td>
-<td align="left">美国纽约发生爆炸</td>
-<td align="right">9987</td>
-<td align="left">fall</td>
-</tr>
-<tr class="odd">
-<td align="left">33</td>
-<td align="left">硫酸槽罐车侧翻</td>
-<td align="right">8780</td>
-<td align="left">fall</td>
-</tr>
-<tr class="even">
-<td align="left">15</td>
-<td align="left">老赖欠2亿住豪宅</td>
-<td align="right">8471</td>
+<td align="left">女子被诬陷为小偷</td>
+<td align="right">68761</td>
 <td align="left">rise</td>
 </tr>
 <tr class="odd">
-<td align="left">19</td>
-<td align="left">宝马女撞卡宴男</td>
-<td align="right">8107</td>
-<td align="left">fall</td>
-</tr>
-<tr class="even">
-<td align="left">22</td>
-<td align="left">林志玲否认复合</td>
-<td align="right">7991</td>
-<td align="left">fall</td>
-</tr>
-<tr class="odd">
-<td align="left">36</td>
-<td align="left">深圳处罚冲绿灯</td>
-<td align="right">5784</td>
-<td align="left">fall</td>
-</tr>
-<tr class="even">
-<td align="left">13</td>
-<td align="left">租客洗澡中毒死亡</td>
-<td align="right">4607</td>
-<td align="left">fall</td>
-</tr>
-<tr class="odd">
-<td align="left">24</td>
-<td align="left">孕妇小区流浪数月</td>
-<td align="right">3809</td>
-<td align="left">fall</td>
-</tr>
-<tr class="even">
-<td align="left">37</td>
-<td align="left">厦门灾后重建</td>
-<td align="right">3066</td>
-<td align="left">fall</td>
-</tr>
-<tr class="odd">
-<td align="left">25</td>
-<td align="left">保险合同期104年</td>
-<td align="right">2860</td>
+<td align="left">8</td>
+<td align="left">巨野法院力挺马蓉</td>
+<td align="right">64687</td>
 <td align="left">fall</td>
 </tr>
 <tr class="even">
 <td align="left">18</td>
-<td align="left">王子访校官员倒地</td>
-<td align="right">2775</td>
+<td align="left">梁博曝好声音剧本</td>
+<td align="right">63833</td>
 <td align="left">fall</td>
 </tr>
 <tr class="odd">
-<td align="left">17</td>
-<td align="left">奶茶妹妹抱女出镜</td>
-<td align="right">2015</td>
+<td align="left">21</td>
+<td align="left">女大学生裸身坠亡</td>
+<td align="right">49238</td>
+<td align="left">fall</td>
+</tr>
+<tr class="even">
+<td align="left">5</td>
+<td align="left">重庆煤矿瓦斯爆炸</td>
+<td align="right">39187</td>
+<td align="left">rise</td>
+</tr>
+<tr class="odd">
+<td align="left">6</td>
+<td align="left">两岁幼童头卡护栏</td>
+<td align="right">28353</td>
 <td align="left">rise</td>
 </tr>
 <tr class="even">
-<td align="left">20</td>
-<td align="left">皇家一号包间被拆</td>
-<td align="right">1696</td>
+<td align="left">9</td>
+<td align="left">男子诈骗老人百万</td>
+<td align="right">24433</td>
 <td align="left">fall</td>
+</tr>
+<tr class="odd">
+<td align="left">10</td>
+<td align="left">餐厅交浪费保证金</td>
+<td align="right">23681</td>
+<td align="left">rise</td>
+</tr>
+<tr class="even">
+<td align="left">22</td>
+<td align="left">房天下遭起诉</td>
+<td align="right">17783</td>
+<td align="left">fall</td>
+</tr>
+<tr class="odd">
+<td align="left">19</td>
+<td align="left">陈赫被曝已经停工</td>
+<td align="right">13117</td>
+<td align="left">fall</td>
+</tr>
+<tr class="even">
+<td align="left">23</td>
+<td align="left">蛇精男纯天然旧照</td>
+<td align="right">12762</td>
+<td align="left">fall</td>
+</tr>
+<tr class="odd">
+<td align="left">11</td>
+<td align="left">女子散步遭流弹击</td>
+<td align="right">12321</td>
+<td align="left">rise</td>
+</tr>
+<tr class="even">
+<td align="left">12</td>
+<td align="left">扮无脸男吓哭同学</td>
+<td align="right">11477</td>
+<td align="left">rise</td>
+</tr>
+<tr class="odd">
+<td align="left">13</td>
+<td align="left">市长给群众留号码</td>
+<td align="right">10945</td>
+<td align="left">fall</td>
+</tr>
+<tr class="even">
+<td align="left">25</td>
+<td align="left">男子和大熊猫扭打</td>
+<td align="right">6701</td>
+<td align="left">fall</td>
+</tr>
+<tr class="odd">
+<td align="left">27</td>
+<td align="left">反腐追逃2210人</td>
+<td align="right">6128</td>
+<td align="left">fall</td>
+</tr>
+<tr class="even">
+<td align="left">28</td>
+<td align="left">孙杨真人秀被忽悠</td>
+<td align="right">4862</td>
+<td align="left">rise</td>
+</tr>
+<tr class="odd">
+<td align="left">14</td>
+<td align="left">两女和狗围攻老人</td>
+<td align="right">4642</td>
+<td align="left">rise</td>
+</tr>
+<tr class="even">
+<td align="left">29</td>
+<td align="left">北京新推学生校服</td>
+<td align="right">2895</td>
+<td align="left">fall</td>
+</tr>
+<tr class="odd">
+<td align="left">31</td>
+<td align="left">每万人中6人染艾</td>
+<td align="right">2827</td>
+<td align="left">fall</td>
+</tr>
+<tr class="even">
+<td align="left">26</td>
+<td align="left">阿娇晒照五官精致</td>
+<td align="right">2812</td>
+<td align="left">fall</td>
+</tr>
+<tr class="odd">
+<td align="left">33</td>
+<td align="left">老公砸家具妻砸车</td>
+<td align="right">2699</td>
+<td align="left">fall</td>
+</tr>
+<tr class="even">
+<td align="left">15</td>
+<td align="left">新郎红布遮挡游街</td>
+<td align="right">2523</td>
+<td align="left">fall</td>
+</tr>
+<tr class="odd">
+<td align="left">30</td>
+<td align="left">大亨涉骗贷312亿</td>
+<td align="right">2266</td>
+<td align="left">fall</td>
+</tr>
+<tr class="even">
+<td align="left">35</td>
+<td align="left">中游客捕海胆生吃</td>
+<td align="right">2198</td>
+<td align="left">rise</td>
 </tr>
 </tbody>
 </table>
@@ -463,34 +463,34 @@ knitr::kable(hotword)</code></pre>
 <p>Only provide <code>x</code> and <code>y</code>.</p>
 <pre class="r"><code>echartr(hotword, Keyword, Freq, type=&#39;wordCloud&#39;) %&gt;% 
     setTitle(&#39;Baidu Hot Word Top30 (realtime)&#39;, as.character(Sys.time()))</code></pre>
-<div id="echarts-e057f7dfee6b4673e3481c80d171f4d851c61103" style="width:672px;height:480px;" class="echarts html-widget"></div>
-<script type="application/json" data-for="echarts-e057f7dfee6b4673e3481c80d171f4d851c61103">{"x":{"series":[{"data":[{"name":"MH370残骸找到","value":30957,"itemStyle":{"normal":{"color":"#30e0e0"}}},{"name":"note7国行爆炸","value":46434,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"TFboys粉丝被打","value":14941,"itemStyle":{"normal":{"color":"#ff69b4"}}},{"name":"保险合同期104年","value":2860,"itemStyle":{"normal":{"color":"#7b68ee"}}},{"name":"宝马女撞卡宴男","value":8107,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"残奥会运动员身亡","value":131407,"itemStyle":{"normal":{"color":"#40e0d0"}}},{"name":"出租车遭持刀抢劫","value":10305,"itemStyle":{"normal":{"color":"#3cb371"}}},{"name":"崔永元谈抑郁症","value":280670,"itemStyle":{"normal":{"color":"#3cb371"}}},{"name":"大妈水源地洗澡","value":28132,"itemStyle":{"normal":{"color":"#ff6347"}}},{"name":"皇家一号包间被拆","value":1696,"itemStyle":{"normal":{"color":"#30e0e0"}}},{"name":"老赖欠2亿住豪宅","value":8471,"itemStyle":{"normal":{"color":"#6b8e23"}}},{"name":"两男争论月亮打架","value":39727,"itemStyle":{"normal":{"color":"#ff00ff"}}},{"name":"林志玲否认复合","value":7991,"itemStyle":{"normal":{"color":"#ff69b4"}}},{"name":"硫酸槽罐车侧翻","value":8780,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"美国纽约发生爆炸","value":9987,"itemStyle":{"normal":{"color":"#ff6347"}}},{"name":"奶茶妹妹抱女出镜","value":2015,"itemStyle":{"normal":{"color":"#ffd700"}}},{"name":"权志龙恋情疑曝光","value":14849,"itemStyle":{"normal":{"color":"#ff69b4"}}},{"name":"日本侵略档案公布","value":13733,"itemStyle":{"normal":{"color":"#40e0d0"}}},{"name":"厦门灾后重建","value":3066,"itemStyle":{"normal":{"color":"#ffa500"}}},{"name":"陕西现冥界之花","value":10143,"itemStyle":{"normal":{"color":"#cd5c5c"}}},{"name":"深圳处罚冲绿灯","value":5784,"itemStyle":{"normal":{"color":"#32cd32"}}},{"name":"私家车被喷红油漆","value":10108,"itemStyle":{"normal":{"color":"#ff6347"}}},{"name":"宋丹丹现场收徒","value":16190,"itemStyle":{"normal":{"color":"#40e0d0"}}},{"name":"王子访校官员倒地","value":2775,"itemStyle":{"normal":{"color":"#6b8e23"}}},{"name":"王祖贤晒自拍美照","value":62053,"itemStyle":{"normal":{"color":"#6b8e23"}}},{"name":"小区边现圈地放羊","value":9994,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"孕妇小区流浪数月","value":3809,"itemStyle":{"normal":{"color":"#1e90ff"}}},{"name":"章子怡带娃工作","value":96324,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"中国留学生炒房","value":10310,"itemStyle":{"normal":{"color":"#7b68ee"}}},{"name":"租客洗澡中毒死亡","value":4607,"itemStyle":{"normal":{"color":"#b8860b"}}}],"textRotation":[0,-45,-90,45,90],"type":"wordCloud","size":["80%","80%"]}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["崔永元谈抑郁症","残奥会运动员身亡","章子怡带娃工作","王祖贤晒自拍美照","note7国行爆炸","两男争论月亮打架","MH370残骸找到","大妈水源地洗澡","宋丹丹现场收徒","TFboys粉丝被打","权志龙恋情疑曝光","日本侵略档案公布","中国留学生炒房","出租车遭持刀抢劫","陕西现冥界之花","私家车被喷红油漆","小区边现圈地放羊","美国纽约发生爆炸","硫酸槽罐车侧翻","老赖欠2亿住豪宅","宝马女撞卡宴男","林志玲否认复合","深圳处罚冲绿灯","租客洗澡中毒死亡","孕妇小区流浪数月","厦门灾后重建","保险合同期104年","王子访校官员倒地","奶茶妹妹抱女出镜","皇家一号包间被拆"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"title":{"text":"Baidu Hot Word Top30 (realtime)","subtext":"2016-09-18 23:03:34","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+<div id="echarts-09d0f8f0d53bc18a7f029ca40bc9e24abcd25023" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-09d0f8f0d53bc18a7f029ca40bc9e24abcd25023">{"x":{"series":[{"data":[{"name":"阿娇晒照五官精致","value":2812,"itemStyle":{"normal":{"color":"#6495ed"}}},{"name":"扮无脸男吓哭同学","value":11477,"itemStyle":{"normal":{"color":"#6b8e23"}}},{"name":"北京新推学生校服","value":2895,"itemStyle":{"normal":{"color":"#ffd700"}}},{"name":"餐厅交浪费保证金","value":23681,"itemStyle":{"normal":{"color":"#cd5c5c"}}},{"name":"陈赫被曝已经停工","value":13117,"itemStyle":{"normal":{"color":"#30e0e0"}}},{"name":"大亨涉骗贷312亿","value":2266,"itemStyle":{"normal":{"color":"#ff69b4"}}},{"name":"反腐追逃2210人","value":6128,"itemStyle":{"normal":{"color":"#ff00ff"}}},{"name":"房天下遭起诉","value":17783,"itemStyle":{"normal":{"color":"#ffa500"}}},{"name":"巨野法院力挺马蓉","value":64687,"itemStyle":{"normal":{"color":"#3cb371"}}},{"name":"老公砸家具妻砸车","value":2699,"itemStyle":{"normal":{"color":"#ff00ff"}}},{"name":"梁博曝好声音剧本","value":63833,"itemStyle":{"normal":{"color":"#3cb371"}}},{"name":"两女和狗围攻老人","value":4642,"itemStyle":{"normal":{"color":"#00fa9a"}}},{"name":"两岁幼童头卡护栏","value":28353,"itemStyle":{"normal":{"color":"#7b68ee"}}},{"name":"每万人中6人染艾","value":2827,"itemStyle":{"normal":{"color":"#30e0e0"}}},{"name":"男子和大熊猫扭打","value":6701,"itemStyle":{"normal":{"color":"#7b68ee"}}},{"name":"男子诈骗老人百万","value":24433,"itemStyle":{"normal":{"color":"#32cd32"}}},{"name":"农民挖巨无霸红薯","value":132934,"itemStyle":{"normal":{"color":"#ba55d3"}}},{"name":"女大学生裸身坠亡","value":49238,"itemStyle":{"normal":{"color":"#6b8e23"}}},{"name":"女子被诬陷为小偷","value":68761,"itemStyle":{"normal":{"color":"#ff00ff"}}},{"name":"女子散步遭流弹击","value":12321,"itemStyle":{"normal":{"color":"#da70d6"}}},{"name":"蛇精男纯天然旧照","value":12762,"itemStyle":{"normal":{"color":"#1e90ff"}}},{"name":"市长给群众留号码","value":10945,"itemStyle":{"normal":{"color":"#3cb371"}}},{"name":"双胞胎共用驾照","value":115874,"itemStyle":{"normal":{"color":"#ff6347"}}},{"name":"孙杨真人秀被忽悠","value":4862,"itemStyle":{"normal":{"color":"#cd5c5c"}}},{"name":"佟大为直播秀厨艺","value":99230,"itemStyle":{"normal":{"color":"#6b8e23"}}},{"name":"新郎红布遮挡游街","value":2523,"itemStyle":{"normal":{"color":"#6b8e23"}}},{"name":"徐璐素颜现身机场","value":186623,"itemStyle":{"normal":{"color":"#da70d6"}}},{"name":"许晴晒剧组片场照","value":80143,"itemStyle":{"normal":{"color":"#1e90ff"}}},{"name":"中游客捕海胆生吃","value":2198,"itemStyle":{"normal":{"color":"#6b8e23"}}},{"name":"重庆煤矿瓦斯爆炸","value":39187,"itemStyle":{"normal":{"color":"#6495ed"}}}],"textRotation":[0,-45,-90,45,90],"type":"wordCloud","size":["80%","80%"]}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["徐璐素颜现身机场","农民挖巨无霸红薯","双胞胎共用驾照","佟大为直播秀厨艺","许晴晒剧组片场照","女子被诬陷为小偷","巨野法院力挺马蓉","梁博曝好声音剧本","女大学生裸身坠亡","重庆煤矿瓦斯爆炸","两岁幼童头卡护栏","男子诈骗老人百万","餐厅交浪费保证金","房天下遭起诉","陈赫被曝已经停工","蛇精男纯天然旧照","女子散步遭流弹击","扮无脸男吓哭同学","市长给群众留号码","男子和大熊猫扭打","反腐追逃2210人","孙杨真人秀被忽悠","两女和狗围攻老人","北京新推学生校服","每万人中6人染艾","阿娇晒照五官精致","老公砸家具妻砸车","新郎红布遮挡游街","大亨涉骗贷312亿","中游客捕海胆生吃"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"title":{"text":"Baidu Hot Word Top30 (realtime)","subtext":"2016-10-31 22:46:58","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="color-by-series" class="section level2">
 <h2><span class="header-section-number">3.3</span> Color by Series</h2>
 <p>We want to group the hot words. Let’s assign a <code>series</code> variable ‘Trend’. The ‘rise’ series and ‘fall’ series are colored differently.</p>
 <pre class="r"><code>echartr(hotword, Keyword, Freq, Trend, type=&#39;wordCloud&#39;) %&gt;% 
     setTitle(&#39;Baidu Hot Word Top30 (realtime)&#39;, as.character(Sys.time()))</code></pre>
-<div id="echarts-97ca8051fa3e3e6718dc85edcd374c5e9e9de395" style="width:672px;height:480px;" class="echarts html-widget"></div>
-<script type="application/json" data-for="echarts-97ca8051fa3e3e6718dc85edcd374c5e9e9de395">{"x":{"series":[{"data":[{"name":"MH370残骸找到","value":30957,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"note7国行爆炸","value":46434,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"TFboys粉丝被打","value":14941,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"保险合同期104年","value":2860,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"宝马女撞卡宴男","value":8107,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"残奥会运动员身亡","value":131407,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"出租车遭持刀抢劫","value":10305,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"崔永元谈抑郁症","value":280670,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"大妈水源地洗澡","value":28132,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"皇家一号包间被拆","value":1696,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"老赖欠2亿住豪宅","value":8471,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"两男争论月亮打架","value":39727,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"林志玲否认复合","value":7991,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"硫酸槽罐车侧翻","value":8780,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"美国纽约发生爆炸","value":9987,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"奶茶妹妹抱女出镜","value":2015,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"权志龙恋情疑曝光","value":14849,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"日本侵略档案公布","value":13733,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"厦门灾后重建","value":3066,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"陕西现冥界之花","value":10143,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"深圳处罚冲绿灯","value":5784,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"私家车被喷红油漆","value":10108,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"宋丹丹现场收徒","value":16190,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"王子访校官员倒地","value":2775,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"王祖贤晒自拍美照","value":62053,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"小区边现圈地放羊","value":9994,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"孕妇小区流浪数月","value":3809,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"章子怡带娃工作","value":96324,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"中国留学生炒房","value":10310,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"租客洗澡中毒死亡","value":4607,"itemStyle":{"normal":{"color":"#ff7f50"}}}],"textRotation":[0,-45,45,90],"type":"wordCloud","size":["80%","80%"]}],"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["崔永元谈抑郁症","残奥会运动员身亡","章子怡带娃工作","王祖贤晒自拍美照","note7国行爆炸","两男争论月亮打架","MH370残骸找到","大妈水源地洗澡","宋丹丹现场收徒","TFboys粉丝被打","权志龙恋情疑曝光","日本侵略档案公布","中国留学生炒房","出租车遭持刀抢劫","陕西现冥界之花","私家车被喷红油漆","小区边现圈地放羊","美国纽约发生爆炸","硫酸槽罐车侧翻","老赖欠2亿住豪宅","宝马女撞卡宴男","林志玲否认复合","深圳处罚冲绿灯","租客洗澡中毒死亡","孕妇小区流浪数月","厦门灾后重建","保险合同期104年","王子访校官员倒地","奶茶妹妹抱女出镜","皇家一号包间被拆"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"title":{"text":"Baidu Hot Word Top30 (realtime)","subtext":"2016-09-18 23:03:35","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+<div id="echarts-af1b087e6761648db1b741a30f2ee4449e545fb8" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-af1b087e6761648db1b741a30f2ee4449e545fb8">{"x":{"series":[{"data":[{"name":"阿娇晒照五官精致","value":2812,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"扮无脸男吓哭同学","value":11477,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"北京新推学生校服","value":2895,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"餐厅交浪费保证金","value":23681,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"陈赫被曝已经停工","value":13117,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"大亨涉骗贷312亿","value":2266,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"反腐追逃2210人","value":6128,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"房天下遭起诉","value":17783,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"巨野法院力挺马蓉","value":64687,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"老公砸家具妻砸车","value":2699,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"梁博曝好声音剧本","value":63833,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"两女和狗围攻老人","value":4642,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"两岁幼童头卡护栏","value":28353,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"每万人中6人染艾","value":2827,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"男子和大熊猫扭打","value":6701,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"男子诈骗老人百万","value":24433,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"农民挖巨无霸红薯","value":132934,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"女大学生裸身坠亡","value":49238,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"女子被诬陷为小偷","value":68761,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"女子散步遭流弹击","value":12321,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"蛇精男纯天然旧照","value":12762,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"市长给群众留号码","value":10945,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"双胞胎共用驾照","value":115874,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"孙杨真人秀被忽悠","value":4862,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"佟大为直播秀厨艺","value":99230,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"新郎红布遮挡游街","value":2523,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"徐璐素颜现身机场","value":186623,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"许晴晒剧组片场照","value":80143,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"中游客捕海胆生吃","value":2198,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"重庆煤矿瓦斯爆炸","value":39187,"itemStyle":{"normal":{"color":"#87cefa"}}}],"textRotation":[0,-45,45,90],"type":"wordCloud","size":["80%","80%"]}],"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["徐璐素颜现身机场","农民挖巨无霸红薯","双胞胎共用驾照","佟大为直播秀厨艺","许晴晒剧组片场照","女子被诬陷为小偷","巨野法院力挺马蓉","梁博曝好声音剧本","女大学生裸身坠亡","重庆煤矿瓦斯爆炸","两岁幼童头卡护栏","男子诈骗老人百万","餐厅交浪费保证金","房天下遭起诉","陈赫被曝已经停工","蛇精男纯天然旧照","女子散步遭流弹击","扮无脸男吓哭同学","市长给群众留号码","男子和大熊猫扭打","反腐追逃2210人","孙杨真人秀被忽悠","两女和狗围攻老人","北京新推学生校服","每万人中6人染艾","阿娇晒照五官精致","老公砸家具妻砸车","新郎红布遮挡游街","大亨涉骗贷312亿","中游客捕海胆生吃"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"title":{"text":"Baidu Hot Word Top30 (realtime)","subtext":"2016-10-31 22:46:58","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="with-timeline" class="section level2">
 <h2><span class="header-section-number">3.4</span> With Timeline</h2>
 <p>Let’s compare realtime, today, and 7-days hotwords.</p>
 <p>First, get the other two web pages and rbind the datasets.</p>
-<pre class="r"><code>hotword$z &lt;- &#39;Realtime&#39;
+<pre class="r"><code>hotword$t &lt;- &#39;Realtime&#39;
 hotword1 &lt;- getBaiduHot(&quot;http://top.baidu.com/buzz?b=341&amp;fr=topbuzz_b1&quot;)
-hotword1$z &lt;- &#39;Today&#39;
+hotword1$t &lt;- &#39;Today&#39;
 hotword2 &lt;- getBaiduHot(&quot;http://top.baidu.com/buzz?b=42&amp;c=513&amp;fr=topbuzz_b341&quot;)
-hotword2$z &lt;- &#39;7-days&#39;
+hotword2$t &lt;- &#39;7-days&#39;
 hotword &lt;- do.call(&#39;rbind&#39;, list(hotword, hotword1, hotword2))
-hotword$z &lt;- factor(hotword$z, levels=c(&#39;Realtime&#39;, &#39;Today&#39;, &#39;7-days&#39;))</code></pre>
+hotword$t &lt;- factor(hotword$t, levels=c(&#39;Realtime&#39;, &#39;Today&#39;, &#39;7-days&#39;))</code></pre>
 <p>Then come up with the chart.</p>
-<pre class="r"><code>g &lt;- echartr(hotword, Keyword, Freq, z=z, type=&#39;wordCloud&#39;) %&gt;% 
+<pre class="r"><code>g &lt;- echartr(hotword, Keyword, Freq, t=t, type=&#39;wordCloud&#39;) %&gt;% 
     setTitle(&#39;Baidu Hot Word Top30&#39;)
 g</code></pre>
-<div id="echarts-7d38b65fca7819c871c8fc592c02ce950bdbbc6c" style="width:672px;height:480px;" class="echarts html-widget"></div>
-<script type="application/json" data-for="echarts-7d38b65fca7819c871c8fc592c02ce950bdbbc6c">{"x":{"timeline":{"type":"number","data":["Realtime","Today","7-days"],"x":80,"x2":80,"y2":50},"options":[{"series":[{"data":[{"name":"MH370残骸找到","value":30957,"itemStyle":{"normal":{"color":"#30e0e0"}}},{"name":"note7国行爆炸","value":46434,"itemStyle":{"normal":{"color":"#da70d6"}}},{"name":"TFboys粉丝被打","value":14941,"itemStyle":{"normal":{"color":"#1e90ff"}}},{"name":"保险合同期104年","value":2860,"itemStyle":{"normal":{"color":"#7b68ee"}}},{"name":"宝马女撞卡宴男","value":8107,"itemStyle":{"normal":{"color":"#30e0e0"}}},{"name":"残奥会运动员身亡","value":131407,"itemStyle":{"normal":{"color":"#da70d6"}}},{"name":"出租车遭持刀抢劫","value":10305,"itemStyle":{"normal":{"color":"#32cd32"}}},{"name":"崔永元谈抑郁症","value":280670,"itemStyle":{"normal":{"color":"#ff6347"}}},{"name":"大妈水源地洗澡","value":28132,"itemStyle":{"normal":{"color":"#6b8e23"}}},{"name":"皇家一号包间被拆","value":1696,"itemStyle":{"normal":{"color":"#ff00ff"}}},{"name":"老赖欠2亿住豪宅","value":8471,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"两男争论月亮打架","value":39727,"itemStyle":{"normal":{"color":"#32cd32"}}},{"name":"林志玲否认复合","value":7991,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"硫酸槽罐车侧翻","value":8780,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"美国纽约发生爆炸","value":9987,"itemStyle":{"normal":{"color":"#ff00ff"}}},{"name":"奶茶妹妹抱女出镜","value":2015,"itemStyle":{"normal":{"color":"#ff00ff"}}},{"name":"权志龙恋情疑曝光","value":14849,"itemStyle":{"normal":{"color":"#40e0d0"}}},{"name":"日本侵略档案公布","value":13733,"itemStyle":{"normal":{"color":"#00fa9a"}}},{"name":"厦门灾后重建","value":3066,"itemStyle":{"normal":{"color":"#1e90ff"}}},{"name":"陕西现冥界之花","value":10143,"itemStyle":{"normal":{"color":"#ff00ff"}}},{"name":"深圳处罚冲绿灯","value":5784,"itemStyle":{"normal":{"color":"#da70d6"}}},{"name":"私家车被喷红油漆","value":10108,"itemStyle":{"normal":{"color":"#ff00ff"}}},{"name":"宋丹丹现场收徒","value":16190,"itemStyle":{"normal":{"color":"#ffd700"}}},{"name":"王子访校官员倒地","value":2775,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"王祖贤晒自拍美照","value":62053,"itemStyle":{"normal":{"color":"#da70d6"}}},{"name":"小区边现圈地放羊","value":9994,"itemStyle":{"normal":{"color":"#7b68ee"}}},{"name":"孕妇小区流浪数月","value":3809,"itemStyle":{"normal":{"color":"#ffa500"}}},{"name":"章子怡带娃工作","value":96324,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"中国留学生炒房","value":10310,"itemStyle":{"normal":{"color":"#3cb371"}}},{"name":"租客洗澡中毒死亡","value":4607,"itemStyle":{"normal":{"color":"#ff7f50"}}}],"textRotation":[0,-45,-90,45,90],"type":"wordCloud","size":["80%","80%"]}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["崔永元谈抑郁症","残奥会运动员身亡","章子怡带娃工作","王祖贤晒自拍美照","note7国行爆炸","两男争论月亮打架","MH370残骸找到","大妈水源地洗澡","宋丹丹现场收徒","TFboys粉丝被打","权志龙恋情疑曝光","日本侵略档案公布","中国留学生炒房","出租车遭持刀抢劫","陕西现冥界之花","私家车被喷红油漆","小区边现圈地放羊","美国纽约发生爆炸","硫酸槽罐车侧翻","老赖欠2亿住豪宅","宝马女撞卡宴男","林志玲否认复合","深圳处罚冲绿灯","租客洗澡中毒死亡","孕妇小区流浪数月","厦门灾后重建","保险合同期104年","王子访校官员倒地","奶茶妹妹抱女出镜","皇家一号包间被拆","乔任梁意外死亡","嫩模瘦成皮包骨","朝鲜向9国求援","文章光头抱女儿","曝郑爽炸鸡店被砸","中秋节","曝baby怀孕3月","成都现呆萌小沙弥","陈楚生与儿子合唱","夫妻因王宝强打架","用胶带绑人致死","奶茶妹妹抱娃现身","民警实名举报自杀","王明方病逝","一周上万电话轰炸","蒙嘉慧被疑有孕","伴娘醉亡获赔5万","夫妇偶遇夭折儿子","陈志成现身道歉","台风路径实时发布系统","男婴终身免费乘机","谢霆锋晒全家福","司机倒车冲上屋顶","高晓松遇机智空姐","刘翔求婚初恋成功","长沙2人枪击身亡","公寓叫价1.1亿","南艺新生颜值爆表","邓超谈王宝强","六小龄童再被死亡","男生搬行李肺炸了","报纸整版空白走红","杨幂进部队当新兵","郭德纲回应曹云金","买婚房却买到凶宅","滨崎步宣布离婚","张亮儿子长腿吸睛","刘子歌将嫁恩师","麻雀收视火爆","非诚导演飙女嘉宾","水原希子走秀遭骂","女子商场内遭扒衣","5万特教老师开课","吴悠昆明被打"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"title":{"text":"Baidu Hot Word Top30 (z: Realtime)","x":"center","y":"bottom","orient":"horizontal"}},{"series":[{"data":[{"name":"伴娘醉亡获赔5万","value":47463,"itemStyle":{"normal":{"color":"#da70d6"}}},{"name":"宝马女撞卡宴男","value":91980,"itemStyle":{"normal":{"color":"#ffd700"}}},{"name":"长沙2人枪击身亡","value":36229,"itemStyle":{"normal":{"color":"#3cb371"}}},{"name":"陈楚生与儿子合唱","value":85290,"itemStyle":{"normal":{"color":"#32cd32"}}},{"name":"陈志成现身道歉","value":44792,"itemStyle":{"normal":{"color":"#ff6347"}}},{"name":"成都现呆萌小沙弥","value":93165,"itemStyle":{"normal":{"color":"#ff69b4"}}},{"name":"夫妇偶遇夭折儿子","value":44923,"itemStyle":{"normal":{"color":"#40e0d0"}}},{"name":"夫妻因王宝强打架","value":82435,"itemStyle":{"normal":{"color":"#40e0d0"}}},{"name":"高晓松遇机智空姐","value":40646,"itemStyle":{"normal":{"color":"#ffd700"}}},{"name":"公寓叫价1.1亿","value":34062,"itemStyle":{"normal":{"color":"#ffa500"}}},{"name":"刘翔求婚初恋成功","value":39920,"itemStyle":{"normal":{"color":"#6b8e23"}}},{"name":"蒙嘉慧被疑有孕","value":54040,"itemStyle":{"normal":{"color":"#32cd32"}}},{"name":"民警实名举报自杀","value":68362,"itemStyle":{"normal":{"color":"#6495ed"}}},{"name":"奶茶妹妹抱女出镜","value":181058,"itemStyle":{"normal":{"color":"#ba55d3"}}},{"name":"奶茶妹妹抱娃现身","value":69086,"itemStyle":{"normal":{"color":"#cd5c5c"}}},{"name":"南艺新生颜值爆表","value":33052,"itemStyle":{"normal":{"color":"#ba55d3"}}},{"name":"男婴终身免费乘机","value":42438,"itemStyle":{"normal":{"color":"#1e90ff"}}},{"name":"嫩模瘦成皮包骨","value":186358,"itemStyle":{"normal":{"color":"#da70d6"}}},{"name":"曝baby怀孕3月","value":95229,"itemStyle":{"normal":{"color":"#6b8e23"}}},{"name":"曝郑爽炸鸡店被砸","value":106350,"itemStyle":{"normal":{"color":"#30e0e0"}}},{"name":"乔任梁意外死亡","value":270787,"itemStyle":{"normal":{"color":"#ffa500"}}},{"name":"司机倒车冲上屋顶","value":40944,"itemStyle":{"normal":{"color":"#40e0d0"}}},{"name":"台风路径实时发布系统","value":43048,"itemStyle":{"normal":{"color":"#ff00ff"}}},{"name":"王明方病逝","value":65503,"itemStyle":{"normal":{"color":"#00fa9a"}}},{"name":"文章光头抱女儿","value":147308,"itemStyle":{"normal":{"color":"#ffd700"}}},{"name":"谢霆锋晒全家福","value":41273,"itemStyle":{"normal":{"color":"#40e0d0"}}},{"name":"一周上万电话轰炸","value":62125,"itemStyle":{"normal":{"color":"#1e90ff"}}},{"name":"用胶带绑人致死","value":75680,"itemStyle":{"normal":{"color":"#ffd700"}}},{"name":"朝鲜向9国求援","value":159338,"itemStyle":{"normal":{"color":"#00fa9a"}}},{"name":"中秋节","value":105191,"itemStyle":{"normal":{"color":"#6495ed"}}}],"textRotation":[0,-45,-90,45,90],"type":"wordCloud","size":["80%","80%"]}],"title":{"text":"Baidu Hot Word Top30 (z: Today)","x":"center","y":"bottom","orient":"horizontal"}},{"series":[{"data":[{"name":"5万特教老师开课","value":205722,"itemStyle":{"normal":{"color":"#40e0d0"}}},{"name":"报纸整版空白走红","value":372050,"itemStyle":{"normal":{"color":"#ffa500"}}},{"name":"滨崎步宣布离婚","value":282596,"itemStyle":{"normal":{"color":"#ffd700"}}},{"name":"邓超谈王宝强","value":630112,"itemStyle":{"normal":{"color":"#6495ed"}}},{"name":"非诚导演飙女嘉宾","value":209498,"itemStyle":{"normal":{"color":"#6495ed"}}},{"name":"夫妇偶遇夭折儿子","value":494297,"itemStyle":{"normal":{"color":"#ffd700"}}},{"name":"夫妻因王宝强打架","value":435906,"itemStyle":{"normal":{"color":"#cd5c5c"}}},{"name":"高晓松遇机智空姐","value":371164,"itemStyle":{"normal":{"color":"#32cd32"}}},{"name":"郭德纲回应曹云金","value":317363,"itemStyle":{"normal":{"color":"#ffa500"}}},{"name":"刘翔求婚初恋成功","value":223769,"itemStyle":{"normal":{"color":"#cd5c5c"}}},{"name":"刘子歌将嫁恩师","value":249854,"itemStyle":{"normal":{"color":"#3cb371"}}},{"name":"六小龄童再被死亡","value":491841,"itemStyle":{"normal":{"color":"#ffa500"}}},{"name":"麻雀收视火爆","value":221099,"itemStyle":{"normal":{"color":"#40e0d0"}}},{"name":"买婚房却买到凶宅","value":284503,"itemStyle":{"normal":{"color":"#ba55d3"}}},{"name":"民警实名举报自杀","value":339767,"itemStyle":{"normal":{"color":"#ff6347"}}},{"name":"奶茶妹妹抱女出镜","value":418660,"itemStyle":{"normal":{"color":"#7b68ee"}}},{"name":"男生搬行李肺炸了","value":483721,"itemStyle":{"normal":{"color":"#30e0e0"}}},{"name":"男婴终身免费乘机","value":594649,"itemStyle":{"normal":{"color":"#1e90ff"}}},{"name":"嫩模瘦成皮包骨","value":245798,"itemStyle":{"normal":{"color":"#ff69b4"}}},{"name":"女子商场内遭扒衣","value":206703,"itemStyle":{"normal":{"color":"#6b8e23"}}},{"name":"曝baby怀孕3月","value":304991,"itemStyle":{"normal":{"color":"#00fa9a"}}},{"name":"曝郑爽炸鸡店被砸","value":494270,"itemStyle":{"normal":{"color":"#32cd32"}}},{"name":"乔任梁意外死亡","value":271701,"itemStyle":{"normal":{"color":"#30e0e0"}}},{"name":"水原希子走秀遭骂","value":207865,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"文章光头抱女儿","value":236980,"itemStyle":{"normal":{"color":"#ff69b4"}}},{"name":"吴悠昆明被打","value":204559,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"谢霆锋晒全家福","value":256262,"itemStyle":{"normal":{"color":"#00fa9a"}}},{"name":"杨幂进部队当新兵","value":358117,"itemStyle":{"normal":{"color":"#ba55d3"}}},{"name":"张亮儿子长腿吸睛","value":268288,"itemStyle":{"normal":{"color":"#b8860b"}}},{"name":"朝鲜向9国求援","value":611717,"itemStyle":{"normal":{"color":"#7b68ee"}}}],"textRotation":[0,-45,-90,45,90],"type":"wordCloud","size":["80%","80%"]}],"title":{"text":"Baidu Hot Word Top30 (z: 7-days)","x":"center","y":"bottom","orient":"horizontal"}}]},"evals":[],"jsHooks":[]}</script>
+<div id="echarts-34c80c2a5b6801995395ba1915bf8123c7d0553c" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-34c80c2a5b6801995395ba1915bf8123c7d0553c">{"x":{"timeline":{"type":"number","data":["Realtime","Today","7-days"],"x":80,"x2":80,"y2":50},"options":[{"series":[{"data":[{"name":"阿娇晒照五官精致","value":2812,"itemStyle":{"normal":{"color":"#32cd32"}}},{"name":"扮无脸男吓哭同学","value":11477,"itemStyle":{"normal":{"color":"#6495ed"}}},{"name":"北京新推学生校服","value":2895,"itemStyle":{"normal":{"color":"#cd5c5c"}}},{"name":"餐厅交浪费保证金","value":23681,"itemStyle":{"normal":{"color":"#00fa9a"}}},{"name":"陈赫被曝已经停工","value":13117,"itemStyle":{"normal":{"color":"#b8860b"}}},{"name":"大亨涉骗贷312亿","value":2266,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"反腐追逃2210人","value":6128,"itemStyle":{"normal":{"color":"#da70d6"}}},{"name":"房天下遭起诉","value":17783,"itemStyle":{"normal":{"color":"#cd5c5c"}}},{"name":"巨野法院力挺马蓉","value":64687,"itemStyle":{"normal":{"color":"#6b8e23"}}},{"name":"老公砸家具妻砸车","value":2699,"itemStyle":{"normal":{"color":"#b8860b"}}},{"name":"梁博曝好声音剧本","value":63833,"itemStyle":{"normal":{"color":"#6b8e23"}}},{"name":"两女和狗围攻老人","value":4642,"itemStyle":{"normal":{"color":"#30e0e0"}}},{"name":"两岁幼童头卡护栏","value":28353,"itemStyle":{"normal":{"color":"#b8860b"}}},{"name":"每万人中6人染艾","value":2827,"itemStyle":{"normal":{"color":"#40e0d0"}}},{"name":"男子和大熊猫扭打","value":6701,"itemStyle":{"normal":{"color":"#32cd32"}}},{"name":"男子诈骗老人百万","value":24433,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"农民挖巨无霸红薯","value":132934,"itemStyle":{"normal":{"color":"#6b8e23"}}},{"name":"女大学生裸身坠亡","value":49238,"itemStyle":{"normal":{"color":"#6495ed"}}},{"name":"女子被诬陷为小偷","value":68761,"itemStyle":{"normal":{"color":"#00fa9a"}}},{"name":"女子散步遭流弹击","value":12321,"itemStyle":{"normal":{"color":"#b8860b"}}},{"name":"蛇精男纯天然旧照","value":12762,"itemStyle":{"normal":{"color":"#30e0e0"}}},{"name":"市长给群众留号码","value":10945,"itemStyle":{"normal":{"color":"#32cd32"}}},{"name":"双胞胎共用驾照","value":115874,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"孙杨真人秀被忽悠","value":4862,"itemStyle":{"normal":{"color":"#da70d6"}}},{"name":"佟大为直播秀厨艺","value":99230,"itemStyle":{"normal":{"color":"#da70d6"}}},{"name":"新郎红布遮挡游街","value":2523,"itemStyle":{"normal":{"color":"#ff6347"}}},{"name":"徐璐素颜现身机场","value":186623,"itemStyle":{"normal":{"color":"#ba55d3"}}},{"name":"许晴晒剧组片场照","value":80143,"itemStyle":{"normal":{"color":"#6495ed"}}},{"name":"中游客捕海胆生吃","value":2198,"itemStyle":{"normal":{"color":"#7b68ee"}}},{"name":"重庆煤矿瓦斯爆炸","value":39187,"itemStyle":{"normal":{"color":"#b8860b"}}}],"textRotation":[0,-45,-90,45,90],"type":"wordCloud","size":["80%","80%"]}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["徐璐素颜现身机场","农民挖巨无霸红薯","双胞胎共用驾照","佟大为直播秀厨艺","许晴晒剧组片场照","女子被诬陷为小偷","巨野法院力挺马蓉","梁博曝好声音剧本","女大学生裸身坠亡","重庆煤矿瓦斯爆炸","两岁幼童头卡护栏","男子诈骗老人百万","餐厅交浪费保证金","房天下遭起诉","陈赫被曝已经停工","蛇精男纯天然旧照","女子散步遭流弹击","扮无脸男吓哭同学","市长给群众留号码","男子和大熊猫扭打","反腐追逃2210人","孙杨真人秀被忽悠","两女和狗围攻老人","北京新推学生校服","每万人中6人染艾","阿娇晒照五官精致","老公砸家具妻砸车","新郎红布遮挡游街","大亨涉骗贷312亿","中游客捕海胆生吃","黄子韬抵京被包围","婚后发现丈夫艾滋","卖枪入狱终获无罪","金莎承认整容","李连杰头发花白","大学教授讽范冰冰","琅琊榜2揭阵容","中超","河南现神秘古村落","抢200万黄金埋藏","婚礼前夜通宵手术","蒋劲夫合约案宣判","15岁女产双胞胎","美俄战机险些相撞","辅导老师杖杀学生","研究生招生信息网","姐弟入室抢劫被抓","醒来床边现长蛇","鸽笼房被罚60万","邓紫棋曝新欢标准","当选冠军秒甩男友","女护士杀8名长者","男星家中浴缸猝死","100万元打赏主播","结婚2小时休妻","陈赫宣布当爸爸","360云盘关闭","张雨绮承认再婚","金庸状告江南","女子公厕杀害老人","花15万装错房子","范冰冰宣传遭劝离","追砸运钞车被击毙","打伞小网红现身","22岁人大代表","卖油条月入2万","男子短裤吃住网吧","火箭军军官下岗","上海狗屎糕引质疑","舒淇拒去动物园"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"title":{"text":"Baidu Hot Word Top30 (t: Realtime)","x":"center","y":"bottom","orient":"horizontal"}},{"series":[{"data":[{"name":"15岁女产双胞胎","value":28295,"itemStyle":{"normal":{"color":"#6b8e23"}}},{"name":"阿娇晒照五官精致","value":154614,"itemStyle":{"normal":{"color":"#32cd32"}}},{"name":"陈赫被曝已经停工","value":224015,"itemStyle":{"normal":{"color":"#ffa500"}}},{"name":"大亨涉骗贷312亿","value":72863,"itemStyle":{"normal":{"color":"#ff00ff"}}},{"name":"大学教授讽范冰冰","value":81338,"itemStyle":{"normal":{"color":"#3cb371"}}},{"name":"邓紫棋曝新欢标准","value":22575,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"辅导老师杖杀学生","value":26164,"itemStyle":{"normal":{"color":"#1e90ff"}}},{"name":"鸽笼房被罚60万","value":22751,"itemStyle":{"normal":{"color":"#32cd32"}}},{"name":"河南现神秘古村落","value":49739,"itemStyle":{"normal":{"color":"#6b8e23"}}},{"name":"黄子韬抵京被包围","value":152309,"itemStyle":{"normal":{"color":"#32cd32"}}},{"name":"婚后发现丈夫艾滋","value":127201,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"婚礼前夜通宵手术","value":39595,"itemStyle":{"normal":{"color":"#ff00ff"}}},{"name":"蒋劲夫合约案宣判","value":36774,"itemStyle":{"normal":{"color":"#40e0d0"}}},{"name":"姐弟入室抢劫被抓","value":24086,"itemStyle":{"normal":{"color":"#3cb371"}}},{"name":"金莎承认整容","value":95601,"itemStyle":{"normal":{"color":"#40e0d0"}}},{"name":"琅琊榜2揭阵容","value":70068,"itemStyle":{"normal":{"color":"#7b68ee"}}},{"name":"老公砸家具妻砸车","value":53499,"itemStyle":{"normal":{"color":"#ff69b4"}}},{"name":"李连杰头发花白","value":94209,"itemStyle":{"normal":{"color":"#3cb371"}}},{"name":"卖枪入狱终获无罪","value":105230,"itemStyle":{"normal":{"color":"#30e0e0"}}},{"name":"每万人中6人染艾","value":48341,"itemStyle":{"normal":{"color":"#b8860b"}}},{"name":"美俄战机险些相撞","value":26188,"itemStyle":{"normal":{"color":"#6b8e23"}}},{"name":"男子和大熊猫扭打","value":93433,"itemStyle":{"normal":{"color":"#b8860b"}}},{"name":"女大学生裸身坠亡","value":332451,"itemStyle":{"normal":{"color":"#ffd700"}}},{"name":"抢200万黄金埋藏","value":41760,"itemStyle":{"normal":{"color":"#ff6347"}}},{"name":"蛇精男纯天然旧照","value":166545,"itemStyle":{"normal":{"color":"#ba55d3"}}},{"name":"孙杨真人秀被忽悠","value":138765,"itemStyle":{"normal":{"color":"#1e90ff"}}},{"name":"醒来床边现长蛇","value":24019,"itemStyle":{"normal":{"color":"#40e0d0"}}},{"name":"研究生招生信息网","value":24714,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"中超","value":56982,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"中游客捕海胆生吃","value":63394,"itemStyle":{"normal":{"color":"#da70d6"}}}],"textRotation":[0,-45,-90,45,90],"type":"wordCloud","size":["80%","80%"]}],"title":{"text":"Baidu Hot Word Top30 (t: Today)","x":"center","y":"bottom","orient":"horizontal"}},{"series":[{"data":[{"name":"100万元打赏主播","value":384834,"itemStyle":{"normal":{"color":"#32cd32"}}},{"name":"22岁人大代表","value":199152,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"360云盘关闭","value":276017,"itemStyle":{"normal":{"color":"#ffd700"}}},{"name":"阿娇晒照五官精致","value":197661,"itemStyle":{"normal":{"color":"#ba55d3"}}},{"name":"陈赫被曝已经停工","value":224015,"itemStyle":{"normal":{"color":"#ff69b4"}}},{"name":"陈赫宣布当爸爸","value":317915,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"打伞小网红现身","value":199322,"itemStyle":{"normal":{"color":"#6b8e23"}}},{"name":"大学教授讽范冰冰","value":255215,"itemStyle":{"normal":{"color":"#ff00ff"}}},{"name":"当选冠军秒甩男友","value":923484,"itemStyle":{"normal":{"color":"#cd5c5c"}}},{"name":"范冰冰宣传遭劝离","value":202743,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"花15万装错房子","value":209697,"itemStyle":{"normal":{"color":"#6495ed"}}},{"name":"婚后发现丈夫艾滋","value":668102,"itemStyle":{"normal":{"color":"#ff6347"}}},{"name":"火箭军军官下岗","value":186527,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"结婚2小时休妻","value":378125,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"金莎承认整容","value":463610,"itemStyle":{"normal":{"color":"#ff7f50"}}},{"name":"金庸状告江南","value":235322,"itemStyle":{"normal":{"color":"#1e90ff"}}},{"name":"琅琊榜2揭阵容","value":361039,"itemStyle":{"normal":{"color":"#ff00ff"}}},{"name":"李连杰头发花白","value":369253,"itemStyle":{"normal":{"color":"#87cefa"}}},{"name":"卖油条月入2万","value":194914,"itemStyle":{"normal":{"color":"#ffa500"}}},{"name":"每万人中6人染艾","value":340777,"itemStyle":{"normal":{"color":"#da70d6"}}},{"name":"男星家中浴缸猝死","value":431805,"itemStyle":{"normal":{"color":"#30e0e0"}}},{"name":"男子短裤吃住网吧","value":191896,"itemStyle":{"normal":{"color":"#40e0d0"}}},{"name":"女大学生裸身坠亡","value":992288,"itemStyle":{"normal":{"color":"#b8860b"}}},{"name":"女护士杀8名长者","value":464357,"itemStyle":{"normal":{"color":"#ffd700"}}},{"name":"女子公厕杀害老人","value":222369,"itemStyle":{"normal":{"color":"#1e90ff"}}},{"name":"上海狗屎糕引质疑","value":184682,"itemStyle":{"normal":{"color":"#32cd32"}}},{"name":"舒淇拒去动物园","value":174732,"itemStyle":{"normal":{"color":"#ffa500"}}},{"name":"孙杨真人秀被忽悠","value":283050,"itemStyle":{"normal":{"color":"#30e0e0"}}},{"name":"张雨绮承认再婚","value":247981,"itemStyle":{"normal":{"color":"#6495ed"}}},{"name":"追砸运钞车被击毙","value":201948,"itemStyle":{"normal":{"color":"#6b8e23"}}}],"textRotation":[0,-45,-90,45,90],"type":"wordCloud","size":["80%","80%"]}],"title":{"text":"Baidu Hot Word Top30 (t: 7-days)","x":"center","y":"bottom","orient":"horizontal"}}]},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div id="futher-setup" class="section level1">
@@ -499,8 +499,8 @@ g</code></pre>
 <div id="settheme" class="section level2">
 <h2><span class="header-section-number">4.1</span> <code>setTheme</code></h2>
 <pre class="r"><code>g %&gt;% setTheme(&#39;dark&#39;, palette=&#39;manyeyes&#39;)</code></pre>
-<div id="echarts-34d3d897e4250ed15c0035995dc0d33c4afb79ca" style="width:672px;height:480px;" class="echarts html-widget"></div>
-<script type="application/json" data-for="echarts-34d3d897e4250ed15c0035995dc0d33c4afb79ca">{"x":{"timeline":{"type":"number","data":["Realtime","Today","7-days"],"x":80,"x2":80,"y2":50},"options":[{"series":[{"data":[{"name":"MH370残骸找到","value":30957,"itemStyle":{"normal":{"color":"#e7969c"}}},{"name":"note7国行爆炸","value":46434,"itemStyle":{"normal":{"color":"#637939"}}},{"name":"TFboys粉丝被打","value":14941,"itemStyle":{"normal":{"color":"#7375b5"}}},{"name":"保险合同期104年","value":2860,"itemStyle":{"normal":{"color":"#ad494a"}}},{"name":"宝马女撞卡宴男","value":8107,"itemStyle":{"normal":{"color":"#7b4173"}}},{"name":"残奥会运动员身亡","value":131407,"itemStyle":{"normal":{"color":"#de9ed6"}}},{"name":"出租车遭持刀抢劫","value":10305,"itemStyle":{"normal":{"color":"#de9ed6"}}},{"name":"崔永元谈抑郁症","value":280670,"itemStyle":{"normal":{"color":"#8ca252"}}},{"name":"大妈水源地洗澡","value":28132,"itemStyle":{"normal":{"color":"#637939"}}},{"name":"皇家一号包间被拆","value":1696,"itemStyle":{"normal":{"color":"#de9ed6"}}},{"name":"老赖欠2亿住豪宅","value":8471,"itemStyle":{"normal":{"color":"#e7cb94"}}},{"name":"两男争论月亮打架","value":39727,"itemStyle":{"normal":{"color":"#e7ba52"}}},{"name":"林志玲否认复合","value":7991,"itemStyle":{"normal":{"color":"#4a5584"}}},{"name":"硫酸槽罐车侧翻","value":8780,"itemStyle":{"normal":{"color":"#d6616b"}}},{"name":"美国纽约发生爆炸","value":9987,"itemStyle":{"normal":{"color":"#b5cf6b"}}},{"name":"奶茶妹妹抱女出镜","value":2015,"itemStyle":{"normal":{"color":"#8c6d31"}}},{"name":"权志龙恋情疑曝光","value":14849,"itemStyle":{"normal":{"color":"#a55194"}}},{"name":"日本侵略档案公布","value":13733,"itemStyle":{"normal":{"color":"#a55194"}}},{"name":"厦门灾后重建","value":3066,"itemStyle":{"normal":{"color":"#4a5584"}}},{"name":"陕西现冥界之花","value":10143,"itemStyle":{"normal":{"color":"#e7969c"}}},{"name":"深圳处罚冲绿灯","value":5784,"itemStyle":{"normal":{"color":"#de9ed6"}}},{"name":"私家车被喷红油漆","value":10108,"itemStyle":{"normal":{"color":"#e7cb94"}}},{"name":"宋丹丹现场收徒","value":16190,"itemStyle":{"normal":{"color":"#b5cf6b"}}},{"name":"王子访校官员倒地","value":2775,"itemStyle":{"normal":{"color":"#7375b5"}}},{"name":"王祖贤晒自拍美照","value":62053,"itemStyle":{"normal":{"color":"#637939"}}},{"name":"小区边现圈地放羊","value":9994,"itemStyle":{"normal":{"color":"#843c39"}}},{"name":"孕妇小区流浪数月","value":3809,"itemStyle":{"normal":{"color":"#cedb9c"}}},{"name":"章子怡带娃工作","value":96324,"itemStyle":{"normal":{"color":"#4a5584"}}},{"name":"中国留学生炒房","value":10310,"itemStyle":{"normal":{"color":"#de9ed6"}}},{"name":"租客洗澡中毒死亡","value":4607,"itemStyle":{"normal":{"color":"#b5cf6b"}}}],"textRotation":[0,-45,-90,45,90],"type":"wordCloud","size":["80%","80%"]}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["崔永元谈抑郁症","残奥会运动员身亡","章子怡带娃工作","王祖贤晒自拍美照","note7国行爆炸","两男争论月亮打架","MH370残骸找到","大妈水源地洗澡","宋丹丹现场收徒","TFboys粉丝被打","权志龙恋情疑曝光","日本侵略档案公布","中国留学生炒房","出租车遭持刀抢劫","陕西现冥界之花","私家车被喷红油漆","小区边现圈地放羊","美国纽约发生爆炸","硫酸槽罐车侧翻","老赖欠2亿住豪宅","宝马女撞卡宴男","林志玲否认复合","深圳处罚冲绿灯","租客洗澡中毒死亡","孕妇小区流浪数月","厦门灾后重建","保险合同期104年","王子访校官员倒地","奶茶妹妹抱女出镜","皇家一号包间被拆","乔任梁意外死亡","嫩模瘦成皮包骨","朝鲜向9国求援","文章光头抱女儿","曝郑爽炸鸡店被砸","中秋节","曝baby怀孕3月","成都现呆萌小沙弥","陈楚生与儿子合唱","夫妻因王宝强打架","用胶带绑人致死","奶茶妹妹抱娃现身","民警实名举报自杀","王明方病逝","一周上万电话轰炸","蒙嘉慧被疑有孕","伴娘醉亡获赔5万","夫妇偶遇夭折儿子","陈志成现身道歉","台风路径实时发布系统","男婴终身免费乘机","谢霆锋晒全家福","司机倒车冲上屋顶","高晓松遇机智空姐","刘翔求婚初恋成功","长沙2人枪击身亡","公寓叫价1.1亿","南艺新生颜值爆表","邓超谈王宝强","六小龄童再被死亡","男生搬行李肺炸了","报纸整版空白走红","杨幂进部队当新兵","郭德纲回应曹云金","买婚房却买到凶宅","滨崎步宣布离婚","张亮儿子长腿吸睛","刘子歌将嫁恩师","麻雀收视火爆","非诚导演飙女嘉宾","水原希子走秀遭骂","女子商场内遭扒衣","5万特教老师开课","吴悠昆明被打"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"title":{"text":"Baidu Hot Word Top30 (z: Realtime)","x":"center","y":"bottom","orient":"horizontal"},"color":["#9c9ede"]},{"series":[{"data":[{"name":"伴娘醉亡获赔5万","value":47463,"itemStyle":{"normal":{"color":"#bd9e39"}}},{"name":"宝马女撞卡宴男","value":91980,"itemStyle":{"normal":{"color":"#cedb9c"}}},{"name":"长沙2人枪击身亡","value":36229,"itemStyle":{"normal":{"color":"#4a5584"}}},{"name":"陈楚生与儿子合唱","value":85290,"itemStyle":{"normal":{"color":"#8c6d31"}}},{"name":"陈志成现身道歉","value":44792,"itemStyle":{"normal":{"color":"#843c39"}}},{"name":"成都现呆萌小沙弥","value":93165,"itemStyle":{"normal":{"color":"#a55194"}}},{"name":"夫妇偶遇夭折儿子","value":44923,"itemStyle":{"normal":{"color":"#843c39"}}},{"name":"夫妻因王宝强打架","value":82435,"itemStyle":{"normal":{"color":"#8ca252"}}},{"name":"高晓松遇机智空姐","value":40646,"itemStyle":{"normal":{"color":"#8c6d31"}}},{"name":"公寓叫价1.1亿","value":34062,"itemStyle":{"normal":{"color":"#8c6d31"}}},{"name":"刘翔求婚初恋成功","value":39920,"itemStyle":{"normal":{"color":"#ce6dbd"}}},{"name":"蒙嘉慧被疑有孕","value":54040,"itemStyle":{"normal":{"color":"#843c39"}}},{"name":"民警实名举报自杀","value":68362,"itemStyle":{"normal":{"color":"#ad494a"}}},{"name":"奶茶妹妹抱女出镜","value":181058,"itemStyle":{"normal":{"color":"#7375b5"}}},{"name":"奶茶妹妹抱娃现身","value":69086,"itemStyle":{"normal":{"color":"#bd9e39"}}},{"name":"南艺新生颜值爆表","value":33052,"itemStyle":{"normal":{"color":"#7375b5"}}},{"name":"男婴终身免费乘机","value":42438,"itemStyle":{"normal":{"color":"#cedb9c"}}},{"name":"嫩模瘦成皮包骨","value":186358,"itemStyle":{"normal":{"color":"#ce6dbd"}}},{"name":"曝baby怀孕3月","value":95229,"itemStyle":{"normal":{"color":"#e7969c"}}},{"name":"曝郑爽炸鸡店被砸","value":106350,"itemStyle":{"normal":{"color":"#cedb9c"}}},{"name":"乔任梁意外死亡","value":270787,"itemStyle":{"normal":{"color":"#4a5584"}}},{"name":"司机倒车冲上屋顶","value":40944,"itemStyle":{"normal":{"color":"#8c6d31"}}},{"name":"台风路径实时发布系统","value":43048,"itemStyle":{"normal":{"color":"#9c9ede"}}},{"name":"王明方病逝","value":65503,"itemStyle":{"normal":{"color":"#637939"}}},{"name":"文章光头抱女儿","value":147308,"itemStyle":{"normal":{"color":"#8ca252"}}},{"name":"谢霆锋晒全家福","value":41273,"itemStyle":{"normal":{"color":"#b5cf6b"}}},{"name":"一周上万电话轰炸","value":62125,"itemStyle":{"normal":{"color":"#ad494a"}}},{"name":"用胶带绑人致死","value":75680,"itemStyle":{"normal":{"color":"#bd9e39"}}},{"name":"朝鲜向9国求援","value":159338,"itemStyle":{"normal":{"color":"#637939"}}},{"name":"中秋节","value":105191,"itemStyle":{"normal":{"color":"#e7ba52"}}}],"textRotation":[0,-45,-90,45,90],"type":"wordCloud","size":["80%","80%"]}],"title":{"text":"Baidu Hot Word Top30 (z: Today)","x":"center","y":"bottom","orient":"horizontal"}},{"series":[{"data":[{"name":"5万特教老师开课","value":205722,"itemStyle":{"normal":{"color":"#de9ed6"}}},{"name":"报纸整版空白走红","value":372050,"itemStyle":{"normal":{"color":"#b5cf6b"}}},{"name":"滨崎步宣布离婚","value":282596,"itemStyle":{"normal":{"color":"#e7969c"}}},{"name":"邓超谈王宝强","value":630112,"itemStyle":{"normal":{"color":"#843c39"}}},{"name":"非诚导演飙女嘉宾","value":209498,"itemStyle":{"normal":{"color":"#ad494a"}}},{"name":"夫妇偶遇夭折儿子","value":494297,"itemStyle":{"normal":{"color":"#ad494a"}}},{"name":"夫妻因王宝强打架","value":435906,"itemStyle":{"normal":{"color":"#7b4173"}}},{"name":"高晓松遇机智空姐","value":371164,"itemStyle":{"normal":{"color":"#cedb9c"}}},{"name":"郭德纲回应曹云金","value":317363,"itemStyle":{"normal":{"color":"#de9ed6"}}},{"name":"刘翔求婚初恋成功","value":223769,"itemStyle":{"normal":{"color":"#d6616b"}}},{"name":"刘子歌将嫁恩师","value":249854,"itemStyle":{"normal":{"color":"#8ca252"}}},{"name":"六小龄童再被死亡","value":491841,"itemStyle":{"normal":{"color":"#ad494a"}}},{"name":"麻雀收视火爆","value":221099,"itemStyle":{"normal":{"color":"#637939"}}},{"name":"买婚房却买到凶宅","value":284503,"itemStyle":{"normal":{"color":"#ce6dbd"}}},{"name":"民警实名举报自杀","value":339767,"itemStyle":{"normal":{"color":"#ad494a"}}},{"name":"奶茶妹妹抱女出镜","value":418660,"itemStyle":{"normal":{"color":"#bd9e39"}}},{"name":"男生搬行李肺炸了","value":483721,"itemStyle":{"normal":{"color":"#d6616b"}}},{"name":"男婴终身免费乘机","value":594649,"itemStyle":{"normal":{"color":"#e7969c"}}},{"name":"嫩模瘦成皮包骨","value":245798,"itemStyle":{"normal":{"color":"#d6616b"}}},{"name":"女子商场内遭扒衣","value":206703,"itemStyle":{"normal":{"color":"#e7cb94"}}},{"name":"曝baby怀孕3月","value":304991,"itemStyle":{"normal":{"color":"#ce6dbd"}}},{"name":"曝郑爽炸鸡店被砸","value":494270,"itemStyle":{"normal":{"color":"#637939"}}},{"name":"乔任梁意外死亡","value":271701,"itemStyle":{"normal":{"color":"#a55194"}}},{"name":"水原希子走秀遭骂","value":207865,"itemStyle":{"normal":{"color":"#b5cf6b"}}},{"name":"文章光头抱女儿","value":236980,"itemStyle":{"normal":{"color":"#8ca252"}}},{"name":"吴悠昆明被打","value":204559,"itemStyle":{"normal":{"color":"#843c39"}}},{"name":"谢霆锋晒全家福","value":256262,"itemStyle":{"normal":{"color":"#843c39"}}},{"name":"杨幂进部队当新兵","value":358117,"itemStyle":{"normal":{"color":"#d6616b"}}},{"name":"张亮儿子长腿吸睛","value":268288,"itemStyle":{"normal":{"color":"#e7cb94"}}},{"name":"朝鲜向9国求援","value":611717,"itemStyle":{"normal":{"color":"#9c9ede"}}}],"textRotation":[0,-45,-90,45,90],"type":"wordCloud","size":["80%","80%"]}],"title":{"text":"Baidu Hot Word Top30 (z: 7-days)","x":"center","y":"bottom","orient":"horizontal"}}],"theme":"dark"},"evals":[],"jsHooks":[]}</script>
+<div id="echarts-97a3f57a5375a87ca5e336e797746ed9a8ed031c" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="echarts-97a3f57a5375a87ca5e336e797746ed9a8ed031c">{"x":{"timeline":{"type":"number","data":["Realtime","Today","7-days"],"x":80,"x2":80,"y2":50},"options":[{"series":[{"data":[{"name":"阿娇晒照五官精致","value":2812,"itemStyle":{"normal":{"color":"#ce6dbd"}}},{"name":"扮无脸男吓哭同学","value":11477,"itemStyle":{"normal":{"color":"#9c9ede"}}},{"name":"北京新推学生校服","value":2895,"itemStyle":{"normal":{"color":"#e7ba52"}}},{"name":"餐厅交浪费保证金","value":23681,"itemStyle":{"normal":{"color":"#cedb9c"}}},{"name":"陈赫被曝已经停工","value":13117,"itemStyle":{"normal":{"color":"#d6616b"}}},{"name":"大亨涉骗贷312亿","value":2266,"itemStyle":{"normal":{"color":"#843c39"}}},{"name":"反腐追逃2210人","value":6128,"itemStyle":{"normal":{"color":"#4a5584"}}},{"name":"房天下遭起诉","value":17783,"itemStyle":{"normal":{"color":"#9c9ede"}}},{"name":"巨野法院力挺马蓉","value":64687,"itemStyle":{"normal":{"color":"#8c6d31"}}},{"name":"老公砸家具妻砸车","value":2699,"itemStyle":{"normal":{"color":"#e7ba52"}}},{"name":"梁博曝好声音剧本","value":63833,"itemStyle":{"normal":{"color":"#9c9ede"}}},{"name":"两女和狗围攻老人","value":4642,"itemStyle":{"normal":{"color":"#4a5584"}}},{"name":"两岁幼童头卡护栏","value":28353,"itemStyle":{"normal":{"color":"#bd9e39"}}},{"name":"每万人中6人染艾","value":2827,"itemStyle":{"normal":{"color":"#b5cf6b"}}},{"name":"男子和大熊猫扭打","value":6701,"itemStyle":{"normal":{"color":"#a55194"}}},{"name":"男子诈骗老人百万","value":24433,"itemStyle":{"normal":{"color":"#9c9ede"}}},{"name":"农民挖巨无霸红薯","value":132934,"itemStyle":{"normal":{"color":"#de9ed6"}}},{"name":"女大学生裸身坠亡","value":49238,"itemStyle":{"normal":{"color":"#de9ed6"}}},{"name":"女子被诬陷为小偷","value":68761,"itemStyle":{"normal":{"color":"#843c39"}}},{"name":"女子散步遭流弹击","value":12321,"itemStyle":{"normal":{"color":"#4a5584"}}},{"name":"蛇精男纯天然旧照","value":12762,"itemStyle":{"normal":{"color":"#9c9ede"}}},{"name":"市长给群众留号码","value":10945,"itemStyle":{"normal":{"color":"#9c9ede"}}},{"name":"双胞胎共用驾照","value":115874,"itemStyle":{"normal":{"color":"#9c9ede"}}},{"name":"孙杨真人秀被忽悠","value":4862,"itemStyle":{"normal":{"color":"#7b4173"}}},{"name":"佟大为直播秀厨艺","value":99230,"itemStyle":{"normal":{"color":"#7b4173"}}},{"name":"新郎红布遮挡游街","value":2523,"itemStyle":{"normal":{"color":"#9c9ede"}}},{"name":"徐璐素颜现身机场","value":186623,"itemStyle":{"normal":{"color":"#8ca252"}}},{"name":"许晴晒剧组片场照","value":80143,"itemStyle":{"normal":{"color":"#ad494a"}}},{"name":"中游客捕海胆生吃","value":2198,"itemStyle":{"normal":{"color":"#8ca252"}}},{"name":"重庆煤矿瓦斯爆炸","value":39187,"itemStyle":{"normal":{"color":"#d6616b"}}}],"textRotation":[0,-45,-90,45,90],"type":"wordCloud","size":["80%","80%"]}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["徐璐素颜现身机场","农民挖巨无霸红薯","双胞胎共用驾照","佟大为直播秀厨艺","许晴晒剧组片场照","女子被诬陷为小偷","巨野法院力挺马蓉","梁博曝好声音剧本","女大学生裸身坠亡","重庆煤矿瓦斯爆炸","两岁幼童头卡护栏","男子诈骗老人百万","餐厅交浪费保证金","房天下遭起诉","陈赫被曝已经停工","蛇精男纯天然旧照","女子散步遭流弹击","扮无脸男吓哭同学","市长给群众留号码","男子和大熊猫扭打","反腐追逃2210人","孙杨真人秀被忽悠","两女和狗围攻老人","北京新推学生校服","每万人中6人染艾","阿娇晒照五官精致","老公砸家具妻砸车","新郎红布遮挡游街","大亨涉骗贷312亿","中游客捕海胆生吃","黄子韬抵京被包围","婚后发现丈夫艾滋","卖枪入狱终获无罪","金莎承认整容","李连杰头发花白","大学教授讽范冰冰","琅琊榜2揭阵容","中超","河南现神秘古村落","抢200万黄金埋藏","婚礼前夜通宵手术","蒋劲夫合约案宣判","15岁女产双胞胎","美俄战机险些相撞","辅导老师杖杀学生","研究生招生信息网","姐弟入室抢劫被抓","醒来床边现长蛇","鸽笼房被罚60万","邓紫棋曝新欢标准","当选冠军秒甩男友","女护士杀8名长者","男星家中浴缸猝死","100万元打赏主播","结婚2小时休妻","陈赫宣布当爸爸","360云盘关闭","张雨绮承认再婚","金庸状告江南","女子公厕杀害老人","花15万装错房子","范冰冰宣传遭劝离","追砸运钞车被击毙","打伞小网红现身","22岁人大代表","卖油条月入2万","男子短裤吃住网吧","火箭军军官下岗","上海狗屎糕引质疑","舒淇拒去动物园"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"title":{"text":"Baidu Hot Word Top30 (t: Realtime)","x":"center","y":"bottom","orient":"horizontal"},"color":["#9c9ede"]},{"series":[{"data":[{"name":"15岁女产双胞胎","value":28295,"itemStyle":{"normal":{"color":"#cedb9c"}}},{"name":"阿娇晒照五官精致","value":154614,"itemStyle":{"normal":{"color":"#9c9ede"}}},{"name":"陈赫被曝已经停工","value":224015,"itemStyle":{"normal":{"color":"#cedb9c"}}},{"name":"大亨涉骗贷312亿","value":72863,"itemStyle":{"normal":{"color":"#9c9ede"}}},{"name":"大学教授讽范冰冰","value":81338,"itemStyle":{"normal":{"color":"#de9ed6"}}},{"name":"邓紫棋曝新欢标准","value":22575,"itemStyle":{"normal":{"color":"#e7ba52"}}},{"name":"辅导老师杖杀学生","value":26164,"itemStyle":{"normal":{"color":"#de9ed6"}}},{"name":"鸽笼房被罚60万","value":22751,"itemStyle":{"normal":{"color":"#8ca252"}}},{"name":"河南现神秘古村落","value":49739,"itemStyle":{"normal":{"color":"#637939"}}},{"name":"黄子韬抵京被包围","value":152309,"itemStyle":{"normal":{"color":"#cedb9c"}}},{"name":"婚后发现丈夫艾滋","value":127201,"itemStyle":{"normal":{"color":"#8c6d31"}}},{"name":"婚礼前夜通宵手术","value":39595,"itemStyle":{"normal":{"color":"#bd9e39"}}},{"name":"蒋劲夫合约案宣判","value":36774,"itemStyle":{"normal":{"color":"#ad494a"}}},{"name":"姐弟入室抢劫被抓","value":24086,"itemStyle":{"normal":{"color":"#4a5584"}}},{"name":"金莎承认整容","value":95601,"itemStyle":{"normal":{"color":"#7375b5"}}},{"name":"琅琊榜2揭阵容","value":70068,"itemStyle":{"normal":{"color":"#8ca252"}}},{"name":"老公砸家具妻砸车","value":53499,"itemStyle":{"normal":{"color":"#ad494a"}}},{"name":"李连杰头发花白","value":94209,"itemStyle":{"normal":{"color":"#8ca252"}}},{"name":"卖枪入狱终获无罪","value":105230,"itemStyle":{"normal":{"color":"#d6616b"}}},{"name":"每万人中6人染艾","value":48341,"itemStyle":{"normal":{"color":"#cedb9c"}}},{"name":"美俄战机险些相撞","value":26188,"itemStyle":{"normal":{"color":"#d6616b"}}},{"name":"男子和大熊猫扭打","value":93433,"itemStyle":{"normal":{"color":"#e7cb94"}}},{"name":"女大学生裸身坠亡","value":332451,"itemStyle":{"normal":{"color":"#9c9ede"}}},{"name":"抢200万黄金埋藏","value":41760,"itemStyle":{"normal":{"color":"#e7969c"}}},{"name":"蛇精男纯天然旧照","value":166545,"itemStyle":{"normal":{"color":"#7375b5"}}},{"name":"孙杨真人秀被忽悠","value":138765,"itemStyle":{"normal":{"color":"#8ca252"}}},{"name":"醒来床边现长蛇","value":24019,"itemStyle":{"normal":{"color":"#843c39"}}},{"name":"研究生招生信息网","value":24714,"itemStyle":{"normal":{"color":"#d6616b"}}},{"name":"中超","value":56982,"itemStyle":{"normal":{"color":"#8c6d31"}}},{"name":"中游客捕海胆生吃","value":63394,"itemStyle":{"normal":{"color":"#ce6dbd"}}}],"textRotation":[0,-45,-90,45,90],"type":"wordCloud","size":["80%","80%"]}],"title":{"text":"Baidu Hot Word Top30 (t: Today)","x":"center","y":"bottom","orient":"horizontal"}},{"series":[{"data":[{"name":"100万元打赏主播","value":384834,"itemStyle":{"normal":{"color":"#d6616b"}}},{"name":"22岁人大代表","value":199152,"itemStyle":{"normal":{"color":"#8ca252"}}},{"name":"360云盘关闭","value":276017,"itemStyle":{"normal":{"color":"#b5cf6b"}}},{"name":"阿娇晒照五官精致","value":197661,"itemStyle":{"normal":{"color":"#bd9e39"}}},{"name":"陈赫被曝已经停工","value":224015,"itemStyle":{"normal":{"color":"#9c9ede"}}},{"name":"陈赫宣布当爸爸","value":317915,"itemStyle":{"normal":{"color":"#de9ed6"}}},{"name":"打伞小网红现身","value":199322,"itemStyle":{"normal":{"color":"#de9ed6"}}},{"name":"大学教授讽范冰冰","value":255215,"itemStyle":{"normal":{"color":"#ce6dbd"}}},{"name":"当选冠军秒甩男友","value":923484,"itemStyle":{"normal":{"color":"#ad494a"}}},{"name":"范冰冰宣传遭劝离","value":202743,"itemStyle":{"normal":{"color":"#8ca252"}}},{"name":"花15万装错房子","value":209697,"itemStyle":{"normal":{"color":"#7375b5"}}},{"name":"婚后发现丈夫艾滋","value":668102,"itemStyle":{"normal":{"color":"#d6616b"}}},{"name":"火箭军军官下岗","value":186527,"itemStyle":{"normal":{"color":"#7b4173"}}},{"name":"结婚2小时休妻","value":378125,"itemStyle":{"normal":{"color":"#4a5584"}}},{"name":"金莎承认整容","value":463610,"itemStyle":{"normal":{"color":"#7375b5"}}},{"name":"金庸状告江南","value":235322,"itemStyle":{"normal":{"color":"#8ca252"}}},{"name":"琅琊榜2揭阵容","value":361039,"itemStyle":{"normal":{"color":"#b5cf6b"}}},{"name":"李连杰头发花白","value":369253,"itemStyle":{"normal":{"color":"#d6616b"}}},{"name":"卖油条月入2万","value":194914,"itemStyle":{"normal":{"color":"#4a5584"}}},{"name":"每万人中6人染艾","value":340777,"itemStyle":{"normal":{"color":"#de9ed6"}}},{"name":"男星家中浴缸猝死","value":431805,"itemStyle":{"normal":{"color":"#8c6d31"}}},{"name":"男子短裤吃住网吧","value":191896,"itemStyle":{"normal":{"color":"#8ca252"}}},{"name":"女大学生裸身坠亡","value":992288,"itemStyle":{"normal":{"color":"#8ca252"}}},{"name":"女护士杀8名长者","value":464357,"itemStyle":{"normal":{"color":"#9c9ede"}}},{"name":"女子公厕杀害老人","value":222369,"itemStyle":{"normal":{"color":"#7375b5"}}},{"name":"上海狗屎糕引质疑","value":184682,"itemStyle":{"normal":{"color":"#8ca252"}}},{"name":"舒淇拒去动物园","value":174732,"itemStyle":{"normal":{"color":"#bd9e39"}}},{"name":"孙杨真人秀被忽悠","value":283050,"itemStyle":{"normal":{"color":"#e7969c"}}},{"name":"张雨绮承认再婚","value":247981,"itemStyle":{"normal":{"color":"#e7ba52"}}},{"name":"追砸运钞车被击毙","value":201948,"itemStyle":{"normal":{"color":"#4a5584"}}}],"textRotation":[0,-45,-90,45,90],"type":"wordCloud","size":["80%","80%"]}],"title":{"text":"Baidu Hot Word Top30 (t: 7-days)","x":"center","y":"bottom","orient":"horizontal"}}],"theme":"dark"},"evals":[],"jsHooks":[]}</script>
 <p>You can refer to related functions to play around on your own.</p>
 </div>
 </div>
@@ -526,6 +526,7 @@ $(document).ready(function () {
 $(document).ready(function () {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
+
 
 </script>
 

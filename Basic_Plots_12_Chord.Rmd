@@ -56,7 +56,7 @@ The keys are:
 # Function Call
 
 ```r
-echartr(data, x, <y>, <series>, <z>, <type>, <subtype>)
+echartr(data, x, <y>, <series>, <t>, <type>, <subtype>)
 ```
 
 +--------+--------------------------------------------------------------------+
@@ -70,7 +70,7 @@ echartr(data, x, <y>, <series>, <z>, <type>, <subtype>)
 +--------+--------------------------------------------------------------------+
 | series | series variable which will be coerced to factors. Each level of `series` is treated as a subsetting factor to produce separate pies. Only the first one is accepted if multiple variables are provided. |
 +--------+--------------------------------------------------------------------+
-|  z     | timeline variable which will be coerced to factors. Only the first one is accepted if multiple variables are provided. |
+|  t     | timeline variable which will be coerced to factors. Only the first one is accepted if multiple variables are provided. |
 +--------+--------------------------------------------------------------------+
 | type   | 'chord'. |
 +--------+--------------------------------------------------------------------+
@@ -197,7 +197,7 @@ echartr(me, c(source, target), value, series, type='chord', sub='ribbon')
 
 Let's use `year` columns as timeline.
 ```{r}
-echartr(deutsch, c(club, player), weight, role, z=year, type='chord', 
+echartr(deutsch, c(club, player), weight, role, t=year, type='chord', 
         sub='asc + descsub + rotatelab') %>% 
     setTimeline(show=FALSE, autoPlay=TRUE) %>%
     setTitle('Club Orientation of Deutsch Soccer Team')

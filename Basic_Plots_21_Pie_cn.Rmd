@@ -62,7 +62,7 @@ echartr(titanic, Survived, Count, Class, type='rose') %>%
 # 用法Function Call
 
 ```r
-echartr(data, x, <y>, <series>, <z>, <type>, <subtype>)
+echartr(data, x, <y>, <series>, <t>, <type>, <subtype>)
 ```
 
 +--------+--------------------------------------------------------------------+
@@ -76,7 +76,7 @@ echartr(data, x, <y>, <series>, <z>, <type>, <subtype>)
 +--------+--------------------------------------------------------------------+
 | series | 转为因子后计算。`series`的每个水平被处理为分组因子，用于产生独立的饼图。如提供多个变量，只传入第一个。|
 +--------+--------------------------------------------------------------------+
-|  z     | 时间轴变量，转为因子后计算。如提供多个变量，只传入第一个。 |
+|  t     | 时间轴变量，转为因子后计算。如提供多个变量，只传入第一个。 |
 +--------+--------------------------------------------------------------------+
 | type   | 'pie', 'ring', 'rose'. |
 +--------+--------------------------------------------------------------------+
@@ -143,7 +143,7 @@ knitr::kable(titanic_sex)
 ```
 
 ```{r}
-echartr(titanic_sex, Survived, Count, Class, z=Sex, type='pie') %>% 
+echartr(titanic_sex, Survived, Count, Class, t=Sex, type='pie') %>% 
     setTitle("Titanic: Survival Outcome by Cabin Class Across Sex") %>%
     setPolar(radius='30%')
 ```

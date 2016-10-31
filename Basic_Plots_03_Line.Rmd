@@ -68,7 +68,7 @@ The keys are:
 # Function Call
 
 ```r
-echartr(data, x, y, <series>, <weight>, <z>, <type>, <subtype>)
+echartr(data, x, y, <series>, <weight>, <t>, <type>, <subtype>)
 ```
 
 +---------+--------------------------------------------------------------------+
@@ -84,7 +84,7 @@ echartr(data, x, y, <series>, <weight>, <z>, <type>, <subtype>)
 +---------+--------------------------------------------------------------------+
 | weight  | weight is mapped to the lineWidth of the chart by series |
 +---------+--------------------------------------------------------------------+
-|  z      | timeline variable which will be coerced to factors. Only the first one is accepted if multiple variables are provided. |
+|  t      | timeline variable which will be coerced to factors. Only the first one is accepted if multiple variables are provided. |
 +---------+--------------------------------------------------------------------+
 | type    | 'line', 'curve', 'area', 'wave' |
 +---------+--------------------------------------------------------------------+
@@ -155,7 +155,7 @@ echartr(aq, Day, Temp, Month, weight=Wind, type='line') %>%
 ### Line Chart with Timeline
 
 ```{r}
-echartr(aq, Day, Temp, z=Month, type='line') %>%
+echartr(aq, Day, Temp, t=Month, type='line') %>%
     setTitle('NY Temperature May - Sep 1973, by Month') %>% 
     setSymbols('emptycircle')
 ```

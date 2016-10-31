@@ -29,7 +29,7 @@ Pie plot includes 3 basic types:
 ```{r,echo=FALSE}
 titanic <- data.table::melt(apply(Titanic, c(1,4), sum))
 names(titanic) <- c('Class', 'Survived', 'Count')
-echartr(titanic, Survived, Count, Class, type='pie') %>% 
+echartr(titanic, Survived, Count, facet=Class, type='pie') %>% 
     setLegend(pos=3) %>%
     setTheme('infographic', width=400, height=300) %>%
     setTitle('Titanic: Survival by Cabin Class','pie')
@@ -37,14 +37,14 @@ echartr(titanic, Survived, Count, Class, type='pie') %>%
 </td>
 <td>
 ```{r,echo=FALSE}
-echartr(titanic, Survived, Count, Class, type='ring') %>% 
+echartr(titanic, Survived, Count, facet=Class, type='ring') %>% 
     setTheme('roma', width=400, height=300) %>% setLegend(pos=3) %>%
     setTitle('Titanic: Outcome by Cabin Class','ring')
 ```
 </td></tr>
 <tr><td>
 ```{r,echo=FALSE}
-echartr(titanic, Survived, Count, Class, type='rose') %>% 
+echartr(titanic, Survived, Count, facet=Class, type='rose') %>% 
     setTheme('macarons2', width=400, height=300) %>% setLegend(pos=3) %>%
     setTitle('Titanic: Outcome by Cabin Class','rose')
 ```
@@ -62,7 +62,7 @@ The keys are:
 # Function Call
 
 ```r
-echartr(data, x, <y>, <series>, <z>, <type>, <subtype>)
+echartr(data, x, <y>, <facet>, <t>, <type>, <subtype>)
 ```
 
 +--------+--------------------------------------------------------------------+
@@ -74,9 +74,9 @@ echartr(data, x, <y>, <series>, <z>, <type>, <subtype>)
 +--------+--------------------------------------------------------------------+
 | y      | numeric dependent variable. Only the first one is accepted if multiple variables are provided. |
 +--------+--------------------------------------------------------------------+
-| series | series variable which will be coerced to factors. Each level of `series` is treated as a subsetting factor to produce separate pies. Only the first one is accepted if multiple variables are provided. |
+| facet  | facetting variable which will be coerced to factors. Each level of `facet` is treated as a subsetting factor to produce separate pies. Only the first one is accepted if multiple variables are provided. |
 +--------+--------------------------------------------------------------------+
-|  z     | timeline variable which will be coerced to factors. Only the first one is accepted if multiple variables are provided. |
+|  t     | timeline variable which will be coerced to factors. Only the first one is accepted if multiple variables are provided. |
 +--------+--------------------------------------------------------------------+
 | type   | 'pie', 'ring', 'rose'. |
 +--------+--------------------------------------------------------------------+
@@ -119,16 +119,16 @@ echartr(titanic, Class, Count, type='pie') %>%
 Unlike charts under Cartesian coordinate system, pie chart uses `series` as subsetting factor to produce seperate polar systems. So when we apply `Class` (containing 4 levels) as `series`, we get 4 pies.
 
 ```{r}
-echartr(titanic, Survived, Count, Class, type='pie') %>%
+echartr(titanic, Survived, Count, facet=Class, type='pie') %>%
     setTitle('Titanic: Survival Outcome by Cabin Class')
 ```
 
 ### Multiple Series without X
 
-What if we only provide `series` and `y`? We get several dichotomous pies.
+What if we only provide `facet` and `y`? We get several dichotomous pies.
 
 ```{r}
-echartr(titanic, y=Count, series=Class, type='pie') %>%
+echartr(titanic, y=Count, facet=Class, type='pie') %>%
     setTitle('Titanic: Propotion of Each Cabin Class')
 ```
 
@@ -143,7 +143,7 @@ knitr::kable(titanic_sex)
 ```
 
 ```{r}
-echartr(titanic_sex, Survived, Count, Class, z=Sex, type='pie') %>% 
+echartr(titanic_sex, Survived, Count, facet=Class, t=Sex, type='pie') %>% 
     setTitle("Titanic: Survival Outcome by Cabin Class Across Sex") %>%
     setPolar(radius='30%')
 ```
@@ -155,7 +155,7 @@ echartr(titanic_sex, Survived, Count, Class, z=Sex, type='pie') %>%
 `type` is set 'ring'.
 
 ```{r}
-echartr(titanic, Survived, Count, Class, type='ring') %>%
+echartr(titanic, Survived, Count, facet=Class, type='ring') %>%
     setTitle('Titanic: Survival Outcome by Cabin Class')
 ```
 
@@ -196,7 +196,8 @@ g %>% setLegend(pos=c('center','top','vertical'), itemGap=height/25) %>%
 `type` is set 'rose', `subtype` is set 'radius'.
 
 ```{r}
-echartr(titanic_sex, Class, Count, Survived, type='rose', subtype='radius') %>%
+echartr(titanic_sex, Class, Count, facet=Survived, type='rose', 
+        subtype='radius') %>%
     setTitle('Titanic: Survival Outcome by Cabin Class') 
 ```
 
@@ -205,7 +206,8 @@ echartr(titanic_sex, Class, Count, Survived, type='rose', subtype='radius') %>%
 `type` is set 'rose', `subtype` is set 'area'.
 
 ```{r}
-echartr(titanic_sex, Class, Count, Survived, type='rose', subtype='area') %>%
+echartr(titanic_sex, Class, Count, facet=Survived, type='rose', 
+        subtype='area') %>%
     setTitle('Titanic: Survival Outcome by Cabin Class') 
 ```
 

@@ -54,7 +54,7 @@ echartr(hotword[1:30,], Keyword, Freq, type='wordCloud') %>%
 # 用法Function Call
 
 ```r
-echartr(data, x, y, <z>, <type>)
+echartr(data, x, y, <t>, <type>)
 ```
 
 +--------+---------------------------------------------------------------------+
@@ -68,7 +68,7 @@ echartr(data, x, y, <z>, <type>)
 +--------+--------------------------------------------------------------------+
 | series | 数据系列变量，转为因子后计算。如提供多个变量，只传入第一个。 |
 +--------+--------------------------------------------------------------------+
-|  z     | 时间轴变量，转为因子后计算。如提供多个变量，只传入第一个。|
+|  t     | 时间轴变量，转为因子后计算。如提供多个变量，只传入第一个。|
 +--------+--------------------------------------------------------------------+
 | type   | 'wordCloud' |
 +--------+--------------------------------------------------------------------+
@@ -127,19 +127,19 @@ echartr(hotword, Keyword, Freq, Trend, type='wordCloud') %>%
 首先，获取今日和七日两个榜单的网页并转为数据框，合并。
 
 ```{r}
-hotword$z <- 'Realtime'
+hotword$t <- 'Realtime'
 hotword1 <- getBaiduHot("http://top.baidu.com/buzz?b=341&fr=topbuzz_b1")
-hotword1$z <- 'Today'
+hotword1$t <- 'Today'
 hotword2 <- getBaiduHot("http://top.baidu.com/buzz?b=42&c=513&fr=topbuzz_b341")
-hotword2$z <- '7-days'
+hotword2$t <- '7-days'
 hotword <- do.call('rbind', list(hotword, hotword1, hotword2))
-hotword$z <- factor(hotword$z, levels=c('Realtime', 'Today', '7-days'))
+hotword$t <- factor(hotword$t, levels=c('Realtime', 'Today', '7-days'))
 ```
 
 然后作图。
 
 ```{r}
-g <- echartr(hotword, Keyword, Freq, z=z, type='wordCloud') %>% 
+g <- echartr(hotword, Keyword, Freq, t=t, type='wordCloud') %>% 
     setTitle('Baidu Hot Word Top30')
 g
 ```

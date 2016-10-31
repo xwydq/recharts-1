@@ -40,7 +40,7 @@ echartr(stock, as.character(date), c("open", "close", "low", "high"), type='k') 
 # 用法Function Call
 
 ```r
-echartr(data, x, y, <z>, <type>)
+echartr(data, x, y, <t>, <type>)
 ```
 
 +--------+--------------------------------------------------------------------+
@@ -52,7 +52,7 @@ echartr(data, x, y, <z>, <type>)
 +--------+--------------------------------------------------------------------+
 | **y**  | 数值型自变量，只传入前四列且必须按'开盘'、'收盘'、'最低价'、'最高价'顺序排列。 |
 +--------+--------------------------------------------------------------------+
-|  z     | 时间轴变量，转为因子计算。如提供多个变量，只传入第一个。 |
+|  t     | 时间轴变量，转为因子计算。如提供多个变量，只传入第一个。 |
 +--------+--------------------------------------------------------------------+
 | type   | 'k' 或 'candlestick' |
 +--------+--------------------------------------------------------------------+
@@ -70,7 +70,7 @@ echartr(stock, as.character(date), c(open, close, low, high), type='k') %>%
 
 ## 带时间轴With Timeline
 
-还记得[快速入门](index_cn.html)中的特别注意事项吗？我们要修补一下数据，让它包含`x`和`z`各自所有水平的完整组合。
+还记得[快速入门](index_cn.html)中的特别注意事项吗？我们要修补一下数据，让它包含`x`和`t`各自所有水平的完整组合。
 
 ```{r}
 stock$Month <- format(stock$date, '%m')
@@ -82,7 +82,7 @@ stock <- merge(stock, fullData, all.y=TRUE)
 
 只有这样时间轴才正常显示。
 ```{r}
-echartr(stock, Day, c(open, close, low, high), z=Month, type='k') %>%
+echartr(stock, Day, c(open, close, low, high), t=Month, type='k') %>%
     setYAxis(name="Price")
 ```
 

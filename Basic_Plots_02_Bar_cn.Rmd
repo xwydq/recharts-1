@@ -61,7 +61,7 @@ echartr(iris, Sepal.Width) %>% setLegend(pos=3) %>%
 # 用法Function Call
 
 ```r
-echartr(data, x, <y>, <series>, <weight>, <z>, <type>, <subtype>)
+echartr(data, x, <y>, <series>, <weight>, <t>, <type>, <subtype>)
 ```
 
 +---------+--------------------------------------------------------------------+
@@ -79,7 +79,7 @@ echartr(data, x, <y>, <series>, <weight>, <z>, <type>, <subtype>)
 +---------+--------------------------------------------------------------------+
 | weight  | 权重变量关联不同系列的柱宽。 |
 +---------+--------------------------------------------------------------------+
-|  z      | 时间轴变量，转为因子处理。如提供多个变量，只传入第一个。 |
+|  t      | 时间轴变量，转为因子处理。如提供多个变量，只传入第一个。 |
 +---------+--------------------------------------------------------------------+
 | type    | - `x`为文本型而`y`为数值型, 或'x'为数值型而'y'缺失, 则可以忽略'type'或指定为'auto'。 |
 |         | - 也可指定为'bar'/'hbar'\'vbar'/'column'、'hist'/'histogram'。 |
@@ -190,7 +190,7 @@ knitr::kable(titanic_sex)
 ```
 
 ```{r}
-echartr(titanic_sex, Class, Count, Survived, z=Sex, type='bar') %>% 
+echartr(titanic_sex, Class, Count, Survived, t=Sex, type='bar') %>% 
     setTitle("Titanic: Survival Outcome by Cabin Class Across Sex")
 ```
 
@@ -243,6 +243,8 @@ echartr(iris, Sepal.Width, type='hist', subtype='density') %>%
 # 其他设定Futher Setup
 
 接下来可以配置控件、添加标注点/标注线，以及美化成图。
+
+------------
 
 参考相关函数，尽情探索吧。
 

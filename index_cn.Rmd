@@ -8,16 +8,14 @@ output:
 
 ---
 
-<div class="alert alert-warning">
+`recharts` 是从[Yihui Xie](https://github.com/yihui/recharts) fork而来。它基于百度Echarts2的最后一个稳定发布版(v2.2.7)开发。本文档始终反映**recharts**最新的特性([Github](https://github.com/madlogos/recharts))。基于Echarts3的[recharts2](https://github.com/madlogos/recharts2)包仍在开发中。
 
-<strong>注意:</strong>本加载包仍在开发完善中。recharts基于百度Echarts2的最后一个稳定发布版(v2.2.7)开发。本文档始终反映**recharts**最新的特性([Github](https://github.com/madlogos/recharts))。安装方法：
+安装方法：
 
 ```r
 if (!require(devtools)) library(devtools)
 install_github("madlogos/recharts")
 ```
-
-</div>
 
 # 知识地图Knowledge Map
 
@@ -78,7 +76,7 @@ install_github("madlogos/recharts")
 
 ```{r}
 library(recharts)
-echartr(iris, ~Sepal.Length, ~Sepal.Width, series = ~Species)
+echartr(iris, Sepal.Length, Sepal.Width, series = Species)
 ```
 
 **recharts**建基于[**htmlwidgets**](http://htmlwidgets.org)包之上，这样做的优点是极大地节省了开发者管理JavaScript依赖包和处理不同类型的输出文档（如R Markdown和Shiny）的时间。你只需要创建一幅图，而如何输出这幅图（无论R Markdown, Shiny, 还是R控制台/ RStudio）则交由htmlwidgets来处理。
@@ -122,20 +120,18 @@ str(args(echartr))
 |  x        | 自变量。`data`的一列或多列。可以是时间、数值或文本型。   |
 |           |              |
 |           | - 直角坐标系里，`x`与x轴关联 |
-|           | - 在极坐标系，`x`的第一变量与极坐标关联，`x`的第二变量为数据系列(映射到图例) |
+|           | - 在极坐标系，`x`与极坐标关联 |
 |           | - 其他类型中，单坐标系可参考直角坐标系的例子，而多坐标系可参考极坐标系的例子。  |
 +-----------+------------------------------------------------------------------+
 |  y        | 应变量，`data`的一列或多列。始终为数值型。 |
 +-----------+------------------------------------------------------------------+
-|  series   | 分组变量，`data`的某一列。进行运算时被视作因子。 |
-|           |    |
-|           | - 直角坐标系里，`series`为数据系列 (映射到图例)。   |
-|           | - 极坐标系里，`series`映射到极坐标系的索引值。 |
-|           | - 其他类型中，单坐标系可参考直角坐标系的例子，而多坐标系可参考极坐标系的例子。 |
+|  series   | 分组变量，`data`的某一列。进行运算时被视作因子。作为数据系列，映射到图例。 |
 +-----------+------------------------------------------------------------------+
 |  weight   | 权重变量，在气泡图、线图、柱图中与图形大小关联。 |
 +-----------+------------------------------------------------------------------+
-|  z        | 时间轴变量。一旦指定`z`变量，就会生成时间轴组件。 |
+|  facet    | 分面变量，`data`的某一列。进行运算时被视为因子。适用于多坐标系，facet的每个水平会生成一个独立的分面。 |
++-----------+------------------------------------------------------------------+
+|  t        | 时间轴变量。一旦指定`t`变量，就会生成时间轴组件。 |
 +-----------+------------------------------------------------------------------+
 |  lat      | 纬度，用于地图/热力图 |
 +-----------+------------------------------------------------------------------+
@@ -143,7 +139,7 @@ str(args(echartr))
 +-----------+------------------------------------------------------------------+
 |  type     | 图类型，默认为'auto'。`type`作为向量传入时，映射到`series`向量。 |
 +-----------+------------------------------------------------------------------+
-| subtype   | 图亚类，默认为NULL。`subtype`作为向量传入时，映射到`series`向量。 |
+| subtype   | 图亚类，默认为NULL。`subtype`作为向量传入时，映射到`series`向量。|
 +-----------+------------------------------------------------------------------+
 
 ### 支持的图类型Supported Chart Types
@@ -182,9 +178,8 @@ echartr(mtcars, wt, mpg, am, weight=gear, type='bubble')
 
 数据必须以数据框形式传入。数据系列和时间轴会以`series`和`z`变量的原始顺序排序。所以作图前，必须先对数据框进行相应的排序，以确保作出的图里，图例和时间轴以正确的顺序显示。
 
-用到时间轴(`z`)时，务必格外小心。`x`、`y`、`series`、`weight`变量一旦用到，就要确保每个`z`水平上，这些变量都完备地排列组合了。否则你会发现各组图形在时间轴上莫名其妙地重叠呈现。
+用到时间轴(`t`)时，务必格外小心。`x`、`y`、`series`、`weight`变量一旦用到，就要确保每个`z`水平上，这些变量都完备地排列组合了。否则你会发现各组图形在时间轴上莫名其妙地重叠呈现。
 
-对`series`要特别留意，因为在单坐标系（如直角坐标系）和多坐标系（如极坐标系）中，series的作用是不同的。在前一种情形下，`series`指数据系列。但在后一种情形下，`series`指的是坐标系索引，而`x[,2]`才指数据系列。这样设计是因为`type`和`subtype`固定映射到`series`向量，而在多坐标系图中，用户通常倾向于把不同的图类/亚类映射到多个不同的图，而不是数据系列。
 
 #### 图类和亚类Type/Subtype
 `recharts`在某些情况下支持混合作图，比如柱图和线图。
@@ -219,20 +214,22 @@ g = echartr(mtcars, wt, mpg, factor(am, labels=c('Automatic', 'Manual')))
 
 ```
 - x
-    - series
-        - list 1
-            - name: 'Automatic'
-            - data: ...
-            - type: 'scatter'
-        - list 2
-            - name: 'Manual'
-            - data: ...
-            - type: 'scatter'
-    - legend
-    - xAxis
-    - yAxis
-    - tooltip
-    ...
+  +-- series
+  |   +--- list 1
+  |   |    +---- name: 'Automatic'
+  |   |    +---- data: ...
+  |   |    +---- type: 'scatter'
+  |   +--- list 2
+  |   |    +---- name: 'Manual'
+  |   |    +---- data: ...
+  |   |    +---- type: 'scatter'
+  |   +--- ...
+  +-- legend
+  +-- xAxis
+  +-- yAxis
+  +-- grid  
+  +-- tooltip
+  +-- ...
 ```
 
 如果你想直接修改数据系列的定义，可以调用低阶函数`setSeries`。
@@ -276,7 +273,7 @@ g %>% setTitle('wt vs mpg', paste0('[Motor Trend](', link, ')'),
 
 ### 图例Legend
 
-修改图例(柠檬色)，初始化时只选中第一系列('Automatic')。
+修改图例(青柠色)，初始化时只选中第一系列('Automatic')。
 
 ```{r}
 g %>% setLegend(selected='Automatic', textStyle=list(color='lime'))
@@ -421,4 +418,4 @@ enquote(g)
 
 # 结语Finale
 
-通常我们不希望R用户写那么长的选项列表。R用户一般更熟悉（也更常用到）诸如数据框、矩阵、表格等数据结构，理想状态下，我们希望用户只要传入一些熟悉的数据对象，recharts自动地配置出ECharts对象来。目前离理想还有距离。但欢迎反馈您的体验和看法，也欢迎用[Github pull requests](https://github.com/madlogos/recharts)贡献您的代码。
+通常我们不希望R用户写那么长的选项列表。R用户一般更熟悉（也更常用到）诸如数据框、矩阵、表格等数据结构，理想状态下，我们希望用户只要传入一些熟悉的数据对象，recharts自动地配置出ECharts对象来。欢迎反馈您的体验和看法，也欢迎用[Github pull requests](https://github.com/madlogos/recharts)贡献您的代码。

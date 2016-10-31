@@ -68,7 +68,7 @@ echartr(titanic, Class, Count, Survived, type='wave') %>%
 # 用法Function Call
 
 ```r
-echartr(data, x, y, <series>, <weight>, <z>, <type>, <subtype>)
+echartr(data, x, y, <series>, <weight>, <t>, <type>, <subtype>)
 ```
 
 +---------+--------------------------------------------------------------------+
@@ -84,7 +84,7 @@ echartr(data, x, y, <series>, <weight>, <z>, <type>, <subtype>)
 +---------+--------------------------------------------------------------------+
 | weight  | 权重变量映射各系列的线宽lineWidth。 |
 +---------+--------------------------------------------------------------------+
-|  z      | 时间轴变量，转为因子后计算。如提供多个变量，只传入第一个。 |
+|  t      | 时间轴变量，转为因子后计算。如提供多个变量，只传入第一个。 |
 +---------+--------------------------------------------------------------------+
 | type    | 'line', 'curve', 'area', 'wave' |
 +---------+--------------------------------------------------------------------+
@@ -155,7 +155,7 @@ echartr(aq, Day, Temp, Month, weight=Wind, type='line') %>%
 ### 带时间轴的线图Line Chart with Timeline
 
 ```{r}
-echartr(aq, Day, Temp, z=Month, type='line') %>%
+echartr(aq, Day, Temp, t=Month, type='line') %>%
     setTitle('NY Temperature May - Sep 1973, by Month') %>% 
     setSymbols('emptycircle')
 ```

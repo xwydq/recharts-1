@@ -56,7 +56,7 @@ echartr(deutsch[deutsch$year==2014,], c(club, player), weight, role, type='chord
 # 用法Function Call
 
 ```r
-echartr(data, x, <y>, <series>, <z>, <type>, <subtype>)
+echartr(data, x, <y>, <series>, <t>, <type>, <subtype>)
 ```
 
 +--------+--------------------------------------------------------------------+
@@ -70,7 +70,7 @@ echartr(data, x, <y>, <series>, <z>, <type>, <subtype>)
 +--------+--------------------------------------------------------------------+
 | series | 数据系列变量，转为因子后计算。如果提供多个变量，只传入第一个。 |
 +--------+--------------------------------------------------------------------+
-|  z     | 时间轴变量，转为因子后计算。如提供多个变量，只传入第一个。 |
+|  t     | 时间轴变量，转为因子后计算。如提供多个变量，只传入第一个。 |
 +--------+--------------------------------------------------------------------+
 | type   | 'chord'. |
 +--------+--------------------------------------------------------------------+
@@ -197,7 +197,7 @@ echartr(me, c(source, target), value, series, type='chord', sub='ribbon')
 
 用`year`列作为时间轴。
 ```{r}
-echartr(deutsch, c(club, player), weight, role, z=year, type='chord', 
+echartr(deutsch, c(club, player), weight, role, t=year, type='chord', 
         sub='asc + descsub + rotatelab') %>% 
     setTimeline(show=FALSE, autoPlay=TRUE) %>%
     setTitle('Club Orientation of Deutsch Soccer Team')
