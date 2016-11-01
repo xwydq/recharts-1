@@ -385,7 +385,7 @@ echartr = function(
     # -------------------output-------------------------------
     chart = htmlwidgets::createWidget(
         'echarts', params, width = NULL, height = NULL, package = 'recharts',
-        dependencies = lapply(c('base', unique(dfType$type)), getDependency)
+        dependencies = NULL
     )
 
     if (hasT)

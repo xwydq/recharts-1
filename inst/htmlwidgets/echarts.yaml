@@ -4,6 +4,8 @@ dependencies:
     src: "htmlwidgets/lib/echarts"
     script:
       - echarts-all.js
-      - ext/params.js
-      - ext/loadGeoJSON.js
+  - name: charts-ext
+    version: 2.2.7
+    src: "htmlwidgets/lib/echarts/ext"
+    script: [main.js, BMap.js]
 
