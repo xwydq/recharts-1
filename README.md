@@ -1,12 +1,14 @@
-v 0.1
+v 0.1-1
 
 [中文](#百度echarts2的r语言接口)
 
 # An R Interface to Baidu Echarts2
 
+NOTE: There are some issues regarding facetting and shiny, which are expected to be fixed in v 0.2.
+
 [Echarts2](http://http://echarts.baidu.com/echarts2) is an open source javascript visualization library developed by Baidu Inc. for interactive charts. Compared to other popular js libraries, Echarts is more Chinese-friendly. The latest stable release of Echarts2 is 2.2.7. The most up-to-date version is Echarts 3.2.3. 
 
-This package is to facilitate `R` users to make use of Echarts2 library (Echarts3 is not supported yet). A hello world example is as below:
+This package is to facilitate `R` users to make use of Echarts2 library (Echarts3 will be supported in recharts2 package). A hello world example is as below:
 
 ```r
 echartr(iris, Sepal.Length, Sepal.Width, Species) %>% setTheme('macarons')
@@ -138,11 +140,15 @@ Under the terms of [MIT](http://www.opensource.org/licenses/mit-license.php) + f
 
 -----
 
+[English](#An R Interface to Baidu Echarts2)
+
 # 百度Echarts2的R语言接口
+
+NOTE: 本包仍有一些bug，主要集中在分面(facetting)和shiny。预期在0.2版修复。
 
 [Echarts2](http://http://echarts.baidu.com/echarts2)是百度发布的一个开源javascript图形库，用于创建交互图。与其他流行的js库相比，Echarts对中文更友好。Echarts2最新的发布版为2.2.7，而Echarts家族的最新版本为3.2.3。
 
-该加载包是为了便利`R`用户使用Echarts2库 (目前仍不支持Echarts3). 下面是一个hello world案例：
+该加载包是为了便利`R`用户使用Echarts2库 (recharts2包将提供对Echarts3的支持). 下面是一个hello world案例：
 
 ```r
 echartr(iris, Sepal.Length, Sepal.Width, Species) %>% setTheme('macarons')

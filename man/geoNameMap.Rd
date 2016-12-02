@@ -5,7 +5,7 @@
 \alias{geoNameMap}
 \title{Chinese and English Names of Geographic Names}
 \format{A data.frame (3735 * 5) \cr
-\tabular{lllll}{
+\tabular{lll}{
  Var \tab Type \tab Meaning \cr
  ID \tab int \tab ID of the record \cr
  EN \tab chr \tab English geographic names \cr

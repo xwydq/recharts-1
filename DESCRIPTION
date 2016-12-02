@@ -1,8 +1,8 @@
 Package: recharts
 Type: Package
-Title: An R Interface to ECharts
-Version: 0.1
-Date: 2016-10-28
+Title: An R Interface to ECharts2
+Version: 0.1-1
+Date: 2016-12-02
 Authors@R: c(
     person("Liyun", "Chen", role = "aut"),
     person("Taiyun", "Wei", role = c("aut", "cre"), email = "weitaiyun@gmail.com"),
@@ -18,6 +18,7 @@ Imports:
     htmlwidgets (>= 0.4),
     magrittr
 Suggests:
+    compiler,
     data.table,
     dplyr,
     ggthemes,

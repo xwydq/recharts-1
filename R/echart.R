@@ -147,6 +147,7 @@ eChart = echart
 #' }
 #' @param ...
 #'
+#' @import compiler
 #' @export
 #' @references
 #' Online Manual: \url{http://madlogos.github.io/recharts}
@@ -207,7 +208,7 @@ echartr = function(
 
     # -------------split multi-timeline df to lists-----------
 
-    .makeMetaDataList <- function(df) {
+    .makeMetaDataList <- cmpfun(function(df) {
          vars <- sapply(dataVars, function(x) {
              eval(parse(text=paste0(x, 'varRaw')))}, simplify=TRUE)
          if (!is.null(dim(vars)))
@@ -218,7 +219,7 @@ echartr = function(
         # assignment <- paste0(dataVars, " = evalVarArg(", vArgsRaw[dataVars], ", ",
         #                      substitute(df, parent.frame()), ")")
         eval(parse(text=paste0("list(", paste(assignment, collapse=", "), ")")))
-    }
+    })
     if (hasT){
         uniT <- unique(t[,1])
         if (is.factor(uniT)) uniT <- as.character(uniT)
@@ -233,8 +234,8 @@ echartr = function(
             data <- data[order(data[,tvar[1]]),]
         }
 
-        dataByZ <- split(data, as.factor(data[,tvar[1]]))
-        metaData <- lapply(dataByZ, .makeMetaDataList)
+        dataByT <- split(data, as.factor(data[,tvar[1]]))
+        metaData <- lapply(dataByT, .makeMetaDataList)
         names(metaData) <- uniT
         if (! identical(unique(t[,1]), sort(unique(t[,1]))) &&
             ! identical(unique(t[,1]), sort(unique(t[,1]), TRUE)))
@@ -244,23 +245,22 @@ echartr = function(
     }
 
     # -----------------determine types---------------------------
-    type <- tolower(type)
-    check.types <- unname(sapply(c('auto', validChartTypes$name), grepl, x=type))
+    check.types <- unname(sapply(c('auto', validChartTypes$name), grepl,
+                                 x=tolower(unlist(type))))
     if (is.null(dim(check.types)))
         check.types <- matrix(check.types, nrow=1)
     if (!any(check.types))
         stop("Invalid chart type!\n", paste(type[which(rowSums(check.types)==0)], ', '),
              " not matching the valid chart type table.")
+
     if (!is.null(series)) lvlSeries <- levels(as.factor(series[,1]))
     if (!is.null(series)) nSeries <- length(lvlSeries) else nSeries <- 1
-    if (type[1] == 'auto')  type = determineType(x[,1], y[,1])
+    if (type[[1]] == 'auto')  type = determineType(x[,1], y[,1])
 
     ## type vector: one series, one type
-    if (length(type) >= nSeries){
-        type <- type[1:nSeries]
-    }else{
-        type <- c(type, rep(type[length(type)], nSeries-length(type)))
-    }
+    type = matchTypeList(
+        if ('facet' %in% dataVars) facet[,1] else NULL,
+        if ('series' %in% dataVars) series[,1] else NULL, type)
 
     ## special: geoJSON map, not working
     geoJSON <- NULL
@@ -285,18 +285,14 @@ echartr = function(
         }
 
     ## subtype
-    subtype <- tolower(subtype)
     if (!missing(subtype)) if (length(subtype) > 0)
-        if (length(subtype) < nSeries){
-            subtype <- c(subtype, rep(subtype[length(subtype)],
-                                      nSeries-length(subtype)))
-        }else if (length(subtype) > nSeries){
-            subtype <- subtype[1:nSeries]
-        }
-
+        subtype = matchTypeList(
+            if ('facet' %in% dataVars) facet[,1] else NULL,
+            if ('series' %in% dataVars) series[,1] else NULL, subtype)
+#browser()
     ## type is converted to a data.frame, colnames:
     ## [id name type stack smooth mapType mapMode misc]
-    dfType <- sapply(validChartTypes$name, function(x) grepl(x, type))
+    dfType <- sapply(validChartTypes$name, function(x) grepl(x, unlist(type)))
     if (is.null(dim(dfType))){
         typeIdx <- unname(which(dfType))
     }else{
@@ -304,10 +300,10 @@ echartr = function(
                                  function(i) which(dfType[i,]))))
     }
     dfType <- validChartTypes[typeIdx,]
-    lstSubtype <- rep('', length(type))
+    lstSubtype <- rep('', length(unlist(type)))
     if (!missing(subtype)) if (length(subtype) > 0)
-        lstSubtype <- lapply(1:length(subtype), function(i){
-            str <- subtype[i]
+        lstSubtype <- lapply(1:length(unlist(subtype)), function(i){
+            str <- unlist(subtype)[i]
             validSubtype <- eval(parse(text=tolower(dfType[i, 'subtype'])))
             strSubtype <- unlist(strsplit(str, '[_|\\+]'))
             strSubtype <- gsub("^ +| +$", "", strSubtype)
@@ -332,7 +328,7 @@ echartr = function(
     #                   dfType[, "xyflip"]))
 
     # ---------------------------params list----------------------
-    .makeSeriesList <- function(t){  # each timeline create a options list
+    .makeSeriesList <- cmpfun(function(t){  # each timeline create a options list
         #browser()
         series_fun = getFromNamespace(paste0('series_', dfType$type[1]),
                                     'recharts')
@@ -363,7 +359,7 @@ echartr = function(
         }
 
         return(out)
-    }
+    })
 
     if (hasT){  ## has timeline
         params = list(
@@ -388,8 +384,7 @@ echartr = function(
         dependencies = NULL
     )
 
-    if (hasT)
-        chart <- chart %>% setTimeline(show=TRUE, data=uniT)
+    if (hasT) chart <- chart %>% setTimeline(show=TRUE, data=uniT)
     if (!is.null(geoJSON)) chart$geoJSON <- geoJSON
 
     if (any(dfType$type %in% c('map'))){
@@ -449,4 +444,51 @@ getMeta = function(obj) {
         attr(obj$x, 'meta', exact = TRUE)
     else
         attr(obj, "meta", exact = TRUE)
+}
+
+matchTypeList = function(facet, series, param, lower.case=TRUE){
+    stopifnot(is.vector(param) || is.list(param))
+    stopifnot(is.null(facet) || is.vector(facet) || is.factor(facet))
+    stopifnot(is.null(series) || is.vector(series) || is.factor(series))
+
+    if (is.null(facet)){  # no facets
+        if (is.list(param)) param = unlist(param)
+        if (is.null(series)){
+            param = casefold(param[1], !lower.case)
+        }else{
+            if (length(param) >= length(unique(series))){
+                param = casefold(param[1:length(unique(series))], !lower.case)
+            }else{
+                param = casefold(
+                    c(param, rep(param[length(param)],
+                                 length(unique(series)) - length(param))),
+                    !lower.case)
+            }
+        }
+    }else{  # with facets
+        if (!is.list(param)) param = list(param)
+        if (length(param) >= length(unique(facet)))
+            param = param[1:length(unique(facet))]
+        else
+            param = append(param, rep(param[length(param)],
+                                      length(unique(facet)) - length(param)))
+        if (is.null(series)){
+            for (i in 1:length(param))
+                param[[i]] = casefold(param[[i]][1], !lower.case)
+        }else{
+            for (i in 1:length(param)){  # suppl params
+                if (length(param[[i]]) >= length(unique(series))){
+                    param[[i]] = casefold(param[[i]][1:length(unique(series))],
+                                          !lower.case)
+                }else{
+                    param[[i]] = casefold(
+                        c(param[[i]], rep(
+                            param[[i]][length(param[[i]])],
+                            length(unique(series)) - length(param[[i]]))),
+                        !lower.case)
+                }
+            }
+        }
+    }
+    return(param)
 }

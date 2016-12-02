@@ -5,7 +5,7 @@
 \alias{chinapm25}
 \title{PM2.5 in China Cities (Fictious Data)}
 \format{A data.frame (199 * 4) \cr
-\tabular{llll}{
+\tabular{lll}{
  Var \tab Type \tab Meaning \cr
  City \tab chr \tab City names (Haimen, Ordos, Zhaoyuan, ...) \cr
  Value \tab num \tab PM2.5 values (9, 12, 12, ...) \cr

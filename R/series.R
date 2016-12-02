@@ -312,21 +312,21 @@ series_pie <- function(lst, type, subtype, return=NULL, ...){
         stop('pie/funnel charts need either x or series!')
     data <- data.frame(lst$y[,1])
     if (!is.null(lst$x)){
-        data[,2] <- if (matchSubtype('info', subtype))
+        data[,'x'] <- if (matchSubtype('info', subtype))
             'TRUE' else lst$x[,1]
         series <- if (matchSubtype('info', subtype))
             c('TRUE', 'FALSE') else as.character(unique(lst$x[,1]))
     }else{
-        data[,2] <- if (matchSubtype('info', subtype))
+        data[,'x'] <- if (matchSubtype('info', subtype))
             lst$series[,1] else 'TRUE'
         series <- if (matchSubtype('info', subtype))
-            as.character(unique(lst$series[,1])) else c('TRUE','FALSE')
+            as.character(unique(lst$series[,1])) else c('TRUE', 'FALSE')
     }
     if (!is.null(lst$facet)){
-        data[,3] <- lst$facet[,1]
+        data[,'facet'] <- lst$facet[,1]
         pies <- as.character(unique(lst$facet[,1]))
     }else{
-        data[,3] <- if (matchSubtype('info', subtype))
+        data[,'facet'] <- if (matchSubtype('info', subtype))
             lst$x[,1] else 'Proportion'
         pies <- if (any(sapply(subtype, function(x) 'info' %in% x)))
             as.character(unique(lst$x[,1])) else 'Proportion'
@@ -336,7 +336,6 @@ series_pie <- function(lst, type, subtype, return=NULL, ...){
                 subtype <- rep(subtype[length(subtype)],
                                length(type)-length(subtype))
         }
-
     }
     names(data) <- c('y', 'x', 'facet')
     data <- data.table::dcast(data, x~facet, sum, value.var='y')
@@ -373,7 +372,7 @@ series_pie <- function(lst, type, subtype, return=NULL, ...){
     )
     normalStyle = list(normal=list(label=list(show=FALSE),
                                   labelLine=list(show=FALSE)))
-
+browser()
     obj <- list()
     for (pie in pies){
         iType <- type[which(pies == pie),]
@@ -396,7 +395,7 @@ series_pie <- function(lst, type, subtype, return=NULL, ...){
                        max(unname(data[,pie]), na.rm=TRUE)),
             height=ifelse(rows==1, '70%', paste0(radius, '%')),
             y=ifelse(rows==1, rep('15%', length(pies)), paste0(centers[pie, 2]-radius/2, '%')),
-            selectedMode=if ('multi' %in% iSubtype) 'multiple' else NULL
+            selectedMode=if ('multi' %in% iSubtype) 'multiple' else 'single'
         )
         if (grepl('ring', iType$misc)){
             o[['radius']] <- paste0(c(radius * 2/3, radius), '%')

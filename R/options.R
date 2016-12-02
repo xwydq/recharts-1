@@ -563,22 +563,32 @@ tuneGrid <- function(chart, ...){
     dfGrid <- dfGrid[!(apply(dfGrid, 1, function(row) all(is.na(row)))),]
 
     #dfGrid <<- dfGrid
-    # browser()
+    #browser()
 
     sumGrid <- dcast(data.table(dfGrid), orient + pos ~ ., fun=sum,
                      value.var=c("x", "y", "x2", "y2", "height", "width"))
+    names(sumGrid) <- c('orient', 'pos', 'x', 'y', 'x2', 'y2', 'height', 'width')
     uniqueGrid <- dfGrid[!duplicated(paste(dfGrid$orient, dfGrid$pos)),]
     uniqueGrid <- uniqueGrid[order(uniqueGrid$orient, uniqueGrid$pos),]
-    sumGrid[,c('x_sum_.', 'y_sum_.', 'x2_sum_.', 'y2_sum_.')] <-
-        uniqueGrid[, c('x', 'y', 'x2', 'y2')]
+    # sumGrid[,c('x_sum_.', 'y_sum_.', 'x2_sum_.', 'y2_sum_.')] <-
+    #     uniqueGrid[, c('x', 'y', 'x2', 'y2')]
+    # sumGrid$x <- ifblank(
+    #     rowSums(sumGrid[,list(x_sum_., width_sum_.)], na.rm=TRUE), NA)
+    # sumGrid$y <- ifblank(
+    #     rowSums(sumGrid[,list(y_sum_., height_sum_.)], na.rm=TRUE), NA)
+    # sumGrid$x2 <- ifblank(
+    #     rowSums(sumGrid[, list(x2_sum_., width_sum_.)], na.rm=TRUE), NA)
+    # sumGrid$y2 <- ifblank(
+    #     rowSums(sumGrid[, list(y2_sum_., height_sum_.)], na.rm=TRUE), NA)
+    sumGrid[,c('x', 'y', 'x2', 'y2')] <- uniqueGrid[, c('x', 'y', 'x2', 'y2')]
     sumGrid$x <- ifblank(
-        rowSums(sumGrid[,list(x_sum_., width_sum_.)], na.rm=TRUE), NA)
+        rowSums(sumGrid[,list(x, width)], na.rm=TRUE), NA)
     sumGrid$y <- ifblank(
-        rowSums(sumGrid[,list(y_sum_., height_sum_.)], na.rm=TRUE), NA)
+        rowSums(sumGrid[,list(y, height)], na.rm=TRUE), NA)
     sumGrid$x2 <- ifblank(
-        rowSums(sumGrid[, list(x2_sum_., width_sum_.)], na.rm=TRUE), NA)
+        rowSums(sumGrid[, list(x2, width)], na.rm=TRUE), NA)
     sumGrid$y2 <- ifblank(
-        rowSums(sumGrid[, list(y2_sum_., height_sum_.)], na.rm=TRUE), NA)
+        rowSums(sumGrid[, list(y2, height)], na.rm=TRUE), NA)
 
     #uniqueGrid <<- uniqueGrid
     #sumGrid <<- sumGrid

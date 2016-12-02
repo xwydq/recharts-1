@@ -12,7 +12,7 @@
  value \tab num \tab Importance value of the person
 }
 A data.frame (49 * 4) links \cr
-\tabular{llll}{
+\tabular{lll}{
  Var \tab Type \tab Meaning \cr
  source \tab chr \tab Starting end of the link between two people \cr
  target \tab chr \tab Ending end of the link between two people \cr

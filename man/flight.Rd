@@ -5,7 +5,7 @@
 \alias{flight}
 \title{Fictious Flights in China (Beijing, Shanghai, Guangzhou)}
 \format{A data.frame (150 * 2) route \cr
-\tabular{ll}{
+\tabular{lll}{
  Var \tab Type \tab Meaning \cr
  From \tab chr \tab Source of the route (Beijing, Shanghai, ...) \cr
  To \tab chr \tab Target of the route (Baotou, Beihai, ...)

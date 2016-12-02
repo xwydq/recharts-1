@@ -5,7 +5,7 @@
 \alias{stock}
 \title{Stock Index Records of Shanghai Stock Exchange (2013H1)}
 \format{A data.frame (88 * 5) \cr
-\tabular{lllll}{
+\tabular{lll}{
  Var \tab Type \tab Meaning \cr
  data \tab Data \tab Transaction date \cr
  open \tab num \tab Open index \cr

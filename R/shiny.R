@@ -11,11 +11,12 @@
 #' @examples # !formatR
 #' \donttest{library(recharts)
 #' library(shiny)
+#' p = echart(data.frame(x = rnorm(100), y = rnorm(100)), x, y)
 #' app = shinyApp(
-#'   ui = fluidPage(eChartOutput('myChart')),
+#'   ui = fluidPage(eChartOutput(p$elementId)),
 #'   server = function(input, output) {
-#'     chart = echart(x = rnorm(100), y = rnorm(100))
-#'     output$myChart = renderEChart(chart)
+#'     chart = p
+#'     output[[p$elementId]] = renderEChart(chart)
 #'   }
 #' )
 #'

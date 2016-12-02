@@ -5,7 +5,7 @@
 \alias{deutsch}
 \title{Deutsch Soccer Team And Clubs}
 \format{A data.frame (26 * 5) \cr
-\tabular{lllll}{
+\tabular{lll}{
  Var \tab Type \tab Meaning \cr
  player \tab chr \tab Player names \cr
  club \tab chr \tab Club of the players \cr

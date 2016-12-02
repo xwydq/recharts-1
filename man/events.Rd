@@ -5,7 +5,7 @@
 \alias{events}
 \title{Events Data for eventRiver}
 \format{A data.frame (30 * 5) \cr
-\tabular{lllll}{
+\tabular{lll}{
  Var \tab Type \tab Meaning \cr
  series \tab chr \tab Type of the events ("financial", "political") \cr
  event \tab chr \tab Title of the events ("Alibaba IPO", ...) \cr

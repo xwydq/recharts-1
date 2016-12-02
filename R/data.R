@@ -21,7 +21,7 @@ NULL
 #' @docType data
 #' @name chinapm25
 #' @format A data.frame (199 * 4) \cr
-#' \tabular{llll}{
+#' \tabular{lll}{
 #'  Var \tab Type \tab Meaning \cr
 #'  City \tab chr \tab City names (Haimen, Ordos, Zhaoyuan, ...) \cr
 #'  Value \tab num \tab PM2.5 values (9, 12, 12, ...) \cr
@@ -40,7 +40,7 @@ NULL
 #' @docType data
 #' @name deutsch
 #' @format A data.frame (26 * 5) \cr
-#' \tabular{lllll}{
+#' \tabular{lll}{
 #'  Var \tab Type \tab Meaning \cr
 #'  player \tab chr \tab Player names \cr
 #'  club \tab chr \tab Club of the players \cr
@@ -59,7 +59,7 @@ NULL
 #' @docType data
 #' @name events
 #' @format A data.frame (30 * 5) \cr
-#' \tabular{lllll}{
+#' \tabular{lll}{
 #'  Var \tab Type \tab Meaning \cr
 #'  series \tab chr \tab Type of the events ("financial", "political") \cr
 #'  event \tab chr \tab Title of the events ("Alibaba IPO", ...) \cr
@@ -78,7 +78,7 @@ NULL
 #' @docType data
 #' @name flight
 #' @format A data.frame (150 * 2) route \cr
-#' \tabular{ll}{
+#' \tabular{lll}{
 #'  Var \tab Type \tab Meaning \cr
 #'  From \tab chr \tab Source of the route (Beijing, Shanghai, ...) \cr
 #'  To \tab chr \tab Target of the route (Baotou, Beihai, ...)
@@ -101,7 +101,7 @@ NULL
 #' @docType data
 #' @name geoNameMap
 #' @format A data.frame (3735 * 5) \cr
-#' \tabular{lllll}{
+#' \tabular{lll}{
 #'  Var \tab Type \tab Meaning \cr
 #'  ID \tab int \tab ID of the record \cr
 #'  EN \tab chr \tab English geographic names \cr
@@ -133,7 +133,7 @@ NULL
 #' @docType data
 #' @name stock
 #' @format A data.frame (88 * 5) \cr
-#' \tabular{lllll}{
+#' \tabular{lll}{
 #'  Var \tab Type \tab Meaning \cr
 #'  data \tab Data \tab Transaction date \cr
 #'  open \tab num \tab Open index \cr
@@ -161,7 +161,7 @@ NULL
 #'  value \tab num \tab Importance value of the person
 #' }
 #' A data.frame (49 * 4) links \cr
-#' \tabular{llll}{
+#' \tabular{lll}{
 #'  Var \tab Type \tab Meaning \cr
 #'  source \tab chr \tab Starting end of the link between two people \cr
 #'  target \tab chr \tab Ending end of the link between two people \cr
