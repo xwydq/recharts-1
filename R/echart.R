@@ -145,7 +145,9 @@ eChart = echart
 #'   "dotted","solid","dashed")}
 #'   \item{radar/spider/star}{"fill"}
 #' }
-#' @param ...
+#' @param elementId htmlwidgets elementId of the chart object. If set NULL, recharts will
+#' assign a random elementId to the object every time you try to modify it.
+#' @param ... Elipsis
 #'
 #' @import compiler
 #' @export
@@ -153,7 +155,8 @@ eChart = echart
 #' Online Manual: \url{http://madlogos.github.io/recharts}
 echartr = function(
     data, x = NULL, y = NULL, series = NULL, weight = NULL, facet = NULL,
-    t = NULL, lat = NULL, lng = NULL, type = 'auto', subtype = NULL, ...
+    t = NULL, lat = NULL, lng = NULL, type = 'auto', subtype = NULL,
+    elementId = NULL, ...
 ) {
     options(encoding="native.enc")
     if (is.null(data)){
@@ -404,6 +407,7 @@ echartr = function(
             setTooltip() %>% setToolbox() %>% setLegend() %>%
             autoPolar(type=dfType)
     }
+    if (!is.null(elementId)) chart$elementId = elementId
     chart
 }
 

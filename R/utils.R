@@ -786,17 +786,23 @@ asEchartData <- function(x, na.string='-'){
 
 #' @importFrom digest sha1
 reElementId <- function(chart, seed=NULL){
+    # if elementId is not set, assign a random ElementId.
+    # else, stick to it.
     stopifnot(inherits(chart, 'echarts'))
     if (!is.null(seed)) if (is.numeric(seed)) set.seed(seed)
-    elementId = paste0('echarts-', sha1(
-        paste0(convTimestamp(Sys.time()), Sys.info()[['nodename']],
-               sample(10000000000, 1))))
+    if (is.null(chart$elementId) || grepl('^echart-random-', chart$elementId)){
+        elementId = paste0('echarts-random-', sha1(
+            paste0(convTimestamp(Sys.time()), Sys.info()[['nodename']],
+                   sample(10000000000, 1))))
+    }else{
+        elementId = chart$elementId
+    }
     txt <- paste(deparse(chart, backtick=TRUE, control='all'), collapse='')
     txt <- gsub("(document\\.getElementById\\()([^\\)]+?)\\)",
                 paste0("\\1'", elementId, "'\\)"), txt)
     chart <- eval(parse(text=txt))
     chart$elementId <- elementId
-    class(chart) <- c('echarts','htmlwidget')
+    class(chart) <- c('echarts', 'htmlwidget')
     return(chart)
 }
 

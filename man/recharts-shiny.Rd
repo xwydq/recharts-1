@@ -35,7 +35,7 @@ library(shiny)
 app = shinyApp(
   ui = fluidPage(eChartOutput('myChart')),
   server = function(input, output) {
-    chart = echart(x = rnorm(100), y = rnorm(100))
+    chart = echartr(data.frame(x = rnorm(100), y = rnorm(100)), x, y)
     output$myChart = renderEChart(chart)
   }
 )

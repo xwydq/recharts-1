@@ -1,4 +1,4 @@
-v 0.1-1
+v 0.1-2
 
 [中文](#百度echarts2的r语言接口)
 
@@ -43,21 +43,21 @@ The Echarts object is an S3 list, comprising of the following elements:
 
 (1) **Timeline contained**
 ```
-- timeline
-- options
-    - series
-        - list 1
-        - ...
-    - widgets (title, legend, toolbox, dataRange, dataZoom, roamController)
-    - ...
+|- timeline
+|- options
+    |- series
+        |- list 1
+        |- ...
+    |- widgets (title, legend, toolbox, dataRange, dataZoom, roamController)
+    |- ...
 ```
 (2) **No timeline contained**
 ```
-- series
-    - list 1
-    - ...
-- widgets (title, legend, toolbox, dataRange, dataZoom, roamController)
-- ...
+|- series
+    |- list 1
+    |- ...
+|- widgets (title, legend, toolbox, dataRange, dataZoom, roamController)
+|- ...
 ```
 
 The basic design is to configure an S3 object widget by widget and concatenate them by pipe operator (%>%). It is inspired by `ggplot2`.
@@ -77,8 +77,6 @@ Finally, you can use `relocWidget`functions to relocate/resize the echarts objec
 ## Status
 
 ### Achievements
-
-Current version is 0.0.6. 
 
 - Major part of core function `echartr`
 - Major part of widget functions `setTitle`, `setLegend`, `setDataRange`, `setDataZoom`, `setToolbox`, `setTimeline`, `setRoam`
@@ -140,7 +138,7 @@ Under the terms of [MIT](http://www.opensource.org/licenses/mit-license.php) + f
 
 -----
 
-[English](#An R Interface to Baidu Echarts2)
+[English](#an-r-interface-to-baidu-echarts2)
 
 # 百度Echarts2的R语言接口
 
@@ -183,21 +181,21 @@ Echarts对象其实是一个S3列表，包括下列元素：
 
 (1) **Timeline contained**
 ```
-- timeline
-- options
-    - series
-        - list 1
-        - ...
-    - widgets (title, legend, toolbox, dataRange, dataZoom, roamController)
-    - ...
+|- timeline
+|- options
+    |- series
+        |- list 1
+        |- ...
+    |- widgets (title, legend, toolbox, dataRange, dataZoom, roamController)
+    |- ...
 ```
 (2) **No timeline contained**
 ```
-- series
-    - list 1
-    - ...
-- widgets (title, legend, toolbox, dataRange, dataZoom, roamController)
-- ...
+|- series
+    |- list 1
+    |- ...
+|- widgets (title, legend, toolbox, dataRange, dataZoom, roamController)
+|- ...
 ```
 
 基本设计是逐个控件地配置S3对象，并用%>%串联起来。这一思路受到了`ggplot2`启发。
@@ -217,8 +215,6 @@ Echarts对象其实是一个S3列表，包括下列元素：
 ## 状态
 
 ### 成果
-
-当前版本0.0.6. 
 
 - 核心函数`echartr`的主体
 - 控件函数`setTitle`, `setLegend`, `setDataRange`, `setDataZoom`, `setToolbox`, `setTimeline`, `setRoam`的主体

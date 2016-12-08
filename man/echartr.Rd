@@ -7,11 +7,11 @@
 \usage{
 echartr(data, x = NULL, y = NULL, series = NULL, weight = NULL,
   facet = NULL, t = NULL, lat = NULL, lng = NULL, type = "auto",
-  subtype = NULL, ...)
+  subtype = NULL, elementId = NULL, ...)
 
 echartR(data, x = NULL, y = NULL, series = NULL, weight = NULL,
   facet = NULL, t = NULL, lat = NULL, lng = NULL, type = "auto",
-  subtype = NULL, ...)
+  subtype = NULL, elementId = NULL, ...)
 }
 \arguments{
 \item{data}{data.frame.}
@@ -79,7 +79,10 @@ widget to show the changes along with time.}
   \item{radar/spider/star}{"fill"}
 }}
 
-\item{...}{}
+\item{elementId}{htmlwidgets elementId of the chart object. If set NULL, recharts will
+assign a random elementId to the object every time you try to modify it.}
+
+\item{...}{Elipsis}
 }
 \description{
 This function is used to produce the skeleton of an Echarts object with default settings.
