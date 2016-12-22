@@ -241,7 +241,7 @@ setAxis = function(
         }
     }
 
-    return(chart %>% reElementId())
+    return(chart)
 }
 
 #' @export
@@ -300,7 +300,7 @@ flipAxis <- function(chart, flip=TRUE, ...){
             chart$x$yAxis <- axes[[2]]
         }
     }
-    return(chart %>% reElementId())
+    return(chart)
 }
 
 
@@ -385,7 +385,7 @@ setGrid <- function(chart, x=80, y=60, x2=80, y2=60, width=NULL, height=NULL,
                     lstGrid else mergeList(chart$x[[widget]], lstGrid)
     }
 
-    return(chart %>% reElementId())
+    return(chart)
 }
 
 #' @export
@@ -468,7 +468,7 @@ relocWidget <- function(chart, widgets, x=NULL, y=NULL, x2=NULL, y2=NULL){
     for (i in 1:length(widgets)){
         chart <- chart %>% setGrid(x[i], y[i], x2[i], y2[i], widget=widgets[i])
     }
-    return(chart %>% reElementId())
+    return(chart)
 }
 
 
@@ -650,28 +650,28 @@ tuneGrid <- function(chart, ...){
                     else {
                         chart$x$options[[1]][[j]][[w]] = unname(cumSize[j])
                         if (w %in% c('x2', 'y2'))
-                        #      chart$x$options[[1]][[j]][[w2]] =
-                        #          dev.size('px')[ifelse(w == 'x2', 1, 2)] - 10 -
-                        #          dfGrid[j, sizeParam] - chart$x$options[[1]][[j]][[w]]
-                            chart$x$options[[1]][[j]][[w2]] = JS(
-                                paste0(getJSElementSize(
-                                    chart, ifelse(w == 'x2', 'width', "height")),
-                                    " - ", dfGrid[j, sizeParam] +
-                                        chart$x$options[[1]][[j]][[w]]))
+                             chart$x$options[[1]][[j]][[w2]] =
+                                 dev.size('px')[ifelse(w == 'x2', 1, 2)] - 10 -
+                                 dfGrid[j, sizeParam] - chart$x$options[[1]][[j]][[w]]
+                            # chart$x$options[[1]][[j]][[w2]] = JS(
+                            #     paste0(getJSElementSize(
+                            #         chart, ifelse(w == 'x2', 'width', "height")),
+                            #         " - ", dfGrid[j, sizeParam] +
+                            #             chart$x$options[[1]][[j]][[w]]))
                     }
                 }
             }else{
                 for (j in widgets) {
                     chart$x[[j]][[w]] = unname(cumSize[j])
                     if (w %in% c('x2', 'y2'))
-                        # chart$x[[j]][[w2]] =
-                        #     dev.size('px')[ifelse(w == 'x2', 1, 2)] - 10 -
-                        #     dfGrid[j, sizeParam] - chart$x[[j]][[w]]
-                        chart$x[[j]][[w2]] = JS(
-                            paste0(getJSElementSize(
-                                chart, ifelse(w == 'x2', 'width', "height")),
-                                " - ", dfGrid[j, sizeParam] +
-                                    chart$x[[j]][[w]]))
+                        chart$x[[j]][[w2]] =
+                            dev.size('px')[ifelse(w == 'x2', 1, 2)] - 10 -
+                            dfGrid[j, sizeParam] - chart$x[[j]][[w]]
+                        # chart$x[[j]][[w2]] = JS(
+                        #     paste0(getJSElementSize(
+                        #         chart, ifelse(w == 'x2', 'width', "height")),
+                        #         " - ", dfGrid[j, sizeParam] +
+                        #             chart$x[[j]][[w]]))
                 }
             }
         }
@@ -700,7 +700,7 @@ tuneGrid <- function(chart, ...){
             else
                 chart$x[['grid']] <- lstGrid
         }
-    return(chart %>% reElementId())
+    return(chart)
 }
 
 makeTitle <- function(title=NULL, subtitle=NULL, link=NULL, sublink=NULL,
@@ -1468,7 +1468,7 @@ setSymbols <- function(chart, symbols=NULL, ...){
             }
         }
     }
-    return(chart %>% reElementId())
+    return(chart)
 
 }
 
@@ -1541,7 +1541,7 @@ setRoam <- function(chart, show=TRUE, pos=2, width=80, height=120,
         else
             chart$x$roamController <- lstRoam
     }
-    return(chart %>% reElementId())
+    return(chart)
 }
 
 #' Set \code{legend} of Echarts
@@ -1676,9 +1676,9 @@ autoPolar <- function(chart, type){
         names(data) <- list.names
     }else data <- getMeta(chart)
     dt <- data.frame(x=data$x[,1], y=data$y[,1])
-    dt$idx <- if (is.null(data$series)) 1 else data$series[,1]
+    dt$idx <- if (is.null(data$facet)) 1 else data$facet[,1]
     index <- as.character(unique(dt$idx))
-    dt$series <- if (ncol(data$x) == 1) names(data$y)[1] else data$x[,2]
+    dt$series <- if (is.null(data$series)) names(data$y)[1] else data$series[,1]
     if (!is.null(data$t)) {
         dt$t <- data$t[,1]
         dt <- data.table::dcast(dt, idx + x + series + t ~., sum, value.var='y')
@@ -1689,7 +1689,7 @@ autoPolar <- function(chart, type){
     }
 
     # layout
-    layouts <- autoMultiPolarChartLayout(length(index), gap=1.5)
+    layouts <- autoMultiPolarChartLayout(length(index), gap=1.5, top=10, bottom=10)
     rows <- layouts$rows
     cols <- layouts$cols
     centers <- layouts$centers
@@ -1715,7 +1715,7 @@ autoPolar <- function(chart, type){
         chart$x[['polar']] <- obj
     }
 
-    return(chart %>% reElementId())
+    return(chart)
 }
 
 #' Set \code{polar} of Echarts (For Radar Charts)
@@ -1773,7 +1773,7 @@ autoPolar <- function(chart, type){
 #'       setPolar(3, axisName=list(textStyle=textStyle(color='red')))
 #' }
 #'
-setPolar <- function(chart, polarIndex=NULL, center=c('50%', '50%'), radius='75%',
+setPolar <- function(chart, polarIndex=NULL, center=c('50%', '50%'), radius='90%',
                      startAngle=90, splitNumber=5, boundaryGap=c(0, 0),
                      scale=FALSE, axisLine=NULL, axisLabel=NULL, splitLine=NULL,
                      splitArea=NULL, type=c('polygon', 'circle'),
@@ -1823,7 +1823,7 @@ setPolar <- function(chart, polarIndex=NULL, center=c('50%', '50%'), radius='75%
         }
     }
 
-    return(chart %>% reElementId())
+    return(chart)
 }
 
 
@@ -2259,6 +2259,7 @@ determineFormatter <- function(type){
 #'   \item \{e\} | \{e0\} (not applicable for some types)
 #'   }}
 #'  \item{function}{the JS list is in the form \code{[params, ticket, callback]}.}
+#'  \item{'none'}{set it NULL.}
 #' }
 #' \strong{Meanings of \{a\}, \{b\}, \{c\}, \{d\}...}
 #' \tabular{ll}{
@@ -2420,14 +2421,16 @@ setTooltip <- function(chart, series=NULL, timeslots=NULL, trigger=NULL,
         }
     }
 
-    fixedPart <- "makeTooltip(
-    trigger=trigger, islandFormatter=islandFormatter, position=position,
-    enterable=enterable, axisPointer=axisPointer, textStyle=textStyle,
-    showDelay=showDelay, hideDelay=hideDelay,
-    transitionDuration=transitionDuration,
-    bgColor=bgColor, borderColor=borderColor,
-    borderWidth=borderWidth, borderRadius=borderRadius,
-    show=show, formatter=ifnull(formatter, determineFormatter('"
+    fixedPart <- paste0(
+        "makeTooltip(",
+        "trigger=trigger, islandFormatter=islandFormatter, position=position, ",
+        "enterable=enterable, axisPointer=axisPointer, textStyle=textStyle, ",
+        "showDelay=showDelay, hideDelay=hideDelay, ",
+        "transitionDuration=transitionDuration, ",
+        "bgColor=bgColor, borderColor=borderColor, ",
+        "borderWidth=borderWidth, borderRadius=borderRadius, ",
+        "show=show, formatter=if (ifnull(formatter, '')=='none') NULL else ",
+        "determineFormatter('")
 
     defaultPart <- "makeTooltip(keepDefault=TRUE, type='"
 
@@ -2435,7 +2438,7 @@ setTooltip <- function(chart, series=NULL, timeslots=NULL, trigger=NULL,
         lhs <- ifelse(hasT, "chart$x$options[[1]][['tooltip']]",
                       "chart$x[['tooltip']]")
         rhs <- paste0(fixedPart, chartTypes[[1]],
-                      ifelse(timeXAxis, "_time'", "'"), ")), type='",
+                      ifelse(timeXAxis, "_time'", "'"), "), type='",
                       chartTypes[[1]], "')")
 
     }else if (identical(setAlongSZ, c(TRUE, FALSE))){  # set along series
@@ -2443,14 +2446,14 @@ setTooltip <- function(chart, series=NULL, timeslots=NULL, trigger=NULL,
                                 vecS, "]][['tooltip']]")
         else lhs <- paste0("chart$x$series[[", vecS, "]][['tooltip']]")
         rhs <- paste0(fixedPart, chartTypes[vecS, 1],
-                      ifelse(timeXAxis, "_time'", "'"), ")), type='",
+                      ifelse(timeXAxis, "_time'", "'"), "), type='",
                       chartTypes[vecS, 1], "')")
 
     }else if (identical(setAlongSZ, c(FALSE, TRUE))){  # set along timeline
         if (hasT) {  # if not hasT, this senario fails
             lhs <- paste0("chart$x$options[[", vecZ, "]][['tooltip']]")
             rhs <- paste0(fixedPart, chartTypes[1, vecZ],
-                          ifelse(timeXAxis, "_time'", "'"), "')), type='",
+                          ifelse(timeXAxis, "_time'", "'"), "'), type='",
                           chartTypes[1, vecZ], "')")
             # the following item to vecZ be reset to default
             vecZ1 <- vecZ + 1
@@ -2485,7 +2488,7 @@ setTooltip <- function(chart, series=NULL, timeslots=NULL, trigger=NULL,
         }
 
         rhs <- paste0(fixedPart, chartTypes[vecZS],
-                      ifelse(timeXAxis, "_time'", "'"), "')), type='",
+                      ifelse(timeXAxis, "_time'", "'"), "'), type='",
                       chartTypes[vecZS], "')")
         rhs1 <- paste0(defaultPart, chartTypes[vecZS1], "')")
 
@@ -2495,7 +2498,7 @@ setTooltip <- function(chart, series=NULL, timeslots=NULL, trigger=NULL,
 
     eval(parse(text=paste(lhs, "<-", rhs)))
 
-    return(chart %>% reElementId())
+    return(chart)
 }
 
 #' @export
@@ -2757,7 +2760,7 @@ addGeoCoord <- function(chart, geoCoord=NULL, mode=c('add', 'overide')){
                     chart$x$series[[1]]$geoCoord <- lstGeoCoord
         }
     }
-    return(chart %>% reElementId())
+    return(chart)
 }
 
 #' @export
@@ -2907,7 +2910,7 @@ addHeatmap <- function(chart, series=NULL, timeslots=NULL, data=NULL,
             }
         }
     }
-    return(chart %>% reElementId())
+    return(chart)
 }
 
 #' @export
@@ -2972,7 +2975,7 @@ addNameMap <- function(chart, nameMap, mode=c('add', 'overide')){
                     chart$x$series[[1]]$nameMap, lstNameMap)
         chart$x$series[[1]]$nameMap <- lstNameMap
     }
-    return(chart %>% reElementId())
+    return(chart)
 }
 
 #' @export
@@ -3239,7 +3242,7 @@ addMarkLine <- function(
             }
         }
     }
-    return(chart %>% reElementId())
+    return(chart)
 }
 
 #' @export
@@ -3507,7 +3510,7 @@ addMarkPoint <- function(
             }
         }
     }
-    return(chart %>% reElementId())
+    return(chart)
 }
 
 #' @export
@@ -3862,7 +3865,7 @@ setSeries <- function(chart, series=NULL, timeslots=NULL, ...){
             }
         }
     }
-    return(chart %>% reElementId())
+    return(chart)
 }
 
 

@@ -1063,7 +1063,7 @@ NULLtoNA <- function(x){
 #' by default, ipinfo API is limited to 1,000 requests per day.
 #' @seealso \code{\link{geocode}}, \code{\link{revgeocode}}.
 #' @references
-#' freegeoip.net IP lookup API at \url{http://freegeoip.net}#'
+#' freegeoip.net IP lookup API at \url{http://freegeoip.net}
 #' ipinfo.io IP lookup API at \url{http://ipinfo.io/developers}
 #' @export
 #' @examples

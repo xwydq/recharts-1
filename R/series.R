@@ -101,10 +101,10 @@ series_bar <- function(lst, type, subtype, return=NULL, ...){
             if (any(grepl("flip", type$misc[[1]]))) obj[[1]]$barHeight=10
             if (grepl('hist',type$misc[[1]])) {
                 obj[[1]]$barGap = '1%'
-                obj[[1]]$barWidth = JS(paste0(
-                    "(document.getElementById('temp').offsetWidth-200)/",
-                    length(hist$breaks)))
-                obj[[1]]$barMaxWidth = floor(820 / length(hist$breaks))
+                # obj[[1]]$barWidth = JS(paste0(
+                #     "(document.getElementById('temp').offsetWidth-200)/",
+                #     length(hist$breaks)))
+                # obj[[1]]$barMaxWidth = floor(820 / length(hist$breaks))
             }
         }else{
             obj <- list(list(type=type$type[1], data=asEchartData(data[,1])))
@@ -128,9 +128,9 @@ series_bar <- function(lst, type, subtype, return=NULL, ...){
             lvlWgt <- data.table::dcast(dfWgt, s~., mean, value.var='w')
             lvlWgt[,2][is.na(lvlWgt[,2])] <- 0
             pctWgt <- lvlWgt[,2]/sum(lvlWgt[,2])
-            barWidths <- paste0(
-                "(document.getElementById('temp').offsetWidth-200)/",
-                nrow(data), "*0.8*", pctWgt)
+            # barWidths <- paste0(
+            #     "(document.getElementById('temp').offsetWidth-200)/",
+            #     nrow(data), "*0.8*", pctWgt)
             lineWidths <- 8*(pctWgt-min(pctWgt))/(max(pctWgt)-min(pctWgt)) +1
             lineWidths[is.na(lineWidths)] <- 1
         }
@@ -187,9 +187,9 @@ series_hist <- function(lst, type, subtype, return=NULL, ...){
 
     obj <- list(list(type='bar', data=asEchartData(data[,2:1])))
     obj[[1]]$barGap = '1%'
-    obj[[1]]$barWidth = JS(paste0(
-        "(document.getElementById('temp').offsetWidth-200)/",
-        length(hist$breaks)))
+    # obj[[1]]$barWidth = JS(paste0(
+    #     "(document.getElementById('temp').offsetWidth-200)/",
+    #     length(hist$breaks)))
     obj[[1]]$barMaxWidth = floor(820 / length(hist$breaks))
 
     if (is.null(return)){
@@ -296,7 +296,7 @@ series_pie <- function(lst, type, subtype, return=NULL, ...){
     # Example:
     # g=echartr(iris, Species, Sepal.Width, type='pie')
     # g=echartr(mtcars, am, mpg, gear, type='pie')
-    # g=echartr(mtcars, y=mpg, series=gear,type='ring')
+    # g=echartr(mtcars, y=mpg, series=gear, type='ring')
     ## ring_info
     # ds=data.frame(q=c('68% feel good', '29% feel bad', '3% have no feelings'),
     #               a=c(68, 29, 3))
@@ -308,8 +308,8 @@ series_pie <- function(lst, type, subtype, return=NULL, ...){
     #       relocLegend(x=JS(paste0(dev.width,"/2")), y=JS(paste0(dev.height,"/10")))
 
     if (is.null(lst$y)) stop('pie/funnel charts need y!')
-    if (is.null(lst$x) && is.null(lst$series))
-        stop('pie/funnel charts need either x or series!')
+    if (is.null(lst$x) && is.null(lst$facet))
+        stop('pie/funnel charts need either x or facet!')
     data <- data.frame(lst$y[,1])
     if (!is.null(lst$x)){
         data[,'x'] <- if (matchSubtype('info', subtype))
@@ -337,13 +337,14 @@ series_pie <- function(lst, type, subtype, return=NULL, ...){
                                length(type)-length(subtype))
         }
     }
-    names(data) <- c('y', 'x', 'facet')
-    data <- data.table::dcast(data, x~facet, sum, value.var='y')
+    data$series <- if (is.null(lst$series)) 'Proportion' else lst$series[,1]
+    names(data) <- c('y', 'x', 'facet', 'series')
+    data <- data.table::dcast(data, x+series~facet, sum, value.var='y')
 
     if (all(data$x == 'TRUE')) {
-        sum.prop <- sum(data[data$x == 'TRUE', 2:ncol(data)], na.rm=TRUE)
-        data[nrow(data)+1, ] <- c('FALSE', sum.prop - data[data$x == 'TRUE',
-                                                           2:ncol(data)])
+        sum.prop <- sum(data[data$x == 'TRUE', 3:ncol(data)], na.rm=TRUE)
+        data[nrow(data)+1, ] <- c('FALSE', data[data$x == 'TRUE', 2],
+                                  sum.prop - data[data$x == 'TRUE', 3:ncol(data)])
     }
     if (is.null(lst$t)){
         layouts <- autoMultiPolarChartLayout(length(pies))
@@ -351,11 +352,21 @@ series_pie <- function(lst, type, subtype, return=NULL, ...){
         layouts <- autoMultiPolarChartLayout(length(pies), bottom=15)
     }
 
+    dfpies <- expand.grid(if (is.null(lst$series)) 'Proportion' else
+        levels(as.factor(lst$series[,1])), pies)
+    names(dfpies) <- c("series", "facets")
     rows <- layouts$rows
     cols <- layouts$cols
     centers <- layouts$centers
-    rownames(centers) <- pies
-    radius <- layouts$radius
+    # rownames(centers) <- pies
+    radius <- delta.radius <- layouts$radius
+    if (!is.null(lst$series)){
+        delta.radius <- radius/length(unique(lst$series[,1]))
+        radius <- delta.radius * (length(unique(lst$series[,1])):1)
+    }
+    dfpies[,c("center.x", "center.y")] <- layouts$centers[
+        unlist(lapply(1:length(pies), rep, times=length(unique(dfpies$series)))), ]
+    dfpies$radius <- rep(radius, length(pies))
 
     ## place holder styles
     placeHolderStyle = list(normal = list(
@@ -372,52 +383,62 @@ series_pie <- function(lst, type, subtype, return=NULL, ...){
     )
     normalStyle = list(normal=list(label=list(show=FALSE),
                                   labelLine=list(show=FALSE)))
-browser()
+
     obj <- list()
-    for (pie in pies){
-        iType <- type[which(pies == pie),]
-        iSubtype <- subtype[[which(pies == pie)]]
+    for (i in 1:nrow(dfpies)){
+        iType <- type[i,]
+        iSubtype <- subtype[[i]]
         o <- list(
-            name=pie, type=iType$type,
-            data=unname(apply(data[,c('x', pie)], 1, function(row) {
+            name=if (is.null(lst$series)) as.character(dfpies$facets[i]) else
+                as.character(dfpies$series[i]),
+            type=iType$type,
+            data=unname(apply(
+                data[data$series == dfpies[i, 'series'],
+                     c('x', as.character(dfpies$facets[i]))], 1, function(row) {
                 if (row[1] == 'FALSE')
                     return(list(name='', value= ifna(as.numeric(row[2]), '-'),
                          itemStyle=grayStyle))
                 else
                     return(list(name=ifelse(as.character(unname(row[1]))=='TRUE',
-                                            pie, as.character(unname(row[1]))),
+                                            as.character(dfpies$facets[i]),
+                                            as.character(unname(row[1]))),
                                 value=ifna(as.numeric(unname(row[2])), '-'),
                                 itemStyle=normalStyle))
                 })),
-            center=paste0(unname(centers[pie,]), '%'), width=paste0(radius, '%'),
-            x=paste0(centers[pie, 1]-radius/2, '%'), radius=paste0(radius, '%'),
-            max=ifelse(all(is.na(data[,pie])), 0,
-                       max(unname(data[,pie]), na.rm=TRUE)),
-            height=ifelse(rows==1, '70%', paste0(radius, '%')),
-            y=ifelse(rows==1, rep('15%', length(pies)), paste0(centers[pie, 2]-radius/2, '%')),
+            center=paste0(unname(dfpies[i, c("center.x", 'center.y')]), '%'),
+            width=paste0(dfpies[i, "radius"], '%'),
+            x=paste0(dfpies[i, "center.x"]-dfpies[i, 'radius']/2, '%'),
+            radius=paste0(dfpies[i, 'radius'], '%'),
+            max=ifelse(all(is.na(data[, dfpies[i, 'facets']])), 0,
+                       max(unname(data[, as.character(dfpies[i, 'facets'])]), na.rm=TRUE)),
+            height=ifelse(rows==1, '70%', paste0(dfpies[i, 'radius'], '%')),
+            y=ifelse(rows==1, rep('15%', length(pies)),
+                     paste0(dfpies[i, 'center.y']-dfpies[i, 'radius']/2, '%')),
             selectedMode=if ('multi' %in% iSubtype) 'multiple' else 'single'
         )
         if (grepl('ring', iType$misc)){
-            o[['radius']] <- paste0(c(radius * 2/3, radius), '%')
+            o[['radius']] <- paste0(
+                c(dfpies[i, 'radius'] - delta.radius/2, dfpies[i, 'radius']), '%')
             o[['itemStyle']] <- list(
                 normal=list(label=list(show=TRUE)),
                 emphasis=list(label=list(show=TRUE, position='center', textStyle=list(
-                    fontSize='30',fontWeight='bold'
+                    fontSize='30', fontWeight='bold'
                 )))
             )
             o[['clockWise']] <- any(c('clock', 'clockwise') %in% iSubtype)
         }
         if ('radius' %in% iSubtype){
             o[['roseType']] <- 'radius'
-            o[['radius']] <- paste0(c(radius/5, radius), '%')
+            o[['radius']] <- paste0(c(dfpies[i, 'radius']/5, dfpies[i, 'radius']), '%')
         }else if ('area' %in% iSubtype){
             o[['roseType']] <- 'area'
-            o[['radius']] <- paste0(c(radius/5, radius), '%')
+            o[['radius']] <- paste0(c(dfpies[i, 'radius']/5, dfpies[i, 'radius']), '%')
         }else if ('info' %in% iSubtype){
             o[['data']][[2]][['itemStyle']] <- placeHolderStyle
             ringWidth <- 40 / length(pies)
-            o[['radius']] <- paste0(c(80 - ringWidth*(which(pies == pie)-1),
-                                      80 - ringWidth*which(pies == pie)), '%')
+            o[['radius']] <- paste0(
+                c(80 - ringWidth*(which(pies == dfpies[i, 'facets'])-1),
+                  80 - ringWidth*which(pies == dfpies[i, 'facets'])), '%')
             o[['center']] <- c('50%', '50%')
             o[['clockWise']] <- any(c('clock', 'clockwise') %in% iSubtype)
         }else{
@@ -436,7 +457,7 @@ browser()
             }
         }
 
-        obj[[pie]] <- o
+        obj[[i]] <- o
     }
     obj <- unname(obj)
 
@@ -458,8 +479,8 @@ series_radar <- function(lst, type, subtype, return=NULL, ...){
     # names(cars) <- c('model', 'indicator', 'Parameter')
     # echartr(cars, indicator, Parameter, model, type='radar') %>%
     #        setTitle('Merc 450SE  vs  450SL  vs  450SLC')
-    # echartr(cars, c(indicator, model), Parameter, type='radar', sub='fill')
-    # echartr(cars, c(indicator, model), Parameter, type='target') %>%
+    # echartr(cars, indicator, Parameter, facet=model, type='radar', sub='fill')
+    # echartr(cars, indicator, Parameter, facet=model, type='target') %>%
     #         setSymbols('none')
     #
     # echartr(cars, indicator, Parameter, t=model, type='radar')
@@ -479,44 +500,51 @@ series_radar <- function(lst, type, subtype, return=NULL, ...){
     # echartr(carstat, c(indicator, am),
     #         Parameter, carb, t=gear, type='radar')
 
-    # x[,1] is x, series[,2] is series; y[,1] is y; facet[,1] is polorIndex
+    # x[,1] is x, series[,1] is series; y[,1] is y; facet[,1] is polorIndex
     if (is.null(lst$y) || is.null(lst$x)) stop('radar charts need x and y!')
     ds <- data.frame(lst$y[,1], lst$x[,1])
     ds[,ncol(ds)+1] <- if (is.null(lst$series)) names(lst$y)[1] else
         lst$series[,1]
     ds[,ncol(ds)+1] <- if (is.null(lst$facet)) 0 else lst$facet[,1]
-    names(ds) <- c('y', 'x', 'series', 'index')
+    names(ds) <- c('y', 'x', 'series', 'facet')
     ds$x <- as.factor(ds$x)
     ds$series <- as.factor(ds$series)
-    ds$index <- as.factor(ds$index)
+    ds$facet <- as.factor(ds$facet)
 
-    data <- data.table::dcast(ds, index+x+series~., sum, value.var='y')
-    names(data) <- c('index', 'x', 'series', 'y')
+    data <- data.table::dcast(ds, facet+x+series~., sum, value.var='y')
+    names(data) <- c('facet', 'x', 'series', 'y')
     fullData <- data.frame(expand.grid(
-        if (is.null(lst$facet)) levels(ds$index) else
+        if (is.null(lst$facet)) levels(ds$facet) else
             if (is.factor(lst$facet[,1])) levels(lst$facet[,1]) else
                 unique(lst$facet[,1]),
             levels(ds$x), levels(ds$series)))
 
-    names(fullData) <- c('index', 'x', 'series')
+    names(fullData) <- c('facet', 'x', 'series')
     data <- merge(fullData, data, all.x=TRUE, sort=FALSE)
     data$x <- as.character(data$x)
-    index <- if (length(unique(fullData$index)) == 1) 0 else
-        (1:nlevels(fullData$index))-1
-    obj <- lapply(index, function(i){
-        dt <- if (length(index) == 1) data else
-            data[data$index==levels(fullData$index)[i+1],]
-        out <- list(type=type[i+1, 'type'], symbol='none',
-                    name=if (length(index) == 1) 0 else
-                        levels(fullData$index)[i+1],
-                    data=lapply(unique(dt$series), function(s){
-                        list(name=as.character(s),
-                             value=lapply(dt[dt$series==s, 'y'], function(x){
-                                 ifna(x, '-')}))
-                    }))
+    facet <- if (length(unique(fullData$facet)) == 1) 0 else
+        (1:nlevels(fullData$facet))-1
+#browser()
+    obj <- lapply(facet, function(i){
+        dt <- if (length(facet) == 1) data else
+            data[data$facet==levels(fullData$facet)[i+1],]
+        out <- list(
+            type=type[i+1, 'type'], symbol='none',
+            name=if (length(facet) == 1) 0 else
+                levels(fullData$facet)[i+1],
+            data=lapply(unique(dt$series), function(s){
+                list(name=as.character(s),
+                     value=lapply(dt[dt$series==s, 'y'], function(x){
+                         ifna(x, '-')}))
+            }))
         if (i>0) out[['polarIndex']] <- i
-        if ('fill' %in% subtype[[i+1]])
-            out[['itemStyle']] <- list(normal=list(areaStyle=list(type='default')))
+        for (j in 1:length(unique(dt$series))){
+            lenj <- length(unique(dt$series))
+            if ('fill' %in% subtype[[i*lenj+j]])
+                out$data[[j]][['itemStyle']] <- list(
+                    normal=list(areaStyle=list(type='default')))
+        }
+
         return(out)
     })
 

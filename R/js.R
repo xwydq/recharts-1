@@ -253,7 +253,7 @@ tooltipJS <- function(type) {
     }')
 
     js[['hist']] <- JS('function (params){
-        return "~ " + params.value[2] + " ~<br/>:" + params.value[1];
+        return "~ " + params.value[0] + " ~<br/>:" + params.value[1];
     }')
 
     switch(type,

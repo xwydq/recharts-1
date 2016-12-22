@@ -146,7 +146,7 @@ eChart = echart
 #'   \item{radar/spider/star}{"fill"}
 #' }
 #' @param elementId htmlwidgets elementId of the chart object. If set NULL, recharts will
-#' assign a random elementId to the object every time you try to modify it.
+#' assign a random elementId to the object.
 #' @param ... Elipsis
 #'
 #' @import compiler

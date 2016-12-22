@@ -222,7 +222,7 @@ getSeriesPart <- function(chart, element=c(
             }
         }
 
-    }else{
+    }else{  # not hasZ
         data <- try(sapply(chart$x$series, function(lst) {
             if (fetch.all) ifnull(lst[['data']], NA)
             else lst[['data']]
@@ -950,8 +950,13 @@ autoMultiPolarChartLayout <- function(n, col.max=5, gap=5, top=5, bottom=5,
     layouts$defects <- layouts$empty + layouts$diff
     layouts <- layouts[order(layouts$defects, layouts$diff, layouts$empty,
                              layouts$row), ]
-    rows <- layouts[1, 'row']
-    cols <- layouts[1, 'col']
+    if (n<4) {
+        rows <- 1
+        cols <- n
+    }else{
+        rows <- layouts[1, 'row']
+        cols <- layouts[1, 'col']
+    }
 
     ## calculate the sizing params
     centers <- expand.grid(left + ((1:cols)*2 - 1) * ((100-left-right)/2) /cols,
