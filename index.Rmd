@@ -1,9 +1,10 @@
 ---
-title: "recharts: An R Interface to Baidu ECharts"
+title: "recharts: An R Interface to Baidu ECharts 2"
 output: 
   html_document: 
     toc: yes
     toc_depth: 4
+    toc_float: yes
 ---
 
 ---
@@ -138,9 +139,9 @@ str(args(echartr))
 +-----------+------------------------------------------------------------------+
 |  lng      | longitude variable for map/heatmap. |
 +-----------+------------------------------------------------------------------+
-|  type     | chart type. Default 'auto'. `type` as a vector is linked with `series`. |
+|  type     | chart type. Default 'auto'. `type` as a vector is linked with `series`, while as a list is linked with `facet`. |
 +-----------+------------------------------------------------------------------+
-| subtype   | chart subtype. Default NULL. `subtype` as a vector is also linked with `series`.  |
+| subtype   | chart subtype. Default NULL. `subtype` as a vector is also linked with `series`, while as a list is linked with `facet`.  |
 +-----------+------------------------------------------------------------------+
 
 ### Supported Chart Types
@@ -181,6 +182,9 @@ Data must be a data.frame. The data series and timeline will display in the orig
 When it comes to timeline (`z`), you must be very cautious. All the combination sets of `x`, `y`, `series`, `weight` should be exactly equal across all the levels of `z`. Otherwise you will find confusious overlap of graphs across timeline.
 
 #### Type And Subtype
+
+##### Mixed Types
+
 `recharts` supports mixed chart types in some cases, e.g., bar and line.
 
 ```{r}
@@ -199,6 +203,20 @@ echartr(d, carb, mean.mpg, gear, type='line',
     setSymbols('emptycircle')
 ```
 
+##### Associating Type/Subtype with Facets
+
+The above example shows how to associate type/subtype with series. If you want to associate type/subtype with facets, you need to wrap them in a list. Within each list, the vector of type/subtypes are associated with series, ie, list[[1]], list[[2]], ... are associated with facet 1, 2, ..., while list[[1]][1], list[[1]][2], ... are associated with series 1, 2, ...
+
+If facet has 2 levels and series has 3 levels, it means type and subtype should have  a structure of list(c(s1,s2,s3), c(s1,s2,s3)). recharts will try to supplement/cut the income params type and subtype to meet the mapping relationship.
+
+```{r}
+d1 <- data.frame(x=rep(LETTERS[1:6], 4), y=abs(rnorm(24)), 
+                 f=c(rep('i', 12), rep('ii', 12)), 
+                 s=rep(c(rep('I', 6), rep('II', 6)), 2))
+echartr(d1, x, y, s, facet=f, type='radar', 
+        subtype=list(c('fill', ''), c('', 'fill')))
+```
+
 ## Modify the Plot
 
 You can save the plot as an object and keep modifying the plot using `%>%`.
@@ -213,22 +231,22 @@ The above command made an Echarts object `g` containing two series: 'Automatic' 
 
 ```
 - x
-  +-- series
-  |   +--- list 1
-  |   |    +---- name: 'Automatic'
-  |   |    +---- data: ...
-  |   |    +---- type: 'scatter'
-  |   +--- list 2
-  |   |    +---- name: 'Manual'
-  |   |    +---- data: ...
-  |   |    +---- type: 'scatter'
-  |   +--- ...
-  +-- legend
-  +-- xAxis
-  +-- yAxis
-  +-- grid  
-  +-- tooltip
-  +-- ...
+  |-- series
+      |--- list 1
+           |---- name: 'Automatic'
+           |---- data: ...
+           |---- type: 'scatter'
+      |--- list 2
+           |---- name: 'Manual'
+           |---- data: ...
+           |---- type: 'scatter'
+      |--- ...
+  |-- legend
+  |-- xAxis
+  |-- yAxis
+  |-- grid  
+  |-- tooltip
+  |-- ...
 ```
 
 If you want to customize the definition of the series directly, you can call the low-level function `setSeries`.

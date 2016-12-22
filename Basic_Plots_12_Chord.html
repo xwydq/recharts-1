@@ -19,11 +19,17 @@
 <script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
-<script src="libs/htmlwidgets-0.7/htmlwidgets.js"></script>
+<script src="libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<link href="libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="libs/highlightjs-1.1/highlight.js"></script>
+<script src="libs/htmlwidgets-0.8/htmlwidgets.js"></script>
 <script src="libs/echarts-2.2.7/echarts-all.js"></script>
 <script src="libs/charts-ext-2.2.7/main.js"></script>
 <script src="libs/charts-ext-2.2.7/BMap.js"></script>
-<script src="libs/echarts-binding-0.1/echarts.js"></script>
+<script src="libs/echarts-binding-0.1.2/echarts.js"></script>
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
@@ -42,10 +48,6 @@ p code {
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
 <style type="text/css">code{white-space: pre;}</style>
-<link rel="stylesheet"
-      href="libs/highlight/default.css"
-      type="text/css" />
-<script src="libs/highlight/highlight.js"></script>
 <style type="text/css">
   pre:not([class]) {
     background-color: white;
@@ -120,7 +122,6 @@ button.code-folding-btn:focus {
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
-<script src="libs/navigation-1.1/tabsets.js"></script>
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
@@ -130,6 +131,101 @@ $(document).ready(function () {
 <!-- code folding -->
 
 
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -164,27 +260,6 @@ $(document).ready(function () {
 
 </div>
 
-<div id="TOC">
-<ul>
-<li><a href="#introduction"><span class="toc-section-number">1</span> Introduction</a></li>
-<li><a href="#function-call"><span class="toc-section-number">2</span> Function Call</a></li>
-<li><a href="#showcase"><span class="toc-section-number">3</span> Showcase</a><ul>
-<li><a href="#data-preparation"><span class="toc-section-number">3.1</span> Data Preparation</a><ul>
-<li><a href="#matrix-mode"><span class="toc-section-number">3.1.1</span> Matrix Mode</a></li>
-<li><a href="#nodelink-mode"><span class="toc-section-number">3.1.2</span> Node/link Mode</a></li>
-</ul></li>
-<li><a href="#chord-chart"><span class="toc-section-number">3.2</span> Chord Chart</a><ul>
-<li><a href="#chord-with-ribbon"><span class="toc-section-number">3.2.1</span> Chord with Ribbon</a></li>
-<li><a href="#chord-without-ribbon"><span class="toc-section-number">3.2.2</span> Chord without Ribbon</a><ul>
-<li><a href="#one-direction-relationship"><span class="toc-section-number">3.2.2.1</span> One-direction Relationship</a></li>
-<li><a href="#dual-direction-relationship"><span class="toc-section-number">3.2.2.2</span> Dual-direction Relationship</a></li>
-</ul></li>
-<li><a href="#chord-with-timeline"><span class="toc-section-number">3.2.3</span> Chord with Timeline</a></li>
-</ul></li>
-</ul></li>
-<li><a href="#futher-setup"><span class="toc-section-number">4</span> Futher Setup</a></li>
-</ul>
-</div>
 
 <p>First, you should load <code>recharts</code>:</p>
 <pre class="r"><code>library(recharts)</code></pre>
@@ -198,12 +273,12 @@ $(document).ready(function () {
 <table id="intro">
 <tr>
 <td>
-<div id="echarts-c8c87acd5998f863e028385ed2d13d4dc3b3431b" style="width:400px;height:300px;" class="echarts html-widget"></div>
-<script type="application/json" data-for="echarts-c8c87acd5998f863e028385ed2d13d4dc3b3431b">{"x":{"series":[{"type":"chord","name":"Connection","roam":"move","itemStyle":{"normal":{"label":{"show":false,"textStyle":{"color":"#333"}},"nodeStyle":{"brushType":"both","strokeColor":"rgba(255,215,0,0.4)"},"linkStyle":{"type":"line"}},"emphasis":{"label":{"show":false},"nodeStyle":[],"lineStyle":[]}},"minRadius":8,"maxRadius":20,"matrix":[[11975,5871,8916,2868],[1951,10048,2060,6171],[8010,16145,8090,8045],[1013,990,940,6907]],"data":[{"name":"Group1"},{"name":"Group2"},{"name":"Group3"},{"name":"Group4"}],"ribbonType":true,"sort":"ascending","sortSub":"descending","showScale":true,"showScaleText":true}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["Group1","Group2","Group3","Group4"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    if (params.indicator2) {    // is edge\n        if (isNaN(params.value.weight)){\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \")\";\n        } else {\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \") : \"\n            + params.value.weight;\n        }\n\n    } else {    // is node\n        return params.name;\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":false},"dataView":{"show":false},"magicType":{"show":true,"type":["force","chord"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["Group1","Group2","Group3","Group4"],"x":"left","y":"top","orient":"horizontal"},"title":{"text":"Test Data","subtext":"chord with ribbon","x":"center","y":"bottom","orient":"horizontal"},"theme":"macarons"},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
+<div id="htmlwidget-69ae26a039c54a7ec91e" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-69ae26a039c54a7ec91e">{"x":{"series":[{"type":"chord","name":"Connection","roam":"move","itemStyle":{"normal":{"label":{"show":false,"textStyle":{"color":"#333"}},"nodeStyle":{"brushType":"both","strokeColor":"rgba(255,215,0,0.4)"},"linkStyle":{"type":"line"}},"emphasis":{"label":{"show":false},"nodeStyle":[],"lineStyle":[]}},"minRadius":8,"maxRadius":20,"matrix":[[11975,5871,8916,2868],[1951,10048,2060,6171],[8010,16145,8090,8045],[1013,990,940,6907]],"data":[{"name":"Group1"},{"name":"Group2"},{"name":"Group3"},{"name":"Group4"}],"ribbonType":true,"sort":"ascending","sortSub":"descending","showScale":true,"showScaleText":true}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["Group1","Group2","Group3","Group4"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    if (params.indicator2) {    // is edge\n        if (isNaN(params.value.weight)){\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \")\";\n        } else {\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \") : \"\n            + params.value.weight;\n        }\n\n    } else {    // is node\n        return params.name;\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":false},"dataView":{"show":false},"magicType":{"show":true,"type":["force","chord"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["Group1","Group2","Group3","Group4"],"x":"left","y":"top","orient":"horizontal"},"title":{"text":"Test Data","subtext":"chord with ribbon","x":"center","y":"bottom","orient":"horizontal"},"theme":"macarons"},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
 </td>
 <td>
-<div id="echarts-2e7802e391baae52fc4be77d477715c69cb2511b" style="width:400px;height:300px;" class="echarts html-widget"></div>
-<script type="application/json" data-for="echarts-2e7802e391baae52fc4be77d477715c69cb2511b">{"x":{"series":[{"type":"chord","name":"Connection","roam":"move","itemStyle":{"normal":{"label":{"show":true,"textStyle":{"color":"#333"},"rotate":true},"nodeStyle":{"brushType":"both","strokeColor":"rgba(255,215,0,0.4)"},"linkStyle":{"type":"curve"}},"emphasis":{"label":{"show":false},"nodeStyle":[],"lineStyle":[]}},"minRadius":8,"maxRadius":20,"nodes":[{"name":"Monchengladbach"},{"name":"Bayern"},{"name":"Dortmund"},{"name":"Kruse"},{"name":"Kramer"},{"name":"Neuer"},{"name":"Boateng"},{"name":"Lahm"},{"name":"Kroos"},{"name":"Muller"},{"name":"Gotze"},{"name":"Badstuber"},{"name":"Hummels"},{"name":"Weidenfeller"},{"name":"Reus"},{"name":"Gundogan"}],"links":[{"source":"Monchengladbach","target":"Kruse","name":"Fw","weight":1},{"source":"Monchengladbach","target":"Kramer","name":"Mf","weight":1},{"source":"Bayern","target":"Neuer","name":"Gk","weight":1},{"source":"Bayern","target":"Boateng","name":"Df","weight":1},{"source":"Bayern","target":"Lahm","name":"Df","weight":1},{"source":"Bayern","target":"Kroos","name":"Mf","weight":1},{"source":"Bayern","target":"Muller","name":"Mf","weight":1},{"source":"Bayern","target":"Gotze","name":"Fw","weight":1},{"source":"Bayern","target":"Badstuber","name":"Df","weight":1},{"source":"Dortmund","target":"Hummels","name":"Df","weight":1},{"source":"Dortmund","target":"Weidenfeller","name":"Gk","weight":1},{"source":"Dortmund","target":"Reus","name":"Df","weight":1},{"source":"Dortmund","target":"Gundogan","name":"Md","weight":1}],"ribbonType":false,"sort":"ascending","sortSub":"descending","showScale":false,"showScaleText":false}],"legend":{"show":true,"data":["Monchengladbach","Bayern","Dortmund"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["Monchengladbach","Bayern","Dortmund"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    if (params.indicator2) {    // is edge\n        if (isNaN(params.value.weight)){\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \")\";\n        } else {\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \") : \"\n            + params.value.weight;\n        }\n\n    } else {    // is node\n        return params.name;\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":false},"dataView":{"show":false},"magicType":{"show":true,"type":["force","chord"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"theme":"infographic","title":{"text":"Club Orientation of Deutsch Soccer Team (2014)","subtext":"Chord without ribbon","x":"center","y":"bottom","orient":"horizontal"}},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
+<div id="htmlwidget-47cf5becc4a5e7edd9b1" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-47cf5becc4a5e7edd9b1">{"x":{"series":[{"type":"chord","name":"Connection","roam":"move","itemStyle":{"normal":{"label":{"show":true,"textStyle":{"color":"#333"},"rotate":true},"nodeStyle":{"brushType":"both","strokeColor":"rgba(255,215,0,0.4)"},"linkStyle":{"type":"curve"}},"emphasis":{"label":{"show":false},"nodeStyle":[],"lineStyle":[]}},"minRadius":8,"maxRadius":20,"nodes":[{"name":"Monchengladbach"},{"name":"Bayern"},{"name":"Dortmund"},{"name":"Kruse"},{"name":"Kramer"},{"name":"Neuer"},{"name":"Boateng"},{"name":"Lahm"},{"name":"Kroos"},{"name":"Muller"},{"name":"Gotze"},{"name":"Badstuber"},{"name":"Hummels"},{"name":"Weidenfeller"},{"name":"Reus"},{"name":"Gundogan"}],"links":[{"source":"Monchengladbach","target":"Kruse","name":"Fw","weight":1},{"source":"Monchengladbach","target":"Kramer","name":"Mf","weight":1},{"source":"Bayern","target":"Neuer","name":"Gk","weight":1},{"source":"Bayern","target":"Boateng","name":"Df","weight":1},{"source":"Bayern","target":"Lahm","name":"Df","weight":1},{"source":"Bayern","target":"Kroos","name":"Mf","weight":1},{"source":"Bayern","target":"Muller","name":"Mf","weight":1},{"source":"Bayern","target":"Gotze","name":"Fw","weight":1},{"source":"Bayern","target":"Badstuber","name":"Df","weight":1},{"source":"Dortmund","target":"Hummels","name":"Df","weight":1},{"source":"Dortmund","target":"Weidenfeller","name":"Gk","weight":1},{"source":"Dortmund","target":"Reus","name":"Df","weight":1},{"source":"Dortmund","target":"Gundogan","name":"Md","weight":1}],"ribbonType":false,"sort":"ascending","sortSub":"descending","showScale":false,"showScaleText":false}],"legend":{"show":true,"data":["Monchengladbach","Bayern","Dortmund"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["Monchengladbach","Bayern","Dortmund"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    if (params.indicator2) {    // is edge\n        if (isNaN(params.value.weight)){\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \")\";\n        } else {\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \") : \"\n            + params.value.weight;\n        }\n\n    } else {    // is node\n        return params.name;\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":false},"dataView":{"show":false},"magicType":{"show":true,"type":["force","chord"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"theme":"infographic","title":{"text":"Club Orientation of Deutsch Soccer Team (2014)","subtext":"Chord without ribbon","x":"center","y":"bottom","orient":"horizontal"}},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
 </td>
 </tr>
 </table>
@@ -224,38 +299,38 @@ $(document).ready(function () {
 </colgroup>
 <thead>
 <tr class="header">
-<th align="left">Arg</th>
-<th align="left">Requirement</th>
+<th>Arg</th>
+<th>Requirement</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left"><p><strong>data</strong></p></td>
-<td align="left"><p>source data in the form of data.frame</p></td>
+<td><p><strong>data</strong></p></td>
+<td><p>source data in the form of data.frame</p></td>
 </tr>
 <tr class="even">
-<td align="left"><p><strong>x</strong></p></td>
-<td align="left"><p>character independent variable. Other type will be coerced to factors. For node/link mode, you must provide two columns of <code>x</code>. For matrix mode, only the first column of <code>x</code> is accepted.</p></td>
+<td><p><strong>x</strong></p></td>
+<td><p>character independent variable. Other type will be coerced to factors. For node/link mode, you must provide two columns of <code>x</code>. For matrix mode, only the first column of <code>x</code> is accepted.</p></td>
 </tr>
 <tr class="odd">
-<td align="left"><p><strong>y</strong></p></td>
-<td align="left"><p>numeric dependent variable. For node/link mode, only the first column of <code>y</code> is accepted. For matrix mode, all the columns of <code>y</code> are accepted.</p></td>
+<td><p><strong>y</strong></p></td>
+<td><p>numeric dependent variable. For node/link mode, only the first column of <code>y</code> is accepted. For matrix mode, all the columns of <code>y</code> are accepted.</p></td>
 </tr>
 <tr class="even">
-<td align="left"><p>series</p></td>
-<td align="left"><p>series variable which will be coerced to factors. Each level of <code>series</code> is treated as a subsetting factor to produce separate pies. Only the first one is accepted if multiple variables are provided.</p></td>
+<td><p>series</p></td>
+<td><p>series variable which will be coerced to factors. Each level of <code>series</code> is treated as a subsetting factor to produce separate pies. Only the first one is accepted if multiple variables are provided.</p></td>
 </tr>
 <tr class="odd">
-<td align="left"><p>t</p></td>
-<td align="left"><p>timeline variable which will be coerced to factors. Only the first one is accepted if multiple variables are provided.</p></td>
+<td><p>t</p></td>
+<td><p>timeline variable which will be coerced to factors. Only the first one is accepted if multiple variables are provided.</p></td>
 </tr>
 <tr class="even">
-<td align="left"><p>type</p></td>
-<td align="left"><p>‘chord’.</p></td>
+<td><p>type</p></td>
+<td><p>‘chord’.</p></td>
 </tr>
 <tr class="odd">
-<td align="left"><p>subtype</p></td>
-<td align="left"><ul>
+<td><p>subtype</p></td>
+<td><ul>
 <li>chord: c(“ribbon”,“scale”,“scaletext”,“rotatelab”,“hidelab”,“clock”,“clockwise”,“asc”,“desc”,“ascsub”,“descsub”)
 <ul>
 <li>ribbon: chort chart with ribbon. It requires dual-direction of links.</li>
@@ -599,8 +674,8 @@ knitr::kable(grpmtx, align=c(&#39;lllll&#39;))</code></pre>
 <pre class="r"><code>echartr(grpmtx, Name, c(Group1, Group2, Group3, Group4), 
         type=&#39;chord&#39;, subtype=&#39;ribbon + asc + descsub + hidelab + scaletext&#39;) %&gt;% 
   setTitle(&#39;Test Data&#39;,&#39;From d3.js&#39;)</code></pre>
-<div id="echarts-cc9c9b18e51231e83b3070d01e2e3a14021b21d7" style="width:672px;height:480px;" class="echarts html-widget"></div>
-<script type="application/json" data-for="echarts-cc9c9b18e51231e83b3070d01e2e3a14021b21d7">{"x":{"series":[{"type":"chord","name":"Connection","roam":"move","itemStyle":{"normal":{"label":{"show":false,"textStyle":{"color":"#333"}},"nodeStyle":{"brushType":"both","strokeColor":"rgba(255,215,0,0.4)"},"linkStyle":{"type":"line"}},"emphasis":{"label":{"show":false},"nodeStyle":[],"lineStyle":[]}},"minRadius":8,"maxRadius":20,"matrix":[[11975,5871,8916,2868],[1951,10048,2060,6171],[8010,16145,8090,8045],[1013,990,940,6907]],"data":[{"name":"Group1"},{"name":"Group2"},{"name":"Group3"},{"name":"Group4"}],"ribbonType":true,"sort":"ascending","sortSub":"descending","showScale":true,"showScaleText":true}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["Group1","Group2","Group3","Group4"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    if (params.indicator2) {    // is edge\n        if (isNaN(params.value.weight)){\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \")\";\n        } else {\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \") : \"\n            + params.value.weight;\n        }\n\n    } else {    // is node\n        return params.name;\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":false},"dataView":{"show":false},"magicType":{"show":true,"type":["force","chord"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["Group1","Group2","Group3","Group4"],"x":"left","y":"top","orient":"horizontal"},"title":{"text":"Test Data","subtext":"From d3.js","x":"center","y":"bottom","orient":"horizontal"}},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
+<div id="htmlwidget-b2e130a087ea1777578c" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b2e130a087ea1777578c">{"x":{"series":[{"type":"chord","name":"Connection","roam":"move","itemStyle":{"normal":{"label":{"show":false,"textStyle":{"color":"#333"}},"nodeStyle":{"brushType":"both","strokeColor":"rgba(255,215,0,0.4)"},"linkStyle":{"type":"line"}},"emphasis":{"label":{"show":false},"nodeStyle":[],"lineStyle":[]}},"minRadius":8,"maxRadius":20,"matrix":[[11975,5871,8916,2868],[1951,10048,2060,6171],[8010,16145,8090,8045],[1013,990,940,6907]],"data":[{"name":"Group1"},{"name":"Group2"},{"name":"Group3"},{"name":"Group4"}],"ribbonType":true,"sort":"ascending","sortSub":"descending","showScale":true,"showScaleText":true}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["Group1","Group2","Group3","Group4"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    if (params.indicator2) {    // is edge\n        if (isNaN(params.value.weight)){\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \")\";\n        } else {\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \") : \"\n            + params.value.weight;\n        }\n\n    } else {    // is node\n        return params.name;\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":false},"dataView":{"show":false},"magicType":{"show":true,"type":["force","chord"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["Group1","Group2","Group3","Group4"],"x":"left","y":"top","orient":"horizontal"},"title":{"text":"Test Data","subtext":"From d3.js","x":"center","y":"bottom","orient":"horizontal"}},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
 </div>
 <div id="chord-without-ribbon" class="section level3">
 <h3><span class="header-section-number">3.2.2</span> Chord without Ribbon</h3>
@@ -610,8 +685,8 @@ knitr::kable(grpmtx, align=c(&#39;lllll&#39;))</code></pre>
 <pre class="r"><code>echartr(deutsch[deutsch$year==2014,], c(club, player), weight, role, type=&#39;chord&#39;, 
         sub=&#39;asc + descsub + rotatelab&#39;) %&gt;% 
   setTitle(&#39;Club Orientation of Deutsch Soccer Team (2014)&#39;)</code></pre>
-<div id="echarts-7d439d1f617df43a26183cb1eaeb17accd96531f" style="width:672px;height:480px;" class="echarts html-widget"></div>
-<script type="application/json" data-for="echarts-7d439d1f617df43a26183cb1eaeb17accd96531f">{"x":{"series":[{"type":"chord","name":"Connection","roam":"move","itemStyle":{"normal":{"label":{"show":true,"textStyle":{"color":"#333"},"rotate":true},"nodeStyle":{"brushType":"both","strokeColor":"rgba(255,215,0,0.4)"},"linkStyle":{"type":"curve"}},"emphasis":{"label":{"show":false},"nodeStyle":[],"lineStyle":[]}},"minRadius":8,"maxRadius":20,"nodes":[{"name":"Monchengladbach"},{"name":"Bayern"},{"name":"Dortmund"},{"name":"Kruse"},{"name":"Kramer"},{"name":"Neuer"},{"name":"Boateng"},{"name":"Lahm"},{"name":"Kroos"},{"name":"Muller"},{"name":"Gotze"},{"name":"Badstuber"},{"name":"Hummels"},{"name":"Weidenfeller"},{"name":"Reus"},{"name":"Gundogan"}],"links":[{"source":"Monchengladbach","target":"Kruse","name":"Fw","weight":1},{"source":"Monchengladbach","target":"Kramer","name":"Mf","weight":1},{"source":"Bayern","target":"Neuer","name":"Gk","weight":1},{"source":"Bayern","target":"Boateng","name":"Df","weight":1},{"source":"Bayern","target":"Lahm","name":"Df","weight":1},{"source":"Bayern","target":"Kroos","name":"Mf","weight":1},{"source":"Bayern","target":"Muller","name":"Mf","weight":1},{"source":"Bayern","target":"Gotze","name":"Fw","weight":1},{"source":"Bayern","target":"Badstuber","name":"Df","weight":1},{"source":"Dortmund","target":"Hummels","name":"Df","weight":1},{"source":"Dortmund","target":"Weidenfeller","name":"Gk","weight":1},{"source":"Dortmund","target":"Reus","name":"Df","weight":1},{"source":"Dortmund","target":"Gundogan","name":"Md","weight":1}],"ribbonType":false,"sort":"ascending","sortSub":"descending","showScale":false,"showScaleText":false}],"legend":{"show":true,"data":["Monchengladbach","Bayern","Dortmund"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["Monchengladbach","Bayern","Dortmund"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    if (params.indicator2) {    // is edge\n        if (isNaN(params.value.weight)){\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \")\";\n        } else {\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \") : \"\n            + params.value.weight;\n        }\n\n    } else {    // is node\n        return params.name;\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":false},"dataView":{"show":false},"magicType":{"show":true,"type":["force","chord"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"title":{"text":"Club Orientation of Deutsch Soccer Team (2014)","x":"center","y":"bottom","orient":"horizontal"}},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
+<div id="htmlwidget-0d0923020ef5bf5d32f7" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-0d0923020ef5bf5d32f7">{"x":{"series":[{"type":"chord","name":"Connection","roam":"move","itemStyle":{"normal":{"label":{"show":true,"textStyle":{"color":"#333"},"rotate":true},"nodeStyle":{"brushType":"both","strokeColor":"rgba(255,215,0,0.4)"},"linkStyle":{"type":"curve"}},"emphasis":{"label":{"show":false},"nodeStyle":[],"lineStyle":[]}},"minRadius":8,"maxRadius":20,"nodes":[{"name":"Monchengladbach"},{"name":"Bayern"},{"name":"Dortmund"},{"name":"Kruse"},{"name":"Kramer"},{"name":"Neuer"},{"name":"Boateng"},{"name":"Lahm"},{"name":"Kroos"},{"name":"Muller"},{"name":"Gotze"},{"name":"Badstuber"},{"name":"Hummels"},{"name":"Weidenfeller"},{"name":"Reus"},{"name":"Gundogan"}],"links":[{"source":"Monchengladbach","target":"Kruse","name":"Fw","weight":1},{"source":"Monchengladbach","target":"Kramer","name":"Mf","weight":1},{"source":"Bayern","target":"Neuer","name":"Gk","weight":1},{"source":"Bayern","target":"Boateng","name":"Df","weight":1},{"source":"Bayern","target":"Lahm","name":"Df","weight":1},{"source":"Bayern","target":"Kroos","name":"Mf","weight":1},{"source":"Bayern","target":"Muller","name":"Mf","weight":1},{"source":"Bayern","target":"Gotze","name":"Fw","weight":1},{"source":"Bayern","target":"Badstuber","name":"Df","weight":1},{"source":"Dortmund","target":"Hummels","name":"Df","weight":1},{"source":"Dortmund","target":"Weidenfeller","name":"Gk","weight":1},{"source":"Dortmund","target":"Reus","name":"Df","weight":1},{"source":"Dortmund","target":"Gundogan","name":"Md","weight":1}],"ribbonType":false,"sort":"ascending","sortSub":"descending","showScale":false,"showScaleText":false}],"legend":{"show":true,"data":["Monchengladbach","Bayern","Dortmund"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["Monchengladbach","Bayern","Dortmund"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    if (params.indicator2) {    // is edge\n        if (isNaN(params.value.weight)){\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \")\";\n        } else {\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \") : \"\n            + params.value.weight;\n        }\n\n    } else {    // is node\n        return params.name;\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":false},"dataView":{"show":false},"magicType":{"show":true,"type":["force","chord"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"title":{"text":"Club Orientation of Deutsch Soccer Team (2014)","x":"center","y":"bottom","orient":"horizontal"}},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
 </div>
 <div id="dual-direction-relationship" class="section level4">
 <h4><span class="header-section-number">3.2.2.2</span> Dual-direction Relationship</h4>
@@ -621,7 +696,7 @@ knitr::kable(grpmtx, align=c(&#39;lllll&#39;))</code></pre>
 <table>
 <thead>
 <tr class="header">
-<th align="left"></th>
+<th></th>
 <th align="right">Bayern</th>
 <th align="right">Dortmund</th>
 <th align="right">Monchengladbach</th>
@@ -629,79 +704,79 @@ knitr::kable(grpmtx, align=c(&#39;lllll&#39;))</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">Badstuber</td>
+<td>Badstuber</td>
 <td align="right">1</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
-<td align="left">Boateng</td>
+<td>Boateng</td>
 <td align="right">1</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
-<td align="left">Gotze</td>
+<td>Gotze</td>
 <td align="right">1</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
-<td align="left">Gundogan</td>
+<td>Gundogan</td>
 <td align="right">0</td>
 <td align="right">1</td>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
-<td align="left">Hummels</td>
+<td>Hummels</td>
 <td align="right">0</td>
 <td align="right">1</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
-<td align="left">Kramer</td>
+<td>Kramer</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">1</td>
 </tr>
 <tr class="odd">
-<td align="left">Kroos</td>
+<td>Kroos</td>
 <td align="right">1</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
-<td align="left">Kruse</td>
+<td>Kruse</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">1</td>
 </tr>
 <tr class="odd">
-<td align="left">Lahm</td>
+<td>Lahm</td>
 <td align="right">1</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
-<td align="left">Muller</td>
+<td>Muller</td>
 <td align="right">1</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
-<td align="left">Neuer</td>
+<td>Neuer</td>
 <td align="right">1</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
-<td align="left">Reus</td>
+<td>Reus</td>
 <td align="right">0</td>
 <td align="right">1</td>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
-<td align="left">Weidenfeller</td>
+<td>Weidenfeller</td>
 <td align="right">0</td>
 <td align="right">1</td>
 <td align="right">0</td>
@@ -717,7 +792,7 @@ knitr::kable(with(deutsch14, table(player, club)))</code></pre>
 <table>
 <thead>
 <tr class="header">
-<th align="left"></th>
+<th></th>
 <th align="right">Badstuber</th>
 <th align="right">Bayern</th>
 <th align="right">Boateng</th>
@@ -738,7 +813,7 @@ knitr::kable(with(deutsch14, table(player, club)))</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">Badstuber</td>
+<td>Badstuber</td>
 <td align="right">0</td>
 <td align="right">1</td>
 <td align="right">0</td>
@@ -757,7 +832,7 @@ knitr::kable(with(deutsch14, table(player, club)))</code></pre>
 <td align="right">0</td>
 </tr>
 <tr class="even">
-<td align="left">Bayern</td>
+<td>Bayern</td>
 <td align="right">1</td>
 <td align="right">0</td>
 <td align="right">1</td>
@@ -776,7 +851,7 @@ knitr::kable(with(deutsch14, table(player, club)))</code></pre>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
-<td align="left">Boateng</td>
+<td>Boateng</td>
 <td align="right">0</td>
 <td align="right">1</td>
 <td align="right">0</td>
@@ -795,7 +870,7 @@ knitr::kable(with(deutsch14, table(player, club)))</code></pre>
 <td align="right">0</td>
 </tr>
 <tr class="even">
-<td align="left">Dortmund</td>
+<td>Dortmund</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -814,7 +889,7 @@ knitr::kable(with(deutsch14, table(player, club)))</code></pre>
 <td align="right">1</td>
 </tr>
 <tr class="odd">
-<td align="left">Gotze</td>
+<td>Gotze</td>
 <td align="right">0</td>
 <td align="right">1</td>
 <td align="right">0</td>
@@ -833,7 +908,7 @@ knitr::kable(with(deutsch14, table(player, club)))</code></pre>
 <td align="right">0</td>
 </tr>
 <tr class="even">
-<td align="left">Gundogan</td>
+<td>Gundogan</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -852,7 +927,7 @@ knitr::kable(with(deutsch14, table(player, club)))</code></pre>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
-<td align="left">Hummels</td>
+<td>Hummels</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -871,7 +946,7 @@ knitr::kable(with(deutsch14, table(player, club)))</code></pre>
 <td align="right">0</td>
 </tr>
 <tr class="even">
-<td align="left">Kramer</td>
+<td>Kramer</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -890,7 +965,7 @@ knitr::kable(with(deutsch14, table(player, club)))</code></pre>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
-<td align="left">Kroos</td>
+<td>Kroos</td>
 <td align="right">0</td>
 <td align="right">1</td>
 <td align="right">0</td>
@@ -909,7 +984,7 @@ knitr::kable(with(deutsch14, table(player, club)))</code></pre>
 <td align="right">0</td>
 </tr>
 <tr class="even">
-<td align="left">Kruse</td>
+<td>Kruse</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -928,7 +1003,7 @@ knitr::kable(with(deutsch14, table(player, club)))</code></pre>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
-<td align="left">Lahm</td>
+<td>Lahm</td>
 <td align="right">0</td>
 <td align="right">1</td>
 <td align="right">0</td>
@@ -947,7 +1022,7 @@ knitr::kable(with(deutsch14, table(player, club)))</code></pre>
 <td align="right">0</td>
 </tr>
 <tr class="even">
-<td align="left">Monchengladbach</td>
+<td>Monchengladbach</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -966,7 +1041,7 @@ knitr::kable(with(deutsch14, table(player, club)))</code></pre>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
-<td align="left">Muller</td>
+<td>Muller</td>
 <td align="right">0</td>
 <td align="right">1</td>
 <td align="right">0</td>
@@ -985,7 +1060,7 @@ knitr::kable(with(deutsch14, table(player, club)))</code></pre>
 <td align="right">0</td>
 </tr>
 <tr class="even">
-<td align="left">Neuer</td>
+<td>Neuer</td>
 <td align="right">0</td>
 <td align="right">1</td>
 <td align="right">0</td>
@@ -1004,7 +1079,7 @@ knitr::kable(with(deutsch14, table(player, club)))</code></pre>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
-<td align="left">Reus</td>
+<td>Reus</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -1023,7 +1098,7 @@ knitr::kable(with(deutsch14, table(player, club)))</code></pre>
 <td align="right">0</td>
 </tr>
 <tr class="even">
-<td align="left">Weidenfeller</td>
+<td>Weidenfeller</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -1047,14 +1122,17 @@ knitr::kable(with(deutsch14, table(player, club)))</code></pre>
 <pre class="r"><code>echartr(deutsch14, c(club, player), weight, role, type=&#39;chord&#39;, 
         sub=&#39;asc + descsub + rotatelab + ribbon&#39;) %&gt;% 
   setTitle(&#39;Club Orientation of Deutsch Soccer Team (2014)&#39;)</code></pre>
-<div id="echarts-efe079db8fcf712ee168a8fa45627b1a474b3ec4" style="width:672px;height:480px;" class="echarts html-widget"></div>
-<script type="application/json" data-for="echarts-efe079db8fcf712ee168a8fa45627b1a474b3ec4">{"x":{"series":[{"type":"chord","name":"Connection","roam":"move","itemStyle":{"normal":{"label":{"show":true,"textStyle":{"color":"#333"},"rotate":true},"nodeStyle":{"brushType":"both","strokeColor":"rgba(255,215,0,0.4)"},"linkStyle":{"type":"curve"}},"emphasis":{"label":{"show":false},"nodeStyle":[],"lineStyle":[]}},"minRadius":8,"maxRadius":20,"nodes":[{"name":"Monchengladbach"},{"name":"Bayern"},{"name":"Dortmund"},{"name":"Kruse"},{"name":"Kramer"},{"name":"Neuer"},{"name":"Boateng"},{"name":"Lahm"},{"name":"Kroos"},{"name":"Muller"},{"name":"Gotze"},{"name":"Badstuber"},{"name":"Hummels"},{"name":"Weidenfeller"},{"name":"Reus"},{"name":"Gundogan"}],"links":[{"source":"Monchengladbach","target":"Kruse","name":"Fw","weight":1},{"source":"Monchengladbach","target":"Kramer","name":"Mf","weight":1},{"source":"Bayern","target":"Neuer","name":"Gk","weight":1},{"source":"Bayern","target":"Boateng","name":"Df","weight":1},{"source":"Bayern","target":"Lahm","name":"Df","weight":1},{"source":"Bayern","target":"Kroos","name":"Mf","weight":1},{"source":"Bayern","target":"Muller","name":"Mf","weight":1},{"source":"Bayern","target":"Gotze","name":"Fw","weight":1},{"source":"Bayern","target":"Badstuber","name":"Df","weight":1},{"source":"Dortmund","target":"Hummels","name":"Df","weight":1},{"source":"Dortmund","target":"Weidenfeller","name":"Gk","weight":1},{"source":"Dortmund","target":"Reus","name":"Df","weight":1},{"source":"Dortmund","target":"Gundogan","name":"Md","weight":1},{"source":"Kruse","target":"Monchengladbach","name":"Fw","weight":1},{"source":"Kramer","target":"Monchengladbach","name":"Mf","weight":1},{"source":"Neuer","target":"Bayern","name":"Gk","weight":1},{"source":"Boateng","target":"Bayern","name":"Df","weight":1},{"source":"Lahm","target":"Bayern","name":"Df","weight":1},{"source":"Kroos","target":"Bayern","name":"Mf","weight":1},{"source":"Muller","target":"Bayern","name":"Mf","weight":1},{"source":"Gotze","target":"Bayern","name":"Fw","weight":1},{"source":"Badstuber","target":"Bayern","name":"Df","weight":1},{"source":"Hummels","target":"Dortmund","name":"Df","weight":1},{"source":"Weidenfeller","target":"Dortmund","name":"Gk","weight":1},{"source":"Reus","target":"Dortmund","name":"Df","weight":1},{"source":"Gundogan","target":"Dortmund","name":"Md","weight":1}],"ribbonType":true,"sort":"ascending","sortSub":"descending","showScale":false,"showScaleText":false}],"legend":{"show":true,"data":["Monchengladbach","Bayern","Dortmund","Kruse","Kramer","Neuer","Boateng","Lahm","Kroos","Muller","Gotze","Badstuber","Hummels","Weidenfeller","Reus","Gundogan"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["Monchengladbach","Bayern","Dortmund","Kruse","Kramer","Neuer","Boateng","Lahm","Kroos","Muller","Gotze","Badstuber","Hummels","Weidenfeller","Reus","Gundogan"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    if (params.indicator2) {    // is edge\n        if (isNaN(params.value.weight)){\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \")\";\n        } else {\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \") : \"\n            + params.value.weight;\n        }\n\n    } else {    // is node\n        return params.name;\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":false},"dataView":{"show":false},"magicType":{"show":true,"type":["force","chord"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"title":{"text":"Club Orientation of Deutsch Soccer Team (2014)","x":"center","y":"bottom","orient":"horizontal"}},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
+<div id="htmlwidget-e3ce0addd241ac50c3ac" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e3ce0addd241ac50c3ac">{"x":{"series":[{"type":"chord","name":"Connection","roam":"move","itemStyle":{"normal":{"label":{"show":true,"textStyle":{"color":"#333"},"rotate":true},"nodeStyle":{"brushType":"both","strokeColor":"rgba(255,215,0,0.4)"},"linkStyle":{"type":"curve"}},"emphasis":{"label":{"show":false},"nodeStyle":[],"lineStyle":[]}},"minRadius":8,"maxRadius":20,"nodes":[{"name":"Monchengladbach"},{"name":"Bayern"},{"name":"Dortmund"},{"name":"Kruse"},{"name":"Kramer"},{"name":"Neuer"},{"name":"Boateng"},{"name":"Lahm"},{"name":"Kroos"},{"name":"Muller"},{"name":"Gotze"},{"name":"Badstuber"},{"name":"Hummels"},{"name":"Weidenfeller"},{"name":"Reus"},{"name":"Gundogan"}],"links":[{"source":"Monchengladbach","target":"Kruse","name":"Fw","weight":1},{"source":"Monchengladbach","target":"Kramer","name":"Mf","weight":1},{"source":"Bayern","target":"Neuer","name":"Gk","weight":1},{"source":"Bayern","target":"Boateng","name":"Df","weight":1},{"source":"Bayern","target":"Lahm","name":"Df","weight":1},{"source":"Bayern","target":"Kroos","name":"Mf","weight":1},{"source":"Bayern","target":"Muller","name":"Mf","weight":1},{"source":"Bayern","target":"Gotze","name":"Fw","weight":1},{"source":"Bayern","target":"Badstuber","name":"Df","weight":1},{"source":"Dortmund","target":"Hummels","name":"Df","weight":1},{"source":"Dortmund","target":"Weidenfeller","name":"Gk","weight":1},{"source":"Dortmund","target":"Reus","name":"Df","weight":1},{"source":"Dortmund","target":"Gundogan","name":"Md","weight":1},{"source":"Kruse","target":"Monchengladbach","name":"Fw","weight":1},{"source":"Kramer","target":"Monchengladbach","name":"Mf","weight":1},{"source":"Neuer","target":"Bayern","name":"Gk","weight":1},{"source":"Boateng","target":"Bayern","name":"Df","weight":1},{"source":"Lahm","target":"Bayern","name":"Df","weight":1},{"source":"Kroos","target":"Bayern","name":"Mf","weight":1},{"source":"Muller","target":"Bayern","name":"Mf","weight":1},{"source":"Gotze","target":"Bayern","name":"Fw","weight":1},{"source":"Badstuber","target":"Bayern","name":"Df","weight":1},{"source":"Hummels","target":"Dortmund","name":"Df","weight":1},{"source":"Weidenfeller","target":"Dortmund","name":"Gk","weight":1},{"source":"Reus","target":"Dortmund","name":"Df","weight":1},{"source":"Gundogan","target":"Dortmund","name":"Md","weight":1}],"ribbonType":true,"sort":"ascending","sortSub":"descending","showScale":false,"showScaleText":false}],"legend":{"show":true,"data":["Monchengladbach","Bayern","Dortmund","Kruse","Kramer","Neuer","Boateng","Lahm","Kroos","Muller","Gotze","Badstuber","Hummels","Weidenfeller","Reus","Gundogan"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["Monchengladbach","Bayern","Dortmund","Kruse","Kramer","Neuer","Boateng","Lahm","Kroos","Muller","Gotze","Badstuber","Hummels","Weidenfeller","Reus","Gundogan"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    if (params.indicator2) {    // is edge\n        if (isNaN(params.value.weight)){\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \")\";\n        } else {\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \") : \"\n            + params.value.weight;\n        }\n\n    } else {    // is node\n        return params.name;\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":false},"dataView":{"show":false},"magicType":{"show":true,"type":["force","chord"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"title":{"text":"Club Orientation of Deutsch Soccer Team (2014)","x":"center","y":"bottom","orient":"horizontal"}},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
 <p>Another example is based on preinstalled dataset <strong>mideast</strong>.</p>
 <pre class="r"><code>mideast &lt;- as.data.frame(mideast, col.names=mideast[1,], stringsAsFactors=FALSE)
 names(mideast) &lt;- mideast[1,]
 mideast &lt;- mideast[2:16,]
-me &lt;- data.table::melt(mideast, id=NA)
-me &lt;- me[!is.na(me$value),]
+me &lt;- data.table::melt(mideast, id=NA)</code></pre>
+<pre><code>## Warning in melt_dataframe(data, as.integer(id.ind - 1),
+## as.integer(measure.ind - : &#39;.Random.seed&#39; is not an integer vector but of
+## type &#39;NULL&#39;, so ignored</code></pre>
+<pre class="r"><code>me &lt;- me[!is.na(me$value),]
 me$series &lt;- strsplit(me$value, &#39;/&#39;)
 me$value &lt;- sapply(me$series, function(x) as.numeric(x[2]))
 me$series &lt;- sapply(me$series, function(x) x[1])
@@ -1066,8 +1144,8 @@ str(me)</code></pre>
 ##  $ value : num  1 1 1 1 1 1 1 1 9 9 ...
 ##  $ series: chr  &quot;支持&quot; &quot;反对&quot; &quot;反对&quot; &quot;未表态&quot; ...</code></pre>
 <pre class="r"><code>echartr(me, c(source, target), value, series, type=&#39;chord&#39;, sub=&#39;ribbon&#39;)</code></pre>
-<div id="echarts-49d13fa30feac0779624cd2297525db969fecdd9" style="width:672px;height:480px;" class="echarts html-widget"></div>
-<script type="application/json" data-for="echarts-49d13fa30feac0779624cd2297525db969fecdd9">{"x":{"series":[{"type":"chord","name":"Connection","roam":"move","itemStyle":{"normal":{"label":{"show":true,"textStyle":{"color":"#333"}},"nodeStyle":{"brushType":"both","strokeColor":"rgba(255,215,0,0.4)"},"linkStyle":{"type":"curve"}},"emphasis":{"label":{"show":false},"nodeStyle":[],"lineStyle":[]}},"minRadius":8,"maxRadius":20,"nodes":[{"name":"叙利亚反对派"},{"name":"阿萨德"},{"name":"伊朗"},{"name":"塞西"},{"name":"哈马斯"},{"name":"以色列"},{"name":"穆斯林兄弟会"},{"name":"基地组织"},{"name":"美国"},{"name":"俄罗斯"},{"name":"黎巴嫩什叶派"},{"name":"土耳其"},{"name":"卡塔尔"},{"name":"沙特"},{"name":"黎巴嫩逊尼派"}],"links":[{"source":"叙利亚反对派","target":"美国","name":"支持","weight":1},{"source":"阿萨德","target":"美国","name":"反对","weight":1},{"source":"伊朗","target":"美国","name":"反对","weight":1},{"source":"塞西","target":"美国","name":"未表态","weight":1},{"source":"哈马斯","target":"美国","name":"反对","weight":1},{"source":"以色列","target":"美国","name":"支持","weight":1},{"source":"穆斯林兄弟会","target":"美国","name":"未表态","weight":1},{"source":"基地组织","target":"美国","name":"反对","weight":1},{"source":"美国","target":"叙利亚反对派","name":"支持","weight":9},{"source":"伊朗","target":"叙利亚反对派","name":"反对","weight":9},{"source":"哈马斯","target":"叙利亚反对派","name":"支持","weight":9},{"source":"以色列","target":"叙利亚反对派","name":"支持","weight":9},{"source":"基地组织","target":"叙利亚反对派","name":"支持","weight":9},{"source":"俄罗斯","target":"叙利亚反对派","name":"反对","weight":9},{"source":"黎巴嫩什叶派","target":"叙利亚反对派","name":"反对","weight":9},{"source":"土耳其","target":"叙利亚反对派","name":"支持","weight":9},{"source":"卡塔尔","target":"叙利亚反对派","name":"支持","weight":9},{"source":"沙特","target":"叙利亚反对派","name":"支持","weight":9},{"source":"黎巴嫩逊尼派","target":"叙利亚反对派","name":"支持","weight":9},{"source":"美国","target":"阿萨德","name":"反对","weight":9},{"source":"伊朗","target":"阿萨德","name":"支持","weight":9},{"source":"以色列","target":"阿萨德","name":"反对","weight":9},{"source":"穆斯林兄弟会","target":"阿萨德","name":"反对","weight":9},{"source":"基地组织","target":"阿萨德","name":"反对","weight":9},{"source":"俄罗斯","target":"阿萨德","name":"支持","weight":9},{"source":"黎巴嫩什叶派","target":"阿萨德","name":"支持","weight":9},{"source":"土耳其","target":"阿萨德","name":"反对","weight":9},{"source":"卡塔尔","target":"阿萨德","name":"反对","weight":9},{"source":"黎巴嫩逊尼派","target":"阿萨德","name":"反对","weight":9},{"source":"美国","target":"伊朗","name":"反对","weight":9},{"source":"叙利亚反对派","target":"伊朗","name":"反对","weight":1},{"source":"阿萨德","target":"伊朗","name":"支持","weight":1},{"source":"哈马斯","target":"伊朗","name":"支持","weight":1},{"source":"黎巴嫩什叶派","target":"伊朗","name":"支持","weight":1},{"source":"美国","target":"塞西","name":"未表态","weight":9},{"source":"哈马斯","target":"塞西","name":"反对","weight":9},{"source":"穆斯林兄弟会","target":"塞西","name":"反对","weight":1},{"source":"土耳其","target":"塞西","name":"反对","weight":9},{"source":"卡塔尔","target":"塞西","name":"反对","weight":9},{"source":"沙特","target":"塞西","name":"支持","weight":9},{"source":"美国","target":"哈马斯","name":"反对","weight":9},{"source":"叙利亚反对派","target":"哈马斯","name":"支持","weight":1},{"source":"伊朗","target":"哈马斯","name":"支持","weight":9},{"source":"塞西","target":"哈马斯","name":"反对","weight":1},{"source":"以色列","target":"哈马斯","name":"反对","weight":9},{"source":"卡塔尔","target":"哈马斯","name":"支持","weight":9},{"source":"美国","target":"以色列","name":"支持","weight":9},{"source":"叙利亚反对派","target":"以色列","name":"支持","weight":1},{"source":"阿萨德","target":"以色列","name":"反对","weight":1},{"source":"哈马斯","target":"以色列","name":"反对","weight":1},{"source":"美国","target":"穆斯林兄弟会","name":"未表态","weight":9},{"source":"阿萨德","target":"穆斯林兄弟会","name":"反对","weight":1},{"source":"塞西","target":"穆斯林兄弟会","name":"反对","weight":9},{"source":"土耳其","target":"穆斯林兄弟会","name":"支持","weight":9},{"source":"卡塔尔","target":"穆斯林兄弟会","name":"支持","weight":9},{"source":"沙特","target":"穆斯林兄弟会","name":"反对","weight":9},{"source":"美国","target":"基地组织","name":"反对","weight":9},{"source":"叙利亚反对派","target":"基地组织","name":"支持","weight":1},{"source":"阿萨德","target":"基地组织","name":"反对","weight":1},{"source":"沙特","target":"基地组织","name":"反对","weight":1},{"source":"叙利亚反对派","target":"俄罗斯","name":"反对","weight":1},{"source":"阿萨德","target":"俄罗斯","name":"支持","weight":1},{"source":"叙利亚反对派","target":"黎巴嫩什叶派","name":"反对","weight":1},{"source":"阿萨德","target":"黎巴嫩什叶派","name":"支持","weight":1},{"source":"伊朗","target":"黎巴嫩什叶派","name":"支持","weight":9},{"source":"叙利亚反对派","target":"土耳其","name":"支持","weight":1},{"source":"阿萨德","target":"土耳其","name":"反对","weight":1},{"source":"塞西","target":"土耳其","name":"反对","weight":1},{"source":"穆斯林兄弟会","target":"土耳其","name":"支持","weight":1},{"source":"叙利亚反对派","target":"卡塔尔","name":"支持","weight":1},{"source":"阿萨德","target":"卡塔尔","name":"反对","weight":1},{"source":"塞西","target":"卡塔尔","name":"反对","weight":1},{"source":"哈马斯","target":"卡塔尔","name":"支持","weight":1},{"source":"穆斯林兄弟会","target":"卡塔尔","name":"支持","weight":1},{"source":"叙利亚反对派","target":"沙特","name":"支持","weight":1},{"source":"塞西","target":"沙特","name":"支持","weight":1},{"source":"穆斯林兄弟会","target":"沙特","name":"反对","weight":1},{"source":"基地组织","target":"沙特","name":"反对","weight":9},{"source":"黎巴嫩逊尼派","target":"沙特","name":"支持","weight":1},{"source":"叙利亚反对派","target":"黎巴嫩逊尼派","name":"支持","weight":1},{"source":"阿萨德","target":"黎巴嫩逊尼派","name":"反对","weight":1},{"source":"沙特","target":"黎巴嫩逊尼派","name":"支持","weight":9}],"ribbonType":true,"showScale":false,"showScaleText":false}],"legend":{"show":true,"data":["叙利亚反对派","阿萨德","伊朗","塞西","哈马斯","以色列","穆斯林兄弟会","基地组织","美国","俄罗斯","黎巴嫩什叶派","土耳其","卡塔尔","沙特","黎巴嫩逊尼派"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["叙利亚反对派","阿萨德","伊朗","塞西","哈马斯","以色列","穆斯林兄弟会","基地组织","美国","俄罗斯","黎巴嫩什叶派","土耳其","卡塔尔","沙特","黎巴嫩逊尼派"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    if (params.indicator2) {    // is edge\n        if (isNaN(params.value.weight)){\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \")\";\n        } else {\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \") : \"\n            + params.value.weight;\n        }\n\n    } else {    // is node\n        return params.name;\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":false},"dataView":{"show":false},"magicType":{"show":true,"type":["force","chord"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"}},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
+<div id="htmlwidget-840e9bb8e4c3dcba6264" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-840e9bb8e4c3dcba6264">{"x":{"series":[{"type":"chord","name":"Connection","roam":"move","itemStyle":{"normal":{"label":{"show":true,"textStyle":{"color":"#333"}},"nodeStyle":{"brushType":"both","strokeColor":"rgba(255,215,0,0.4)"},"linkStyle":{"type":"curve"}},"emphasis":{"label":{"show":false},"nodeStyle":[],"lineStyle":[]}},"minRadius":8,"maxRadius":20,"nodes":[{"name":"叙利亚反对派"},{"name":"阿萨德"},{"name":"伊朗"},{"name":"塞西"},{"name":"哈马斯"},{"name":"以色列"},{"name":"穆斯林兄弟会"},{"name":"基地组织"},{"name":"美国"},{"name":"俄罗斯"},{"name":"黎巴嫩什叶派"},{"name":"土耳其"},{"name":"卡塔尔"},{"name":"沙特"},{"name":"黎巴嫩逊尼派"}],"links":[{"source":"叙利亚反对派","target":"美国","name":"支持","weight":1},{"source":"阿萨德","target":"美国","name":"反对","weight":1},{"source":"伊朗","target":"美国","name":"反对","weight":1},{"source":"塞西","target":"美国","name":"未表态","weight":1},{"source":"哈马斯","target":"美国","name":"反对","weight":1},{"source":"以色列","target":"美国","name":"支持","weight":1},{"source":"穆斯林兄弟会","target":"美国","name":"未表态","weight":1},{"source":"基地组织","target":"美国","name":"反对","weight":1},{"source":"美国","target":"叙利亚反对派","name":"支持","weight":9},{"source":"伊朗","target":"叙利亚反对派","name":"反对","weight":9},{"source":"哈马斯","target":"叙利亚反对派","name":"支持","weight":9},{"source":"以色列","target":"叙利亚反对派","name":"支持","weight":9},{"source":"基地组织","target":"叙利亚反对派","name":"支持","weight":9},{"source":"俄罗斯","target":"叙利亚反对派","name":"反对","weight":9},{"source":"黎巴嫩什叶派","target":"叙利亚反对派","name":"反对","weight":9},{"source":"土耳其","target":"叙利亚反对派","name":"支持","weight":9},{"source":"卡塔尔","target":"叙利亚反对派","name":"支持","weight":9},{"source":"沙特","target":"叙利亚反对派","name":"支持","weight":9},{"source":"黎巴嫩逊尼派","target":"叙利亚反对派","name":"支持","weight":9},{"source":"美国","target":"阿萨德","name":"反对","weight":9},{"source":"伊朗","target":"阿萨德","name":"支持","weight":9},{"source":"以色列","target":"阿萨德","name":"反对","weight":9},{"source":"穆斯林兄弟会","target":"阿萨德","name":"反对","weight":9},{"source":"基地组织","target":"阿萨德","name":"反对","weight":9},{"source":"俄罗斯","target":"阿萨德","name":"支持","weight":9},{"source":"黎巴嫩什叶派","target":"阿萨德","name":"支持","weight":9},{"source":"土耳其","target":"阿萨德","name":"反对","weight":9},{"source":"卡塔尔","target":"阿萨德","name":"反对","weight":9},{"source":"黎巴嫩逊尼派","target":"阿萨德","name":"反对","weight":9},{"source":"美国","target":"伊朗","name":"反对","weight":9},{"source":"叙利亚反对派","target":"伊朗","name":"反对","weight":1},{"source":"阿萨德","target":"伊朗","name":"支持","weight":1},{"source":"哈马斯","target":"伊朗","name":"支持","weight":1},{"source":"黎巴嫩什叶派","target":"伊朗","name":"支持","weight":1},{"source":"美国","target":"塞西","name":"未表态","weight":9},{"source":"哈马斯","target":"塞西","name":"反对","weight":9},{"source":"穆斯林兄弟会","target":"塞西","name":"反对","weight":1},{"source":"土耳其","target":"塞西","name":"反对","weight":9},{"source":"卡塔尔","target":"塞西","name":"反对","weight":9},{"source":"沙特","target":"塞西","name":"支持","weight":9},{"source":"美国","target":"哈马斯","name":"反对","weight":9},{"source":"叙利亚反对派","target":"哈马斯","name":"支持","weight":1},{"source":"伊朗","target":"哈马斯","name":"支持","weight":9},{"source":"塞西","target":"哈马斯","name":"反对","weight":1},{"source":"以色列","target":"哈马斯","name":"反对","weight":9},{"source":"卡塔尔","target":"哈马斯","name":"支持","weight":9},{"source":"美国","target":"以色列","name":"支持","weight":9},{"source":"叙利亚反对派","target":"以色列","name":"支持","weight":1},{"source":"阿萨德","target":"以色列","name":"反对","weight":1},{"source":"哈马斯","target":"以色列","name":"反对","weight":1},{"source":"美国","target":"穆斯林兄弟会","name":"未表态","weight":9},{"source":"阿萨德","target":"穆斯林兄弟会","name":"反对","weight":1},{"source":"塞西","target":"穆斯林兄弟会","name":"反对","weight":9},{"source":"土耳其","target":"穆斯林兄弟会","name":"支持","weight":9},{"source":"卡塔尔","target":"穆斯林兄弟会","name":"支持","weight":9},{"source":"沙特","target":"穆斯林兄弟会","name":"反对","weight":9},{"source":"美国","target":"基地组织","name":"反对","weight":9},{"source":"叙利亚反对派","target":"基地组织","name":"支持","weight":1},{"source":"阿萨德","target":"基地组织","name":"反对","weight":1},{"source":"沙特","target":"基地组织","name":"反对","weight":1},{"source":"叙利亚反对派","target":"俄罗斯","name":"反对","weight":1},{"source":"阿萨德","target":"俄罗斯","name":"支持","weight":1},{"source":"叙利亚反对派","target":"黎巴嫩什叶派","name":"反对","weight":1},{"source":"阿萨德","target":"黎巴嫩什叶派","name":"支持","weight":1},{"source":"伊朗","target":"黎巴嫩什叶派","name":"支持","weight":9},{"source":"叙利亚反对派","target":"土耳其","name":"支持","weight":1},{"source":"阿萨德","target":"土耳其","name":"反对","weight":1},{"source":"塞西","target":"土耳其","name":"反对","weight":1},{"source":"穆斯林兄弟会","target":"土耳其","name":"支持","weight":1},{"source":"叙利亚反对派","target":"卡塔尔","name":"支持","weight":1},{"source":"阿萨德","target":"卡塔尔","name":"反对","weight":1},{"source":"塞西","target":"卡塔尔","name":"反对","weight":1},{"source":"哈马斯","target":"卡塔尔","name":"支持","weight":1},{"source":"穆斯林兄弟会","target":"卡塔尔","name":"支持","weight":1},{"source":"叙利亚反对派","target":"沙特","name":"支持","weight":1},{"source":"塞西","target":"沙特","name":"支持","weight":1},{"source":"穆斯林兄弟会","target":"沙特","name":"反对","weight":1},{"source":"基地组织","target":"沙特","name":"反对","weight":9},{"source":"黎巴嫩逊尼派","target":"沙特","name":"支持","weight":1},{"source":"叙利亚反对派","target":"黎巴嫩逊尼派","name":"支持","weight":1},{"source":"阿萨德","target":"黎巴嫩逊尼派","name":"反对","weight":1},{"source":"沙特","target":"黎巴嫩逊尼派","name":"支持","weight":9}],"ribbonType":true,"showScale":false,"showScaleText":false}],"legend":{"show":true,"data":["叙利亚反对派","阿萨德","伊朗","塞西","哈马斯","以色列","穆斯林兄弟会","基地组织","美国","俄罗斯","黎巴嫩什叶派","土耳其","卡塔尔","沙特","黎巴嫩逊尼派"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["叙利亚反对派","阿萨德","伊朗","塞西","哈马斯","以色列","穆斯林兄弟会","基地组织","美国","俄罗斯","黎巴嫩什叶派","土耳其","卡塔尔","沙特","黎巴嫩逊尼派"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    if (params.indicator2) {    // is edge\n        if (isNaN(params.value.weight)){\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \")\";\n        } else {\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \") : \"\n            + params.value.weight;\n        }\n\n    } else {    // is node\n        return params.name;\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":false},"dataView":{"show":false},"magicType":{"show":true,"type":["force","chord"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"}},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
 </div>
 </div>
 <div id="chord-with-timeline" class="section level3">
@@ -1077,8 +1155,8 @@ str(me)</code></pre>
         sub=&#39;asc + descsub + rotatelab&#39;) %&gt;% 
     setTimeline(show=FALSE, autoPlay=TRUE) %&gt;%
     setTitle(&#39;Club Orientation of Deutsch Soccer Team&#39;)</code></pre>
-<div id="echarts-e147d7292597e97af970a68da248217791bfc454" style="width:672px;height:480px;" class="echarts html-widget"></div>
-<script type="application/json" data-for="echarts-e147d7292597e97af970a68da248217791bfc454">{"x":{"timeline":{"type":"number","data":[2014,2016],"x":80,"x2":80,"show":false,"autoPlay":true,"y2":50},"options":[{"series":[{"type":"chord","name":"Connection","roam":"move","itemStyle":{"normal":{"label":{"show":true,"textStyle":{"color":"#333"},"rotate":true},"nodeStyle":{"brushType":"both","strokeColor":"rgba(255,215,0,0.4)"},"linkStyle":{"type":"curve"}},"emphasis":{"label":{"show":false},"nodeStyle":[],"lineStyle":[]}},"minRadius":8,"maxRadius":20,"nodes":[{"name":"Monchengladbach"},{"name":"Bayern"},{"name":"Dortmund"},{"name":"Kruse"},{"name":"Kramer"},{"name":"Neuer"},{"name":"Boateng"},{"name":"Lahm"},{"name":"Kroos"},{"name":"Muller"},{"name":"Gotze"},{"name":"Badstuber"},{"name":"Hummels"},{"name":"Weidenfeller"},{"name":"Reus"},{"name":"Gundogan"}],"links":[{"source":"Monchengladbach","target":"Kruse","name":"Fw","weight":1},{"source":"Monchengladbach","target":"Kramer","name":"Mf","weight":1},{"source":"Bayern","target":"Neuer","name":"Gk","weight":1},{"source":"Bayern","target":"Boateng","name":"Df","weight":1},{"source":"Bayern","target":"Lahm","name":"Df","weight":1},{"source":"Bayern","target":"Kroos","name":"Mf","weight":1},{"source":"Bayern","target":"Muller","name":"Mf","weight":1},{"source":"Bayern","target":"Gotze","name":"Fw","weight":1},{"source":"Bayern","target":"Badstuber","name":"Df","weight":1},{"source":"Dortmund","target":"Hummels","name":"Df","weight":1},{"source":"Dortmund","target":"Weidenfeller","name":"Gk","weight":1},{"source":"Dortmund","target":"Reus","name":"Df","weight":1},{"source":"Dortmund","target":"Gundogan","name":"Md","weight":1}],"ribbonType":false,"sort":"ascending","sortSub":"descending","showScale":false,"showScaleText":false}],"legend":{"show":true,"data":["Monchengladbach","Bayern","Dortmund","Leverkusen","Schalke","Arsenal","Madrid"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["Monchengladbach","Bayern","Dortmund","Leverkusen","Schalke","Arsenal","Madrid"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    if (params.indicator2) {    // is edge\n        if (isNaN(params.value.weight)){\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \")\";\n        } else {\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \") : \"\n            + params.value.weight;\n        }\n\n    } else {    // is node\n        return params.name;\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":false},"dataView":{"show":false},"magicType":{"show":true,"type":["force","chord"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"title":{"text":"Club Orientation of Deutsch Soccer Team (year: 2014)","x":"center","y":"bottom","orient":"horizontal"}},{"series":[{"type":"chord","name":"Connection","roam":"move","itemStyle":{"normal":{"label":{"show":true,"textStyle":{"color":"#333"},"rotate":true},"nodeStyle":{"brushType":"both","strokeColor":"rgba(255,215,0,0.4)"},"linkStyle":{"type":"curve"}},"emphasis":{"label":{"show":false},"nodeStyle":[],"lineStyle":[]}},"minRadius":8,"maxRadius":20,"nodes":[{"name":"Bayern"},{"name":"Leverkusen"},{"name":"Schalke"},{"name":"Arsenal"},{"name":"Madrid"},{"name":"Dortmund"},{"name":"Neuer"},{"name":"Leno"},{"name":"Hummels"},{"name":"Kimmich"},{"name":"Howedes"},{"name":"Mustafi"},{"name":"Ozil"},{"name":"Tah"},{"name":"Muller"},{"name":"Meyer"},{"name":"Kroos"},{"name":"Gotze"},{"name":"Volland"}],"links":[{"source":"Bayern","target":"Neuer","name":"Gk","weight":1},{"source":"Leverkusen","target":"Leno","name":"Gk","weight":1},{"source":"Bayern","target":"Hummels","name":"Df","weight":1},{"source":"Bayern","target":"Kimmich","name":"Df","weight":1},{"source":"Schalke","target":"Howedes","name":"Df","weight":1},{"source":"Arsenal","target":"Mustafi","name":"Df","weight":1},{"source":"Arsenal","target":"Ozil","name":"Mf","weight":1},{"source":"Leverkusen","target":"Tah","name":"Mf","weight":1},{"source":"Bayern","target":"Muller","name":"Mf","weight":1},{"source":"Schalke","target":"Meyer","name":"Mf","weight":1},{"source":"Madrid","target":"Kroos","name":"Mf","weight":1},{"source":"Dortmund","target":"Gotze","name":"Fw","weight":1},{"source":"Leverkusen","target":"Volland","name":"Fw","weight":1}],"ribbonType":false,"sort":"ascending","sortSub":"descending","showScale":false,"showScaleText":false}],"title":{"text":"Club Orientation of Deutsch Soccer Team (year: 2016)","x":"center","y":"bottom","orient":"horizontal"}}]},"evals":["options.0.tooltip.formatter"],"jsHooks":[]}</script>
+<div id="htmlwidget-ff5c07f160f403a06578" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ff5c07f160f403a06578">{"x":{"timeline":{"type":"number","data":[2014,2016],"x":80,"x2":80,"show":false,"autoPlay":true,"y2":50},"options":[{"series":[{"type":"chord","name":"Connection","roam":"move","itemStyle":{"normal":{"label":{"show":true,"textStyle":{"color":"#333"},"rotate":true},"nodeStyle":{"brushType":"both","strokeColor":"rgba(255,215,0,0.4)"},"linkStyle":{"type":"curve"}},"emphasis":{"label":{"show":false},"nodeStyle":[],"lineStyle":[]}},"minRadius":8,"maxRadius":20,"nodes":[{"name":"Monchengladbach"},{"name":"Bayern"},{"name":"Dortmund"},{"name":"Kruse"},{"name":"Kramer"},{"name":"Neuer"},{"name":"Boateng"},{"name":"Lahm"},{"name":"Kroos"},{"name":"Muller"},{"name":"Gotze"},{"name":"Badstuber"},{"name":"Hummels"},{"name":"Weidenfeller"},{"name":"Reus"},{"name":"Gundogan"}],"links":[{"source":"Monchengladbach","target":"Kruse","name":"Fw","weight":1},{"source":"Monchengladbach","target":"Kramer","name":"Mf","weight":1},{"source":"Bayern","target":"Neuer","name":"Gk","weight":1},{"source":"Bayern","target":"Boateng","name":"Df","weight":1},{"source":"Bayern","target":"Lahm","name":"Df","weight":1},{"source":"Bayern","target":"Kroos","name":"Mf","weight":1},{"source":"Bayern","target":"Muller","name":"Mf","weight":1},{"source":"Bayern","target":"Gotze","name":"Fw","weight":1},{"source":"Bayern","target":"Badstuber","name":"Df","weight":1},{"source":"Dortmund","target":"Hummels","name":"Df","weight":1},{"source":"Dortmund","target":"Weidenfeller","name":"Gk","weight":1},{"source":"Dortmund","target":"Reus","name":"Df","weight":1},{"source":"Dortmund","target":"Gundogan","name":"Md","weight":1}],"ribbonType":false,"sort":"ascending","sortSub":"descending","showScale":false,"showScaleText":false}],"legend":{"show":true,"data":["Monchengladbach","Bayern","Dortmund","Leverkusen","Schalke","Arsenal","Madrid"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["Monchengladbach","Bayern","Dortmund","Leverkusen","Schalke","Arsenal","Madrid"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    if (params.indicator2) {    // is edge\n        if (isNaN(params.value.weight)){\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \")\";\n        } else {\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \") : \"\n            + params.value.weight;\n        }\n\n    } else {    // is node\n        return params.name;\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":false},"dataView":{"show":false},"magicType":{"show":true,"type":["force","chord"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"title":{"text":"Club Orientation of Deutsch Soccer Team (year: 2014)","x":"center","y":"bottom","orient":"horizontal"}},{"series":[{"type":"chord","name":"Connection","roam":"move","itemStyle":{"normal":{"label":{"show":true,"textStyle":{"color":"#333"},"rotate":true},"nodeStyle":{"brushType":"both","strokeColor":"rgba(255,215,0,0.4)"},"linkStyle":{"type":"curve"}},"emphasis":{"label":{"show":false},"nodeStyle":[],"lineStyle":[]}},"minRadius":8,"maxRadius":20,"nodes":[{"name":"Bayern"},{"name":"Leverkusen"},{"name":"Schalke"},{"name":"Arsenal"},{"name":"Madrid"},{"name":"Dortmund"},{"name":"Neuer"},{"name":"Leno"},{"name":"Hummels"},{"name":"Kimmich"},{"name":"Howedes"},{"name":"Mustafi"},{"name":"Ozil"},{"name":"Tah"},{"name":"Muller"},{"name":"Meyer"},{"name":"Kroos"},{"name":"Gotze"},{"name":"Volland"}],"links":[{"source":"Bayern","target":"Neuer","name":"Gk","weight":1},{"source":"Leverkusen","target":"Leno","name":"Gk","weight":1},{"source":"Bayern","target":"Hummels","name":"Df","weight":1},{"source":"Bayern","target":"Kimmich","name":"Df","weight":1},{"source":"Schalke","target":"Howedes","name":"Df","weight":1},{"source":"Arsenal","target":"Mustafi","name":"Df","weight":1},{"source":"Arsenal","target":"Ozil","name":"Mf","weight":1},{"source":"Leverkusen","target":"Tah","name":"Mf","weight":1},{"source":"Bayern","target":"Muller","name":"Mf","weight":1},{"source":"Schalke","target":"Meyer","name":"Mf","weight":1},{"source":"Madrid","target":"Kroos","name":"Mf","weight":1},{"source":"Dortmund","target":"Gotze","name":"Fw","weight":1},{"source":"Leverkusen","target":"Volland","name":"Fw","weight":1}],"ribbonType":false,"sort":"ascending","sortSub":"descending","showScale":false,"showScaleText":false}],"title":{"text":"Club Orientation of Deutsch Soccer Team (year: 2016)","x":"center","y":"bottom","orient":"horizontal"}}]},"evals":["options.0.tooltip.formatter"],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
@@ -1100,14 +1178,19 @@ $(document).ready(function () {
 </script>
 
 
+</div>
+</div>
 
 </div>
 
 <script>
 
 // add bootstrap table styles to pandoc tables
-$(document).ready(function () {
+function bootstrapStylePandocTables() {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
 });
 
 

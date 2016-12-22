@@ -5,6 +5,7 @@ output:
     number_sections: yes
     toc: yes
     toc_depth: 4
+    toc_float: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -41,13 +42,13 @@ echartr(cars, indicator, Parameter, model, type='radar') %>%
 关键是:
 
 - 文本型`x`和数值型`y`，会使用`data.table::dcast`压缩（`fun=sum`）
-- **`x`用作数据系列，而`series`用于产生多个不同的雷达图!**
+- **`x`用作指标系列，而`facet`用于产生多个不同的雷达图!**
 - 可以用`setPolar`微调极坐标参数。
 
 # 用法Function Call
 
 ```r
-echartr(data, x, <y>, <series>, <z>, <type>, <subtype>)
+echartr(data, x, <y>, <series>, <facet>, <t>, <type>, <subtype>)
 ```
 
 +--------+--------------------------------------------------------------------+
@@ -55,13 +56,15 @@ echartr(data, x, <y>, <series>, <z>, <type>, <subtype>)
 +========+====================================================================+
 |**data**| 数据框格式的源数据                   |
 +--------+--------------------------------------------------------------------+
-| **x**  | 文本型自变量。`x[1,]`的每个水平被处理为极坐标轴，`x[,2]`的每个水平被处理为一个数据系列。其他类型会被转为因子后计算。如提供多个变量，只传入前两个。 |
+| **x**  | 文本型自变量。`x[1,]`的每个水平被处理为极坐标轴。其他类型会被转为因子后计算。如提供多个变量，只传入第一个。 |
 +--------+--------------------------------------------------------------------+
 | **y**  | 数值型应变量。如提供多个变量，只传入第一个。 |
 +--------+--------------------------------------------------------------------+
-| series | 转为因子后计算。`series`的每个水平被处理为分组因子，用于产生独立的极坐标系。如提供多个变量，只传入第一个。  |
+| series | 转为因子后计算。`series`的每个水平被处理为分组因子，产生数据系列。如提供多个变量，只传入第一个。  |
 +--------+--------------------------------------------------------------------+
-|  z     | 时间轴变量，转为因子后计算。如提供多个变量，只传入第一个。 |
+|  facet | 转为因子后计算。`facet`的每个水平被处理为分组因子，用于产生独立的极坐标系。如提供多个变量，只传入第一个。  |
++--------+--------------------------------------------------------------------+
+|  t     | 时间轴变量，转为因子后计算。如提供多个变量，只传入第一个。 |
 +--------+--------------------------------------------------------------------+
 | type   | 'radar'. |
 +--------+--------------------------------------------------------------------+
@@ -88,7 +91,7 @@ knitr::kable(cars)
 
 ### 单个雷达图Single Radar
 
-`type`设为'radar'，不设置`series`和`x[,2]`。但这样的单雷达图价值不大。
+`type`设为'radar'，不设置`series`和`facet`。但这样的单雷达图价值不大。
 
 ```{r}
 echartr(cars, indicator, Parameter, type='radar')
@@ -96,29 +99,29 @@ echartr(cars, indicator, Parameter, type='radar')
 
 ### 多系列雷达图Radar with Multiple Series
 
-我们一般都要设置数据系列，以便对比。雷达图是极坐标图，数据系列位于`x[,2]`。
+我们一般都要设置数据系列，以便对比。
 
 ```{r}
-echartr(cars, c(indicator, model), Parameter, type='radar', sub='fill') %>%
+echartr(cars, indicator, Parameter, model, type='radar', sub='fill') %>%
     setTitle('Merc 450SE  vs  450SL  vs  450SLC')
 ```
 
 ## 多个雷达图Multiple Radars
 
-如果不设置`x[,2]`，而是设置`series`，可以获得多个雷达图。
+设置`facet`，可以获得多个雷达图。
 
 ```{r}
-echartr(cars, indicator, Parameter, model, type='radar') %>%
+echartr(cars, indicator, Parameter, facet=model, type='radar') %>%
         setTitle('Merc 450SE  vs  450SL  vs  450SLC')
 ```
 
 
 ## 带时间轴With Timeline
 
-设置`z`，获得带时间轴的雷达图。
+设置`t`，获得带时间轴的雷达图。
 
 ```{r}
-echartr(cars, indicator, Parameter, z=model, type='radar') %>%
+echartr(cars, indicator, Parameter, t=model, type='radar') %>%
         setTitle('Merc 450SE  vs  450SL  vs  450SLC')
 ```
 
@@ -142,7 +145,7 @@ str(carstat)
 ```
 
 ```{r}
-echartr(carstat, c(indicator, am), Parameter, carb, z=gear, type='radar') %>%
+echartr(carstat, indicator, Parameter, am, facet=carb, t=gear, type='radar') %>%
     setTitle('Merc 450SE  vs  450SL  vs  450SLC')
 ```
 
@@ -153,7 +156,7 @@ echartr(carstat, c(indicator, am), Parameter, carb, z=gear, type='radar') %>%
 雷达图默认构建在多边性极坐标系。可以用`setPolar`改为圆形极坐标系。但仅适用于雷达图。
 
 ```{r}
-echartr(cars, indicator, Parameter, model, type='radar') %>%
+echartr(cars, indicator, Parameter, facet=model, type='radar') %>%
         setTitle('Merc 450SE  vs  450SL  vs  450SLC') %>%
     setPolar(type='circle')
 ```

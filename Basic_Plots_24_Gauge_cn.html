@@ -19,12 +19,17 @@
 <script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
-<script src="libs/htmlwidgets-0.7/htmlwidgets.js"></script>
+<script src="libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<link href="libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="libs/highlightjs-1.1/highlight.js"></script>
+<script src="libs/htmlwidgets-0.8/htmlwidgets.js"></script>
 <script src="libs/echarts-2.2.7/echarts-all.js"></script>
-<script src="libs/echarts-2.2.7/ext/params.js"></script>
-<script src="libs/echarts-2.2.7/ext/loadGeoJSON.js"></script>
-<script src="libs/echarts-binding-0.0.5/echarts.js"></script>
-<script src="libs/echarts-module-2.2.7/base.js"></script>
+<script src="libs/charts-ext-2.2.7/main.js"></script>
+<script src="libs/charts-ext-2.2.7/BMap.js"></script>
+<script src="libs/echarts-binding-0.1.2/echarts.js"></script>
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
@@ -43,10 +48,6 @@ p code {
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
 <style type="text/css">code{white-space: pre;}</style>
-<link rel="stylesheet"
-      href="libs/highlight/default.css"
-      type="text/css" />
-<script src="libs/highlight/highlight.js"></script>
 <style type="text/css">
   pre:not([class]) {
     background-color: white;
@@ -117,10 +118,10 @@ button.code-folding-btn:focus {
 </style>
 
 
+
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
-<script src="libs/navigation-1.1/tabsets.js"></script>
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
@@ -130,6 +131,101 @@ $(document).ready(function () {
 <!-- code folding -->
 
 
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -164,19 +260,6 @@ $(document).ready(function () {
 
 </div>
 
-<div id="TOC">
-<ul>
-<li><a href="#introduction"><span class="toc-section-number">1</span> 介绍Introduction</a></li>
-<li><a href="#function-call"><span class="toc-section-number">2</span> 用法Function Call</a></li>
-<li><a href="#showcase"><span class="toc-section-number">3</span> 举例Showcase</a><ul>
-<li><a href="#data-preparation"><span class="toc-section-number">3.1</span> 数据准备Data Preparation</a></li>
-<li><a href="#single-gauge"><span class="toc-section-number">3.2</span> 单个仪表盘Single Gauge</a></li>
-<li><a href="#multiple-gauges"><span class="toc-section-number">3.3</span> 多个仪表盘Multiple Gauges</a></li>
-<li><a href="#with-timeline"><span class="toc-section-number">3.4</span> 带时间轴With Timeline</a></li>
-</ul></li>
-<li><a href="#futher-setup"><span class="toc-section-number">4</span> 其他设置Futher Setup</a></li>
-</ul>
-</div>
 
 <p>首先，加载<code>recharts</code>:</p>
 <pre class="r"><code>library(recharts)</code></pre>
@@ -186,8 +269,8 @@ $(document).ready(function () {
 <table id='intro'>
 <tr>
 <td>
-<div id="echarts-97de87b18a72b98ff237af0ca6eefcbd1a01acf4" style="width:400px;height:300px;" class="echarts html-widget"></div>
-<script type="application/json" data-for="echarts-97de87b18a72b98ff237af0ca6eefcbd1a01acf4">{"x":{"series":[{"type":"gauge","center":["50%","50%"],"radius":"90%","data":[{"name":"kph","value":70}],"max":70}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":"kph"}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"theme":"macarons","title":{"text":"KM per Hour","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-895f0a2f732ab1f881ac" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-895f0a2f732ab1f881ac">{"x":{"series":[{"type":"gauge","center":["50%","50%"],"radius":"90%","data":[{"name":"kph","value":70}],"max":70}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":"kph"}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"theme":"macarons","title":{"text":"KM per Hour","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
 </td>
 <td>
 </table>
@@ -195,13 +278,13 @@ $(document).ready(function () {
 <ul>
 <li>文本型<code>x</code></li>
 <li>数值型<code>y</code></li>
-<li>文本型<code>series</code>可获得多个仪表盘</li>
-<li>设置<code>z</code>，让仪表盘动起来</li>
+<li>文本型<code>facet</code>可获得多个仪表盘</li>
+<li>设置<code>t</code>，让仪表盘动起来</li>
 </ul>
 </div>
 <div id="function-call" class="section level1">
 <h1><span class="header-section-number">2</span> 用法Function Call</h1>
-<pre class="r"><code>echartr(data, x, y, &lt;series&gt;, &lt;z&gt;, &lt;type&gt;)</code></pre>
+<pre class="r"><code>echartr(data, x, y, &lt;series&gt;, &lt;facet&gt;, &lt;t&gt;, &lt;type&gt;)</code></pre>
 <table>
 <colgroup>
 <col width="11%" />
@@ -209,34 +292,38 @@ $(document).ready(function () {
 </colgroup>
 <thead>
 <tr class="header">
-<th align="left">参数</th>
-<th align="left">要求</th>
+<th>参数</th>
+<th>要求</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left"><p><strong>data</strong></p></td>
-<td align="left"><p>数据框格式的源数据</p></td>
+<td><p><strong>data</strong></p></td>
+<td><p>数据框格式的源数据</p></td>
 </tr>
 <tr class="even">
-<td align="left"><p><strong>x</strong></p></td>
-<td align="left"><p>文本型自变量。如提供多个变量，只传入前两个。</p></td>
+<td><p><strong>x</strong></p></td>
+<td><p>文本型自变量。如提供多个变量，只传入前两个。</p></td>
 </tr>
 <tr class="odd">
-<td align="left"><p><strong>y</strong></p></td>
-<td align="left"><p>数值型应变量。如提供多个变量，只传入第一个。</p></td>
+<td><p><strong>y</strong></p></td>
+<td><p>数值型应变量。如提供多个变量，只传入第一个。</p></td>
 </tr>
 <tr class="even">
-<td align="left"><p>series</p></td>
-<td align="left"><p>转为因子后计算。<code>series</code>的每个水平被处理为分组因子，用于产生独立的极坐标系。如提供多个变量，只传入第一个。</p></td>
+<td><p>series</p></td>
+<td><p>转为因子后计算。<code>series</code>的每个水平被处理为分组因子。如提供多个变量，只传入第一个。</p></td>
 </tr>
 <tr class="odd">
-<td align="left"><p>z</p></td>
-<td align="left"><p>时间轴变量，转为因子后计算。如提供多个变量，只传入第一个。</p></td>
+<td><p>facet</p></td>
+<td><p>转为因子后计算。<code>facet</code>的每个水平被处理为分组因子，用于产生独立的极坐标系。如提供多个变量，只传入第一个。</p></td>
 </tr>
 <tr class="even">
-<td align="left"><p>type</p></td>
-<td align="left"><p>‘gauge’</p></td>
+<td><p>t</p></td>
+<td><p>时间轴变量，转为因子后计算。如提供多个变量，只传入第一个。</p></td>
+</tr>
+<tr class="odd">
+<td><p>type</p></td>
+<td><p>‘gauge’</p></td>
 </tr>
 </tbody>
 </table>
@@ -284,20 +371,20 @@ knitr::kable(data)</code></pre>
 <div id="single-gauge" class="section level2">
 <h2><span class="header-section-number">3.2</span> 单个仪表盘Single Gauge</h2>
 <pre class="r"><code>echartr(data, x, y, type=&#39;gauge&#39;)</code></pre>
-<div id="echarts-46e89fc1db57bb3916c2e8054d779b89523178dc" style="width:672px;height:480px;" class="echarts html-widget"></div>
-<script type="application/json" data-for="echarts-46e89fc1db57bb3916c2e8054d779b89523178dc">{"x":{"series":[{"type":"gauge","center":["50%","50%"],"radius":"90%","data":[{"name":"KR/min","value":6.3},{"name":"Kph","value":54},{"name":"KR/min","value":7.5},{"name":"Kph","value":82}],"max":7.5}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["KR/min","Kph"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-4e7e516eb62136ccaf05" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4e7e516eb62136ccaf05">{"x":{"series":[{"type":"gauge","center":["50%","50%"],"radius":"90%","data":[{"name":"KR/min","value":6.3},{"name":"Kph","value":54},{"name":"KR/min","value":7.5},{"name":"Kph","value":82}],"max":7.5}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["KR/min","Kph"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="multiple-gauges" class="section level2">
 <h2><span class="header-section-number">3.3</span> 多个仪表盘Multiple Gauges</h2>
-<pre class="r"><code>echartr(data, x, y, x, type=&#39;gauge&#39;)</code></pre>
-<div id="echarts-6c9af3ec2c5c234ac8d4393e75a1154b17382e18" style="width:672px;height:480px;" class="echarts html-widget"></div>
-<script type="application/json" data-for="echarts-6c9af3ec2c5c234ac8d4393e75a1154b17382e18">{"x":{"series":[{"type":"gauge","center":["27.5%","50%"],"radius":"42.5%","data":[{"name":"KR/min","value":6.3},{"name":"KR/min","value":7.5}],"name":"KR/min","max":7.5},{"type":"gauge","center":["72.5%","50%"],"radius":"42.5%","data":[{"name":"Kph","value":54},{"name":"Kph","value":82}],"name":"Kph","max":82}],"legend":{"show":true,"data":["KR/min","Kph"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["KR/min","Kph"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>echartr(data, x, y, facet=x, type=&#39;gauge&#39;)</code></pre>
+<div id="htmlwidget-d91a6125973e3805123c" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-d91a6125973e3805123c">{"x":{"series":[{"type":"gauge","center":["27.5%","50%"],"radius":"42.5%","data":[{"name":"KR/min","value":6.3},{"name":"KR/min","value":7.5}],"name":"KR/min","max":7.5},{"type":"gauge","center":["72.5%","50%"],"radius":"42.5%","data":[{"name":"Kph","value":54},{"name":"Kph","value":82}],"name":"Kph","max":82}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["KR/min","Kph"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["KR/min","Kph"],"x":"left","y":"top","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="with-timeline" class="section level2">
 <h2><span class="header-section-number">3.4</span> 带时间轴With Timeline</h2>
-<pre class="r"><code>echartr(data, x, y, x, z=z, type=&#39;gauge&#39;)</code></pre>
-<div id="echarts-bffe7b6dfb475aec787f6449aa7dc90381a07a61" style="width:672px;height:480px;" class="echarts html-widget"></div>
-<script type="application/json" data-for="echarts-bffe7b6dfb475aec787f6449aa7dc90381a07a61">{"x":{"timeline":{"type":"number","data":["t1","t2"],"x":80,"x2":80},"options":[{"series":[{"type":"gauge","center":["27.5%","50%"],"radius":"42.5%","data":[{"name":"KR/min","value":6.3}],"name":"KR/min","max":7.5},{"type":"gauge","center":["72.5%","50%"],"radius":"42.5%","data":[{"name":"Kph","value":54}],"name":"Kph","max":82}],"legend":{"show":true,"data":["KR/min","Kph"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["KR/min","Kph"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"}},{"series":[{"type":"gauge","center":["27.5%","50%"],"radius":"42.5%","data":[{"name":"KR/min","value":7.5}],"name":"KR/min","max":7.5},{"type":"gauge","center":["72.5%","50%"],"radius":"42.5%","data":[{"name":"Kph","value":82}],"name":"Kph","max":82}]}]},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>echartr(data, x, y, facet=x, t=z, type=&#39;gauge&#39;)</code></pre>
+<div id="htmlwidget-e4e111908c41a51926ad" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e4e111908c41a51926ad">{"x":{"timeline":{"type":"number","data":["t1","t2"],"x":80,"x2":80},"options":[{"series":[{"type":"gauge","center":["27.5%","50%"],"radius":"42.5%","data":[{"name":"KR/min","value":6.3}],"name":"KR/min","max":7.5},{"type":"gauge","center":["72.5%","50%"],"radius":"42.5%","data":[{"name":"Kph","value":54}],"name":"Kph","max":82}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["KR/min","Kph"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["KR/min","Kph"],"x":"left","y":"top","orient":"horizontal"}},{"series":[{"type":"gauge","center":["27.5%","50%"],"radius":"42.5%","data":[{"name":"KR/min","value":7.5}],"name":"KR/min","max":7.5},{"type":"gauge","center":["72.5%","50%"],"radius":"42.5%","data":[{"name":"Kph","value":82}],"name":"Kph","max":82}]}]},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div id="futher-setup" class="section level1">
@@ -318,15 +405,21 @@ $(document).ready(function () {
 </script>
 
 
+</div>
+</div>
 
 </div>
 
 <script>
 
 // add bootstrap table styles to pandoc tables
-$(document).ready(function () {
+function bootstrapStylePandocTables() {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
 });
+
 
 </script>
 

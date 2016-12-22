@@ -1,9 +1,10 @@
 ---
-title: "recharts: 百度ECharts的R语言接口"
+title: "recharts: 百度ECharts 2的R语言接口"
 output: 
   html_document: 
     toc: yes
     toc_depth: 4
+    toc_float: yes
 ---
 
 ---
@@ -137,9 +138,9 @@ str(args(echartr))
 +-----------+------------------------------------------------------------------+
 |  lng      | 经度，用于地图/热力图 |
 +-----------+------------------------------------------------------------------+
-|  type     | 图类型，默认为'auto'。`type`作为向量传入时，映射到`series`向量。 |
+|  type     | 图类型，默认为'auto'。`type`作为向量传入时，映射到`series`向量；作为列表传入时，映射到`facet`向量。 |
 +-----------+------------------------------------------------------------------+
-| subtype   | 图亚类，默认为NULL。`subtype`作为向量传入时，映射到`series`向量。|
+| subtype   | 图亚类，默认为NULL。`subtype`作为向量传入时，映射到`series`向量；作为列表传入时，映射到`facet`向量。|
 +-----------+------------------------------------------------------------------+
 
 ### 支持的图类型Supported Chart Types
@@ -182,6 +183,9 @@ echartr(mtcars, wt, mpg, am, weight=gear, type='bubble')
 
 
 #### 图类和亚类Type/Subtype
+
+##### 类和亚类混合
+
 `recharts`在某些情况下支持混合作图，比如柱图和线图。
 
 ```{r}
@@ -200,6 +204,21 @@ echartr(d, carb, mean.mpg, gear, type='line',
     setSymbols('emptycircle')
 ```
 
+##### 类/亚类映射到分面(facet)
+
+上面的例子显示了如何将有类/亚类映射到数据系列(series)。如果你想将类/亚类映射到分面，需要将它们写成列表(list)，而列表中的每个向量，则依次映射到数据系列(series)。即list[[1]], list[[2]], ...映射分面1、2, ...，而list[[1]]的1、2、...向量则映射系列1、2、...。
+
+如facet为2个水平，series为3个水平，意味着type和subtype应为list(c(s1,s2,s3), c(s1,s2,s3))结构。recharts会尝试将传入参数type和subtype进行补齐或截断，以达到一一映射。
+
+```{r}
+d1 <- data.frame(x=rep(LETTERS[1:6], 4), y=abs(rnorm(24)), 
+                 f=c(rep('i', 12), rep('ii', 12)), 
+                 s=rep(c(rep('I', 6), rep('II', 6)), 2))
+echartr(d1, x, y, s, facet=f, type='radar', 
+        subtype=list(c('fill', ''), c('', 'fill')))
+```
+
+
 ## 修改作图Modify the Chart
 
 你可以将基本图形存为一个对象，然后不断修改它，并把这些修改用`%>%`串联起来。
@@ -214,22 +233,22 @@ g = echartr(mtcars, wt, mpg, factor(am, labels=c('Automatic', 'Manual')))
 
 ```
 - x
-  +-- series
-  |   +--- list 1
-  |   |    +---- name: 'Automatic'
-  |   |    +---- data: ...
-  |   |    +---- type: 'scatter'
-  |   +--- list 2
-  |   |    +---- name: 'Manual'
-  |   |    +---- data: ...
-  |   |    +---- type: 'scatter'
-  |   +--- ...
-  +-- legend
-  +-- xAxis
-  +-- yAxis
-  +-- grid  
-  +-- tooltip
-  +-- ...
+  |-- series
+      |--- list 1
+           |---- name: 'Automatic'
+           |---- data: ...
+           |---- type: 'scatter'
+      |--- list 2
+           |---- name: 'Manual'
+           |---- data: ...
+           |---- type: 'scatter'
+      |--- ...
+  |-- legend
+  |-- xAxis
+  |-- yAxis
+  |-- grid  
+  |-- tooltip
+  |-- ...
 ```
 
 如果你想直接修改数据系列的定义，可以调用低阶函数`setSeries`。

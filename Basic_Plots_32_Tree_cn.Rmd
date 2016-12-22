@@ -5,6 +5,7 @@ output:
     number_sections: yes
     toc: yes
     toc_depth: 4
+    toc_float: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -38,24 +39,24 @@ data <- data.frame(
     series=c(rep('Tree 1', 8), rep('Tree 2', 7)),
     value=rep(1, 15))
     
-echartr(data, c(node, parent), value, series, type='tree') %>%
+echartr(data, c(node, parent), value, facet=series, type='tree') %>%
     setTitle('tree') %>% setTheme('infographic', width=400, height=300)
 ```
 </td>
 <td>
 ```{r,echo=FALSE}
-echartr(data, c(node, parent), value, series, type='tree_inv') %>%
+echartr(data, c(node, parent), value, facet=series, type='tree_inv') %>%
     setTitle('tree_inv') %>% setTheme('roma', width=400, height=300)
 ```
 </td></tr>
 <tr><td>
 ```{r,echo=FALSE}
-echartr(data, c(node, parent), value, series, type='htree') %>%
+echartr(data, c(node, parent), value, facet=series, type='htree') %>%
     setTitle('htree') %>% setTheme('macarons', width=400, height=300)
 ```
 </td><td>
 ```{r,echo=FALSE}
-echartr(data, c(node, parent), value, series, type='htree_inv') %>%
+echartr(data, c(node, parent), value, facet=series, type='htree_inv') %>%
     setTitle('htree_inv') %>% setTheme('macarons2', width=400, height=300)
 ```
 </td></tr>
@@ -65,12 +66,12 @@ echartr(data, c(node, parent), value, series, type='htree_inv') %>%
 
 - 文本型`x`，至少两列：x[,1]为树图节点，x[,2]为树图节点的父节点。根节点的父节点为NA。
 - 数值型`y`
-- series`用于生成多棵树
+- `facet`用于生成多棵树
 
 # 用法Function Call
 
 ```r
-echartr(data, x, <y>, <series>, <z>, <type>, <subtype>)
+echartr(data, x, <y>, <series>, <facet>, <t>, <type>, <subtype>)
 ```
 
 +--------+--------------------------------------------------------------------+
@@ -82,9 +83,11 @@ echartr(data, x, <y>, <series>, <z>, <type>, <subtype>)
 +--------+--------------------------------------------------------------------+
 | y      | 数值型应变量。如提供多个变量，只传入第一个。 |
 +--------+--------------------------------------------------------------------+
-| series | 转为因子后计算。`series`的每个水平被处理为分组因子，用于产生独立的极坐标系。如提供多个变量，只传入第一个。  |
+| series | 转为因子后计算。`series`的每个水平被处理为分组因子。如提供多个变量，只传入第一个。  |
 +--------+--------------------------------------------------------------------+
-|  z     | 时间轴变量，转为因子后计算。如提供多个变量，只传入第一个。 |
+| facet  | 转为因子后计算。`facet`的每个水平被处理为分组因子，用于产生独立的极坐标系。如提供多个变量，只传入第一个。  |
++--------+--------------------------------------------------------------------+
+|  t     | 时间轴变量，转为因子后计算。如提供多个变量，只传入第一个。 |
 +--------+--------------------------------------------------------------------+
 | type   | 'tree'/'vtree', 'tree_inv'/'vtree_inv', 'htree', 'htree_inv'. |
 +--------+--------------------------------------------------------------------+
@@ -140,11 +143,11 @@ echartr(data[data$series=='Tree 1',], c(node, parent), value, type='tree') %>%
 
 ### 多棵树图Multiple Trees
 
-如`series`赋值以有效的数据结构，可以得到多棵树。
-但Echarts没有把`series`和图例填色映射好，所以需要单独对多棵树着色。
+如`facet`赋值以有效的数据结构，可以得到多棵树。
+但Echarts 2没有把`facet`和图例填色映射好，所以需要单独对多棵树着色。
 
 ```{r}
-echartr(data, c(node, parent), value, series, type='tree') %>%
+echartr(data, c(node, parent), value, facet=series, type='tree') %>%
     setTitle('Multiple Trees')
 ```
 
@@ -153,7 +156,7 @@ echartr(data, c(node, parent), value, series, type='tree') %>%
 `type`设为'tree_inv'。然后不妨试验几个`subtype`。
 
 ```{r}
-echartr(data, c(node, parent), value, series, type='tree_inv',
+echartr(data, c(node, parent), value, facet=series, type='tree_inv',
         subtype='broken') %>% setTitle('tree_inv')
 ```
 
@@ -162,7 +165,7 @@ echartr(data, c(node, parent), value, series, type='tree_inv',
 `type`设为'htree'。
 
 ```{r}
-echartr(data, c(node, parent), value, series, type='htree', 
+echartr(data, c(node, parent), value, facet=series, type='htree', 
         subtype='broken + dashed') %>% setTitle('htree')
 ```
 
@@ -171,7 +174,7 @@ echartr(data, c(node, parent), value, series, type='htree',
 `type`设为'htree_inv'。
 
 ```{r}
-echartr(data, c(node, parent), value, series, type='htree_inv', 
+echartr(data, c(node, parent), value, facet=series, type='htree_inv', 
         subtype='broken + dotted') %>% setTitle('htree_inv')
 ```
 

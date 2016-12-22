@@ -5,6 +5,7 @@ output:
     number_sections: yes
     toc: yes
     toc_depth: 4
+    toc_float: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -45,7 +46,8 @@ echartr(titanic, Class, Count, Survived, type='column') %>%
 ```{r,echo=FALSE}
 echartr(iris, Sepal.Width) %>% setLegend(pos=3) %>%
     setTheme('macarons', width=400, height=300) %>%
-    setTitle('Iris Sepal Width','histogram')
+    setTitle('Iris Sepal Width','histogram') %>% 
+    setTooltip(formatter='none') %>% setSeries(1, barWidth=230/13)
 ```
 </td><td>
 
@@ -224,11 +226,14 @@ echartr(titanic, Class, Count, Survived, type='column', subtype='stack') %>%
 
 Histogram is a special form of bar chart, in which you only provide numeric `x` variable.
 
-`type` could be 'histogram', 'hist'.
+`type` could be 'histogram', 'hist'. Run `setTooltip(formatter='none')` to apply the default tooltip template in Echarts.
+
+The barWidth can not be autosized in Echarts2. Please assign a suitable value yourself.
 
 ```{r}
-echartr(iris, Sepal.Width) %>%
-    setTitle('Iris: Histogram of Sepal.Width') 
+echartr(iris, Sepal.Width, width=600) %>%
+   setTitle('Iris: Histogram of Sepal.Width') %>%
+   setTooltip(formatter='none') %>% setSeries(1, barWidth=500/13)
 ```
 
 ### Stat by Density
@@ -236,8 +241,9 @@ echartr(iris, Sepal.Width) %>%
 Sometimes you want a density historam, then set `subtype` 'density'.
 
 ```{r}
-echartr(iris, Sepal.Width, type='hist', subtype='density') %>%
-    setTitle('Iris: Histogram of Sepal.Width') %>% setYAxis(name="Density")
+echartr(iris, Sepal.Width, type='hist', subtype='density', width=600) %>%
+  setTitle('Iris: Histogram of Sepal.Width') %>% setYAxis(name="Density") %>%
+  setTooltip(formatter='none') %>% setSeries(1, barWidth=500/13)
 ```
 
 # Futher Setup

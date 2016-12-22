@@ -19,12 +19,17 @@
 <script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
-<script src="libs/htmlwidgets-0.7/htmlwidgets.js"></script>
+<script src="libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<link href="libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="libs/highlightjs-1.1/highlight.js"></script>
+<script src="libs/htmlwidgets-0.8/htmlwidgets.js"></script>
 <script src="libs/echarts-2.2.7/echarts-all.js"></script>
-<script src="libs/echarts-2.2.7/ext/params.js"></script>
-<script src="libs/echarts-2.2.7/ext/loadGeoJSON.js"></script>
-<script src="libs/echarts-binding-0.0.5/echarts.js"></script>
-<script src="libs/echarts-module-2.2.7/base.js"></script>
+<script src="libs/charts-ext-2.2.7/main.js"></script>
+<script src="libs/charts-ext-2.2.7/BMap.js"></script>
+<script src="libs/echarts-binding-0.1.2/echarts.js"></script>
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
@@ -43,10 +48,6 @@ p code {
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
 <style type="text/css">code{white-space: pre;}</style>
-<link rel="stylesheet"
-      href="libs/highlight/default.css"
-      type="text/css" />
-<script src="libs/highlight/highlight.js"></script>
 <style type="text/css">
   pre:not([class]) {
     background-color: white;
@@ -117,10 +118,10 @@ button.code-folding-btn:focus {
 </style>
 
 
+
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
-<script src="libs/navigation-1.1/tabsets.js"></script>
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
@@ -130,6 +131,101 @@ $(document).ready(function () {
 <!-- code folding -->
 
 
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -164,24 +260,6 @@ $(document).ready(function () {
 
 </div>
 
-<div id="TOC">
-<ul>
-<li><a href="#introduction"><span class="toc-section-number">1</span> Introduction</a></li>
-<li><a href="#function-call"><span class="toc-section-number">2</span> Function Call</a></li>
-<li><a href="#showcase"><span class="toc-section-number">3</span> Showcase</a><ul>
-<li><a href="#data-preparation"><span class="toc-section-number">3.1</span> Data Preparation</a></li>
-<li><a href="#radar-chart"><span class="toc-section-number">3.2</span> Radar Chart</a><ul>
-<li><a href="#single-radar"><span class="toc-section-number">3.2.1</span> Single Radar</a></li>
-<li><a href="#radar-with-multiple-series"><span class="toc-section-number">3.2.2</span> Radar with Multiple Series</a></li>
-</ul></li>
-<li><a href="#multiple-radars"><span class="toc-section-number">3.3</span> Multiple Radars</a></li>
-<li><a href="#with-timeline"><span class="toc-section-number">3.4</span> With Timeline</a></li>
-</ul></li>
-<li><a href="#futher-setup"><span class="toc-section-number">4</span> Futher Setup</a><ul>
-<li><a href="#setpolar"><span class="toc-section-number">4.1</span> <code>setPolar</code></a></li>
-</ul></li>
-</ul>
-</div>
 
 <p>First, you should load <code>recharts</code>:</p>
 <pre class="r"><code>library(recharts)</code></pre>
@@ -194,8 +272,8 @@ $(document).ready(function () {
 <table id="intro">
 <tr>
 <td>
-<div id="echarts-c88cc49c70e05f1b2d7356051cc1fe9174960cff" style="width:400px;height:300px;" class="echarts html-widget"></div>
-<script type="application/json" data-for="echarts-c88cc49c70e05f1b2d7356051cc1fe9174960cff">{"x":{"series":[{"type":"radar","symbol":"none","name":"Merc 450SE","data":[{"name":"Parameter","value":[16.4,275.8,180,17.4,4.07,3.07]}]},{"type":"radar","symbol":"none","name":"Merc 450SL","data":[{"name":"Parameter","value":[17.3,275.8,180,17.6,3.73,3.07]}],"polarIndex":1},{"type":"radar","symbol":"none","name":"Merc 450SLC","data":[{"name":"Parameter","value":[15.2,275.8,180,18,3.78,3.07]}],"polarIndex":2}],"legend":{"show":true,"data":["Parameter"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["mpg","disp","hp","qsec","wt","drat"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"polar":[{"center":["27.5%","27.5%"],"radius":"44.25%","indicator":[{"text":"mpg","max":20.76},{"text":"disp","max":330.96},{"text":"hp","max":216},{"text":"qsec","max":21.6},{"text":"wt","max":4.884},{"text":"drat","max":3.684}]},{"center":["72.5%","27.5%"],"radius":"44.25%","indicator":[{"text":"mpg","max":20.76},{"text":"disp","max":330.96},{"text":"hp","max":216},{"text":"qsec","max":21.6},{"text":"wt","max":4.884},{"text":"drat","max":3.684}]},{"center":["27.5%","72.5%"],"radius":"44.25%","indicator":[{"text":"mpg","max":20.76},{"text":"disp","max":330.96},{"text":"hp","max":216},{"text":"qsec","max":21.6},{"text":"wt","max":4.884},{"text":"drat","max":3.684}]}],"title":{"text":"Merc 450SE  vs  450SL  vs  450SLC","x":"center","y":"bottom","orient":"horizontal"},"theme":"infographic"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-4b264fe412f0c8f98c5e" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4b264fe412f0c8f98c5e">{"x":{"series":[{"type":"radar","symbol":"none","name":0,"data":[{"name":"Merc 450SE","value":[16.4,275.8,180,17.4,4.07,3.07]},{"name":"Merc 450SL","value":[17.3,275.8,180,17.6,3.73,3.07]},{"name":"Merc 450SLC","value":[15.2,275.8,180,18,3.78,3.07]}]}],"legend":{"show":true,"data":["Merc 450SE","Merc 450SL","Merc 450SLC"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["mpg","disp","hp","qsec","wt","drat"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"polar":[{"center":["50%","50%"],"radius":"80%","indicator":[{"text":"mpg","max":20.76},{"text":"disp","max":330.96},{"text":"hp","max":216},{"text":"qsec","max":21.6},{"text":"wt","max":4.884},{"text":"drat","max":3.684}]}],"title":{"text":"Merc 450SE  vs  450SL  vs  450SLC","x":"center","y":"bottom","orient":"horizontal"},"theme":"infographic"},"evals":[],"jsHooks":[]}</script>
 </td>
 <td>
 </td>
@@ -204,13 +282,13 @@ $(document).ready(function () {
 <p>The keys are:</p>
 <ul>
 <li>character <code>x</code> and numeric <code>y</code> and will be compacted using <code>data.table::dcast</code> with <code>fun=sum</code></li>
-<li><strong><code>x</code> is used as series, while <code>series</code> is used to produce separate pies!</strong></li>
+<li><strong><code>x</code> is used as indicators, while <code>facet</code> is used to produce separate pies!</strong></li>
 <li>you can use <code>setPolar</code> to tune the polar system parameters.</li>
 </ul>
 </div>
 <div id="function-call" class="section level1">
 <h1><span class="header-section-number">2</span> Function Call</h1>
-<pre class="r"><code>echartr(data, x, &lt;y&gt;, &lt;series&gt;, &lt;z&gt;, &lt;type&gt;, &lt;subtype&gt;)</code></pre>
+<pre class="r"><code>echartr(data, x, &lt;y&gt;, &lt;series&gt;, &lt;facet&gt;, &lt;t&gt;, &lt;type&gt;, &lt;subtype&gt;)</code></pre>
 <table>
 <colgroup>
 <col width="11%" />
@@ -218,38 +296,42 @@ $(document).ready(function () {
 </colgroup>
 <thead>
 <tr class="header">
-<th align="left">Arg</th>
-<th align="left">Requirement</th>
+<th>Arg</th>
+<th>Requirement</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left"><p><strong>data</strong></p></td>
-<td align="left"><p>source data in the form of data.frame</p></td>
+<td><p><strong>data</strong></p></td>
+<td><p>source data in the form of data.frame</p></td>
 </tr>
 <tr class="even">
-<td align="left"><p><strong>x</strong></p></td>
-<td align="left"><p>character independent variable. Each level of <code>x[,1]</code> is treated as polar axis labels, and <code>x[,2]</code> is treated as data series. Other type will be coerced to factors. Only the first two are accepted if multiple variables are provided.</p></td>
+<td><p><strong>x</strong></p></td>
+<td><p>character independent variable. Each level of <code>x[,1]</code> is treated as polar axis labels. Other type will be coerced to factors. Only the first one is accepted if multiple variables are provided.</p></td>
 </tr>
 <tr class="odd">
-<td align="left"><p><strong>y</strong></p></td>
-<td align="left"><p>numeric dependent variable. Only the first one is accepted if multiple variables are provided.</p></td>
+<td><p><strong>y</strong></p></td>
+<td><p>numeric dependent variable. Only the first one is accepted if multiple variables are provided.</p></td>
 </tr>
 <tr class="even">
-<td align="left"><p>series</p></td>
-<td align="left"><p>series variable which will be coerced to factors. Each level of <code>series</code> is treated as a subsetting factor to produce separate pies. Only the first one is accepted if multiple variables are provided.</p></td>
+<td><p>series</p></td>
+<td><p>series variable which will be coerced to factors. Each level of <code>series</code> is treated as a subsetting factor to produce data series. Only the first one is accepted if multiple variables are provided.</p></td>
 </tr>
 <tr class="odd">
-<td align="left"><p>z</p></td>
-<td align="left"><p>timeline variable which will be coerced to factors. Only the first one is accepted if multiple variables are provided.</p></td>
+<td><p>facet</p></td>
+<td><p>facetting variable which will be coerced to factors. Each level of <code>facet</code> is treated as a subsetting factor to produce separate pies. Only the first one is accepted if multiple variables are provided.</p></td>
 </tr>
 <tr class="even">
-<td align="left"><p>type</p></td>
-<td align="left"><p>‘radar’.</p></td>
+<td><p>t</p></td>
+<td><p>timeline variable which will be coerced to factors. Only the first one is accepted if multiple variables are provided.</p></td>
 </tr>
 <tr class="odd">
-<td align="left"><p>subtype</p></td>
-<td align="left"><ul>
+<td><p>type</p></td>
+<td><p>‘radar’.</p></td>
+</tr>
+<tr class="even">
+<td><p>subtype</p></td>
+<td><ul>
 <li>radar: “fill”
 <ul>
 <li>fill: fill the radar with color (default hollow)</li>
@@ -376,36 +458,36 @@ knitr::kable(cars)</code></pre>
 <h2><span class="header-section-number">3.2</span> Radar Chart</h2>
 <div id="single-radar" class="section level3">
 <h3><span class="header-section-number">3.2.1</span> Single Radar</h3>
-<p>Set <code>type</code> ‘radar’ and do not set <code>series</code> or <code>x[,2]</code>. But such a radar chart makes little sense.</p>
+<p>Set <code>type</code> ‘radar’ and do not set <code>series</code> or <code>facet</code>. But such a radar chart makes little sense.</p>
 <pre class="r"><code>echartr(cars, indicator, Parameter, type=&#39;radar&#39;)</code></pre>
-<div id="echarts-ff70091af19b12c404cf8f76aa94ba20d35bb002" style="width:672px;height:480px;" class="echarts html-widget"></div>
-<script type="application/json" data-for="echarts-ff70091af19b12c404cf8f76aa94ba20d35bb002">{"x":{"series":[{"type":"radar","symbol":"none","name":0,"data":[{"name":"Parameter","value":[48.9,827.4,540,53,11.58,9.21]}]}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["mpg","disp","hp","qsec","wt","drat"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["Parameter"],"x":"left","y":"top","orient":"horizontal"},"polar":[{"center":["50%","50%"],"radius":"90%","indicator":[{"text":"mpg","max":58.68},{"text":"disp","max":992.88},{"text":"hp","max":648},{"text":"qsec","max":63.6},{"text":"wt","max":13.896},{"text":"drat","max":11.052}]}]},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-125cf45c8ab78c3e66a2" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-125cf45c8ab78c3e66a2">{"x":{"series":[{"type":"radar","symbol":"none","name":0,"data":[{"name":"Parameter","value":[48.9,827.4,540,53,11.58,9.21]}]}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["mpg","disp","hp","qsec","wt","drat"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["Parameter"],"x":"left","y":"top","orient":"horizontal"},"polar":[{"center":["50%","50%"],"radius":"80%","indicator":[{"text":"mpg","max":58.68},{"text":"disp","max":992.88},{"text":"hp","max":648},{"text":"qsec","max":63.6},{"text":"wt","max":13.896},{"text":"drat","max":11.052}]}]},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="radar-with-multiple-series" class="section level3">
 <h3><span class="header-section-number">3.2.2</span> Radar with Multiple Series</h3>
-<p>So we always want to set data series to compare the parameters series by series. Radar chart is under polar coordinate system, so the data series is <code>x[,2]</code></p>
-<pre class="r"><code>echartr(cars, c(indicator, model), Parameter, type=&#39;radar&#39;, sub=&#39;fill&#39;) %&gt;%
+<p>So we always want to set data series to compare the parameters series by series.</p>
+<pre class="r"><code>echartr(cars, indicator, Parameter, model, type=&#39;radar&#39;, sub=&#39;fill&#39;) %&gt;%
     setTitle(&#39;Merc 450SE  vs  450SL  vs  450SLC&#39;)</code></pre>
-<div id="echarts-16123a70feaf95daa35e244bc366ceb6caa1b3bb" style="width:672px;height:480px;" class="echarts html-widget"></div>
-<script type="application/json" data-for="echarts-16123a70feaf95daa35e244bc366ceb6caa1b3bb">{"x":{"series":[{"type":"radar","symbol":"none","name":0,"data":[{"name":"Merc 450SE","value":[16.4,275.8,180,17.4,4.07,3.07]},{"name":"Merc 450SL","value":[17.3,275.8,180,17.6,3.73,3.07]},{"name":"Merc 450SLC","value":[15.2,275.8,180,18,3.78,3.07]}],"itemStyle":{"normal":{"areaStyle":{"type":"default"}}}}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["mpg","disp","hp","qsec","wt","drat"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["Merc 450SE","Merc 450SL","Merc 450SLC"],"x":"left","y":"top","orient":"horizontal"},"polar":[{"center":["50%","50%"],"radius":"90%","indicator":[{"text":"mpg","max":20.76},{"text":"disp","max":330.96},{"text":"hp","max":216},{"text":"qsec","max":21.6},{"text":"wt","max":4.884},{"text":"drat","max":3.684}]}],"title":{"text":"Merc 450SE  vs  450SL  vs  450SLC","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-0988922f447df49656c7" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-0988922f447df49656c7">{"x":{"series":[{"type":"radar","symbol":"none","name":0,"data":[{"name":"Merc 450SE","value":[16.4,275.8,180,17.4,4.07,3.07],"itemStyle":{"normal":{"areaStyle":{"type":"default"}}}},{"name":"Merc 450SL","value":[17.3,275.8,180,17.6,3.73,3.07],"itemStyle":{"normal":{"areaStyle":{"type":"default"}}}},{"name":"Merc 450SLC","value":[15.2,275.8,180,18,3.78,3.07],"itemStyle":{"normal":{"areaStyle":{"type":"default"}}}}]}],"legend":{"show":true,"data":["Merc 450SE","Merc 450SL","Merc 450SLC"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["mpg","disp","hp","qsec","wt","drat"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"polar":[{"center":["50%","50%"],"radius":"80%","indicator":[{"text":"mpg","max":20.76},{"text":"disp","max":330.96},{"text":"hp","max":216},{"text":"qsec","max":21.6},{"text":"wt","max":4.884},{"text":"drat","max":3.684}]}],"title":{"text":"Merc 450SE  vs  450SL  vs  450SLC","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div id="multiple-radars" class="section level2">
 <h2><span class="header-section-number">3.3</span> Multiple Radars</h2>
-<p>If you don’t set <code>x[,2]</code>, instead, set <code>series</code>, you will yield a bunch of radars shoulder by shoulder.</p>
-<pre class="r"><code>echartr(cars, indicator, Parameter, model, type=&#39;radar&#39;) %&gt;%
+<p>If you don’t set <code>series</code>, instead, set <code>facet</code>, you will yield a bunch of radars shoulder by shoulder.</p>
+<pre class="r"><code>echartr(cars, indicator, Parameter, facet=model, type=&#39;radar&#39;) %&gt;%
         setTitle(&#39;Merc 450SE  vs  450SL  vs  450SLC&#39;)</code></pre>
-<div id="echarts-3664404f0b476f78410f31c371ccc6c6387668d5" style="width:672px;height:480px;" class="echarts html-widget"></div>
-<script type="application/json" data-for="echarts-3664404f0b476f78410f31c371ccc6c6387668d5">{"x":{"series":[{"type":"radar","symbol":"none","name":"Merc 450SE","data":[{"name":"Parameter","value":[16.4,275.8,180,17.4,4.07,3.07]}]},{"type":"radar","symbol":"none","name":"Merc 450SL","data":[{"name":"Parameter","value":[17.3,275.8,180,17.6,3.73,3.07]}],"polarIndex":1},{"type":"radar","symbol":"none","name":"Merc 450SLC","data":[{"name":"Parameter","value":[15.2,275.8,180,18,3.78,3.07]}],"polarIndex":2}],"legend":{"show":true,"data":["Parameter"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["mpg","disp","hp","qsec","wt","drat"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"polar":[{"center":["27.5%","27.5%"],"radius":"44.25%","indicator":[{"text":"mpg","max":20.76},{"text":"disp","max":330.96},{"text":"hp","max":216},{"text":"qsec","max":21.6},{"text":"wt","max":4.884},{"text":"drat","max":3.684}]},{"center":["72.5%","27.5%"],"radius":"44.25%","indicator":[{"text":"mpg","max":20.76},{"text":"disp","max":330.96},{"text":"hp","max":216},{"text":"qsec","max":21.6},{"text":"wt","max":4.884},{"text":"drat","max":3.684}]},{"center":["27.5%","72.5%"],"radius":"44.25%","indicator":[{"text":"mpg","max":20.76},{"text":"disp","max":330.96},{"text":"hp","max":216},{"text":"qsec","max":21.6},{"text":"wt","max":4.884},{"text":"drat","max":3.684}]}],"title":{"text":"Merc 450SE  vs  450SL  vs  450SLC","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-fa05fd64dd05535634e9" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-fa05fd64dd05535634e9">{"x":{"series":[{"type":"radar","symbol":"none","name":"Merc 450SE","data":[{"name":"Parameter","value":[16.4,275.8,180,17.4,4.07,3.07]}]},{"type":"radar","symbol":"none","name":"Merc 450SL","data":[{"name":"Parameter","value":[17.3,275.8,180,17.6,3.73,3.07]}],"polarIndex":1},{"type":"radar","symbol":"none","name":"Merc 450SLC","data":[{"name":"Parameter","value":[15.2,275.8,180,18,3.78,3.07]}],"polarIndex":2}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["mpg","disp","hp","qsec","wt","drat"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["Parameter"],"x":"left","y":"top","orient":"horizontal"},"polar":[{"center":["20%","50%"],"radius":"25.6666666666667%","indicator":[{"text":"mpg","max":20.76},{"text":"disp","max":330.96},{"text":"hp","max":216},{"text":"qsec","max":21.6},{"text":"wt","max":4.884},{"text":"drat","max":3.684}]},{"center":["50%","50%"],"radius":"25.6666666666667%","indicator":[{"text":"mpg","max":20.76},{"text":"disp","max":330.96},{"text":"hp","max":216},{"text":"qsec","max":21.6},{"text":"wt","max":4.884},{"text":"drat","max":3.684}]},{"center":["80%","50%"],"radius":"25.6666666666667%","indicator":[{"text":"mpg","max":20.76},{"text":"disp","max":330.96},{"text":"hp","max":216},{"text":"qsec","max":21.6},{"text":"wt","max":4.884},{"text":"drat","max":3.684}]}],"title":{"text":"Merc 450SE  vs  450SL  vs  450SLC","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="with-timeline" class="section level2">
 <h2><span class="header-section-number">3.4</span> With Timeline</h2>
-<p>You can set <code>z</code> to yield a radar chart with timeline.</p>
-<pre class="r"><code>echartr(cars, indicator, Parameter, z=model, type=&#39;radar&#39;) %&gt;%
+<p>You can set <code>t</code> to yield a radar chart with timeline.</p>
+<pre class="r"><code>echartr(cars, indicator, Parameter, t=model, type=&#39;radar&#39;) %&gt;%
         setTitle(&#39;Merc 450SE  vs  450SL  vs  450SLC&#39;)</code></pre>
-<div id="echarts-72918b6bc5c8d9f60ee60f84b630aae78c033744" style="width:672px;height:480px;" class="echarts html-widget"></div>
-<script type="application/json" data-for="echarts-72918b6bc5c8d9f60ee60f84b630aae78c033744">{"x":{"timeline":{"type":"number","data":["Merc 450SE","Merc 450SL","Merc 450SLC"],"x":80,"x2":80,"y2":50},"options":[{"series":[{"type":"radar","symbol":"none","name":0,"data":[{"name":"Parameter","value":[16.4,275.8,180,17.4,4.07,3.07]}]}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["mpg","disp","hp","qsec","wt","drat"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["Parameter"],"x":"left","y":"top","orient":"horizontal"},"polar":[{"center":["50%","50%"],"radius":"90%","indicator":[{"text":"mpg","max":20.76},{"text":"disp","max":330.96},{"text":"hp","max":216},{"text":"qsec","max":21.6},{"text":"wt","max":4.884},{"text":"drat","max":3.684}]}],"title":{"text":"Merc 450SE  vs  450SL  vs  450SLC (model: Merc 450SE)","x":"center","y":"bottom","orient":"horizontal"}},{"series":[{"type":"radar","symbol":"none","name":0,"data":[{"name":"Parameter","value":[17.3,275.8,180,17.6,3.73,3.07]}]}],"title":{"text":"Merc 450SE  vs  450SL  vs  450SLC (model: Merc 450SL)","x":"center","y":"bottom","orient":"horizontal"}},{"series":[{"type":"radar","symbol":"none","name":0,"data":[{"name":"Parameter","value":[15.2,275.8,180,18,3.78,3.07]}]}],"title":{"text":"Merc 450SE  vs  450SL  vs  450SLC (model: Merc 450SLC)","x":"center","y":"bottom","orient":"horizontal"}}]},"evals":[],"jsHooks":[]}</script>
-<p>When it comes to timeline, you should pay special attention. In order to make timeline work properly, you need an expand.grid dataset to cover all the combinations of x, series and <code>z</code> levels.</p>
+<div id="htmlwidget-1c498db86db1e99ef495" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1c498db86db1e99ef495">{"x":{"timeline":{"type":"number","data":["Merc 450SE","Merc 450SL","Merc 450SLC"],"x":80,"x2":80,"y2":50},"options":[{"series":[{"type":"radar","symbol":"none","name":0,"data":[{"name":"Parameter","value":[16.4,275.8,180,17.4,4.07,3.07]}]}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["mpg","disp","hp","qsec","wt","drat"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["Parameter"],"x":"left","y":"top","orient":"horizontal"},"polar":[{"center":["50%","50%"],"radius":"80%","indicator":[{"text":"mpg","max":20.76},{"text":"disp","max":330.96},{"text":"hp","max":216},{"text":"qsec","max":21.6},{"text":"wt","max":4.884},{"text":"drat","max":3.684}]}],"title":{"text":"Merc 450SE  vs  450SL  vs  450SLC (model: Merc 450SE)","x":"center","y":"bottom","orient":"horizontal"}},{"series":[{"type":"radar","symbol":"none","name":0,"data":[{"name":"Parameter","value":[17.3,275.8,180,17.6,3.73,3.07]}]}],"title":{"text":"Merc 450SE  vs  450SL  vs  450SLC (model: Merc 450SL)","x":"center","y":"bottom","orient":"horizontal"}},{"series":[{"type":"radar","symbol":"none","name":0,"data":[{"name":"Parameter","value":[15.2,275.8,180,18,3.78,3.07]}]}],"title":{"text":"Merc 450SE  vs  450SL  vs  450SLC (model: Merc 450SLC)","x":"center","y":"bottom","orient":"horizontal"}}]},"evals":[],"jsHooks":[]}</script>
+<p>When it comes to timeline, you should pay special attention. In order to make timeline work properly, you need an expand.grid dataset to cover all the combinations of x, series and <code>t</code> levels.</p>
 <pre class="r"><code>carstat = data.table::dcast(data.table::data.table(mtcars),
               am + carb + gear ~., mean,
               value.var=c(&#39;mpg&#39;,&#39;disp&#39;,&#39;hp&#39;,&#39;qsec&#39;,&#39;wt&#39;,&#39;drat&#39;))
@@ -429,10 +511,10 @@ str(carstat)</code></pre>
 ##  $ gear     : Factor w/ 3 levels &quot;3&quot;,&quot;4&quot;,&quot;5&quot;: 1 1 1 1 1 1 1 1 1 1 ...
 ##  $ indicator: Factor w/ 6 levels &quot;mpg&quot;,&quot;disp&quot;,&quot;hp&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
 ##  $ Parameter: num  20.3 20.3 20.3 20.3 20.3 ...</code></pre>
-<pre class="r"><code>echartr(carstat, c(indicator, am), Parameter, carb, z=gear, type=&#39;radar&#39;) %&gt;%
+<pre class="r"><code>echartr(carstat, indicator, Parameter, am, facet=carb, t=gear, type=&#39;radar&#39;) %&gt;%
     setTitle(&#39;Merc 450SE  vs  450SL  vs  450SLC&#39;)</code></pre>
-<div id="echarts-f81e8ab59865d66f9daf0cc1baa5f678d73c20d6" style="width:672px;height:480px;" class="echarts html-widget"></div>
-<script type="application/json" data-for="echarts-f81e8ab59865d66f9daf0cc1baa5f678d73c20d6">{"x":{"timeline":{"type":"number","data":["3","4","5"],"x":80,"x2":80,"y2":50},"options":[{"series":[{"type":"radar","symbol":"none","name":"1","data":[{"name":"A","value":[1464,14474.4,7488,1432.08,219.36,228.96]},{"name":"M","value":["-","-","-","-","-","-"]}]},{"type":"radar","symbol":"none","name":"2","data":[{"name":"A","value":[1234.8,24876,11700,1228.32,256.32,218.52]},{"name":"M","value":["-","-","-","-","-","-"]}],"polarIndex":1},{"type":"radar","symbol":"none","name":"3","data":[{"name":"A","value":[1173.6,19857.6,12960,1272,277.92,221.04]},{"name":"M","value":["-","-","-","-","-","-"]}],"polarIndex":2},{"type":"radar","symbol":"none","name":"4","data":[{"name":"A","value":[908.64,29980.8,16416,1216.368,337.3776,231.84]},{"name":"M","value":["-","-","-","-","-","-"]}],"polarIndex":3},{"type":"radar","symbol":"none","name":"6","data":[{"name":"M","value":["-","-","-","-","-","-"]},{"name":"A","value":["-","-","-","-","-","-"]}],"polarIndex":4},{"type":"radar","symbol":"none","name":"8","data":[{"name":"A","value":["-","-","-","-","-","-"]},{"name":"M","value":["-","-","-","-","-","-"]}],"polarIndex":5}],"legend":{"show":true,"data":["A","M"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["mpg","disp","hp","qsec","wt","drat"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"polar":[{"center":["20%","27.5%"],"radius":"29%","indicator":[{"text":"mpg","max":2514.24},{"text":"disp","max":35976.96},{"text":"hp","max":28944},{"text":"qsec","max":1853.28},{"text":"wt","max":404.85312},{"text":"drat","max":390.528}]},{"center":["50%","27.5%"],"radius":"29%","indicator":[{"text":"mpg","max":2514.24},{"text":"disp","max":35976.96},{"text":"hp","max":28944},{"text":"qsec","max":1853.28},{"text":"wt","max":404.85312},{"text":"drat","max":390.528}]},{"center":["80%","27.5%"],"radius":"29%","indicator":[{"text":"mpg","max":2514.24},{"text":"disp","max":35976.96},{"text":"hp","max":28944},{"text":"qsec","max":1853.28},{"text":"wt","max":404.85312},{"text":"drat","max":390.528}]},{"center":["20%","72.5%"],"radius":"29%","indicator":[{"text":"mpg","max":2514.24},{"text":"disp","max":35976.96},{"text":"hp","max":28944},{"text":"qsec","max":1853.28},{"text":"wt","max":404.85312},{"text":"drat","max":390.528}]},{"center":["50%","72.5%"],"radius":"29%","indicator":[{"text":"mpg","max":2514.24},{"text":"disp","max":35976.96},{"text":"hp","max":28944},{"text":"qsec","max":1853.28},{"text":"wt","max":404.85312},{"text":"drat","max":390.528}]},{"center":["80%","72.5%"],"radius":"29%","indicator":[{"text":"mpg","max":2514.24},{"text":"disp","max":35976.96},{"text":"hp","max":28944},{"text":"qsec","max":1853.28},{"text":"wt","max":404.85312},{"text":"drat","max":390.528}]}],"title":{"text":"Merc 450SE  vs  450SL  vs  450SLC (gear: 3)","x":"center","y":"bottom","orient":"horizontal"}},{"series":[{"type":"radar","symbol":"none","name":"1","data":[{"name":"M","value":[2095.2,6062.4,5220,1383.84,149.22,292.14]},{"name":"A","value":["-","-","-","-","-","-"]}]},{"type":"radar","symbol":"none","name":"2","data":[{"name":"A","value":[1699.2,10350,5652,1544.4,228.24,273.96]},{"name":"M","value":[1864.8,7081.2,5796,1336.32,158.22,325.44]}],"polarIndex":1},{"type":"radar","symbol":"none","name":"3","data":[{"name":"A","value":["-","-","-","-","-","-"]},{"name":"M","value":["-","-","-","-","-","-"]}],"polarIndex":2},{"type":"radar","symbol":"none","name":"4","data":[{"name":"A","value":[1332,12067.2,8856,1339.2,247.68,282.24]},{"name":"M","value":[1512,11520,7920,1205.28,197.82,280.8]}],"polarIndex":3},{"type":"radar","symbol":"none","name":"6","data":[{"name":"A","value":["-","-","-","-","-","-"]},{"name":"M","value":["-","-","-","-","-","-"]}],"polarIndex":4},{"type":"radar","symbol":"none","name":"8","data":[{"name":"A","value":["-","-","-","-","-","-"]},{"name":"M","value":["-","-","-","-","-","-"]}],"polarIndex":5}],"title":{"text":"Merc 450SE  vs  450SL  vs  450SLC (gear: 4)","x":"center","y":"bottom","orient":"horizontal"}},{"series":[{"type":"radar","symbol":"none","name":"1","data":[{"name":"A","value":["-","-","-","-","-","-"]},{"name":"M","value":["-","-","-","-","-","-"]}]},{"type":"radar","symbol":"none","name":"2","data":[{"name":"M","value":[2030.4,7754.4,7344,1209.6,131.508,295.2]},{"name":"A","value":["-","-","-","-","-","-"]}],"polarIndex":1},{"type":"radar","symbol":"none","name":"3","data":[{"name":"A","value":["-","-","-","-","-","-"]},{"name":"M","value":["-","-","-","-","-","-"]}],"polarIndex":2},{"type":"radar","symbol":"none","name":"4","data":[{"name":"M","value":[1137.6,25272,19008,1044,228.24,303.84]},{"name":"A","value":["-","-","-","-","-","-"]}],"polarIndex":3},{"type":"radar","symbol":"none","name":"6","data":[{"name":"M","value":[1418.4,10440,12600,1116,199.44,260.64]},{"name":"A","value":["-","-","-","-","-","-"]}],"polarIndex":4},{"type":"radar","symbol":"none","name":"8","data":[{"name":"M","value":[1080,21672,24120,1051.2,257.04,254.88]},{"name":"A","value":["-","-","-","-","-","-"]}],"polarIndex":5}],"title":{"text":"Merc 450SE  vs  450SL  vs  450SLC (gear: 5)","x":"center","y":"bottom","orient":"horizontal"}}]},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-d4c027768f1572406341" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-d4c027768f1572406341">{"x":{"timeline":{"type":"number","data":["3","4","5"],"x":80,"x2":80,"y2":50},"options":[{"series":[{"type":"radar","symbol":"none","name":"1","data":[{"name":"A","value":[1464,14474.4,7488,1432.08,219.36,228.96]},{"name":"M","value":["-","-","-","-","-","-"]}]},{"type":"radar","symbol":"none","name":"2","data":[{"name":"A","value":[1234.8,24876,11700,1228.32,256.32,218.52]},{"name":"M","value":["-","-","-","-","-","-"]}],"polarIndex":1},{"type":"radar","symbol":"none","name":"3","data":[{"name":"A","value":[1173.6,19857.6,12960,1272,277.92,221.04]},{"name":"M","value":["-","-","-","-","-","-"]}],"polarIndex":2},{"type":"radar","symbol":"none","name":"4","data":[{"name":"A","value":[908.64,29980.8,16416,1216.368,337.3776,231.84]},{"name":"M","value":["-","-","-","-","-","-"]}],"polarIndex":3},{"type":"radar","symbol":"none","name":"6","data":[{"name":"M","value":["-","-","-","-","-","-"]},{"name":"A","value":["-","-","-","-","-","-"]}],"polarIndex":4},{"type":"radar","symbol":"none","name":"8","data":[{"name":"A","value":["-","-","-","-","-","-"]},{"name":"M","value":["-","-","-","-","-","-"]}],"polarIndex":5}],"legend":{"show":true,"data":["A","M"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["mpg","disp","hp","qsec","wt","drat"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"polar":[{"center":["20%","30%"],"radius":"25.6666666666667%","indicator":[{"text":"mpg","max":2514.24},{"text":"disp","max":35976.96},{"text":"hp","max":28944},{"text":"qsec","max":1853.28},{"text":"wt","max":404.85312},{"text":"drat","max":390.528}]},{"center":["50%","30%"],"radius":"25.6666666666667%","indicator":[{"text":"mpg","max":2514.24},{"text":"disp","max":35976.96},{"text":"hp","max":28944},{"text":"qsec","max":1853.28},{"text":"wt","max":404.85312},{"text":"drat","max":390.528}]},{"center":["80%","30%"],"radius":"25.6666666666667%","indicator":[{"text":"mpg","max":2514.24},{"text":"disp","max":35976.96},{"text":"hp","max":28944},{"text":"qsec","max":1853.28},{"text":"wt","max":404.85312},{"text":"drat","max":390.528}]},{"center":["20%","70%"],"radius":"25.6666666666667%","indicator":[{"text":"mpg","max":2514.24},{"text":"disp","max":35976.96},{"text":"hp","max":28944},{"text":"qsec","max":1853.28},{"text":"wt","max":404.85312},{"text":"drat","max":390.528}]},{"center":["50%","70%"],"radius":"25.6666666666667%","indicator":[{"text":"mpg","max":2514.24},{"text":"disp","max":35976.96},{"text":"hp","max":28944},{"text":"qsec","max":1853.28},{"text":"wt","max":404.85312},{"text":"drat","max":390.528}]},{"center":["80%","70%"],"radius":"25.6666666666667%","indicator":[{"text":"mpg","max":2514.24},{"text":"disp","max":35976.96},{"text":"hp","max":28944},{"text":"qsec","max":1853.28},{"text":"wt","max":404.85312},{"text":"drat","max":390.528}]}],"title":{"text":"Merc 450SE  vs  450SL  vs  450SLC (gear: 3)","x":"center","y":"bottom","orient":"horizontal"}},{"series":[{"type":"radar","symbol":"none","name":"1","data":[{"name":"M","value":[2095.2,6062.4,5220,1383.84,149.22,292.14]},{"name":"A","value":["-","-","-","-","-","-"]}]},{"type":"radar","symbol":"none","name":"2","data":[{"name":"A","value":[1699.2,10350,5652,1544.4,228.24,273.96]},{"name":"M","value":[1864.8,7081.2,5796,1336.32,158.22,325.44]}],"polarIndex":1},{"type":"radar","symbol":"none","name":"3","data":[{"name":"A","value":["-","-","-","-","-","-"]},{"name":"M","value":["-","-","-","-","-","-"]}],"polarIndex":2},{"type":"radar","symbol":"none","name":"4","data":[{"name":"A","value":[1332,12067.2,8856,1339.2,247.68,282.24]},{"name":"M","value":[1512,11520,7920,1205.28,197.82,280.8]}],"polarIndex":3},{"type":"radar","symbol":"none","name":"6","data":[{"name":"A","value":["-","-","-","-","-","-"]},{"name":"M","value":["-","-","-","-","-","-"]}],"polarIndex":4},{"type":"radar","symbol":"none","name":"8","data":[{"name":"A","value":["-","-","-","-","-","-"]},{"name":"M","value":["-","-","-","-","-","-"]}],"polarIndex":5}],"title":{"text":"Merc 450SE  vs  450SL  vs  450SLC (gear: 4)","x":"center","y":"bottom","orient":"horizontal"}},{"series":[{"type":"radar","symbol":"none","name":"1","data":[{"name":"A","value":["-","-","-","-","-","-"]},{"name":"M","value":["-","-","-","-","-","-"]}]},{"type":"radar","symbol":"none","name":"2","data":[{"name":"M","value":[2030.4,7754.4,7344,1209.6,131.508,295.2]},{"name":"A","value":["-","-","-","-","-","-"]}],"polarIndex":1},{"type":"radar","symbol":"none","name":"3","data":[{"name":"A","value":["-","-","-","-","-","-"]},{"name":"M","value":["-","-","-","-","-","-"]}],"polarIndex":2},{"type":"radar","symbol":"none","name":"4","data":[{"name":"M","value":[1137.6,25272,19008,1044,228.24,303.84]},{"name":"A","value":["-","-","-","-","-","-"]}],"polarIndex":3},{"type":"radar","symbol":"none","name":"6","data":[{"name":"M","value":[1418.4,10440,12600,1116,199.44,260.64]},{"name":"A","value":["-","-","-","-","-","-"]}],"polarIndex":4},{"type":"radar","symbol":"none","name":"8","data":[{"name":"M","value":[1080,21672,24120,1051.2,257.04,254.88]},{"name":"A","value":["-","-","-","-","-","-"]}],"polarIndex":5}],"title":{"text":"Merc 450SE  vs  450SL  vs  450SLC (gear: 5)","x":"center","y":"bottom","orient":"horizontal"}}]},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div id="futher-setup" class="section level1">
@@ -440,11 +522,11 @@ str(carstat)</code></pre>
 <div id="setpolar" class="section level2">
 <h2><span class="header-section-number">4.1</span> <code>setPolar</code></h2>
 <p>The default radar chart is built on polygons. You can built it on circle using <code>setPolar</code>, which is only appliable for radar charts.</p>
-<pre class="r"><code>echartr(cars, indicator, Parameter, model, type=&#39;radar&#39;) %&gt;%
+<pre class="r"><code>echartr(cars, indicator, Parameter, facet=model, type=&#39;radar&#39;) %&gt;%
         setTitle(&#39;Merc 450SE  vs  450SL  vs  450SLC&#39;) %&gt;%
     setPolar(type=&#39;circle&#39;)</code></pre>
-<div id="echarts-883312259b0096bb3f3c9a6739f3664199eec87a" style="width:672px;height:480px;" class="echarts html-widget"></div>
-<script type="application/json" data-for="echarts-883312259b0096bb3f3c9a6739f3664199eec87a">{"x":{"series":[{"type":"radar","symbol":"none","name":"Merc 450SE","data":[{"name":"Parameter","value":[16.4,275.8,180,17.4,4.07,3.07]}]},{"type":"radar","symbol":"none","name":"Merc 450SL","data":[{"name":"Parameter","value":[17.3,275.8,180,17.6,3.73,3.07]}],"polarIndex":1},{"type":"radar","symbol":"none","name":"Merc 450SLC","data":[{"name":"Parameter","value":[15.2,275.8,180,18,3.78,3.07]}],"polarIndex":2}],"legend":{"show":true,"data":["Parameter"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["mpg","disp","hp","qsec","wt","drat"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":"solid","shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"polar":[{"center":["27.5%","27.5%"],"radius":"44.25%","indicator":[{"text":"mpg","max":20.76},{"text":"disp","max":330.96},{"text":"hp","max":216},{"text":"qsec","max":21.6},{"text":"wt","max":4.884},{"text":"drat","max":3.684}],"type":"circle"},{"center":["72.5%","27.5%"],"radius":"44.25%","indicator":[{"text":"mpg","max":20.76},{"text":"disp","max":330.96},{"text":"hp","max":216},{"text":"qsec","max":21.6},{"text":"wt","max":4.884},{"text":"drat","max":3.684}],"type":"circle"},{"center":["27.5%","72.5%"],"radius":"44.25%","indicator":[{"text":"mpg","max":20.76},{"text":"disp","max":330.96},{"text":"hp","max":216},{"text":"qsec","max":21.6},{"text":"wt","max":4.884},{"text":"drat","max":3.684}],"type":"circle"}],"title":{"text":"Merc 450SE  vs  450SL  vs  450SLC","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-b02d1e33b354a0701c43" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b02d1e33b354a0701c43">{"x":{"series":[{"type":"radar","symbol":"none","name":"Merc 450SE","data":[{"name":"Parameter","value":[16.4,275.8,180,17.4,4.07,3.07]}]},{"type":"radar","symbol":"none","name":"Merc 450SL","data":[{"name":"Parameter","value":[17.3,275.8,180,17.6,3.73,3.07]}],"polarIndex":1},{"type":"radar","symbol":"none","name":"Merc 450SLC","data":[{"name":"Parameter","value":[15.2,275.8,180,18,3.78,3.07]}],"polarIndex":2}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["mpg","disp","hp","qsec","wt","drat"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["Parameter"],"x":"left","y":"top","orient":"horizontal"},"polar":[{"center":["20%","50%"],"radius":"25.6666666666667%","indicator":[{"text":"mpg","max":20.76},{"text":"disp","max":330.96},{"text":"hp","max":216},{"text":"qsec","max":21.6},{"text":"wt","max":4.884},{"text":"drat","max":3.684}],"type":"circle"},{"center":["50%","50%"],"radius":"25.6666666666667%","indicator":[{"text":"mpg","max":20.76},{"text":"disp","max":330.96},{"text":"hp","max":216},{"text":"qsec","max":21.6},{"text":"wt","max":4.884},{"text":"drat","max":3.684}],"type":"circle"},{"center":["80%","50%"],"radius":"25.6666666666667%","indicator":[{"text":"mpg","max":20.76},{"text":"disp","max":330.96},{"text":"hp","max":216},{"text":"qsec","max":21.6},{"text":"wt","max":4.884},{"text":"drat","max":3.684}],"type":"circle"}],"title":{"text":"Merc 450SE  vs  450SL  vs  450SLC","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
 <p>You can explore <code>setPolar</code> by typing <code>?setPolar</code> in R console.</p>
 <p>Then you can configure the widgets, add markLines and/or markPoints, fortify the chart.</p>
 <p>You can refer to related functions to play around on your own.</p>
@@ -463,15 +545,21 @@ $(document).ready(function () {
 </script>
 
 
+</div>
+</div>
 
 </div>
 
 <script>
 
 // add bootstrap table styles to pandoc tables
-$(document).ready(function () {
+function bootstrapStylePandocTables() {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
 });
+
 
 </script>
 

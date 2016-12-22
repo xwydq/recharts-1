@@ -5,6 +5,7 @@ output:
     number_sections: yes
     toc: yes
     toc_depth: 4
+    toc_float: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -80,11 +81,11 @@ echartr(worldgdp, country, GDP, type="map_world_multi") %>%
 - 数据地图模式:
   - 文本型`x`
     - `x[,1]`必须是有效的地理名称，比如'United States of America'而非'USA'或'U.S.'
-    - 如提供`x[,2]`，映射为数据系列
   - 数值型/逻辑型`y`
     - `y[,1]`: 数值
     - `y[,2]`: 是否选中。也可用1代表TRUE, 0代表FALSE
-  - series映射为独立的地图，即，series的每个水平对应于一副地图。series必须为有效的地理名称
+  - series映射为数据系列
+  - facet映射为独立的地图，即，facet的每个水平对应于一副地图。facet必须为有效的地理名称
 - 可额外向echarts对象添加地理数据
     - `addNameMap`添加地理名称翻译字典
     - `addHeatMap`添加额外的热力图图层
@@ -94,7 +95,7 @@ echartr(worldgdp, country, GDP, type="map_world_multi") %>%
 # 用法Function Call
 
 ```r
-echartr(data, <x>, <y>, <series>, <lng>, <lat>, <z>, <type>, <subtype>)
+echartr(data, <x>, <y>, <series>, <facet>, <lng>, <lat>, <t>, <type>, <subtype>)
 ```
 
 +--------+--------------------------------------------------------------------+
@@ -102,13 +103,15 @@ echartr(data, <x>, <y>, <series>, <lng>, <lat>, <z>, <type>, <subtype>)
 +========+====================================================================+
 |**data**| 数据框格式的源数据    |
 +--------+--------------------------------------------------------------------+
-| **x**  | 文本型自变量。`x[1,]`必须是有效地理名称，`x[,2]`则被处理为数据系列。如提供多个变量，只传入前两个。 |
+| **x**  | 文本型自变量。`x[1,]`必须是有效地理名称。如提供多个变量，只传入第一个。 |
 +--------+--------------------------------------------------------------------+
 | **y**  | 数值型应变量。如提供多个变量，只传入前两个。`y[,1]`为数值，`y[,2]` (逻辑型) 表示是否选中，也可用1代表TRUE, 0 代表FALSE。 |
 +--------+--------------------------------------------------------------------+
 | series | series转为因子后计算。`series`的每个水平被处理为分组因子，生成独立的地图。如提供多个变量，只传入第一个。 |
 +--------+--------------------------------------------------------------------+
-|  z     | 时间轴变量，转为因子后计算。如提供多个变量，只传入第一个。 |
+| facet  | facet转为因子后计算。`facet`的每个水平被处理为分组因子，生成独立的地图。如提供多个变量，只传入第一个。 |
++--------+--------------------------------------------------------------------+
+|  t     | 时间轴变量，转为因子后计算。如提供多个变量，只传入第一个。 |
 +--------+--------------------------------------------------------------------+
 | type   | 'map_world', 'map_world_multi', 'map_china', 'map_china_multi'. |
 +--------+--------------------------------------------------------------------+
@@ -169,11 +172,11 @@ echartr(NULL, type='map_china_multi', subtype='上海') %>%
 
 ### 多个地图Multiple Maps
 
-如设置`series`和`subtype`（有效的地理名称），可得到独立的地图。
+如设置`facet`和`subtype`（有效的地理名称），可得到独立的地图。注意`subtype`要整理成list。
 
 ```{r}
 data <- data.frame(x=c('United States of America', 'China', 'Japan'))
-echartr(data, x, series=x, type='map_world', subtype=data$x)
+echartr(data, x, facet=x, type='map_world', subtype=as.list(data$x))
 ```
 
 ## 数据地图模式Data Map Mode
@@ -182,7 +185,7 @@ echartr(data, x, series=x, type='map_world', subtype=data$x)
 
 ### 单个系列Single Series
 
-如果未指定`x[,2]`，地图不会区分数据系列。
+如果未指定`series`，地图不会区分数据系列。
 
 ```{r}
 worldgdp <- data.frame(
@@ -215,7 +218,7 @@ str(ChinaGDP)
 totGDP <- data.table::dcast(ChinaGDP, Prov~., sum, value.var='GDP')
 
 ChinaGDP <- ChinaGDP[order(ChinaGDP$Year),]
-echartr(ChinaGDP, c(Prov, Year), GDP, type="map_china") %>%
+echartr(ChinaGDP, Prov, GDP, Year, type="map_china") %>%
     setDataRange(splitNumber=0, valueRange=range(totGDP[, 2]), 
                  color=c('red','orange','yellow','limegreen','green')) %>%
     setTitle("China GDP by Provice, 2012-2014")
@@ -224,7 +227,7 @@ echartr(ChinaGDP, c(Prov, Year), GDP, type="map_china") %>%
 这里，`mapValueCalculation`方法是求和。在`subtype`添加'average'，就改为平均法。
 
 ```{r}
-echartr(ChinaGDP, c(Prov, Year), GDP, type="map_china", subtype='average') %>%
+echartr(ChinaGDP, Prov, GDP, Year, type="map_china", subtype='average') %>%
     setDataRange(splitNumber=0, 
                  color=c('red','orange','yellow','limegreen','green')) %>%
     setTitle("China GDP by Provice, 2012-2014")
@@ -232,10 +235,10 @@ echartr(ChinaGDP, c(Prov, Year), GDP, type="map_china", subtype='average') %>%
 
 ### 带时间轴的地图Maps with Timeline
 
-把`z`设为'Year'，可获得带时间轴的地图。
+把`t`设为'Year'，可获得带时间轴的地图。
 
 ```{r}
-echartr(ChinaGDP, Prov, GDP, z=Year, type="map_china", subtype='average') %>%
+echartr(ChinaGDP, Prov, GDP, t=Year, type="map_china", subtype='average') %>%
     setDataRange(splitNumber=0, 
                  color=c('red','orange','yellow','limegreen','green')) %>%
     setTitle("China GDP by Provice, 2012-2014")
@@ -255,8 +258,8 @@ echartr(ChinaGDP, Prov, GDP, z=Year, type="map_china", subtype='average') %>%
 worldgdp <- worldgdp[order(worldgdp$GDP, decreasing=TRUE),]
 worldgdp10 <- worldgdp[1:10, ]
 
-echartr(worldgdp10, country, GDP, country, type='map_world', 
-        subtype=worldgdp10$country) %>% 
+echartr(worldgdp10, country, GDP, facet=country, type='map_world', 
+        subtype=as.list(worldgdp10$country)) %>% 
     setDataRange(color=c(
         'red', 'orange', 'yellow', 'limegreen', 'green'), pos=4) %>%
     setSymbols('none')

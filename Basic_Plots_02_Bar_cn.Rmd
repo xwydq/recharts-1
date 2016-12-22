@@ -5,6 +5,7 @@ output:
     number_sections: yes
     toc: yes
     toc_depth: 4
+    toc_float: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -45,7 +46,8 @@ echartr(titanic, Class, Count, Survived, type='column') %>%
 ```{r,echo=FALSE}
 echartr(iris, Sepal.Width) %>% setLegend(pos=3) %>%
     setTheme('macarons', width=400, height=300) %>%
-    setTitle('Iris Sepal Width','histogram')
+    setTitle('Iris Sepal Width','histogram') %>% 
+    setTooltip(formatter='none') %>% setSeries(1, barWidth=230/13)
 ```
 </td><td>
 
@@ -224,11 +226,14 @@ echartr(titanic, Class, Count, Survived, type='column', subtype='stack') %>%
 
 直方图是柱图的特例，只需要提供一个数值型`x`变量。
 
-`type`可以是'histogram'、'hist'。
+`type`可以是'histogram'、'hist'。`setTooltip(formatter='none'`调用默认的tooltip模板。
+
+Echarts2无法自适应设定barWidth，所以你需要自己设定一个合理的数值。
 
 ```{r}
-echartr(iris, Sepal.Width) %>%
-    setTitle('Iris: Histogram of Sepal.Width') 
+echartr(iris, Sepal.Width, width=600) %>%
+  setTitle('Iris: Histogram of Sepal.Width') %>%
+  setTooltip(formatter='none') %>% setSeries(1, barWidth=500/13)
 ```
 
 ### 按密度统计Stat by Density
@@ -236,8 +241,9 @@ echartr(iris, Sepal.Width) %>%
 有时需要一幅密度直方图，那么设`subtype`为'density'。
 
 ```{r}
-echartr(iris, Sepal.Width, type='hist', subtype='density') %>%
-    setTitle('Iris: Histogram of Sepal.Width') %>% setYAxis(name="Density")
+echartr(iris, Sepal.Width, type='hist', subtype='density', width=600) %>%
+  setTitle('Iris: Histogram of Sepal.Width') %>% setYAxis(name="Density") %>%
+  setTooltip(formatter='none') %>% setSeries(1, barWidth=500/13)
 ```
 
 # 其他设定Futher Setup
