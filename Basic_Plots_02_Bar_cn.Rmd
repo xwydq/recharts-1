@@ -63,7 +63,7 @@ echartr(iris, Sepal.Width) %>% setLegend(pos=3) %>%
 # 用法Function Call
 
 ```r
-echartr(data, x, <y>, <series>, <weight>, <t>, <type>, <subtype>)
+echartr(data, x, <y>, <series>, <t>, <type>, <subtype>)
 ```
 
 +---------+--------------------------------------------------------------------+
@@ -78,8 +78,6 @@ echartr(data, x, <y>, <series>, <weight>, <t>, <type>, <subtype>)
 |         | - 如`y`缺失且`x`为数值型，则生成直方图。 |
 +---------+--------------------------------------------------------------------+
 | series  | 数据系列，转为因子处理。如提供多个变量，只传入第一个。 |
-+---------+--------------------------------------------------------------------+
-| weight  | 权重变量关联不同系列的柱宽。 |
 +---------+--------------------------------------------------------------------+
 |  t      | 时间轴变量，转为因子处理。如提供多个变量，只传入第一个。 |
 +---------+--------------------------------------------------------------------+
@@ -132,15 +130,6 @@ echartr(titanic, Class, Count, Survived) %>%
 ```{r}
 echartr(titanic, Class, Count, Survived, type='hbar', subtype='stack') %>%
     setTitle('Titanic: Survival Outcome by Cabin Class') 
-```
-
-### 柱宽映射到权重变量Bar Width Mapped to Weight
-
-如果你希望`barWidth`随某个变量改变，可以设置它为`weight`。
-
-```{r}
-echartr(titanic, Class, Count, Survived, weight=Count) %>%
-    setTitle('Titanic: Survival Outcome by Cabin Class')
 ```
 
 ### 龙卷风图Tornado Chart

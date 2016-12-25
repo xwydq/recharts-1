@@ -5,6 +5,7 @@ output:
     number_sections: yes
     toc: yes
     toc_depth: 4
+    toc_float: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -151,7 +152,7 @@ Let's use the example in [Pie Chart Manual](Basic_Plot2_11_Pie.html).
 ```{r}
 titanic <- data.table::melt(apply(Titanic, c(1,4), sum))
 names(titanic) <- c('Class', 'Survived', 'Count')
-g <- echartr(titanic, Survived, Count, Class, type='pie') 
+g <- echartr(titanic, Survived, Count, facet=Class, type='pie') 
 ```
 
 ```{r}

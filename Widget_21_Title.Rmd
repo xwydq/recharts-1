@@ -5,6 +5,7 @@ output:
     number_sections: yes
     toc: yes
     toc_depth: 4
+    toc_float: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -65,7 +66,7 @@ setTitle(chart, title = NULL, subtitle = NULL, link = NULL,
 
 ```{r}
 g1 <- echartr(iris, Sepal.Width, Petal.Width, Species)
-g2 <- echartr(iris, Sepal.Width, Petal.Width, z=Species)
+g2 <- echartr(iris, Sepal.Width, Petal.Width, t=Species)
 ```
 
 <table>

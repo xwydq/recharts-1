@@ -5,6 +5,7 @@ output:
     number_sections: yes
     toc: yes
     toc_depth: 4
+    toc_float: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -90,7 +91,7 @@ relocRoam(chart, x = NULL, y = NULL, ...)
 library(data.table)
 aq1 <- melt(airquality, id=c('Month', 'Day'), measure=c('Temp', 'Wind'), 
             variable='Param')
-g <- echartr(aq1, Day, value, Param, z=Month, type='curve') %>% 
+g <- echartr(aq1, Day, value, Param, t=Month, type='curve') %>% 
     setToolbox(pos=3) %>% setTitle('Temp & Wind') %>% setDataZoom() %>% 
     setDataRange()
 g
@@ -116,22 +117,27 @@ g1
 现在可以把时间轴和缩放漫游轴移到底部。由于缩放漫游只支持x和y，如果我们要把它放到底部，固定右下角的y2，怎么办呢？ Echarts对象的元数据中都有一个随机编码的`elementId`。我们可以用一个JavaScript表达式`document.getElementById(<elementId>).offsetHeight`动态获取画布高度。无论如何缩放画布窗口，控件都会保持正确的相对定位。
 
 ```{r}
-g1 <- g1 %>% relocDataZoom(x=120, y=JS(paste0(
-    "document.getElementById('", g1$elementId, "').offsetHeight-30")))
-g1
+g2 <- g1
+g2$elementId <- "chart2"
+g2 <- g2 %>% relocDataZoom(x=120, y=JS(paste0(
+    "document.getElementById('", g2$elementId, "').offsetHeight-30")))
+g2
 ```
 
 `timeline`支持x2和y2。所以我们可以直接设置y2为25。这样，我们交换了时间轴和缩放漫游的位置。
 
 ```{r}
-g1 <- g1 %>% relocTimeline(y2=25, x=120, x2=50)
-g1
+g3 <- g2 %>% relocTimeline(y2=25, x=120, x2=50)
+g3$elementId <- "chart3"
+g3
 ```
 
 最后，把绘图区增大。
 
 ```{r}
-g1 %>% setGrid(x=120, y=40, x2=50, y2=90)
+g4 <- g3 %>% setGrid(x=120, y=40, x2=50, y2=90)
+g4$elementId <- "chart4"
+g4
 ```
 
 # 参考资料

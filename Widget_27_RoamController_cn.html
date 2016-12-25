@@ -19,12 +19,17 @@
 <script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
-<script src="libs/htmlwidgets-0.7/htmlwidgets.js"></script>
+<script src="libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<link href="libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="libs/highlightjs-1.1/highlight.js"></script>
+<script src="libs/htmlwidgets-0.8/htmlwidgets.js"></script>
 <script src="libs/echarts-2.2.7/echarts-all.js"></script>
-<script src="libs/echarts-2.2.7/ext/params.js"></script>
-<script src="libs/echarts-2.2.7/ext/loadGeoJSON.js"></script>
-<script src="libs/echarts-binding-0.0.5/echarts.js"></script>
-<script src="libs/echarts-module-2.2.7/base.js"></script>
+<script src="libs/charts-ext-2.2.7/main.js"></script>
+<script src="libs/charts-ext-2.2.7/BMap.js"></script>
+<script src="libs/echarts-binding-0.2/echarts.js"></script>
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
@@ -43,10 +48,6 @@ p code {
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
 <style type="text/css">code{white-space: pre;}</style>
-<link rel="stylesheet"
-      href="libs/highlight/default.css"
-      type="text/css" />
-<script src="libs/highlight/highlight.js"></script>
 <style type="text/css">
   pre:not([class]) {
     background-color: white;
@@ -117,10 +118,10 @@ button.code-folding-btn:focus {
 </style>
 
 
+
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
-<script src="libs/navigation-1.1/tabsets.js"></script>
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
@@ -130,6 +131,101 @@ $(document).ready(function () {
 <!-- code folding -->
 
 
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -164,14 +260,6 @@ $(document).ready(function () {
 
 </div>
 
-<div id="TOC">
-<ul>
-<li><a href="#introduction"><span class="toc-section-number">1</span> 介绍Introduction</a></li>
-<li><a href="#function-call"><span class="toc-section-number">2</span> 用法Function Call</a></li>
-<li><a href="#showcase"><span class="toc-section-number">3</span> 举例Showcase</a></li>
-<li><a><span class="toc-section-number">4</span> 参考资料</a></li>
-</ul>
-</div>
 
 <p>首先，加载<code>recharts</code>:</p>
 <pre class="r"><code>library(recharts)</code></pre>
@@ -193,62 +281,62 @@ $(document).ready(function () {
 </colgroup>
 <thead>
 <tr class="header">
-<th align="left">参数</th>
-<th align="left">要求</th>
+<th>参数</th>
+<th>要求</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left"><p><strong>chart</strong></p></td>
-<td align="left"><p><code>echartR</code>或<code>echart</code>创建的Echarts对象.</p></td>
+<td><p><strong>chart</strong></p></td>
+<td><p><code>echartR</code>或<code>echart</code>创建的Echarts对象.</p></td>
 </tr>
 <tr class="even">
-<td align="left"><p>show</p></td>
-<td align="left"><p>逻辑型，是否显示地图漫游。默认为TRUE。如要把地图漫游部件整体从Echarts对象中移除，设为NULL.</p></td>
+<td><p>show</p></td>
+<td><p>逻辑型，是否显示地图漫游。默认为TRUE。如要把地图漫游部件整体从Echarts对象中移除，设为NULL.</p></td>
 </tr>
 <tr class="odd">
-<td align="left"><p>pos</p></td>
-<td align="left"><p>地图漫游的时钟方位，默认为2，参见<code>vecPos</code>。也可以自定义方位向量<code>c(x, y, orient)</code>.</p></td>
+<td><p>pos</p></td>
+<td><p>地图漫游的时钟方位，默认为2，参见<code>vecPos</code>。也可以自定义方位向量<code>c(x, y, orient)</code>.</p></td>
 </tr>
 <tr class="even">
-<td align="left"><p>width</p></td>
-<td align="left"><p>地图漫游控件宽度，默认为80px.</p></td>
+<td><p>width</p></td>
+<td><p>地图漫游控件宽度，默认为80px.</p></td>
 </tr>
 <tr class="odd">
-<td align="left"><p>height</p></td>
-<td align="left"><p>地图漫游控件高度，默认为120px.</p></td>
+<td><p>height</p></td>
+<td><p>地图漫游控件高度，默认为120px.</p></td>
 </tr>
 <tr class="even">
-<td align="left"><p>bgColor</p></td>
-<td align="left"><p>背景色，默认透明(‘rgba(0,0,0,0)’).</p></td>
+<td><p>bgColor</p></td>
+<td><p>背景色，默认透明(‘rgba(0,0,0,0)’).</p></td>
 </tr>
 <tr class="odd">
-<td align="left"><p>borderColor</p></td>
-<td align="left"><p>边框色，默认为’#ccc’.</p></td>
+<td><p>borderColor</p></td>
+<td><p>边框色，默认为’#ccc’.</p></td>
 </tr>
 <tr class="even">
-<td align="left"><p>borderWidth</p></td>
-<td align="left"><p>边款宽度，默认为0px (不显示).</p></td>
+<td><p>borderWidth</p></td>
+<td><p>边款宽度，默认为0px (不显示).</p></td>
 </tr>
 <tr class="odd">
-<td align="left"><p>fillerColor</p></td>
-<td align="left"><p>填充色，默认为’#fff’.</p></td>
+<td><p>fillerColor</p></td>
+<td><p>填充色，默认为’#fff’.</p></td>
 </tr>
 <tr class="even">
-<td align="left"><p>handleColor</p></td>
-<td align="left"><p>手柄颜色，默认为’#6495ed’.</p></td>
+<td><p>handleColor</p></td>
+<td><p>手柄颜色，默认为’#6495ed’.</p></td>
 </tr>
 <tr class="odd">
-<td align="left"><p>step</p></td>
-<td align="left"><p>每次单击移动的幅度，默认为15px.</p></td>
+<td><p>step</p></td>
+<td><p>每次单击移动的幅度，默认为15px.</p></td>
 </tr>
 <tr class="even">
-<td align="left"><p>mapTypeControl</p></td>
-<td align="left"><p>地图漫游控件控制的地图列表，如<code>list(china=TRUE)</code>. 默认为NULL，即自动计算。</p></td>
+<td><p>mapTypeControl</p></td>
+<td><p>地图漫游控件控制的地图列表，如<code>list(china=TRUE)</code>. 默认为NULL，即自动计算。</p></td>
 </tr>
 <tr class="odd">
-<td align="left"><p>…</p></td>
-<td align="left"><p>省略号</p></td>
+<td><p>…</p></td>
+<td><p>省略号</p></td>
 </tr>
 </tbody>
 </table>
@@ -257,24 +345,24 @@ $(document).ready(function () {
 <h1><span class="header-section-number">3</span> 举例Showcase</h1>
 <pre class="r"><code>g &lt;- echartr(NULL, type=&#39;map_china&#39;)
 g</code></pre>
-<div id="echarts-0e6085171b63270fb09b60b5c2cfe63adc95de87" style="width:672px;height:480px;" class="echarts html-widget"></div>
-<script type="application/json" data-for="echarts-0e6085171b63270fb09b60b5c2cfe63adc95de87">{"x":{"series":[{"type":"map","roam":true,"mapType":"china","itemStyle":{"normal":{"label":{"show":false}},"emphasis":{"label":{"show":true}}},"data":[]}],"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"{a}<br/>{b}: {c}","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-6492c0622fa5b9978910" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-6492c0622fa5b9978910">{"x":{"series":[{"type":"map","mapType":"china","itemStyle":{"normal":{"label":{"show":false}},"emphasis":{"label":{"show":true}}},"data":[]}],"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
 <p>初始不显示地图漫游，可以打开。</p>
 <pre class="r"><code>g %&gt;% setRoam(show=TRUE)</code></pre>
-<div id="echarts-a3dd955b04482a0f91ae49f8ed37fac6a0bfbaa6" style="width:672px;height:480px;" class="echarts html-widget"></div>
-<script type="application/json" data-for="echarts-a3dd955b04482a0f91ae49f8ed37fac6a0bfbaa6">{"x":{"series":[{"type":"map","roam":true,"mapType":"china","itemStyle":{"normal":{"label":{"show":false}},"emphasis":{"label":{"show":true}}},"data":[]}],"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"{a}<br/>{b}: {c}","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"roamController":{"show":true,"width":80,"height":120,"backgroundColor":"rgba(0,0,0,0)","borderColor":"#ccc","borderWidth":0,"fillerColor":"#fff","handleColor":"#6495ed","step":15,"mapTypeControl":{"china":true},"x":"right","y":"top"}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-4442e1265c9bdf516f94" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4442e1265c9bdf516f94">{"x":{"series":[{"type":"map","mapType":"china","itemStyle":{"normal":{"label":{"show":false}},"emphasis":{"label":{"show":true}}},"data":[]}],"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"roamController":{"show":true,"width":80,"height":120,"backgroundColor":"rgba(0,0,0,0)","borderColor":"#ccc","borderWidth":0,"fillerColor":"#fff","handleColor":"#6495ed","step":15,"mapTypeControl":{"china":true},"x":"right","y":"top"}},"evals":[],"jsHooks":[]}</script>
 <p>移动地图漫游。</p>
 <pre class="r"><code>g %&gt;% setRoam(pos=8)</code></pre>
-<div id="echarts-3b0d0aaf8f857ab3c73bfb75368dbeb53bad286d" style="width:672px;height:480px;" class="echarts html-widget"></div>
-<script type="application/json" data-for="echarts-3b0d0aaf8f857ab3c73bfb75368dbeb53bad286d">{"x":{"series":[{"type":"map","roam":true,"mapType":"china","itemStyle":{"normal":{"label":{"show":false}},"emphasis":{"label":{"show":true}}},"data":[]}],"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"{a}<br/>{b}: {c}","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"roamController":{"show":true,"width":80,"height":120,"backgroundColor":"rgba(0,0,0,0)","borderColor":"#ccc","borderWidth":0,"fillerColor":"#fff","handleColor":"#6495ed","step":15,"mapTypeControl":{"china":true},"x":"left","y":"bottom"}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-5137d17a9dd442f341b1" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5137d17a9dd442f341b1">{"x":{"series":[{"type":"map","mapType":"china","itemStyle":{"normal":{"label":{"show":false}},"emphasis":{"label":{"show":true}}},"data":[]}],"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"roamController":{"show":true,"width":80,"height":120,"backgroundColor":"rgba(0,0,0,0)","borderColor":"#ccc","borderWidth":0,"fillerColor":"#fff","handleColor":"#6495ed","step":15,"mapTypeControl":{"china":true},"x":"left","y":"bottom"}},"evals":[],"jsHooks":[]}</script>
 <p>自定义格式。</p>
 <pre class="r"><code>g %&gt;% setRoam(bgColor=&#39;darkgray&#39;, fillerColor=&#39;white&#39;, handleColor=&#39;black&#39;)</code></pre>
-<div id="echarts-1d2ffd0e540290a558103d32fb43a7932618c6fe" style="width:672px;height:480px;" class="echarts html-widget"></div>
-<script type="application/json" data-for="echarts-1d2ffd0e540290a558103d32fb43a7932618c6fe">{"x":{"series":[{"type":"map","roam":true,"mapType":"china","itemStyle":{"normal":{"label":{"show":false}},"emphasis":{"label":{"show":true}}},"data":[]}],"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"{a}<br/>{b}: {c}","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"roamController":{"show":true,"width":80,"height":120,"backgroundColor":"darkgray","borderColor":"#ccc","borderWidth":0,"fillerColor":"white","handleColor":"black","step":15,"mapTypeControl":{"china":true},"x":"right","y":"top"}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-bd97e061f32df1b190fe" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-bd97e061f32df1b190fe">{"x":{"series":[{"type":"map","mapType":"china","itemStyle":{"normal":{"label":{"show":false}},"emphasis":{"label":{"show":true}}},"data":[]}],"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"roamController":{"show":true,"width":80,"height":120,"backgroundColor":"darkgray","borderColor":"#ccc","borderWidth":0,"fillerColor":"white","handleColor":"black","step":15,"mapTypeControl":{"china":true},"x":"right","y":"top"}},"evals":[],"jsHooks":[]}</script>
 <p>重新设置mapTypeControl，地图漫游对中国地图不再有效。</p>
 <pre class="r"><code>g %&gt;% setRoam(mapTypeControl=list(world=TRUE))</code></pre>
-<div id="echarts-a485aae1436b88337b18993bdcba92de48a86124" style="width:672px;height:480px;" class="echarts html-widget"></div>
-<script type="application/json" data-for="echarts-a485aae1436b88337b18993bdcba92de48a86124">{"x":{"series":[{"type":"map","roam":true,"mapType":"china","itemStyle":{"normal":{"label":{"show":false}},"emphasis":{"label":{"show":true}}},"data":[]}],"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"{a}<br/>{b}: {c}","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"backgroundColor":"rgba(0,0,0,0.7)"},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"roamController":{"show":true,"width":80,"height":120,"backgroundColor":"rgba(0,0,0,0)","borderColor":"#ccc","borderWidth":0,"fillerColor":"#fff","handleColor":"#6495ed","step":15,"mapTypeControl":{"world":true},"x":"right","y":"top"}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-31adf0ec1eebd74f8081" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-31adf0ec1eebd74f8081">{"x":{"series":[{"type":"map","mapType":"china","itemStyle":{"normal":{"label":{"show":false}},"emphasis":{"label":{"show":true}}},"data":[]}],"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"roamController":{"show":true,"width":80,"height":120,"backgroundColor":"rgba(0,0,0,0)","borderColor":"#ccc","borderWidth":0,"fillerColor":"#fff","handleColor":"#6495ed","step":15,"mapTypeControl":{"world":true},"x":"right","y":"top"}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div class="section level1">
 <h1><span class="header-section-number">4</span> 参考资料</h1>
@@ -293,15 +381,21 @@ $(document).ready(function () {
 </script>
 
 
+</div>
+</div>
 
 </div>
 
 <script>
 
 // add bootstrap table styles to pandoc tables
-$(document).ready(function () {
+function bootstrapStylePandocTables() {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
 });
+
 
 </script>
 

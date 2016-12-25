@@ -33,7 +33,7 @@ echartr(iris, Petal.Width, Sepal.Width) %>%
 ```
 </td>
 <td>
-```{r,echo=FALSE, warning=FALSE}
+```{r,echo=FALSE}
 echartr(iris, Petal.Width, Sepal.Width, weight=Petal.Length, type='bubble') %>% 
     setTheme('roma', width=400, height=300) %>% setTitle('Bubble')
 ```

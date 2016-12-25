@@ -5,6 +5,7 @@ output:
     number_sections: yes
     toc: yes
     toc_depth: 4
+    toc_float: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -465,10 +466,10 @@ aq <- airquality
 aq$Date <- as.Date(paste('1973', aq$Month, aq$Day, sep='-'))
 g1 <- echartr(aq, Date, Temp, type='curve') %>% setToolbox(pos=3)
 g2 <- echartr(aq, Day, Temp, Month, type='curve') %>% setToolbox(pos=3)
-g3 <- echartr(aq, Day, Temp, z=Month, type='curve') %>% setToolbox(pos=3)
+g3 <- echartr(aq, Day, Temp, t=Month, type='curve') %>% setToolbox(pos=3)
 aq1 <- melt(aq, id=c('Month', 'Day'), measure=c('Temp', 'Wind'), 
             variable='Param')
-g4 <- echartr(aq1, Day, value, Param, z=Month, type='curve') %>% 
+g4 <- echartr(aq1, Day, value, Param, t=Month, type='curve') %>% 
     setToolbox(pos=3)
 ```
 

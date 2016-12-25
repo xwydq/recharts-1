@@ -19,6 +19,12 @@
 <script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<link href="libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="libs/highlightjs-1.1/highlight.js"></script>
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
@@ -37,10 +43,6 @@ p code {
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
 <style type="text/css">code{white-space: pre;}</style>
-<link rel="stylesheet"
-      href="libs/highlight/default.css"
-      type="text/css" />
-<script src="libs/highlight/highlight.js"></script>
 <style type="text/css">
   pre:not([class]) {
     background-color: white;
@@ -111,10 +113,10 @@ button.code-folding-btn:focus {
 </style>
 
 
+
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
-<script src="libs/navigation-1.1/tabsets.js"></script>
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
@@ -124,6 +126,101 @@ $(document).ready(function () {
 <!-- code folding -->
 
 
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -158,26 +255,6 @@ $(document).ready(function () {
 
 </div>
 
-<div id="TOC">
-<ul>
-<li><a href="#introduction"><span class="toc-section-number">1</span> 介绍Introduction</a></li>
-<li><a href="#function-call"><span class="toc-section-number">2</span> 用法Function Call</a><ul>
-<li><a href="#elipsis"><span class="toc-section-number">2.1</span> 关于…Elipsis</a><ul>
-<li><a href="#itemstyle-normalemphasis"><span class="toc-section-number">2.1.1</span> <code>itemStyle</code> (normal|emphasis)</a></li>
-<li><a href="#labelstyle"><span class="toc-section-number">2.1.2</span> <code>labelStyle</code></a></li>
-<li><a href="#labellinestyle"><span class="toc-section-number">2.1.3</span> <code>labelLineStyle</code></a></li>
-<li><a href="#textstyle"><span class="toc-section-number">2.1.4</span> <code>textStyle</code></a></li>
-<li><a href="#linestyle"><span class="toc-section-number">2.1.5</span> <code>lineStyle</code></a></li>
-<li><a href="#areastyle"><span class="toc-section-number">2.1.6</span> <code>areaStyle</code></a></li>
-<li><a href="#chordstyle"><span class="toc-section-number">2.1.7</span> <code>chordStyle</code></a></li>
-<li><a href="#nodestyle"><span class="toc-section-number">2.1.8</span> <code>nodeStyle</code></a></li>
-<li><a href="#linkstyle"><span class="toc-section-number">2.1.9</span> <code>linkStyle</code></a></li>
-</ul></li>
-</ul></li>
-<li><a href="#showcase"><span class="toc-section-number">3</span> 举例Showcase</a></li>
-<li><a href="#references"><span class="toc-section-number">4</span> 参考材料References</a></li>
-</ul>
-</div>
 
 <p>首先，加载<code>recharts</code>：</p>
 <pre class="r"><code>library(recharts)</code></pre>
@@ -228,22 +305,22 @@ itemStyle(...)</code></pre>
 </colgroup>
 <thead>
 <tr class="header">
-<th align="left">参数</th>
-<th align="left">要求</th>
+<th>参数</th>
+<th>要求</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left"><p><strong>chart</strong></p></td>
-<td align="left"><p>Echarts对象，由<code>echartR</code>或<code>echart</code>生成。</p></td>
+<td><p><strong>chart</strong></p></td>
+<td><p>Echarts对象，由<code>echartR</code>或<code>echart</code>生成。</p></td>
 </tr>
 <tr class="even">
-<td align="left"><p>element</p></td>
-<td align="left"><p>包括c(“text”, “line”, “area”, “chord”, “node”, “link”).</p></td>
+<td><p>element</p></td>
+<td><p>包括c(“text”, “line”, “area”, “chord”, “node”, “link”).</p></td>
 </tr>
 <tr class="odd">
-<td align="left"><p>…</p></td>
-<td align="left"><p>创建样式元件的参数列表。</p></td>
+<td><p>…</p></td>
+<td><p>创建样式元件的参数列表。</p></td>
 </tr>
 </tbody>
 </table>
@@ -251,73 +328,73 @@ itemStyle(...)</code></pre>
 <h2><span class="header-section-number">2.1</span> 关于…Elipsis</h2>
 <div id="itemstyle-normalemphasis" class="section level3">
 <h3><span class="header-section-number">2.1.1</span> <code>itemStyle</code> (normal|emphasis)</h3>
-<table style="width:101%;">
+<table>
 <colgroup>
-<col width="18%" />
-<col width="83%" />
+<col width="17%" />
+<col width="82%" />
 </colgroup>
 <thead>
 <tr class="header">
-<th align="left">参数</th>
-<th align="left">说明</th>
+<th>参数</th>
+<th>说明</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">color</td>
-<td align="left">颜色向量, 可以是’rgba’, 十六进制值, 或颜色名称</td>
+<td>color</td>
+<td>颜色向量, 可以是’rgba’, 十六进制值, 或颜色名称</td>
 </tr>
 <tr class="even">
-<td align="left">lineStyle</td>
-<td align="left">用于线图/面积图/k线图/标注线，参见<code>lineStyle</code></td>
+<td>lineStyle</td>
+<td>用于线图/面积图/k线图/标注线，参见<code>lineStyle</code></td>
 </tr>
 <tr class="odd">
-<td align="left">textStyle</td>
-<td align="left">参见<code>textStyle</code></td>
+<td>textStyle</td>
+<td>参见<code>textStyle</code></td>
 </tr>
 <tr class="even">
-<td align="left">areaStyle</td>
-<td align="left">用于堆积线图/面积图和地图，参见<code>areaStyle</code></td>
+<td>areaStyle</td>
+<td>用于堆积线图/面积图和地图，参见<code>areaStyle</code></td>
 </tr>
 <tr class="odd">
-<td align="left">chordStyle</td>
-<td align="left">用于和弦图，参见<code>chordStyle</code></td>
+<td>chordStyle</td>
+<td>用于和弦图，参见<code>chordStyle</code></td>
 </tr>
 <tr class="even">
-<td align="left">nodeStyle</td>
-<td align="left">用于和弦图，参见<code>nodeStyle</code></td>
+<td>nodeStyle</td>
+<td>用于和弦图，参见<code>nodeStyle</code></td>
 </tr>
 <tr class="odd">
-<td align="left">linkStyle</td>
-<td align="left">用于和弦图，参见<code>linkStyle</code></td>
+<td>linkStyle</td>
+<td>用于和弦图，参见<code>linkStyle</code></td>
 </tr>
 <tr class="even">
-<td align="left">borderColor</td>
-<td align="left">颜色向量, 可以是’rgba’, 十六进制值, 或颜色名称</td>
+<td>borderColor</td>
+<td>颜色向量, 可以是’rgba’, 十六进制值, 或颜色名称</td>
 </tr>
 <tr class="odd">
-<td align="left">borderWidth</td>
-<td align="left">用于symbol, symbole, 饼图、地图和标注点，数值型</td>
+<td>borderWidth</td>
+<td>用于symbol, symbole, 饼图、地图和标注点，数值型</td>
 </tr>
 <tr class="even">
-<td align="left">barBorderColor</td>
-<td align="left">用于symbol, symbole, 饼图、地图和标注点，可以是’rgba’, 十六进制值, 或颜色名称</td>
+<td>barBorderColor</td>
+<td>用于symbol, symbole, 饼图、地图和标注点，可以是’rgba’, 十六进制值, 或颜色名称</td>
 </tr>
 <tr class="odd">
-<td align="left">barBorderRadius</td>
-<td align="left">数值型向量，长度为1或4(顺时针右-下-左-上), 默认为0</td>
+<td>barBorderRadius</td>
+<td>数值型向量，长度为1或4(顺时针右-下-左-上), 默认为0</td>
 </tr>
 <tr class="even">
-<td align="left">barBorderWidth</td>
-<td align="left">数值型向量，长度为1或4(顺时针右-下-左-上), 默认为0</td>
+<td>barBorderWidth</td>
+<td>数值型向量，长度为1或4(顺时针右-下-左-上), 默认为0</td>
 </tr>
 <tr class="odd">
-<td align="left">label</td>
-<td align="left">用于线图/面积图/条图/柱图/k线图/散点图/气泡图/饼图/环形图/地图/力导向布局图/漏斗图/金字塔图和标注点/标注线，参见<code>labelStyle</code></td>
+<td>label</td>
+<td>用于线图/面积图/条图/柱图/k线图/散点图/气泡图/饼图/环形图/地图/力导向布局图/漏斗图/金字塔图和标注点/标注线，参见<code>labelStyle</code></td>
 </tr>
 <tr class="even">
-<td align="left">labelLine</td>
-<td align="left">用于饼图/环形图和漏斗图，参见<code>labelLineStyle</code></td>
+<td>labelLine</td>
+<td>用于饼图/环形图和漏斗图，参见<code>labelLineStyle</code></td>
 </tr>
 </tbody>
 </table>
@@ -331,18 +408,18 @@ itemStyle(...)</code></pre>
 </colgroup>
 <thead>
 <tr class="header">
-<th align="left">参数</th>
-<th align="left">说明</th>
+<th>参数</th>
+<th>说明</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left"><p>show</p></td>
-<td align="left"><p>TRUE/FALSE, 默认为TRUE</p></td>
+<td><p>show</p></td>
+<td><p>TRUE/FALSE, 默认为TRUE</p></td>
 </tr>
 <tr class="even">
-<td align="left"><p>position</p></td>
-<td align="left"><ul>
+<td><p>position</p></td>
+<td><ul>
 <li>用于饼图/环图’outer’/‘inner’;</li>
 <li>用于漏斗图/金字塔图，‘inner’/‘left’/‘right’;</li>
 <li>用于线图/面积图/柱图/条图/k线图/散点图/气泡图，‘top’/‘right’/‘inside’/‘left’/‘bottom’;</li>
@@ -350,28 +427,28 @@ itemStyle(...)</code></pre>
 </ul></td>
 </tr>
 <tr class="odd">
-<td align="left"><p>rotate</p></td>
-<td align="left"><p>仅用于和弦图。TRUE/FALSE, 默认FALSE</p></td>
+<td><p>rotate</p></td>
+<td><p>仅用于和弦图。TRUE/FALSE, 默认FALSE</p></td>
 </tr>
 <tr class="even">
-<td align="left"><p>distance</p></td>
-<td align="left"><p>仅用于和弦图和饼图/环图。数值型，默认为10</p></td>
+<td><p>distance</p></td>
+<td><p>仅用于和弦图和饼图/环图。数值型，默认为10</p></td>
 </tr>
 <tr class="odd">
-<td align="left"><p>formatter</p></td>
-<td align="left"><p>参见<code>setTooltip</code></p></td>
+<td><p>formatter</p></td>
+<td><p>参见<code>setTooltip</code></p></td>
 </tr>
 <tr class="even">
-<td align="left"><p>textStyle</p></td>
-<td align="left"><p>参见<code>textStyle</code></p></td>
+<td><p>textStyle</p></td>
+<td><p>参见<code>textStyle</code></p></td>
 </tr>
 <tr class="odd">
-<td align="left"><p>x</p></td>
-<td align="left"><p>仅用于矩形树图，数值型</p></td>
+<td><p>x</p></td>
+<td><p>仅用于矩形树图，数值型</p></td>
 </tr>
 <tr class="even">
-<td align="left"><p>y</p></td>
-<td align="left"><p>仅用于矩形树图，数值型</p></td>
+<td><p>y</p></td>
+<td><p>仅用于矩形树图，数值型</p></td>
 </tr>
 </tbody>
 </table>
@@ -381,22 +458,22 @@ itemStyle(...)</code></pre>
 <table>
 <thead>
 <tr class="header">
-<th align="left">参数</th>
-<th align="left">说明</th>
+<th>参数</th>
+<th>说明</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">show</td>
-<td align="left">TRUE/FALSE, 默认为TRUE</td>
+<td>show</td>
+<td>TRUE/FALSE, 默认为TRUE</td>
 </tr>
 <tr class="even">
-<td align="left">length</td>
-<td align="left">数值型或’auto’, 默认为 40</td>
+<td>length</td>
+<td>数值型或’auto’, 默认为 40</td>
 </tr>
 <tr class="odd">
-<td align="left">lineStyle</td>
-<td align="left">参见<code>lineStyle</code></td>
+<td>lineStyle</td>
+<td>参见<code>lineStyle</code></td>
 </tr>
 </tbody>
 </table>
@@ -406,87 +483,83 @@ itemStyle(...)</code></pre>
 <table>
 <thead>
 <tr class="header">
-<th align="left">参数</th>
-<th align="left">说明</th>
+<th>参数</th>
+<th>说明</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">color</td>
-<td align="left">颜色向量, 可以是’rgba’, 十六进制值, 或颜色名称</td>
+<td>color</td>
+<td>颜色向量, 可以是’rgba’, 十六进制值, 或颜色名称</td>
 </tr>
 <tr class="even">
-<td align="left">decoration</td>
-<td align="left">仅用于提示框，文本型，默认为’none’</td>
+<td>decoration</td>
+<td>仅用于提示框，文本型，默认为’none’</td>
 </tr>
 <tr class="odd">
-<td align="left">align</td>
-<td align="left">‘left’ / ‘right’ / ‘center’</td>
+<td>align</td>
+<td>‘left’ / ‘right’ / ‘center’</td>
 </tr>
 <tr class="even">
-<td align="left">baseline</td>
-<td align="left">‘top’ / ‘bottom’ / ‘middle’</td>
+<td>baseline</td>
+<td>‘top’ / ‘bottom’ / ‘middle’</td>
 </tr>
 <tr class="odd">
-<td align="left">fontFamily</td>
-<td align="left">合法的字体名称</td>
+<td>fontFamily</td>
+<td>合法的字体名称</td>
 </tr>
 <tr class="even">
-<td align="left">fontSize</td>
-<td align="left">数值型，默认为12</td>
+<td>fontSize</td>
+<td>数值型，默认为12</td>
 </tr>
 <tr class="odd">
-<td align="left">fontStyle</td>
-<td align="left">‘normal’ / ‘italic’ / ‘oblique’, 默认为’normal’</td>
+<td>fontStyle</td>
+<td>‘normal’ / ‘italic’ / ‘oblique’, 默认为’normal’</td>
 </tr>
 <tr class="even">
-<td align="left">fontWeight</td>
-<td align="left">‘normal’ / ‘bold’ / ‘bolder’ / ‘lighter’ 祸数值型，默认为’normal’</td>
+<td>fontWeight</td>
+<td>‘normal’ / ‘bold’ / ‘bolder’ / ‘lighter’ 祸数值型，默认为’normal’</td>
 </tr>
 </tbody>
 </table>
 </div>
 <div id="linestyle" class="section level3">
 <h3><span class="header-section-number">2.1.5</span> <code>lineStyle</code></h3>
-<table style="width:101%;">
-<colgroup>
-<col width="18%" />
-<col width="83%" />
-</colgroup>
+<table>
 <thead>
 <tr class="header">
-<th align="left">参数</th>
-<th align="left">说明</th>
+<th>参数</th>
+<th>说明</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">color</td>
-<td align="left">颜色向量, 可以是’rgba’, 十六进制值, 或颜色名称</td>
+<td>color</td>
+<td>颜色向量, 可以是’rgba’, 十六进制值, 或颜色名称</td>
 </tr>
 <tr class="even">
-<td align="left">type</td>
-<td align="left">‘solid’ / ‘dotted’ / ‘dashed’。对树图，额外有’curve’ / ‘broken’. Default ‘solid’</td>
+<td>type</td>
+<td>‘solid’ / ‘dotted’ / ‘dashed’。对树图，额外有’curve’ / ‘broken’. Default ‘solid’</td>
 </tr>
 <tr class="odd">
-<td align="left">width</td>
-<td align="left">数值型</td>
+<td>width</td>
+<td>数值型</td>
 </tr>
 <tr class="even">
-<td align="left">shadowColor</td>
-<td align="left">颜色向量, 可以是’rgba’, 十六进制值, 或颜色名称</td>
+<td>shadowColor</td>
+<td>颜色向量, 可以是’rgba’, 十六进制值, 或颜色名称</td>
 </tr>
 <tr class="odd">
-<td align="left">shadowBlur</td>
-<td align="left">数值型，默认为5</td>
+<td>shadowBlur</td>
+<td>数值型，默认为5</td>
 </tr>
 <tr class="even">
-<td align="left">shadowOffsetX</td>
-<td align="left">数值型，默认为3</td>
+<td>shadowOffsetX</td>
+<td>数值型，默认为3</td>
 </tr>
 <tr class="odd">
-<td align="left">shadowOffsetY</td>
-<td align="left">数值型，默认为3</td>
+<td>shadowOffsetY</td>
+<td>数值型，默认为3</td>
 </tr>
 </tbody>
 </table>
@@ -496,18 +569,18 @@ itemStyle(...)</code></pre>
 <table>
 <thead>
 <tr class="header">
-<th align="left">参数</th>
-<th align="left">说明</th>
+<th>参数</th>
+<th>说明</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">color</td>
-<td align="left">颜色向量, 可以是’rgba’, 十六进制值, 或颜色名称</td>
+<td>color</td>
+<td>颜色向量, 可以是’rgba’, 十六进制值, 或颜色名称</td>
 </tr>
 <tr class="even">
-<td align="left">type</td>
-<td align="left">仅能用’default’</td>
+<td>type</td>
+<td>仅能用’default’</td>
 </tr>
 </tbody>
 </table>
@@ -517,26 +590,26 @@ itemStyle(...)</code></pre>
 <table>
 <thead>
 <tr class="header">
-<th align="left">参数</th>
-<th align="left">说明</th>
+<th>参数</th>
+<th>说明</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">width</td>
-<td align="left">数值型，默认为1</td>
+<td>width</td>
+<td>数值型，默认为1</td>
 </tr>
 <tr class="even">
-<td align="left">color</td>
-<td align="left">颜色向量, 可以是’rgba’, 十六进制值, 或颜色名称</td>
+<td>color</td>
+<td>颜色向量, 可以是’rgba’, 十六进制值, 或颜色名称</td>
 </tr>
 <tr class="odd">
-<td align="left">borderWidth</td>
-<td align="left">数值型，默认为1</td>
+<td>borderWidth</td>
+<td>数值型，默认为1</td>
 </tr>
 <tr class="even">
-<td align="left">borderColor</td>
-<td align="left">颜色向量, 可以是’rgba’, 十六进制值, 或颜色名称</td>
+<td>borderColor</td>
+<td>颜色向量, 可以是’rgba’, 十六进制值, 或颜色名称</td>
 </tr>
 </tbody>
 </table>
@@ -546,22 +619,22 @@ itemStyle(...)</code></pre>
 <table>
 <thead>
 <tr class="header">
-<th align="left">参数</th>
-<th align="left">说明</th>
+<th>参数</th>
+<th>说明</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">color</td>
-<td align="left">颜色向量, 可以是’rgba’, 十六进制值, 或颜色名称</td>
+<td>color</td>
+<td>颜色向量, 可以是’rgba’, 十六进制值, 或颜色名称</td>
 </tr>
 <tr class="even">
-<td align="left">borderWidth</td>
-<td align="left">数值型，默认为1</td>
+<td>borderWidth</td>
+<td>数值型，默认为1</td>
 </tr>
 <tr class="odd">
-<td align="left">borderColor</td>
-<td align="left">颜色向量, 可以是’rgba’, 十六进制值, 或颜色名称</td>
+<td>borderColor</td>
+<td>颜色向量, 可以是’rgba’, 十六进制值, 或颜色名称</td>
 </tr>
 </tbody>
 </table>
@@ -571,22 +644,22 @@ itemStyle(...)</code></pre>
 <table>
 <thead>
 <tr class="header">
-<th align="left">参数</th>
-<th align="left">说明</th>
+<th>参数</th>
+<th>说明</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">type</td>
-<td align="left">‘curve’</td>
+<td>type</td>
+<td>‘curve’</td>
 </tr>
 <tr class="even">
-<td align="left">color</td>
-<td align="left">颜色向量, 可以是’rgba’, 十六进制值, 或颜色名称。默认为’#5182ab’</td>
+<td>color</td>
+<td>颜色向量, 可以是’rgba’, 十六进制值, 或颜色名称。默认为’#5182ab’</td>
 </tr>
 <tr class="odd">
-<td align="left">width</td>
-<td align="left">数值型，默认为1</td>
+<td>width</td>
+<td>数值型，默认为1</td>
 </tr>
 </tbody>
 </table>
@@ -623,15 +696,21 @@ $(document).ready(function () {
 </script>
 
 
+</div>
+</div>
 
 </div>
 
 <script>
 
 // add bootstrap table styles to pandoc tables
-$(document).ready(function () {
+function bootstrapStylePandocTables() {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
 });
+
 
 </script>
 

@@ -5,6 +5,7 @@ output:
     number_sections: yes
     toc: yes
     toc_depth: 4
+    toc_float: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -90,7 +91,7 @@ Let's use `airquality` to generate an Echarts objects `g`:
 library(data.table)
 aq1 <- melt(airquality, id=c('Month', 'Day'), measure=c('Temp', 'Wind'), 
             variable='Param')
-g <- echartr(aq1, Day, value, Param, z=Month, type='curve') %>% 
+g <- echartr(aq1, Day, value, Param, t=Month, type='curve') %>% 
     setToolbox(pos=3) %>% setTitle('Temp & Wind') %>% setDataZoom() %>% 
     setDataRange()
 g
@@ -116,22 +117,27 @@ g1
 Now we can push timeline and dataZoom down to the bottom. Since dataRange only supports x and y, what if we want to put it in the bottom and stick to y2? The Echarts object has already been assigned a randomized `elementId` as metadata. We can use a JavaScript expression `document.getElementById(<elementId>).offsetHeight` to refer to the canvas height in a dynamic manner. No matter how we resize the canvas window, the widget will be always at the correct position.
 
 ```{r}
-g1 <- g1 %>% relocDataZoom(x=120, y=JS(paste0(
-    "document.getElementById('", g1$elementId, "').offsetHeight-30")))
-g1
+g2 <- g1
+g2$elementId <- "chart2"
+g2 <- g2 %>% relocDataZoom(x=120, y=JS(paste0(
+    "document.getElementById('", g2$elementId, "').offsetHeight-30")))
+g2
 ```
 
 `timeline` supports x2 and y2. So we can directly set its y2 25. Thus, we exchaned the position of timeline and dataZoom.
 
 ```{r}
-g1 <- g1 %>% relocTimeline(y2=25, x=120, x2=50)
-g1
+g3 <- g2 %>% relocTimeline(y2=25, x=120, x2=50)
+g3$elementId <- "chart3"
+g3
 ```
 
 Finally let's enlarge the pane grid.
 
 ```{r}
-g1 %>% setGrid(x=120, y=40, x2=50, y2=90)
+g4 <- g3 %>% setGrid(x=120, y=40, x2=50, y2=90)
+g4$elementId <- "chart4"
+g4
 ```
 
 # References

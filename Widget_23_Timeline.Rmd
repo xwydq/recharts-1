@@ -5,6 +5,7 @@ output:
     number_sections: yes
     toc: yes
     toc_depth: 4
+    toc_float: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -94,7 +95,7 @@ setTimeline(chart, show = TRUE, type = c("time", "number"),
 # Showcase
 
 ```{r}
-g <- echartr(iris, Sepal.Width, Petal.Width, z=Species)
+g <- echartr(iris, Sepal.Width, Petal.Width, t=Species)
 g
 ```
 
