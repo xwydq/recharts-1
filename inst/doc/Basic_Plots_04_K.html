@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Yiying Wang" />
+
+<meta name="date" content="2016-12-26" />
+
+<title>Basic Plots 04 - Candlestick</title>
+
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script src="libs/htmlwidgets-0.8/htmlwidgets.js"></script>
+<script src="libs/echarts-2.2.7/echarts-all.js"></script>
+<script src="libs/charts-ext-2.2.7/main.js"></script>
+<script src="libs/charts-ext-2.2.7/BMap.js"></script>
+<script src="libs/echarts-binding-0.2/echarts.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="/home/madlogos/R/x86_64-pc-linux-gnu-library/3.3/knitr/misc/vignette.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Basic Plots 04 - Candlestick</h1>
+<h4 class="author"><em>Yiying Wang</em></h4>
+<h4 class="date"><em>2016-12-26</em></h4>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction"><span class="toc-section-number">1</span> Introduction</a></li>
+<li><a href="#function-call"><span class="toc-section-number">2</span> Function Call</a></li>
+<li><a href="#showcase"><span class="toc-section-number">3</span> Showcase</a><ul>
+<li><a href="#basic-plot"><span class="toc-section-number">3.1</span> Basic Plot</a></li>
+<li><a href="#with-timeline"><span class="toc-section-number">3.2</span> With Timeline</a></li>
+</ul></li>
+<li><a href="#futher-setup"><span class="toc-section-number">4</span> Futher Setup</a></li>
+</ul>
+</div>
+
+<p>First, you should load <code>recharts</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(recharts)</code></pre></div>
+<div id="introduction" class="section level1">
+<h1><span class="header-section-number">1</span> Introduction</h1>
+<p>Candlestick plot is also known as K chart:</p>
+<table id='intro'>
+<tr>
+<td>
+<div id="htmlwidget-91c62d6e9a8c6807b623" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-91c62d6e9a8c6807b623">{"x":{"series":[{"name":"Stock","type":"k","data":[[2320.26,2302.6,2287.3,2362.94],[2300,2291.3,2288.26,2308.38],[2295.35,2346.5,2295.35,2346.92],[2347.22,2358.98,2337.35,2363.8],[2360.75,2382.48,2347.89,2383.76],[2383.43,2385.42,2371.23,2391.82],[2377.41,2419.02,2369.57,2421.15],[2425.92,2428.15,2417.58,2440.38],[2411,2433.13,2403.3,2437.42],[2432.68,2434.48,2427.7,2441.73],[2430.69,2418.53,2394.22,2433.89],[2416.62,2432.4,2414.4,2443.03],[2441.91,2421.56,2415.43,2444.8],[2420.26,2382.91,2373.53,2427.07],[2383.49,2397.18,2370.61,2397.94],[2378.82,2325.95,2309.17,2378.82],[2322.94,2314.16,2308.76,2330.88],[2320.62,2325.82,2315.01,2338.78],[2313.74,2293.34,2289.89,2340.71],[2297.77,2313.22,2292.03,2324.63],[2322.32,2365.59,2308.92,2366.16],[2364.54,2359.51,2330.86,2369.65],[2332.08,2273.4,2259.25,2333.54],[2274.81,2326.31,2270.1,2328.14],[2333.61,2347.18,2321.6,2351.44],[2340.44,2324.29,2304.27,2352.02],[2326.42,2318.61,2314.59,2333.67],[2314.68,2310.59,2296.58,2320.96],[2309.16,2286.6,2264.83,2333.29],[2282.17,2263.97,2253.25,2286.33],[2255.77,2270.28,2253.31,2276.22],[2269.31,2278.4,2250,2312.08],[2267.29,2240.02,2239.21,2276.05],[2244.26,2257.43,2232.02,2261.31],[2257.74,2317.37,2257.42,2317.86],[2318.21,2324.24,2311.6,2330.81],[2321.4,2328.28,2314.97,2332],[2334.74,2326.72,2319.91,2344.89],[2318.58,2297.67,2281.12,2319.99],[2299.38,2301.26,2289,2323.48],[2273.55,2236.3,2232.91,2273.55],[2238.49,2236.62,2228.81,2246.87],[2229.46,2234.4,2227.31,2243.95],[2234.9,2227.74,2220.44,2253.42],[2232.69,2225.29,2217.25,2241.34],[2196.24,2211.59,2180.67,2212.59],[2215.47,2225.77,2215.47,2234.73],[2224.93,2226.13,2212.56,2233.04],[2236.98,2219.55,2217.26,2242.48],[2218.09,2206.78,2204.44,2226.26],[2199.91,2181.94,2177.39,2204.99],[2169.63,2194.85,2165.78,2196.43],[2195.03,2193.8,2178.47,2197.51],[2181.82,2197.6,2175.44,2206.03],[2201.12,2244.64,2200.58,2250.11],[2236.4,2242.17,2232.26,2245.12],[2242.62,2184.54,2182.81,2242.62],[2187.35,2218.32,2184.11,2226.12],[2213.19,2199.31,2191.85,2224.63],[2203.89,2177.91,2173.86,2210.58],[2170.78,2174.12,2161.14,2179.65],[2179.05,2205.5,2179.05,2222.81],[2212.5,2231.17,2212.5,2236.07],[2227.86,2235.57,2219.44,2240.26],[2242.39,2246.3,2235.42,2255.21],[2246.96,2232.97,2221.38,2247.86],[2228.82,2246.83,2225.81,2247.67],[2247.68,2241.92,2231.36,2250.85],[2238.9,2217.01,2205.87,2239.93],[2217.09,2224.8,2213.58,2225.19],[2221.34,2251.81,2210.77,2252.87],[2249.81,2282.87,2248.41,2288.09],[2286.33,2299.99,2281.9,2309.39],[2297.11,2305.11,2290.12,2305.3],[2303.75,2302.4,2292.43,2314.18],[2293.81,2275.67,2274.1,2304.95],[2281.45,2288.53,2270.25,2292.59],[2286.66,2293.08,2283.94,2301.7],[2293.4,2321.32,2281.47,2322.1],[2323.54,2324.02,2321.17,2334.33],[2316.25,2317.75,2310.49,2325.72],[2320.74,2300.59,2299.37,2325.53],[2300.21,2299.25,2294.11,2313.43],[2297.1,2272.42,2264.76,2297.1],[2270.71,2270.93,2260.87,2276.86],[2264.43,2242.11,2240.07,2266.69],[2242.26,2210.9,2205.07,2250.63],[2190.1,2148.35,2126.22,2190.1]]}],"yAxis":[{"type":"value","show":true,"position":"left","name":"Price","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"category","show":true,"position":"bottom","name":"Date","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["2013-01-24","2013-01-25","2013-01-28","2013-01-29","2013-01-30","2013-01-31","2013-02-01","2013-02-04","2013-02-05","2013-02-06","2013-02-07","2013-02-08","2013-02-18","2013-02-19","2013-02-20","2013-02-21","2013-02-22","2013-02-25","2013-02-26","2013-02-27","2013-02-28","2013-03-01","2013-03-04","2013-03-05","2013-03-06","2013-03-07","2013-03-08","2013-03-11","2013-03-12","2013-03-13","2013-03-14","2013-03-15","2013-03-18","2013-03-19","2013-03-20","2013-03-21","2013-03-22","2013-03-25","2013-03-26","2013-03-27","2013-03-28","2013-03-29","2013-04-01","2013-04-02","2013-04-03","2013-04-08","2013-04-09","2013-04-10","2013-04-11","2013-04-12","2013-04-15","2013-04-16","2013-04-17","2013-04-18","2013-04-19","2013-04-22","2013-04-23","2013-04-24","2013-04-25","2013-04-26","2013-05-02","2013-05-03","2013-05-06","2013-05-07","2013-05-08","2013-05-09","2013-05-10","2013-05-13","2013-05-14","2013-05-15","2013-05-16","2013-05-17","2013-05-20","2013-05-21","2013-05-22","2013-05-23","2013-05-24","2013-05-27","2013-05-28","2013-05-29","2013-05-30","2013-05-31","2013-06-03","2013-06-04","2013-06-05","2013-06-06","2013-06-07","2013-06-13"]}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n        var res = params[0].name;\n        res += \"<br/>Open开盘 : \" + params[0].value[0] +\n        \"<br/>High最高 : \" + params[0].value[3];\n        res += \"<br/>Close收盘 : \" + params[0].value[1] +\n        \"<br/>Low最低 : \" + params[0].value[2];\n        return res;\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["line","bar","tiled","stack"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["Stock"],"x":"left","y":"top","orient":"horizontal"},"theme":"infographic","title":{"text":"Shanghai Stock Index 2013 1H","x":"center","y":"bottom","orient":"horizontal"}},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
+</td>
+<td>
+</table>
+<p>The keys are:</p>
+<ul>
+<li>character <code>x</code></li>
+<li>numeric ‘y’ (four columns) aranged in the order of ‘open’, ‘close’, ‘low’, ‘high’</li>
+</ul>
+</div>
+<div id="function-call" class="section level1">
+<h1><span class="header-section-number">2</span> Function Call</h1>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">echartr</span>(data, x, y, &lt;t&gt;, &lt;type&gt;)</code></pre></div>
+<table>
+<colgroup>
+<col width="11%" />
+<col width="88%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Arg</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><strong>data</strong></p></td>
+<td><p>source data in the form of data.frame</p></td>
+</tr>
+<tr class="even">
+<td><p><strong>x</strong></p></td>
+<td><p>character independent variable. Only the first one is accepted if multiple variables are provided.</p></td>
+</tr>
+<tr class="odd">
+<td><p><strong>y</strong></p></td>
+<td><p>numeric dependent variable. Only the first four ones are accepted which are arranged in the order of ‘open’, ‘close’, ‘low’, ‘high’.</p></td>
+</tr>
+<tr class="even">
+<td><p>t</p></td>
+<td><p>timeline variable which will be coerced to factors. Only the first one is accepted if multiple variables are provided.</p></td>
+</tr>
+<tr class="odd">
+<td><p>type</p></td>
+<td><p>‘k’ or ‘candlestick’</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="showcase" class="section level1">
+<h1><span class="header-section-number">3</span> Showcase</h1>
+<div id="basic-plot" class="section level2">
+<h2><span class="header-section-number">3.1</span> Basic Plot</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">echartr</span>(stock, <span class="kw">as.character</span>(date), <span class="kw">c</span>(open, close, low, high), <span class="dt">type=</span><span class="st">&#39;k&#39;</span>) %&gt;%
+<span class="st">    </span><span class="kw">setXAxis</span>(<span class="dt">name=</span><span class="st">&#39;Date&#39;</span>, <span class="dt">axisLabel=</span><span class="kw">list</span>(<span class="dt">rotate=</span><span class="dv">30</span>)) %&gt;%
+<span class="st">    </span><span class="kw">setYAxis</span>(<span class="dt">name=</span><span class="st">&quot;Price&quot;</span>)</code></pre></div>
+<div id="htmlwidget-19e9ac6193217a30b341" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-19e9ac6193217a30b341">{"x":{"series":[{"name":"Stock","type":"k","data":[[2320.26,2302.6,2287.3,2362.94],[2300,2291.3,2288.26,2308.38],[2295.35,2346.5,2295.35,2346.92],[2347.22,2358.98,2337.35,2363.8],[2360.75,2382.48,2347.89,2383.76],[2383.43,2385.42,2371.23,2391.82],[2377.41,2419.02,2369.57,2421.15],[2425.92,2428.15,2417.58,2440.38],[2411,2433.13,2403.3,2437.42],[2432.68,2434.48,2427.7,2441.73],[2430.69,2418.53,2394.22,2433.89],[2416.62,2432.4,2414.4,2443.03],[2441.91,2421.56,2415.43,2444.8],[2420.26,2382.91,2373.53,2427.07],[2383.49,2397.18,2370.61,2397.94],[2378.82,2325.95,2309.17,2378.82],[2322.94,2314.16,2308.76,2330.88],[2320.62,2325.82,2315.01,2338.78],[2313.74,2293.34,2289.89,2340.71],[2297.77,2313.22,2292.03,2324.63],[2322.32,2365.59,2308.92,2366.16],[2364.54,2359.51,2330.86,2369.65],[2332.08,2273.4,2259.25,2333.54],[2274.81,2326.31,2270.1,2328.14],[2333.61,2347.18,2321.6,2351.44],[2340.44,2324.29,2304.27,2352.02],[2326.42,2318.61,2314.59,2333.67],[2314.68,2310.59,2296.58,2320.96],[2309.16,2286.6,2264.83,2333.29],[2282.17,2263.97,2253.25,2286.33],[2255.77,2270.28,2253.31,2276.22],[2269.31,2278.4,2250,2312.08],[2267.29,2240.02,2239.21,2276.05],[2244.26,2257.43,2232.02,2261.31],[2257.74,2317.37,2257.42,2317.86],[2318.21,2324.24,2311.6,2330.81],[2321.4,2328.28,2314.97,2332],[2334.74,2326.72,2319.91,2344.89],[2318.58,2297.67,2281.12,2319.99],[2299.38,2301.26,2289,2323.48],[2273.55,2236.3,2232.91,2273.55],[2238.49,2236.62,2228.81,2246.87],[2229.46,2234.4,2227.31,2243.95],[2234.9,2227.74,2220.44,2253.42],[2232.69,2225.29,2217.25,2241.34],[2196.24,2211.59,2180.67,2212.59],[2215.47,2225.77,2215.47,2234.73],[2224.93,2226.13,2212.56,2233.04],[2236.98,2219.55,2217.26,2242.48],[2218.09,2206.78,2204.44,2226.26],[2199.91,2181.94,2177.39,2204.99],[2169.63,2194.85,2165.78,2196.43],[2195.03,2193.8,2178.47,2197.51],[2181.82,2197.6,2175.44,2206.03],[2201.12,2244.64,2200.58,2250.11],[2236.4,2242.17,2232.26,2245.12],[2242.62,2184.54,2182.81,2242.62],[2187.35,2218.32,2184.11,2226.12],[2213.19,2199.31,2191.85,2224.63],[2203.89,2177.91,2173.86,2210.58],[2170.78,2174.12,2161.14,2179.65],[2179.05,2205.5,2179.05,2222.81],[2212.5,2231.17,2212.5,2236.07],[2227.86,2235.57,2219.44,2240.26],[2242.39,2246.3,2235.42,2255.21],[2246.96,2232.97,2221.38,2247.86],[2228.82,2246.83,2225.81,2247.67],[2247.68,2241.92,2231.36,2250.85],[2238.9,2217.01,2205.87,2239.93],[2217.09,2224.8,2213.58,2225.19],[2221.34,2251.81,2210.77,2252.87],[2249.81,2282.87,2248.41,2288.09],[2286.33,2299.99,2281.9,2309.39],[2297.11,2305.11,2290.12,2305.3],[2303.75,2302.4,2292.43,2314.18],[2293.81,2275.67,2274.1,2304.95],[2281.45,2288.53,2270.25,2292.59],[2286.66,2293.08,2283.94,2301.7],[2293.4,2321.32,2281.47,2322.1],[2323.54,2324.02,2321.17,2334.33],[2316.25,2317.75,2310.49,2325.72],[2320.74,2300.59,2299.37,2325.53],[2300.21,2299.25,2294.11,2313.43],[2297.1,2272.42,2264.76,2297.1],[2270.71,2270.93,2260.87,2276.86],[2264.43,2242.11,2240.07,2266.69],[2242.26,2210.9,2205.07,2250.63],[2190.1,2148.35,2126.22,2190.1]]}],"yAxis":[{"type":"value","show":true,"position":"left","name":"Price","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"category","show":true,"position":"bottom","name":"Date","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true,"rotate":30},"splitLine":{"show":true},"splitArea":{"show":false},"data":["2013-01-24","2013-01-25","2013-01-28","2013-01-29","2013-01-30","2013-01-31","2013-02-01","2013-02-04","2013-02-05","2013-02-06","2013-02-07","2013-02-08","2013-02-18","2013-02-19","2013-02-20","2013-02-21","2013-02-22","2013-02-25","2013-02-26","2013-02-27","2013-02-28","2013-03-01","2013-03-04","2013-03-05","2013-03-06","2013-03-07","2013-03-08","2013-03-11","2013-03-12","2013-03-13","2013-03-14","2013-03-15","2013-03-18","2013-03-19","2013-03-20","2013-03-21","2013-03-22","2013-03-25","2013-03-26","2013-03-27","2013-03-28","2013-03-29","2013-04-01","2013-04-02","2013-04-03","2013-04-08","2013-04-09","2013-04-10","2013-04-11","2013-04-12","2013-04-15","2013-04-16","2013-04-17","2013-04-18","2013-04-19","2013-04-22","2013-04-23","2013-04-24","2013-04-25","2013-04-26","2013-05-02","2013-05-03","2013-05-06","2013-05-07","2013-05-08","2013-05-09","2013-05-10","2013-05-13","2013-05-14","2013-05-15","2013-05-16","2013-05-17","2013-05-20","2013-05-21","2013-05-22","2013-05-23","2013-05-24","2013-05-27","2013-05-28","2013-05-29","2013-05-30","2013-05-31","2013-06-03","2013-06-04","2013-06-05","2013-06-06","2013-06-07","2013-06-13"]}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n        var res = params[0].name;\n        res += \"<br/>Open开盘 : \" + params[0].value[0] +\n        \"<br/>High最高 : \" + params[0].value[3];\n        res += \"<br/>Close收盘 : \" + params[0].value[1] +\n        \"<br/>Low最低 : \" + params[0].value[2];\n        return res;\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["line","bar","tiled","stack"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["Stock"],"x":"left","y":"top","orient":"horizontal"}},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
+</div>
+<div id="with-timeline" class="section level2">
+<h2><span class="header-section-number">3.2</span> With Timeline</h2>
+<p>Remember the special notes in the <a href="index.html">quick start</a>? We need to supplement the dataset to cover all the <code>x</code> and <code>t</code> levels.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">stock$Month &lt;-<span class="st"> </span><span class="kw">format</span>(stock$date, <span class="st">&#39;%m&#39;</span>)
+stock$Day &lt;-<span class="st"> </span><span class="kw">format</span>(stock$date, <span class="st">&#39;%d&#39;</span>)
+fullData &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">expand.grid</span>(<span class="kw">unique</span>(stock$Month), <span class="kw">unique</span>(stock$Day)))
+<span class="kw">names</span>(fullData) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Month&quot;</span>, <span class="st">&quot;Day&quot;</span>)
+stock &lt;-<span class="st"> </span><span class="kw">merge</span>(stock, fullData, <span class="dt">all.y=</span><span class="ot">TRUE</span>)</code></pre></div>
+<p>Then timeline will work properly.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">echartr</span>(stock, Day, <span class="kw">c</span>(open, close, low, high), <span class="dt">t=</span>Month, <span class="dt">type=</span><span class="st">&#39;k&#39;</span>) %&gt;%
+<span class="st">    </span><span class="kw">setYAxis</span>(<span class="dt">name=</span><span class="st">&quot;Price&quot;</span>)</code></pre></div>
+<div id="htmlwidget-d3066f5756b3b5245a3e" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-d3066f5756b3b5245a3e">{"x":{"timeline":{"type":"number","data":["01","02","03","04","05","06"],"x":80,"x2":80},"options":[{"series":[{"name":"Stock","type":"k","data":[["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],[2320.26,2302.6,2287.3,2362.94],[2300,2291.3,2288.26,2308.38],["-","-","-","-"],["-","-","-","-"],[2295.35,2346.5,2295.35,2346.92],[2347.22,2358.98,2337.35,2363.8],[2360.75,2382.48,2347.89,2383.76],[2383.43,2385.42,2371.23,2391.82]]}],"yAxis":[{"type":"value","show":true,"position":"left","name":"Price","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"category","show":true,"position":"bottom","name":"Day","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"]}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n        var res = params[0].name;\n        res += \"<br/>Open开盘 : \" + params[0].value[0] +\n        \"<br/>High最高 : \" + params[0].value[3];\n        res += \"<br/>Close收盘 : \" + params[0].value[1] +\n        \"<br/>Low最低 : \" + params[0].value[2];\n        return res;\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["line","bar","tiled","stack"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["Stock"],"x":"left","y":"top","orient":"horizontal"}},{"series":[{"name":"Stock","type":"k","data":[[2377.41,2419.02,2369.57,2421.15],["-","-","-","-"],["-","-","-","-"],[2425.92,2428.15,2417.58,2440.38],[2411,2433.13,2403.3,2437.42],[2432.68,2434.48,2427.7,2441.73],[2430.69,2418.53,2394.22,2433.89],[2416.62,2432.4,2414.4,2443.03],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],[2441.91,2421.56,2415.43,2444.8],[2420.26,2382.91,2373.53,2427.07],[2383.49,2397.18,2370.61,2397.94],[2378.82,2325.95,2309.17,2378.82],[2322.94,2314.16,2308.76,2330.88],["-","-","-","-"],["-","-","-","-"],[2320.62,2325.82,2315.01,2338.78],[2313.74,2293.34,2289.89,2340.71],[2297.77,2313.22,2292.03,2324.63],[2322.32,2365.59,2308.92,2366.16],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"]]}]},{"series":[{"name":"Stock","type":"k","data":[[2364.54,2359.51,2330.86,2369.65],["-","-","-","-"],["-","-","-","-"],[2332.08,2273.4,2259.25,2333.54],[2274.81,2326.31,2270.1,2328.14],[2333.61,2347.18,2321.6,2351.44],[2340.44,2324.29,2304.27,2352.02],[2326.42,2318.61,2314.59,2333.67],["-","-","-","-"],["-","-","-","-"],[2314.68,2310.59,2296.58,2320.96],[2309.16,2286.6,2264.83,2333.29],[2282.17,2263.97,2253.25,2286.33],[2255.77,2270.28,2253.31,2276.22],[2269.31,2278.4,2250,2312.08],["-","-","-","-"],["-","-","-","-"],[2267.29,2240.02,2239.21,2276.05],[2244.26,2257.43,2232.02,2261.31],[2257.74,2317.37,2257.42,2317.86],[2318.21,2324.24,2311.6,2330.81],[2321.4,2328.28,2314.97,2332],["-","-","-","-"],["-","-","-","-"],[2334.74,2326.72,2319.91,2344.89],[2318.58,2297.67,2281.12,2319.99],[2299.38,2301.26,2289,2323.48],[2273.55,2236.3,2232.91,2273.55],[2238.49,2236.62,2228.81,2246.87],["-","-","-","-"],["-","-","-","-"]]}]},{"series":[{"name":"Stock","type":"k","data":[[2229.46,2234.4,2227.31,2243.95],[2234.9,2227.74,2220.44,2253.42],[2232.69,2225.29,2217.25,2241.34],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],[2196.24,2211.59,2180.67,2212.59],[2215.47,2225.77,2215.47,2234.73],[2224.93,2226.13,2212.56,2233.04],[2236.98,2219.55,2217.26,2242.48],[2218.09,2206.78,2204.44,2226.26],["-","-","-","-"],["-","-","-","-"],[2199.91,2181.94,2177.39,2204.99],[2169.63,2194.85,2165.78,2196.43],[2195.03,2193.8,2178.47,2197.51],[2181.82,2197.6,2175.44,2206.03],[2201.12,2244.64,2200.58,2250.11],["-","-","-","-"],["-","-","-","-"],[2236.4,2242.17,2232.26,2245.12],[2242.62,2184.54,2182.81,2242.62],[2187.35,2218.32,2184.11,2226.12],[2213.19,2199.31,2191.85,2224.63],[2203.89,2177.91,2173.86,2210.58],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"]]}]},{"series":[{"name":"Stock","type":"k","data":[["-","-","-","-"],[2170.78,2174.12,2161.14,2179.65],[2179.05,2205.5,2179.05,2222.81],["-","-","-","-"],["-","-","-","-"],[2212.5,2231.17,2212.5,2236.07],[2227.86,2235.57,2219.44,2240.26],[2242.39,2246.3,2235.42,2255.21],[2246.96,2232.97,2221.38,2247.86],[2228.82,2246.83,2225.81,2247.67],["-","-","-","-"],["-","-","-","-"],[2247.68,2241.92,2231.36,2250.85],[2238.9,2217.01,2205.87,2239.93],[2217.09,2224.8,2213.58,2225.19],[2221.34,2251.81,2210.77,2252.87],[2249.81,2282.87,2248.41,2288.09],["-","-","-","-"],["-","-","-","-"],[2286.33,2299.99,2281.9,2309.39],[2297.11,2305.11,2290.12,2305.3],[2303.75,2302.4,2292.43,2314.18],[2293.81,2275.67,2274.1,2304.95],[2281.45,2288.53,2270.25,2292.59],["-","-","-","-"],["-","-","-","-"],[2286.66,2293.08,2283.94,2301.7],[2293.4,2321.32,2281.47,2322.1],[2323.54,2324.02,2321.17,2334.33],[2316.25,2317.75,2310.49,2325.72],[2320.74,2300.59,2299.37,2325.53]]}]},{"series":[{"name":"Stock","type":"k","data":[["-","-","-","-"],["-","-","-","-"],[2300.21,2299.25,2294.11,2313.43],[2297.1,2272.42,2264.76,2297.1],[2270.71,2270.93,2260.87,2276.86],[2264.43,2242.11,2240.07,2266.69],[2242.26,2210.9,2205.07,2250.63],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],[2190.1,2148.35,2126.22,2190.1],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"],["-","-","-","-"]]}]}]},"evals":["options.0.tooltip.formatter"],"jsHooks":[]}</script>
+</div>
+</div>
+<div id="futher-setup" class="section level1">
+<h1><span class="header-section-number">4</span> Futher Setup</h1>
+<p>Then you can configure the widgets, add markLines and/or markPoints, fortify the chart.</p>
+<p>You can refer to related functions to play around on your own.</p>
+</div>
+
+<script type="text/javascript">
+window.onload = function() {
+  var i, fig = 1, caps = document.getElementsByClassName('caption');
+  for (i = 0; i < caps.length; i++) {
+    var cap = caps[i];
+    if (cap.parentElement.className !== 'figure' || cap.nodeName !== 'P')
+      continue;
+    cap.innerHTML = '<span>Figure ' + fig + ':</span> ' + cap.innerHTML;
+    fig++;
+  }
+  fig = 1;
+  caps = document.getElementsByTagName('caption');
+  for (i = 0; i < caps.length; i++) {
+    var cap = caps[i];
+    if (cap.parentElement.nodeName !== 'TABLE') continue;
+    cap.innerHTML = '<span>Table ' + fig + ':</span> ' + cap.innerHTML;
+    fig++;
+  }
+}
+</script>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

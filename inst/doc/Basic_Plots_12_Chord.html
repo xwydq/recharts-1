@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Yiying Wang" />
+
+<meta name="date" content="2016-12-26" />
+
+<title>Basic Plots 15 - Chord Chart</title>
+
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script src="libs/htmlwidgets-0.8/htmlwidgets.js"></script>
+<script src="libs/echarts-2.2.7/echarts-all.js"></script>
+<script src="libs/charts-ext-2.2.7/main.js"></script>
+<script src="libs/charts-ext-2.2.7/BMap.js"></script>
+<script src="libs/echarts-binding-0.2/echarts.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="/home/madlogos/R/x86_64-pc-linux-gnu-library/3.3/knitr/misc/vignette.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Basic Plots 15 - Chord Chart</h1>
+<h4 class="author"><em>Yiying Wang</em></h4>
+<h4 class="date"><em>2016-12-26</em></h4>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction"><span class="toc-section-number">1</span> Introduction</a></li>
+<li><a href="#function-call"><span class="toc-section-number">2</span> Function Call</a></li>
+<li><a href="#showcase"><span class="toc-section-number">3</span> Showcase</a><ul>
+<li><a href="#data-preparation"><span class="toc-section-number">3.1</span> Data Preparation</a><ul>
+<li><a href="#matrix-mode"><span class="toc-section-number">3.1.1</span> Matrix Mode</a></li>
+<li><a href="#nodelink-mode"><span class="toc-section-number">3.1.2</span> Node/link Mode</a></li>
+</ul></li>
+<li><a href="#chord-chart"><span class="toc-section-number">3.2</span> Chord Chart</a><ul>
+<li><a href="#chord-with-ribbon"><span class="toc-section-number">3.2.1</span> Chord with Ribbon</a></li>
+<li><a href="#chord-without-ribbon"><span class="toc-section-number">3.2.2</span> Chord without Ribbon</a></li>
+<li><a href="#chord-with-timeline"><span class="toc-section-number">3.2.3</span> Chord with Timeline</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#futher-setup"><span class="toc-section-number">4</span> Futher Setup</a></li>
+</ul>
+</div>
+
+<p>First, you should load <code>recharts</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(recharts)</code></pre></div>
+<div id="introduction" class="section level1">
+<h1><span class="header-section-number">1</span> Introduction</h1>
+<p>Chord plot includes 2 basic types:</p>
+<ul>
+<li>Chord with Ribbon</li>
+<li>Chord without Ribbon</li>
+</ul>
+<table id="intro">
+<tr>
+<td>
+<div id="htmlwidget-65091fb175dc6d443af8" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-65091fb175dc6d443af8">{"x":{"series":[{"type":"chord","name":"Connection","roam":"move","itemStyle":{"normal":{"label":{"show":false,"textStyle":{"color":"#333"}},"nodeStyle":{"brushType":"both","strokeColor":"rgba(255,215,0,0.4)"},"linkStyle":{"type":"line"}},"emphasis":{"label":{"show":false},"nodeStyle":[],"lineStyle":[]}},"minRadius":8,"maxRadius":20,"matrix":[[11975,5871,8916,2868],[1951,10048,2060,6171],[8010,16145,8090,8045],[1013,990,940,6907]],"data":[{"name":"Group1"},{"name":"Group2"},{"name":"Group3"},{"name":"Group4"}],"ribbonType":true,"sort":"ascending","sortSub":"descending","showScale":true,"showScaleText":true}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["Group1","Group2","Group3","Group4"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    if (params.indicator2) {    // is edge\n        if (isNaN(params.value.weight)){\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \")\";\n        } else {\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \") : \"\n            + params.value.weight;\n        }\n\n    } else {    // is node\n        return params.name;\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":false},"dataView":{"show":false},"magicType":{"show":true,"type":["force","chord"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["Group1","Group2","Group3","Group4"],"x":"left","y":"top","orient":"horizontal"},"title":{"text":"Test Data","subtext":"chord with ribbon","x":"center","y":"bottom","orient":"horizontal"},"theme":"macarons"},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
+</td>
+<td>
+<div id="htmlwidget-73e58610019d8a795a20" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-73e58610019d8a795a20">{"x":{"series":[{"type":"chord","name":"Connection","roam":"move","itemStyle":{"normal":{"label":{"show":true,"textStyle":{"color":"#333"},"rotate":true},"nodeStyle":{"brushType":"both","strokeColor":"rgba(255,215,0,0.4)"},"linkStyle":{"type":"curve"}},"emphasis":{"label":{"show":false},"nodeStyle":[],"lineStyle":[]}},"minRadius":8,"maxRadius":20,"nodes":[{"name":"Monchengladbach"},{"name":"Bayern"},{"name":"Dortmund"},{"name":"Kruse"},{"name":"Kramer"},{"name":"Neuer"},{"name":"Boateng"},{"name":"Lahm"},{"name":"Kroos"},{"name":"Muller"},{"name":"Gotze"},{"name":"Badstuber"},{"name":"Hummels"},{"name":"Weidenfeller"},{"name":"Reus"},{"name":"Gundogan"}],"links":[{"source":"Monchengladbach","target":"Kruse","name":"Fw","weight":1},{"source":"Monchengladbach","target":"Kramer","name":"Mf","weight":1},{"source":"Bayern","target":"Neuer","name":"Gk","weight":1},{"source":"Bayern","target":"Boateng","name":"Df","weight":1},{"source":"Bayern","target":"Lahm","name":"Df","weight":1},{"source":"Bayern","target":"Kroos","name":"Mf","weight":1},{"source":"Bayern","target":"Muller","name":"Mf","weight":1},{"source":"Bayern","target":"Gotze","name":"Fw","weight":1},{"source":"Bayern","target":"Badstuber","name":"Df","weight":1},{"source":"Dortmund","target":"Hummels","name":"Df","weight":1},{"source":"Dortmund","target":"Weidenfeller","name":"Gk","weight":1},{"source":"Dortmund","target":"Reus","name":"Df","weight":1},{"source":"Dortmund","target":"Gundogan","name":"Md","weight":1}],"ribbonType":false,"sort":"ascending","sortSub":"descending","showScale":false,"showScaleText":false}],"legend":{"show":true,"data":["Monchengladbach","Bayern","Dortmund"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["Monchengladbach","Bayern","Dortmund"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    if (params.indicator2) {    // is edge\n        if (isNaN(params.value.weight)){\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \")\";\n        } else {\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \") : \"\n            + params.value.weight;\n        }\n\n    } else {    // is node\n        return params.name;\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":false},"dataView":{"show":false},"magicType":{"show":true,"type":["force","chord"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"theme":"infographic","title":{"text":"Club Orientation of Deutsch Soccer Team (2014)","subtext":"Chord without ribbon","x":"center","y":"bottom","orient":"horizontal"}},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
+</td>
+</tr>
+</table>
+<p>The keys are:</p>
+<ul>
+<li>data structure:</li>
+<li>matrix mode: A data.frame comprising of a column of name, and a numeric matrix. Assign the name column to x, the matrix to y.</li>
+<li>node/link mode: node data.frame [x, NA, series, weight]; link data.frame [x, x1, relation, value]. Combine them using <code>rbind</code>. If you don’t provide node data.frame, recharts will build it automatically. Assign the param list [x, x1, series/relation, weight/value] accordingly.</li>
+</ul>
+</div>
+<div id="function-call" class="section level1">
+<h1><span class="header-section-number">2</span> Function Call</h1>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">echartr</span>(data, x, &lt;y&gt;, &lt;series&gt;, &lt;t&gt;, &lt;type&gt;, &lt;subtype&gt;)</code></pre></div>
+<table>
+<colgroup>
+<col width="11%" />
+<col width="88%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Arg</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><strong>data</strong></p></td>
+<td><p>source data in the form of data.frame</p></td>
+</tr>
+<tr class="even">
+<td><p><strong>x</strong></p></td>
+<td><p>character independent variable. Other type will be coerced to factors. For node/link mode, you must provide two columns of <code>x</code>. For matrix mode, only the first column of <code>x</code> is accepted.</p></td>
+</tr>
+<tr class="odd">
+<td><p><strong>y</strong></p></td>
+<td><p>numeric dependent variable. For node/link mode, only the first column of <code>y</code> is accepted. For matrix mode, all the columns of <code>y</code> are accepted.</p></td>
+</tr>
+<tr class="even">
+<td><p>series</p></td>
+<td><p>series variable which will be coerced to factors. Each level of <code>series</code> is treated as a subsetting factor to produce separate pies. Only the first one is accepted if multiple variables are provided.</p></td>
+</tr>
+<tr class="odd">
+<td><p>t</p></td>
+<td><p>timeline variable which will be coerced to factors. Only the first one is accepted if multiple variables are provided.</p></td>
+</tr>
+<tr class="even">
+<td><p>type</p></td>
+<td><p>‘chord’.</p></td>
+</tr>
+<tr class="odd">
+<td><p>subtype</p></td>
+<td><ul>
+<li>chord: c(“ribbon”,“scale”,“scaletext”,“rotatelab”,“hidelab”,“clock”,“clockwise”,“asc”,“desc”,“ascsub”,“descsub”)
+<ul>
+<li>ribbon: chort chart with ribbon. It requires dual-direction of links.</li>
+<li>scale: Show scale on the ribbon.</li>
+<li>scaletext: Show scale and text on the ribbon.</li>
+<li>rotatelab: rotate the tick label.</li>
+<li>hidelab: hide the label (default show).</li>
+<li>clock/clockwise: ascending order is clockwise (default anti-clockwise).</li>
+<li>asc: ascending nodes</li>
+<li>desc:descending nodes</li>
+<li>ascsub: asceding chords</li>
+<li>descsub: desceding chords</li>
+</ul></li>
+</ul></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="showcase" class="section level1">
+<h1><span class="header-section-number">3</span> Showcase</h1>
+<div id="data-preparation" class="section level2">
+<h2><span class="header-section-number">3.1</span> Data Preparation</h2>
+<div id="matrix-mode" class="section level3">
+<h3><span class="header-section-number">3.1.1</span> Matrix Mode</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">grpmtx &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">11975</span>, <span class="dv">5871</span>, <span class="dv">8916</span>, <span class="dv">2868</span>, <span class="dv">1951</span>, <span class="dv">10048</span>, <span class="dv">2060</span>, <span class="dv">6171</span>, <span class="dv">8010</span>, <span class="dv">16145</span>,
+                   <span class="dv">8090</span>, <span class="dv">8045</span>, <span class="dv">1013</span>, <span class="dv">990</span>, <span class="dv">940</span>, <span class="dv">6907</span>), <span class="dt">byrow=</span><span class="ot">TRUE</span>, <span class="dt">nrow=</span><span class="dv">4</span>)
+grpmtx &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(grpmtx)
+<span class="kw">names</span>(grpmtx) &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&#39;Group&#39;</span>, <span class="dv">1</span>:<span class="dv">4</span>)
+grpmtx$Name &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&#39;Group&#39;</span>, <span class="dv">1</span>:<span class="dv">4</span>)
+knitr::<span class="kw">kable</span>(grpmtx, <span class="dt">align=</span><span class="kw">c</span>(<span class="st">&#39;lllll&#39;</span>))</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Group1</th>
+<th align="left">Group2</th>
+<th align="left">Group3</th>
+<th align="left">Group4</th>
+<th align="left">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">11975</td>
+<td align="left">5871</td>
+<td align="left">8916</td>
+<td align="left">2868</td>
+<td align="left">Group1</td>
+</tr>
+<tr class="even">
+<td align="left">1951</td>
+<td align="left">10048</td>
+<td align="left">2060</td>
+<td align="left">6171</td>
+<td align="left">Group2</td>
+</tr>
+<tr class="odd">
+<td align="left">8010</td>
+<td align="left">16145</td>
+<td align="left">8090</td>
+<td align="left">8045</td>
+<td align="left">Group3</td>
+</tr>
+<tr class="even">
+<td align="left">1013</td>
+<td align="left">990</td>
+<td align="left">940</td>
+<td align="left">6907</td>
+<td align="left">Group4</td>
+</tr>
+</tbody>
+</table>
+<p>The first 4 columns are exactly a matrix structure and the last column is a name vector. So this meets data structure requirements for matrix mode.</p>
+<p>Matrix mode can be transformed to node/link mode as well. Matrix[i, j] represents 2 nodes (i &amp; j) and 1 link (i -&gt; j).</p>
+</div>
+<div id="nodelink-mode" class="section level3">
+<h3><span class="header-section-number">3.1.2</span> Node/link Mode</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr::<span class="kw">kable</span>(deutsch[deutsch$year==<span class="dv">2014</span>,])</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">player</th>
+<th align="left">club</th>
+<th align="right">weight</th>
+<th align="left">role</th>
+<th align="right">year</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Kruse</td>
+<td align="left">Monchengladbach</td>
+<td align="right">1</td>
+<td align="left">Fw</td>
+<td align="right">2014</td>
+</tr>
+<tr class="even">
+<td align="left">Kramer</td>
+<td align="left">Monchengladbach</td>
+<td align="right">1</td>
+<td align="left">Mf</td>
+<td align="right">2014</td>
+</tr>
+<tr class="odd">
+<td align="left">Neuer</td>
+<td align="left">Bayern</td>
+<td align="right">1</td>
+<td align="left">Gk</td>
+<td align="right">2014</td>
+</tr>
+<tr class="even">
+<td align="left">Boateng</td>
+<td align="left">Bayern</td>
+<td align="right">1</td>
+<td align="left">Df</td>
+<td align="right">2014</td>
+</tr>
+<tr class="odd">
+<td align="left">Lahm</td>
+<td align="left">Bayern</td>
+<td align="right">1</td>
+<td align="left">Df</td>
+<td align="right">2014</td>
+</tr>
+<tr class="even">
+<td align="left">Kroos</td>
+<td align="left">Bayern</td>
+<td align="right">1</td>
+<td align="left">Mf</td>
+<td align="right">2014</td>
+</tr>
+<tr class="odd">
+<td align="left">Muller</td>
+<td align="left">Bayern</td>
+<td align="right">1</td>
+<td align="left">Mf</td>
+<td align="right">2014</td>
+</tr>
+<tr class="even">
+<td align="left">Gotze</td>
+<td align="left">Bayern</td>
+<td align="right">1</td>
+<td align="left">Fw</td>
+<td align="right">2014</td>
+</tr>
+<tr class="odd">
+<td align="left">Badstuber</td>
+<td align="left">Bayern</td>
+<td align="right">1</td>
+<td align="left">Df</td>
+<td align="right">2014</td>
+</tr>
+<tr class="even">
+<td align="left">Hummels</td>
+<td align="left">Dortmund</td>
+<td align="right">1</td>
+<td align="left">Df</td>
+<td align="right">2014</td>
+</tr>
+<tr class="odd">
+<td align="left">Weidenfeller</td>
+<td align="left">Dortmund</td>
+<td align="right">1</td>
+<td align="left">Gk</td>
+<td align="right">2014</td>
+</tr>
+<tr class="even">
+<td align="left">Reus</td>
+<td align="left">Dortmund</td>
+<td align="right">1</td>
+<td align="left">Df</td>
+<td align="right">2014</td>
+</tr>
+<tr class="odd">
+<td align="left">Gundogan</td>
+<td align="left">Dortmund</td>
+<td align="right">1</td>
+<td align="left">Md</td>
+<td align="right">2014</td>
+</tr>
+</tbody>
+</table>
+<p>There is not a numeric matrix structure inside the data.frame, so it is node/link mode. There are no NAs in column 1 or 2, so in this case, <code>recharts</code> will build a node data.frame based on the data.frame given, which looks like:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">name</th>
+<th align="right">value</th>
+<th align="left">series</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Badstuber</td>
+<td align="right">1</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Boateng</td>
+<td align="right">1</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Gotze</td>
+<td align="right">2</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Gundogan</td>
+<td align="right">1</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Howedes</td>
+<td align="right">1</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Hummels</td>
+<td align="right">2</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Kimmich</td>
+<td align="right">1</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Kramer</td>
+<td align="right">1</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Kroos</td>
+<td align="right">2</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Kruse</td>
+<td align="right">1</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Lahm</td>
+<td align="right">1</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Leno</td>
+<td align="right">1</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Meyer</td>
+<td align="right">1</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Muller</td>
+<td align="right">2</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Mustafi</td>
+<td align="right">1</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Neuer</td>
+<td align="right">2</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Ozil</td>
+<td align="right">1</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Reus</td>
+<td align="right">1</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Tah</td>
+<td align="right">1</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Volland</td>
+<td align="right">1</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Weidenfeller</td>
+<td align="right">1</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Arsenal</td>
+<td align="right">2</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Bayern</td>
+<td align="right">11</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Dortmund</td>
+<td align="right">5</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Leverkusen</td>
+<td align="right">3</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Madrid</td>
+<td align="right">1</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Monchengladbach</td>
+<td align="right">2</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Schalke</td>
+<td align="right">2</td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="chord-chart" class="section level2">
+<h2><span class="header-section-number">3.2</span> Chord Chart</h2>
+<div id="chord-with-ribbon" class="section level3">
+<h3><span class="header-section-number">3.2.1</span> Chord with Ribbon</h3>
+<p>Set <code>type</code> ‘chord’ and <code>subtype</code> ‘ribbon’.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">echartr</span>(grpmtx, Name, <span class="kw">c</span>(Group1, Group2, Group3, Group4), 
+        <span class="dt">type=</span><span class="st">&#39;chord&#39;</span>, <span class="dt">subtype=</span><span class="st">&#39;ribbon + asc + descsub + hidelab + scaletext&#39;</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">setTitle</span>(<span class="st">&#39;Test Data&#39;</span>,<span class="st">&#39;From d3.js&#39;</span>)</code></pre></div>
+<div id="htmlwidget-99ce77115137310f9fb2" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-99ce77115137310f9fb2">{"x":{"series":[{"type":"chord","name":"Connection","roam":"move","itemStyle":{"normal":{"label":{"show":false,"textStyle":{"color":"#333"}},"nodeStyle":{"brushType":"both","strokeColor":"rgba(255,215,0,0.4)"},"linkStyle":{"type":"line"}},"emphasis":{"label":{"show":false},"nodeStyle":[],"lineStyle":[]}},"minRadius":8,"maxRadius":20,"matrix":[[11975,5871,8916,2868],[1951,10048,2060,6171],[8010,16145,8090,8045],[1013,990,940,6907]],"data":[{"name":"Group1"},{"name":"Group2"},{"name":"Group3"},{"name":"Group4"}],"ribbonType":true,"sort":"ascending","sortSub":"descending","showScale":true,"showScaleText":true}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["Group1","Group2","Group3","Group4"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    if (params.indicator2) {    // is edge\n        if (isNaN(params.value.weight)){\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \")\";\n        } else {\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \") : \"\n            + params.value.weight;\n        }\n\n    } else {    // is node\n        return params.name;\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":false},"dataView":{"show":false},"magicType":{"show":true,"type":["force","chord"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["Group1","Group2","Group3","Group4"],"x":"left","y":"top","orient":"horizontal"},"title":{"text":"Test Data","subtext":"From d3.js","x":"center","y":"bottom","orient":"horizontal"}},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
+</div>
+<div id="chord-without-ribbon" class="section level3">
+<h3><span class="header-section-number">3.2.2</span> Chord without Ribbon</h3>
+<div id="one-direction-relationship" class="section level4">
+<h4><span class="header-section-number">3.2.2.1</span> One-direction Relationship</h4>
+<p>Set <code>type</code> ‘chord’. If the data structure does not include dual-direction relationship, no matter whether you assign <code>subtype</code> ‘ribbon’, ribbon will not display properly.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">echartr</span>(deutsch[deutsch$year==<span class="dv">2014</span>,], <span class="kw">c</span>(club, player), weight, role, <span class="dt">type=</span><span class="st">&#39;chord&#39;</span>, 
+        <span class="dt">sub=</span><span class="st">&#39;asc + descsub + rotatelab&#39;</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">setTitle</span>(<span class="st">&#39;Club Orientation of Deutsch Soccer Team (2014)&#39;</span>)</code></pre></div>
+<div id="htmlwidget-7b23c5ae0fa2cdcdcd90" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-7b23c5ae0fa2cdcdcd90">{"x":{"series":[{"type":"chord","name":"Connection","roam":"move","itemStyle":{"normal":{"label":{"show":true,"textStyle":{"color":"#333"},"rotate":true},"nodeStyle":{"brushType":"both","strokeColor":"rgba(255,215,0,0.4)"},"linkStyle":{"type":"curve"}},"emphasis":{"label":{"show":false},"nodeStyle":[],"lineStyle":[]}},"minRadius":8,"maxRadius":20,"nodes":[{"name":"Monchengladbach"},{"name":"Bayern"},{"name":"Dortmund"},{"name":"Kruse"},{"name":"Kramer"},{"name":"Neuer"},{"name":"Boateng"},{"name":"Lahm"},{"name":"Kroos"},{"name":"Muller"},{"name":"Gotze"},{"name":"Badstuber"},{"name":"Hummels"},{"name":"Weidenfeller"},{"name":"Reus"},{"name":"Gundogan"}],"links":[{"source":"Monchengladbach","target":"Kruse","name":"Fw","weight":1},{"source":"Monchengladbach","target":"Kramer","name":"Mf","weight":1},{"source":"Bayern","target":"Neuer","name":"Gk","weight":1},{"source":"Bayern","target":"Boateng","name":"Df","weight":1},{"source":"Bayern","target":"Lahm","name":"Df","weight":1},{"source":"Bayern","target":"Kroos","name":"Mf","weight":1},{"source":"Bayern","target":"Muller","name":"Mf","weight":1},{"source":"Bayern","target":"Gotze","name":"Fw","weight":1},{"source":"Bayern","target":"Badstuber","name":"Df","weight":1},{"source":"Dortmund","target":"Hummels","name":"Df","weight":1},{"source":"Dortmund","target":"Weidenfeller","name":"Gk","weight":1},{"source":"Dortmund","target":"Reus","name":"Df","weight":1},{"source":"Dortmund","target":"Gundogan","name":"Md","weight":1}],"ribbonType":false,"sort":"ascending","sortSub":"descending","showScale":false,"showScaleText":false}],"legend":{"show":true,"data":["Monchengladbach","Bayern","Dortmund"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["Monchengladbach","Bayern","Dortmund"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    if (params.indicator2) {    // is edge\n        if (isNaN(params.value.weight)){\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \")\";\n        } else {\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \") : \"\n            + params.value.weight;\n        }\n\n    } else {    // is node\n        return params.name;\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":false},"dataView":{"show":false},"magicType":{"show":true,"type":["force","chord"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"title":{"text":"Club Orientation of Deutsch Soccer Team (2014)","x":"center","y":"bottom","orient":"horizontal"}},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
+</div>
+<div id="dual-direction-relationship" class="section level4">
+<h4><span class="header-section-number">3.2.2.2</span> Dual-direction Relationship</h4>
+<p>If you do want to display a chord with ribbon, you have to revise the data with dual-diretion relationship.</p>
+<p>By now, <code>deutsch14</code> only has one-direction relationship, which means, it only defines Gotze-&gt;Bayern, but not Bayern-&gt;Gotze.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr::<span class="kw">kable</span>(<span class="kw">with</span>(deutsch[deutsch$year==<span class="dv">2014</span>,], <span class="kw">table</span>(player, club)))</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Bayern</th>
+<th align="right">Dortmund</th>
+<th align="right">Monchengladbach</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Badstuber</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>Boateng</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>Gotze</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>Gundogan</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>Hummels</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>Kramer</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td>Kroos</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>Kruse</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td>Lahm</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>Muller</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>Neuer</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>Reus</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>Weidenfeller</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p>What we need to do is duplicate the source and target columns to build a matrix.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">deutsch14 &lt;-<span class="st"> </span>deutsch[deutsch$year==<span class="dv">2014</span>,]
+deutsch14 &lt;-<span class="st"> </span><span class="kw">rbind</span>(deutsch14, deutsch14)
+deutsch14[<span class="dv">14</span>:<span class="dv">26</span>, <span class="kw">c</span>(<span class="st">&#39;player&#39;</span>, <span class="st">&#39;club&#39;</span>)] &lt;-<span class="st"> </span>recharts:::<span class="kw">exchange</span>(
+    deutsch14[<span class="dv">14</span>:<span class="dv">26</span>, <span class="st">&#39;player&#39;</span>], deutsch14[<span class="dv">14</span>:<span class="dv">26</span>, <span class="st">&#39;club&#39;</span>])
+knitr::<span class="kw">kable</span>(<span class="kw">with</span>(deutsch14, <span class="kw">table</span>(player, club)))</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Badstuber</th>
+<th align="right">Bayern</th>
+<th align="right">Boateng</th>
+<th align="right">Dortmund</th>
+<th align="right">Gotze</th>
+<th align="right">Gundogan</th>
+<th align="right">Hummels</th>
+<th align="right">Kramer</th>
+<th align="right">Kroos</th>
+<th align="right">Kruse</th>
+<th align="right">Lahm</th>
+<th align="right">Monchengladbach</th>
+<th align="right">Muller</th>
+<th align="right">Neuer</th>
+<th align="right">Reus</th>
+<th align="right">Weidenfeller</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Badstuber</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>Bayern</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>Boateng</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>Dortmund</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td>Gotze</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>Gundogan</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>Hummels</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>Kramer</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>Kroos</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>Kruse</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>Lahm</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>Monchengladbach</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>Muller</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>Neuer</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>Reus</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>Weidenfeller</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p>In this way set <code>subtype</code> ‘ribbon’ and we get a chord with ribbon.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">echartr</span>(deutsch14, <span class="kw">c</span>(club, player), weight, role, <span class="dt">type=</span><span class="st">&#39;chord&#39;</span>, 
+        <span class="dt">sub=</span><span class="st">&#39;asc + descsub + rotatelab + ribbon&#39;</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">setTitle</span>(<span class="st">&#39;Club Orientation of Deutsch Soccer Team (2014)&#39;</span>)</code></pre></div>
+<div id="htmlwidget-0859f060679c54ab58f5" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-0859f060679c54ab58f5">{"x":{"series":[{"type":"chord","name":"Connection","roam":"move","itemStyle":{"normal":{"label":{"show":true,"textStyle":{"color":"#333"},"rotate":true},"nodeStyle":{"brushType":"both","strokeColor":"rgba(255,215,0,0.4)"},"linkStyle":{"type":"curve"}},"emphasis":{"label":{"show":false},"nodeStyle":[],"lineStyle":[]}},"minRadius":8,"maxRadius":20,"nodes":[{"name":"Monchengladbach"},{"name":"Bayern"},{"name":"Dortmund"},{"name":"Kruse"},{"name":"Kramer"},{"name":"Neuer"},{"name":"Boateng"},{"name":"Lahm"},{"name":"Kroos"},{"name":"Muller"},{"name":"Gotze"},{"name":"Badstuber"},{"name":"Hummels"},{"name":"Weidenfeller"},{"name":"Reus"},{"name":"Gundogan"}],"links":[{"source":"Monchengladbach","target":"Kruse","name":"Fw","weight":1},{"source":"Monchengladbach","target":"Kramer","name":"Mf","weight":1},{"source":"Bayern","target":"Neuer","name":"Gk","weight":1},{"source":"Bayern","target":"Boateng","name":"Df","weight":1},{"source":"Bayern","target":"Lahm","name":"Df","weight":1},{"source":"Bayern","target":"Kroos","name":"Mf","weight":1},{"source":"Bayern","target":"Muller","name":"Mf","weight":1},{"source":"Bayern","target":"Gotze","name":"Fw","weight":1},{"source":"Bayern","target":"Badstuber","name":"Df","weight":1},{"source":"Dortmund","target":"Hummels","name":"Df","weight":1},{"source":"Dortmund","target":"Weidenfeller","name":"Gk","weight":1},{"source":"Dortmund","target":"Reus","name":"Df","weight":1},{"source":"Dortmund","target":"Gundogan","name":"Md","weight":1},{"source":"Kruse","target":"Monchengladbach","name":"Fw","weight":1},{"source":"Kramer","target":"Monchengladbach","name":"Mf","weight":1},{"source":"Neuer","target":"Bayern","name":"Gk","weight":1},{"source":"Boateng","target":"Bayern","name":"Df","weight":1},{"source":"Lahm","target":"Bayern","name":"Df","weight":1},{"source":"Kroos","target":"Bayern","name":"Mf","weight":1},{"source":"Muller","target":"Bayern","name":"Mf","weight":1},{"source":"Gotze","target":"Bayern","name":"Fw","weight":1},{"source":"Badstuber","target":"Bayern","name":"Df","weight":1},{"source":"Hummels","target":"Dortmund","name":"Df","weight":1},{"source":"Weidenfeller","target":"Dortmund","name":"Gk","weight":1},{"source":"Reus","target":"Dortmund","name":"Df","weight":1},{"source":"Gundogan","target":"Dortmund","name":"Md","weight":1}],"ribbonType":true,"sort":"ascending","sortSub":"descending","showScale":false,"showScaleText":false}],"legend":{"show":true,"data":["Monchengladbach","Bayern","Dortmund","Kruse","Kramer","Neuer","Boateng","Lahm","Kroos","Muller","Gotze","Badstuber","Hummels","Weidenfeller","Reus","Gundogan"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["Monchengladbach","Bayern","Dortmund","Kruse","Kramer","Neuer","Boateng","Lahm","Kroos","Muller","Gotze","Badstuber","Hummels","Weidenfeller","Reus","Gundogan"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    if (params.indicator2) {    // is edge\n        if (isNaN(params.value.weight)){\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \")\";\n        } else {\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \") : \"\n            + params.value.weight;\n        }\n\n    } else {    // is node\n        return params.name;\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":false},"dataView":{"show":false},"magicType":{"show":true,"type":["force","chord"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"title":{"text":"Club Orientation of Deutsch Soccer Team (2014)","x":"center","y":"bottom","orient":"horizontal"}},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
+<p>Another example is based on preinstalled dataset <strong>mideast</strong>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mideast &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mideast, <span class="dt">col.names=</span>mideast[<span class="dv">1</span>,], <span class="dt">stringsAsFactors=</span><span class="ot">FALSE</span>)
+<span class="kw">names</span>(mideast) &lt;-<span class="st"> </span>mideast[<span class="dv">1</span>,]
+mideast &lt;-<span class="st"> </span>mideast[<span class="dv">2</span>:<span class="dv">16</span>,]
+me &lt;-<span class="st"> </span>data.table::<span class="kw">melt</span>(mideast, <span class="dt">id=</span><span class="ot">NA</span>)
+me &lt;-<span class="st"> </span>me[!<span class="kw">is.na</span>(me$value),]
+me$series &lt;-<span class="st"> </span><span class="kw">strsplit</span>(me$value, <span class="st">&#39;/&#39;</span>)
+me$value &lt;-<span class="st"> </span><span class="kw">sapply</span>(me$series, function(x) <span class="kw">as.numeric</span>(x[<span class="dv">2</span>]))
+me$series &lt;-<span class="st"> </span><span class="kw">sapply</span>(me$series, function(x) x[<span class="dv">1</span>])
+<span class="kw">names</span>(me) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;source&#39;</span>, <span class="st">&#39;target&#39;</span>, <span class="st">&#39;value&#39;</span>, <span class="st">&#39;series&#39;</span>)
+<span class="kw">str</span>(me)</code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    23 obs. of  4 variables:
+##  $ source: chr  NA &quot;反对/9&quot; NA &quot;支持/9&quot; ...
+##  $ target: Factor w/ 3 levels &quot;叙利亚反对派&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ value : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ series: chr  &quot;阿萨德&quot; &quot;伊朗&quot; &quot;塞西&quot; &quot;哈马斯&quot; ...</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">echartr</span>(me, <span class="kw">c</span>(source, target), value, series, <span class="dt">type=</span><span class="st">&#39;chord&#39;</span>, <span class="dt">sub=</span><span class="st">&#39;ribbon&#39;</span>)</code></pre></div>
+<div id="htmlwidget-a56c881828393fb393d2" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a56c881828393fb393d2">{"x":{"series":[{"type":"chord","name":"Connection","roam":"move","itemStyle":{"normal":{"label":{"show":true,"textStyle":{"color":"#333"}},"nodeStyle":{"brushType":"both","strokeColor":"rgba(255,215,0,0.4)"},"linkStyle":{"type":"curve"}},"emphasis":{"label":{"show":false},"nodeStyle":[],"lineStyle":[]}},"minRadius":8,"maxRadius":20,"nodes":[{"name":null},{"name":"反对/9"},{"name":"支持/9"},{"name":"叙利亚反对派"},{"name":"支持/1"},{"name":"反对/1"}],"links":[{"source":null,"target":"叙利亚反对派","name":"阿萨德","weight":null},{"source":"反对/9","target":"叙利亚反对派","name":"伊朗","weight":null},{"source":null,"target":"叙利亚反对派","name":"塞西","weight":null},{"source":"支持/9","target":"叙利亚反对派","name":"哈马斯","weight":null},{"source":"支持/9","target":"叙利亚反对派","name":"以色列","weight":null},{"source":null,"target":"叙利亚反对派","name":"穆斯林兄弟会","weight":null},{"source":"支持/9","target":"叙利亚反对派","name":"基地组织","weight":null},{"source":"反对/9","target":"叙利亚反对派","name":"俄罗斯","weight":null},{"source":"反对/9","target":"叙利亚反对派","name":"黎巴嫩什叶派","weight":null},{"source":"支持/9","target":"叙利亚反对派","name":"土耳其","weight":null},{"source":"支持/9","target":"叙利亚反对派","name":"卡塔尔","weight":null},{"source":"支持/9","target":"叙利亚反对派","name":"沙特","weight":null},{"source":"支持/9","target":"叙利亚反对派","name":"黎巴嫩逊尼派","weight":null},{"source":null,"target":"支持/1","name":"反对","weight":1},{"source":"反对/9","target":"支持/1","name":"反对","weight":1},{"source":null,"target":"支持/1","name":"未表态","weight":1},{"source":"支持/9","target":"支持/1","name":"反对","weight":1},{"source":"支持/9","target":"支持/1","name":"支持","weight":1},{"source":null,"target":"支持/1","name":"未表态","weight":1},{"source":"支持/9","target":"支持/1","name":"反对","weight":1},{"source":null,"target":"反对/1","name":"支持","weight":1},{"source":"支持/9","target":"反对/1","name":"支持","weight":1},{"source":"反对/9","target":"反对/1","name":"支持","weight":1}],"ribbonType":true,"showScale":false,"showScaleText":false}],"legend":{"show":true,"data":["反对/9","支持/9"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":[null,"反对/9","支持/9"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    if (params.indicator2) {    // is edge\n        if (isNaN(params.value.weight)){\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \")\";\n        } else {\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \") : \"\n            + params.value.weight;\n        }\n\n    } else {    // is node\n        return params.name;\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":false},"dataView":{"show":false},"magicType":{"show":true,"type":["force","chord"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"}},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
+</div>
+</div>
+<div id="chord-with-timeline" class="section level3">
+<h3><span class="header-section-number">3.2.3</span> Chord with Timeline</h3>
+<p>Let’s use <code>year</code> columns as timeline.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">echartr</span>(deutsch, <span class="kw">c</span>(club, player), weight, role, <span class="dt">t=</span>year, <span class="dt">type=</span><span class="st">&#39;chord&#39;</span>, 
+        <span class="dt">sub=</span><span class="st">&#39;asc + descsub + rotatelab&#39;</span>) %&gt;%<span class="st"> </span>
+<span class="st">    </span><span class="kw">setTimeline</span>(<span class="dt">show=</span><span class="ot">FALSE</span>, <span class="dt">autoPlay=</span><span class="ot">TRUE</span>) %&gt;%
+<span class="st">    </span><span class="kw">setTitle</span>(<span class="st">&#39;Club Orientation of Deutsch Soccer Team&#39;</span>)</code></pre></div>
+<div id="htmlwidget-2df6c749c51f5b9065e7" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2df6c749c51f5b9065e7">{"x":{"timeline":{"type":"number","data":[2014,2016],"x":80,"x2":80,"show":false,"autoPlay":true,"y2":50},"options":[{"series":[{"type":"chord","name":"Connection","roam":"move","itemStyle":{"normal":{"label":{"show":true,"textStyle":{"color":"#333"},"rotate":true},"nodeStyle":{"brushType":"both","strokeColor":"rgba(255,215,0,0.4)"},"linkStyle":{"type":"curve"}},"emphasis":{"label":{"show":false},"nodeStyle":[],"lineStyle":[]}},"minRadius":8,"maxRadius":20,"nodes":[{"name":"Monchengladbach"},{"name":"Bayern"},{"name":"Dortmund"},{"name":"Kruse"},{"name":"Kramer"},{"name":"Neuer"},{"name":"Boateng"},{"name":"Lahm"},{"name":"Kroos"},{"name":"Muller"},{"name":"Gotze"},{"name":"Badstuber"},{"name":"Hummels"},{"name":"Weidenfeller"},{"name":"Reus"},{"name":"Gundogan"}],"links":[{"source":"Monchengladbach","target":"Kruse","name":"Fw","weight":1},{"source":"Monchengladbach","target":"Kramer","name":"Mf","weight":1},{"source":"Bayern","target":"Neuer","name":"Gk","weight":1},{"source":"Bayern","target":"Boateng","name":"Df","weight":1},{"source":"Bayern","target":"Lahm","name":"Df","weight":1},{"source":"Bayern","target":"Kroos","name":"Mf","weight":1},{"source":"Bayern","target":"Muller","name":"Mf","weight":1},{"source":"Bayern","target":"Gotze","name":"Fw","weight":1},{"source":"Bayern","target":"Badstuber","name":"Df","weight":1},{"source":"Dortmund","target":"Hummels","name":"Df","weight":1},{"source":"Dortmund","target":"Weidenfeller","name":"Gk","weight":1},{"source":"Dortmund","target":"Reus","name":"Df","weight":1},{"source":"Dortmund","target":"Gundogan","name":"Md","weight":1}],"ribbonType":false,"sort":"ascending","sortSub":"descending","showScale":false,"showScaleText":false}],"legend":{"show":true,"data":["Monchengladbach","Bayern","Dortmund","Leverkusen","Schalke","Arsenal","Madrid"],"x":"left","y":"top","orient":"horizontal"},"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["Monchengladbach","Bayern","Dortmund","Leverkusen","Schalke","Arsenal","Madrid"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    if (params.indicator2) {    // is edge\n        if (isNaN(params.value.weight)){\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \")\";\n        } else {\n            return params.indicator + \" -> \"\n            + params.indicator2 + \" (\" + params.name + \") : \"\n            + params.value.weight;\n        }\n\n    } else {    // is node\n        return params.name;\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":false},"dataView":{"show":false},"magicType":{"show":true,"type":["force","chord"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"title":{"text":"Club Orientation of Deutsch Soccer Team (year: 2014)","x":"center","y":"bottom","orient":"horizontal"}},{"series":[{"type":"chord","name":"Connection","roam":"move","itemStyle":{"normal":{"label":{"show":true,"textStyle":{"color":"#333"},"rotate":true},"nodeStyle":{"brushType":"both","strokeColor":"rgba(255,215,0,0.4)"},"linkStyle":{"type":"curve"}},"emphasis":{"label":{"show":false},"nodeStyle":[],"lineStyle":[]}},"minRadius":8,"maxRadius":20,"nodes":[{"name":"Bayern"},{"name":"Leverkusen"},{"name":"Schalke"},{"name":"Arsenal"},{"name":"Madrid"},{"name":"Dortmund"},{"name":"Neuer"},{"name":"Leno"},{"name":"Hummels"},{"name":"Kimmich"},{"name":"Howedes"},{"name":"Mustafi"},{"name":"Ozil"},{"name":"Tah"},{"name":"Muller"},{"name":"Meyer"},{"name":"Kroos"},{"name":"Gotze"},{"name":"Volland"}],"links":[{"source":"Bayern","target":"Neuer","name":"Gk","weight":1},{"source":"Leverkusen","target":"Leno","name":"Gk","weight":1},{"source":"Bayern","target":"Hummels","name":"Df","weight":1},{"source":"Bayern","target":"Kimmich","name":"Df","weight":1},{"source":"Schalke","target":"Howedes","name":"Df","weight":1},{"source":"Arsenal","target":"Mustafi","name":"Df","weight":1},{"source":"Arsenal","target":"Ozil","name":"Mf","weight":1},{"source":"Leverkusen","target":"Tah","name":"Mf","weight":1},{"source":"Bayern","target":"Muller","name":"Mf","weight":1},{"source":"Schalke","target":"Meyer","name":"Mf","weight":1},{"source":"Madrid","target":"Kroos","name":"Mf","weight":1},{"source":"Dortmund","target":"Gotze","name":"Fw","weight":1},{"source":"Leverkusen","target":"Volland","name":"Fw","weight":1}],"ribbonType":false,"sort":"ascending","sortSub":"descending","showScale":false,"showScaleText":false}],"title":{"text":"Club Orientation of Deutsch Soccer Team (year: 2016)","x":"center","y":"bottom","orient":"horizontal"}}]},"evals":["options.0.tooltip.formatter"],"jsHooks":[]}</script>
+</div>
+</div>
+</div>
+<div id="futher-setup" class="section level1">
+<h1><span class="header-section-number">4</span> Futher Setup</h1>
+<p>Then you can configure the widgets, add markLines and/or markPoints, fortify the chart.</p>
+<p>You can refer to related functions to play around on your own.</p>
+</div>
+
+<script type="text/javascript">
+window.onload = function() {
+  var i, fig = 1, caps = document.getElementsByClassName('caption');
+  for (i = 0; i < caps.length; i++) {
+    var cap = caps[i];
+    if (cap.parentElement.className !== 'figure' || cap.nodeName !== 'P')
+      continue;
+    cap.innerHTML = '<span>Figure ' + fig + ':</span> ' + cap.innerHTML;
+    fig++;
+  }
+  fig = 1;
+  caps = document.getElementsByTagName('caption');
+  for (i = 0; i < caps.length; i++) {
+    var cap = caps[i];
+    if (cap.parentElement.nodeName !== 'TABLE') continue;
+    cap.innerHTML = '<span>Table ' + fig + ':</span> ' + cap.innerHTML;
+    fig++;
+  }
+}
+</script>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

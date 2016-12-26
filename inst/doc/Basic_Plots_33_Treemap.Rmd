@@ -1,0 +1,146 @@
+---
+title: "Basic Plots 33 - Treemap Chart"
+author: "Yiying Wang"
+date: "`r Sys.Date()`"
+output: 
+  knitr:::html_vignette:
+    number_sections: yes
+    theme: cosmo
+    toc: yes
+    self_contained: no
+    lib_dir: libs
+vignette: >
+  %\VignetteIndexEntry{Basic Plots 33 - Treemap Chart}
+  %\VignetteEngine{knitr::rmarkdown_notangle}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+First, you should load `recharts`:
+```{r}
+library(recharts)
+```
+
+# Introduction
+
+Treemap chart includes 1 basic type:
+
+- Treemap
+
+<table id='intro'>
+<tr><td>
+```{r,echo=FALSE}
+data <- data.frame(
+    node=c('IOS', 'Android', 'Samsung', 'Apple', 'Huawei', 'Lenovo', 'Xiaomi', 
+           'Others', 'LG', 'Oppo', 'Vivo', 'ZTE', 'Other'),
+    parent=c(rep(NA, 2), 'Android', 'IOS', rep('Android', 4), rep('Others', 5)),
+    series=(rep('Smartphone', 13)),
+    value=c(231.5, 1201.4, 324.8, 231.5, 106.6, 74, 70.8, 625.2, 51.7, 49.1,
+            42.6, 40, 243))
+    
+echartr(data, c(node, parent), value, facet=series, type='treemap') %>%
+    setTitle('Smartphone Sales 2015 (M)','treemap', pos=5) %>% 
+    setTheme('infographic', width=400, height=300)
+```
+</td>
+<td>
+
+</td></tr>
+</table>
+
+The keys are:
+
+- character `x` with at least 2 columns: x[,1] are the nodes of the trees, x[,2] are parent nodes of the tree nodes. For root nodes, parent should be NA.
+- numeric `y`
+- `facet` is used to produce separate treemaps
+
+# Function Call
+
+```r
+echartr(data, x, <y>, <series>, <facet>, <t>, <type>, <subtype>)
+```
+
++--------+--------------------------------------------------------------------+
+| Arg    |  Requirement                                                       |
++========+====================================================================+
+|**data**| source data in the form of data.frame                            |
++--------+--------------------------------------------------------------------+
+| **x**  | character independent variable. Each level of `x` is treated as a data series. Other type will be coerced to factors. Only the first two are accepted if multiple variables are provided: 1st one as nodes, 2nd one as parent nodes. |
++--------+--------------------------------------------------------------------+
+| y      | numeric dependent variable. Only the first one is accepted if multiple variables are provided. |
++--------+--------------------------------------------------------------------+
+| series | series variable which will be coerced to factors. Each level of `series` is treated as a grouping factor. Only the first one is accepted if multiple variables are provided. |
++--------+--------------------------------------------------------------------+
+| facet  | facetting variable which will be coerced to factors. Each level of `facet` is treated as a subsetting factor to produce separate trees. Only the first one is accepted if multiple variables are provided. |
++--------+--------------------------------------------------------------------+
+|  t     | timeline variable which will be coerced to factors. Only the first one is accepted if multiple variables are provided. |
++--------+--------------------------------------------------------------------+
+| type   | 'treemap'. |
++--------+--------------------------------------------------------------------+
+
+# Showcase
+
+## Data Preparation
+
+Let's prepare a data.frame to show the typical structure.
+
+```{r}
+data <- data.frame(
+    node=c('IOS', 'Android', 'Samsung', 'Apple', 'Huawei', 'Lenovo', 'Xiaomi', 
+           'Others', 'LG', 'Oppo', 'Vivo', 'ZTE', 'Other'),
+    parent=c(rep(NA, 2), 'Android', 'IOS', rep('Android', 4), rep('Others', 5)),
+    series=(rep('Smartphone', 13)),
+    value=c(231.5, 1201.4, 324.8, 231.5, 106.6, 74, 70.8, 625.2, 51.7, 49.1,
+            42.6, 40, 243))
+knitr::kable(data)
+```
+
+The tree structure is defined by the mapping of nodes and parents.
+
+- There are 1 series 'Smartphone', so we will see 1 treemap.
+    - In the series 'Smartphone', we see 'IOS' and 'Android' have NA parent node. So 'IOS' and 'Android' will be the root nodes of this treemap.
+        - Below the 'Android' root, we see 5 levels in parents nodes: 'Samsung', 'Huawei', 'Lenovo', 'Xiaomi' and 'Others'. So 'Android' node will contain 5 level-1 nodes.
+            - There are 5 sub-nodes under 'Others'
+
+You will see a breadcumb navigator under the treemap. The area of each tile is defined by `value`.
+
+## Treemap Chart
+
+### Single Treemap
+
+`type` is set 'treemap'.
+
+```{r}
+echartr(data, c(node, parent), value, facet=series, type='treemap') %>%
+    setTitle('Smartphone Sales 2015 (Million)', pos=5)
+```
+
+### Multiple Treemaps
+
+You can modify the data a little bit to yield multiple `series`.
+
+```{r}
+data1 <- data[3:13,]
+data1$series <- c('Android', 'IOS', rep('Android', 9))
+data1$parent[1:6] <- NA
+knitr::kable(data1)
+```
+
+Thus we get two treemaps.
+
+```{r}
+echartr(data1, c(node, parent), value, facet=series, type='treemap') %>%
+    setTitle('Smartphone Sales 2015 (Million)', pos=5)
+```
+
+
+# Futher Setup
+
+Then you can configure the widgets, add markLines and/or markPoints, fortify the chart.
+
+You can refer to related functions to play around on your own.
+
+

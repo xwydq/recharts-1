@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Yiying Wang" />
+
+<meta name="date" content="2016-12-26" />
+
+<title>Widget 26 - DataZoom</title>
+
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script src="libs/htmlwidgets-0.8/htmlwidgets.js"></script>
+<script src="libs/echarts-2.2.7/echarts-all.js"></script>
+<script src="libs/charts-ext-2.2.7/main.js"></script>
+<script src="libs/charts-ext-2.2.7/BMap.js"></script>
+<script src="libs/echarts-binding-0.2/echarts.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="/home/madlogos/R/x86_64-pc-linux-gnu-library/3.3/knitr/misc/vignette.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Widget 26 - DataZoom</h1>
+<h4 class="author"><em>Yiying Wang</em></h4>
+<h4 class="date"><em>2016-12-26</em></h4>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction"><span class="toc-section-number">1</span> Introduction</a></li>
+<li><a href="#function-call"><span class="toc-section-number">2</span> Function Call</a></li>
+<li><a href="#showcase"><span class="toc-section-number">3</span> Showcase</a></li>
+<li><a href="#references"><span class="toc-section-number">4</span> References</a></li>
+</ul>
+</div>
+
+<p>First, you should load <code>recharts</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(recharts)</code></pre></div>
+<div id="introduction" class="section level1">
+<h1><span class="header-section-number">1</span> Introduction</h1>
+<p>The default position of dataZoom is 6 o’clock.</p>
+<p>The recommended approach to use <code>setDataZoom</code> is <code>chart %&gt;% setDataZoom(...)</code>.</p>
+</div>
+<div id="function-call" class="section level1">
+<h1><span class="header-section-number">2</span> Function Call</h1>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">setDataZoom</span>(chart, <span class="dt">show =</span> <span class="ot">TRUE</span>, <span class="dt">pos =</span> <span class="dv">6</span>, <span class="dt">range =</span> <span class="ot">NULL</span>, <span class="dt">width =</span> <span class="dv">30</span>,
+  <span class="dt">fill =</span> <span class="st">&quot;rgba(144,197,237,0.2)&quot;</span>, <span class="dt">handle =</span> <span class="st">&quot;rgba(70,130,180,0.8)&quot;</span>,
+  <span class="dt">bgColor =</span> <span class="st">&quot;rgba(0,0,0,0)&quot;</span>, <span class="dt">dataBgColor =</span> <span class="st">&quot;#eee&quot;</span>, <span class="dt">showDetail =</span> <span class="ot">TRUE</span>,
+  <span class="dt">realtime =</span> <span class="ot">FALSE</span>, <span class="dt">zoomLock =</span> <span class="ot">FALSE</span>, ...)</code></pre></div>
+<table>
+<colgroup>
+<col width="17%" />
+<col width="82%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Arg</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><strong>chart</strong></p></td>
+<td><p>Echarts object generated by <code>echartR</code> or <code>echart</code>.</p></td>
+</tr>
+<tr class="even">
+<td><p>show</p></td>
+<td><p>logical. Show the dataZoom control if TRUE. If you want to remove dataZoom from the echarts object, set it NULL.</p></td>
+</tr>
+<tr class="odd">
+<td><p>pos</p></td>
+<td><p>Clock position of the dataZoom. Default 6. Refer to <code>vecPos</code>. Or you can define the position vector <code>c(x, y, orient)</code> yourself.</p></td>
+</tr>
+<tr class="even">
+<td><p>range</p></td>
+<td><p>A vector of <code>c(min, max)</code>. Cannot be out of the frame <code>c(0, 100)</code></p></td>
+</tr>
+<tr class="odd">
+<td><p>width</p></td>
+<td><p>The width of the dataZoom bar. Default 20px.</p></td>
+</tr>
+<tr class="even">
+<td><p>fill</p></td>
+<td><p>fillerColor of the dataZoom bar, in character ‘rgba(red, green, blue, alpha)’ format. Default <code>'rgba(144,197,237,0.2)'</code> (“#90C5ED33”).</p></td>
+</tr>
+<tr class="odd">
+<td><p>handle</p></td>
+<td><p>handleColor of the dataZoom bar, in character ‘rgba(red, green, blue, alpha)’ format. Default <code>'rgba(70,130,180,0.8)'</code> (“#4682B4CC”).</p></td>
+</tr>
+<tr class="even">
+<td><p>bgColor</p></td>
+<td><p>background color, default transparent (‘rgba(0,0,0,0)’).</p></td>
+</tr>
+<tr class="odd">
+<td><p>dataBgColor</p></td>
+<td><p>background color of the data thumbnail (1st series). Default ‘#eee’.</p></td>
+</tr>
+<tr class="even">
+<td><p>showDetail</p></td>
+<td><p>Logical, if show the details when zooming. Defaul TRUE.</p></td>
+</tr>
+<tr class="odd">
+<td><p>realtime</p></td>
+<td><p>Logical, if realtime display the changes when zooming. Default FALSE.</p></td>
+</tr>
+<tr class="even">
+<td><p>zoomLock</p></td>
+<td><p>Logical, if the zoom range is locked. Deafult FALSE.</p></td>
+</tr>
+<tr class="odd">
+<td><p>…</p></td>
+<td><p>Elipsis.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="showcase" class="section level1">
+<h1><span class="header-section-number">3</span> Showcase</h1>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g &lt;-<span class="st"> </span><span class="kw">echartr</span>(iris, Sepal.Width, Petal.Width, Species)
+g</code></pre></div>
+<div id="htmlwidget-354c0b6387a44d5f6402" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-354c0b6387a44d5f6402">{"x":{"series":[{"name":"setosa","type":"scatter","data":[[3.5,0.2],[3,0.2],[3.2,0.2],[3.1,0.2],[3.6,0.2],[3.9,0.4],[3.4,0.3],[3.4,0.2],[2.9,0.2],[3.1,0.1],[3.7,0.2],[3.4,0.2],[3,0.1],[3,0.1],[4,0.2],[4.4,0.4],[3.9,0.4],[3.5,0.3],[3.8,0.3],[3.8,0.3],[3.4,0.2],[3.7,0.4],[3.6,0.2],[3.3,0.5],[3.4,0.2],[3,0.2],[3.4,0.4],[3.5,0.2],[3.4,0.2],[3.2,0.2],[3.1,0.2],[3.4,0.4],[4.1,0.1],[4.2,0.2],[3.1,0.2],[3.2,0.2],[3.5,0.2],[3.6,0.1],[3,0.2],[3.4,0.2],[3.5,0.3],[2.3,0.3],[3.2,0.2],[3.5,0.6],[3.8,0.4],[3,0.3],[3.8,0.2],[3.2,0.2],[3.7,0.2],[3.3,0.2]]},{"name":"versicolor","type":"scatter","data":[[3.2,1.4],[3.2,1.5],[3.1,1.5],[2.3,1.3],[2.8,1.5],[2.8,1.3],[3.3,1.6],[2.4,1],[2.9,1.3],[2.7,1.4],[2,1],[3,1.5],[2.2,1],[2.9,1.4],[2.9,1.3],[3.1,1.4],[3,1.5],[2.7,1],[2.2,1.5],[2.5,1.1],[3.2,1.8],[2.8,1.3],[2.5,1.5],[2.8,1.2],[2.9,1.3],[3,1.4],[2.8,1.4],[3,1.7],[2.9,1.5],[2.6,1],[2.4,1.1],[2.4,1],[2.7,1.2],[2.7,1.6],[3,1.5],[3.4,1.6],[3.1,1.5],[2.3,1.3],[3,1.3],[2.5,1.3],[2.6,1.2],[3,1.4],[2.6,1.2],[2.3,1],[2.7,1.3],[3,1.2],[2.9,1.3],[2.9,1.3],[2.5,1.1],[2.8,1.3]]},{"name":"virginica","type":"scatter","data":[[3.3,2.5],[2.7,1.9],[3,2.1],[2.9,1.8],[3,2.2],[3,2.1],[2.5,1.7],[2.9,1.8],[2.5,1.8],[3.6,2.5],[3.2,2],[2.7,1.9],[3,2.1],[2.5,2],[2.8,2.4],[3.2,2.3],[3,1.8],[3.8,2.2],[2.6,2.3],[2.2,1.5],[3.2,2.3],[2.8,2],[2.8,2],[2.7,1.8],[3.3,2.1],[3.2,1.8],[2.8,1.8],[3,1.8],[2.8,2.1],[3,1.6],[2.8,1.9],[3.8,2],[2.8,2.2],[2.8,1.5],[2.6,1.4],[3,2.3],[3.4,2.4],[3.1,1.8],[3,1.8],[3.1,2.1],[3.1,2.4],[3.1,2.3],[2.7,1.9],[3.2,2.3],[3.3,2.5],[3,2.3],[2.5,1.9],[3,2],[3.4,2.3],[3,1.8]]}],"legend":{"show":true,"data":["setosa","versicolor","virginica"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"value","show":true,"position":"left","name":"Petal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Sepal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    var i;\n    var text = params.value[0];\n    if (params.seriesName === null || params.seriesName === \"\"){\n        if (params.value.length > 1) {\n            for (i = 1; i < params.value.length; i++){\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.name + \" : \" + text;\n        }\n    } else {\n        if (params.value.length > 1) {\n            text = params.seriesName + \" :<br/>\" + text;\n            for (i = 1; i < params.value.length; i++) {\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.seriesName + \" :<br/>\"\n            + params.name + \" : \" + text;\n        }\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"}},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
+<p>Initially dataZoom is not shown. Let’s turn if on.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g %&gt;%<span class="st"> </span><span class="kw">setDataZoom</span>(<span class="dt">show=</span><span class="ot">TRUE</span>)</code></pre></div>
+<div id="htmlwidget-6d575029b7fa1dd921ef" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-6d575029b7fa1dd921ef">{"x":{"series":[{"name":"setosa","type":"scatter","data":[[3.5,0.2],[3,0.2],[3.2,0.2],[3.1,0.2],[3.6,0.2],[3.9,0.4],[3.4,0.3],[3.4,0.2],[2.9,0.2],[3.1,0.1],[3.7,0.2],[3.4,0.2],[3,0.1],[3,0.1],[4,0.2],[4.4,0.4],[3.9,0.4],[3.5,0.3],[3.8,0.3],[3.8,0.3],[3.4,0.2],[3.7,0.4],[3.6,0.2],[3.3,0.5],[3.4,0.2],[3,0.2],[3.4,0.4],[3.5,0.2],[3.4,0.2],[3.2,0.2],[3.1,0.2],[3.4,0.4],[4.1,0.1],[4.2,0.2],[3.1,0.2],[3.2,0.2],[3.5,0.2],[3.6,0.1],[3,0.2],[3.4,0.2],[3.5,0.3],[2.3,0.3],[3.2,0.2],[3.5,0.6],[3.8,0.4],[3,0.3],[3.8,0.2],[3.2,0.2],[3.7,0.2],[3.3,0.2]]},{"name":"versicolor","type":"scatter","data":[[3.2,1.4],[3.2,1.5],[3.1,1.5],[2.3,1.3],[2.8,1.5],[2.8,1.3],[3.3,1.6],[2.4,1],[2.9,1.3],[2.7,1.4],[2,1],[3,1.5],[2.2,1],[2.9,1.4],[2.9,1.3],[3.1,1.4],[3,1.5],[2.7,1],[2.2,1.5],[2.5,1.1],[3.2,1.8],[2.8,1.3],[2.5,1.5],[2.8,1.2],[2.9,1.3],[3,1.4],[2.8,1.4],[3,1.7],[2.9,1.5],[2.6,1],[2.4,1.1],[2.4,1],[2.7,1.2],[2.7,1.6],[3,1.5],[3.4,1.6],[3.1,1.5],[2.3,1.3],[3,1.3],[2.5,1.3],[2.6,1.2],[3,1.4],[2.6,1.2],[2.3,1],[2.7,1.3],[3,1.2],[2.9,1.3],[2.9,1.3],[2.5,1.1],[2.8,1.3]]},{"name":"virginica","type":"scatter","data":[[3.3,2.5],[2.7,1.9],[3,2.1],[2.9,1.8],[3,2.2],[3,2.1],[2.5,1.7],[2.9,1.8],[2.5,1.8],[3.6,2.5],[3.2,2],[2.7,1.9],[3,2.1],[2.5,2],[2.8,2.4],[3.2,2.3],[3,1.8],[3.8,2.2],[2.6,2.3],[2.2,1.5],[3.2,2.3],[2.8,2],[2.8,2],[2.7,1.8],[3.3,2.1],[3.2,1.8],[2.8,1.8],[3,1.8],[2.8,2.1],[3,1.6],[2.8,1.9],[3.8,2],[2.8,2.2],[2.8,1.5],[2.6,1.4],[3,2.3],[3.4,2.4],[3.1,1.8],[3,1.8],[3.1,2.1],[3.1,2.4],[3.1,2.3],[2.7,1.9],[3.2,2.3],[3.3,2.5],[3,2.3],[2.5,1.9],[3,2],[3.4,2.3],[3,1.8]]}],"legend":{"show":true,"data":["setosa","versicolor","virginica"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"value","show":true,"position":"left","name":"Petal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Sepal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    var i;\n    var text = params.value[0];\n    if (params.seriesName === null || params.seriesName === \"\"){\n        if (params.value.length > 1) {\n            for (i = 1; i < params.value.length; i++){\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.name + \" : \" + text;\n        }\n    } else {\n        if (params.value.length > 1) {\n            text = params.seriesName + \" :<br/>\" + text;\n            for (i = 1; i < params.value.length; i++) {\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.seriesName + \" :<br/>\"\n            + params.name + \" : \" + text;\n        }\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"dataZoom":{"show":true,"orient":"horizontal","height":30,"x":80}},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
+<p>Relocate the dataZoom</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g %&gt;%<span class="st"> </span><span class="kw">setDataZoom</span>(<span class="dt">pos=</span><span class="dv">12</span>)</code></pre></div>
+<div id="htmlwidget-8738d13fbd86c6da6a1a" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-8738d13fbd86c6da6a1a">{"x":{"series":[{"name":"setosa","type":"scatter","data":[[3.5,0.2],[3,0.2],[3.2,0.2],[3.1,0.2],[3.6,0.2],[3.9,0.4],[3.4,0.3],[3.4,0.2],[2.9,0.2],[3.1,0.1],[3.7,0.2],[3.4,0.2],[3,0.1],[3,0.1],[4,0.2],[4.4,0.4],[3.9,0.4],[3.5,0.3],[3.8,0.3],[3.8,0.3],[3.4,0.2],[3.7,0.4],[3.6,0.2],[3.3,0.5],[3.4,0.2],[3,0.2],[3.4,0.4],[3.5,0.2],[3.4,0.2],[3.2,0.2],[3.1,0.2],[3.4,0.4],[4.1,0.1],[4.2,0.2],[3.1,0.2],[3.2,0.2],[3.5,0.2],[3.6,0.1],[3,0.2],[3.4,0.2],[3.5,0.3],[2.3,0.3],[3.2,0.2],[3.5,0.6],[3.8,0.4],[3,0.3],[3.8,0.2],[3.2,0.2],[3.7,0.2],[3.3,0.2]]},{"name":"versicolor","type":"scatter","data":[[3.2,1.4],[3.2,1.5],[3.1,1.5],[2.3,1.3],[2.8,1.5],[2.8,1.3],[3.3,1.6],[2.4,1],[2.9,1.3],[2.7,1.4],[2,1],[3,1.5],[2.2,1],[2.9,1.4],[2.9,1.3],[3.1,1.4],[3,1.5],[2.7,1],[2.2,1.5],[2.5,1.1],[3.2,1.8],[2.8,1.3],[2.5,1.5],[2.8,1.2],[2.9,1.3],[3,1.4],[2.8,1.4],[3,1.7],[2.9,1.5],[2.6,1],[2.4,1.1],[2.4,1],[2.7,1.2],[2.7,1.6],[3,1.5],[3.4,1.6],[3.1,1.5],[2.3,1.3],[3,1.3],[2.5,1.3],[2.6,1.2],[3,1.4],[2.6,1.2],[2.3,1],[2.7,1.3],[3,1.2],[2.9,1.3],[2.9,1.3],[2.5,1.1],[2.8,1.3]]},{"name":"virginica","type":"scatter","data":[[3.3,2.5],[2.7,1.9],[3,2.1],[2.9,1.8],[3,2.2],[3,2.1],[2.5,1.7],[2.9,1.8],[2.5,1.8],[3.6,2.5],[3.2,2],[2.7,1.9],[3,2.1],[2.5,2],[2.8,2.4],[3.2,2.3],[3,1.8],[3.8,2.2],[2.6,2.3],[2.2,1.5],[3.2,2.3],[2.8,2],[2.8,2],[2.7,1.8],[3.3,2.1],[3.2,1.8],[2.8,1.8],[3,1.8],[2.8,2.1],[3,1.6],[2.8,1.9],[3.8,2],[2.8,2.2],[2.8,1.5],[2.6,1.4],[3,2.3],[3.4,2.4],[3.1,1.8],[3,1.8],[3.1,2.1],[3.1,2.4],[3.1,2.3],[2.7,1.9],[3.2,2.3],[3.3,2.5],[3,2.3],[2.5,1.9],[3,2],[3.4,2.3],[3,1.8]]}],"legend":{"show":true,"data":["setosa","versicolor","virginica"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"value","show":true,"position":"left","name":"Petal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Sepal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    var i;\n    var text = params.value[0];\n    if (params.seriesName === null || params.seriesName === \"\"){\n        if (params.value.length > 1) {\n            for (i = 1; i < params.value.length; i++){\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.name + \" : \" + text;\n        }\n    } else {\n        if (params.value.length > 1) {\n            text = params.seriesName + \" :<br/>\" + text;\n            for (i = 1; i < params.value.length; i++) {\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.seriesName + \" :<br/>\"\n            + params.name + \" : \" + text;\n        }\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"dataZoom":{"show":true,"x":80,"y":0,"orient":"horizontal","height":30}},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
+<p>Customize the format.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g %&gt;%<span class="st"> </span><span class="kw">setDataZoom</span>(<span class="dt">bgColor=</span><span class="st">&#39;yellow&#39;</span>, <span class="dt">dataBgColor=</span><span class="st">&#39;gold&#39;</span>, <span class="dt">fill=</span><span class="st">&#39;tan&#39;</span>,
+                  <span class="dt">handle=</span><span class="st">&#39;maroon&#39;</span>)</code></pre></div>
+<div id="htmlwidget-8821a9b566923ce5de04" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-8821a9b566923ce5de04">{"x":{"series":[{"name":"setosa","type":"scatter","data":[[3.5,0.2],[3,0.2],[3.2,0.2],[3.1,0.2],[3.6,0.2],[3.9,0.4],[3.4,0.3],[3.4,0.2],[2.9,0.2],[3.1,0.1],[3.7,0.2],[3.4,0.2],[3,0.1],[3,0.1],[4,0.2],[4.4,0.4],[3.9,0.4],[3.5,0.3],[3.8,0.3],[3.8,0.3],[3.4,0.2],[3.7,0.4],[3.6,0.2],[3.3,0.5],[3.4,0.2],[3,0.2],[3.4,0.4],[3.5,0.2],[3.4,0.2],[3.2,0.2],[3.1,0.2],[3.4,0.4],[4.1,0.1],[4.2,0.2],[3.1,0.2],[3.2,0.2],[3.5,0.2],[3.6,0.1],[3,0.2],[3.4,0.2],[3.5,0.3],[2.3,0.3],[3.2,0.2],[3.5,0.6],[3.8,0.4],[3,0.3],[3.8,0.2],[3.2,0.2],[3.7,0.2],[3.3,0.2]]},{"name":"versicolor","type":"scatter","data":[[3.2,1.4],[3.2,1.5],[3.1,1.5],[2.3,1.3],[2.8,1.5],[2.8,1.3],[3.3,1.6],[2.4,1],[2.9,1.3],[2.7,1.4],[2,1],[3,1.5],[2.2,1],[2.9,1.4],[2.9,1.3],[3.1,1.4],[3,1.5],[2.7,1],[2.2,1.5],[2.5,1.1],[3.2,1.8],[2.8,1.3],[2.5,1.5],[2.8,1.2],[2.9,1.3],[3,1.4],[2.8,1.4],[3,1.7],[2.9,1.5],[2.6,1],[2.4,1.1],[2.4,1],[2.7,1.2],[2.7,1.6],[3,1.5],[3.4,1.6],[3.1,1.5],[2.3,1.3],[3,1.3],[2.5,1.3],[2.6,1.2],[3,1.4],[2.6,1.2],[2.3,1],[2.7,1.3],[3,1.2],[2.9,1.3],[2.9,1.3],[2.5,1.1],[2.8,1.3]]},{"name":"virginica","type":"scatter","data":[[3.3,2.5],[2.7,1.9],[3,2.1],[2.9,1.8],[3,2.2],[3,2.1],[2.5,1.7],[2.9,1.8],[2.5,1.8],[3.6,2.5],[3.2,2],[2.7,1.9],[3,2.1],[2.5,2],[2.8,2.4],[3.2,2.3],[3,1.8],[3.8,2.2],[2.6,2.3],[2.2,1.5],[3.2,2.3],[2.8,2],[2.8,2],[2.7,1.8],[3.3,2.1],[3.2,1.8],[2.8,1.8],[3,1.8],[2.8,2.1],[3,1.6],[2.8,1.9],[3.8,2],[2.8,2.2],[2.8,1.5],[2.6,1.4],[3,2.3],[3.4,2.4],[3.1,1.8],[3,1.8],[3.1,2.1],[3.1,2.4],[3.1,2.3],[2.7,1.9],[3.2,2.3],[3.3,2.5],[3,2.3],[2.5,1.9],[3,2],[3.4,2.3],[3,1.8]]}],"legend":{"show":true,"data":["setosa","versicolor","virginica"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"value","show":true,"position":"left","name":"Petal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Sepal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    var i;\n    var text = params.value[0];\n    if (params.seriesName === null || params.seriesName === \"\"){\n        if (params.value.length > 1) {\n            for (i = 1; i < params.value.length; i++){\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.name + \" : \" + text;\n        }\n    } else {\n        if (params.value.length > 1) {\n            text = params.seriesName + \" :<br/>\" + text;\n            for (i = 1; i < params.value.length; i++) {\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.seriesName + \" :<br/>\"\n            + params.name + \" : \" + text;\n        }\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"dataZoom":{"show":true,"fillerColor":"tan","handleColor":"maroon","orient":"horizontal","height":30,"x":80}},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
+<p>Set the initial range 20% - 60%.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g %&gt;%<span class="st"> </span><span class="kw">setDataZoom</span>(<span class="dt">range=</span><span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">60</span>))</code></pre></div>
+<div id="htmlwidget-8347ecb4cb48841c7c44" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-8347ecb4cb48841c7c44">{"x":{"series":[{"name":"setosa","type":"scatter","data":[[3.5,0.2],[3,0.2],[3.2,0.2],[3.1,0.2],[3.6,0.2],[3.9,0.4],[3.4,0.3],[3.4,0.2],[2.9,0.2],[3.1,0.1],[3.7,0.2],[3.4,0.2],[3,0.1],[3,0.1],[4,0.2],[4.4,0.4],[3.9,0.4],[3.5,0.3],[3.8,0.3],[3.8,0.3],[3.4,0.2],[3.7,0.4],[3.6,0.2],[3.3,0.5],[3.4,0.2],[3,0.2],[3.4,0.4],[3.5,0.2],[3.4,0.2],[3.2,0.2],[3.1,0.2],[3.4,0.4],[4.1,0.1],[4.2,0.2],[3.1,0.2],[3.2,0.2],[3.5,0.2],[3.6,0.1],[3,0.2],[3.4,0.2],[3.5,0.3],[2.3,0.3],[3.2,0.2],[3.5,0.6],[3.8,0.4],[3,0.3],[3.8,0.2],[3.2,0.2],[3.7,0.2],[3.3,0.2]]},{"name":"versicolor","type":"scatter","data":[[3.2,1.4],[3.2,1.5],[3.1,1.5],[2.3,1.3],[2.8,1.5],[2.8,1.3],[3.3,1.6],[2.4,1],[2.9,1.3],[2.7,1.4],[2,1],[3,1.5],[2.2,1],[2.9,1.4],[2.9,1.3],[3.1,1.4],[3,1.5],[2.7,1],[2.2,1.5],[2.5,1.1],[3.2,1.8],[2.8,1.3],[2.5,1.5],[2.8,1.2],[2.9,1.3],[3,1.4],[2.8,1.4],[3,1.7],[2.9,1.5],[2.6,1],[2.4,1.1],[2.4,1],[2.7,1.2],[2.7,1.6],[3,1.5],[3.4,1.6],[3.1,1.5],[2.3,1.3],[3,1.3],[2.5,1.3],[2.6,1.2],[3,1.4],[2.6,1.2],[2.3,1],[2.7,1.3],[3,1.2],[2.9,1.3],[2.9,1.3],[2.5,1.1],[2.8,1.3]]},{"name":"virginica","type":"scatter","data":[[3.3,2.5],[2.7,1.9],[3,2.1],[2.9,1.8],[3,2.2],[3,2.1],[2.5,1.7],[2.9,1.8],[2.5,1.8],[3.6,2.5],[3.2,2],[2.7,1.9],[3,2.1],[2.5,2],[2.8,2.4],[3.2,2.3],[3,1.8],[3.8,2.2],[2.6,2.3],[2.2,1.5],[3.2,2.3],[2.8,2],[2.8,2],[2.7,1.8],[3.3,2.1],[3.2,1.8],[2.8,1.8],[3,1.8],[2.8,2.1],[3,1.6],[2.8,1.9],[3.8,2],[2.8,2.2],[2.8,1.5],[2.6,1.4],[3,2.3],[3.4,2.4],[3.1,1.8],[3,1.8],[3.1,2.1],[3.1,2.4],[3.1,2.3],[2.7,1.9],[3.2,2.3],[3.3,2.5],[3,2.3],[2.5,1.9],[3,2],[3.4,2.3],[3,1.8]]}],"legend":{"show":true,"data":["setosa","versicolor","virginica"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"value","show":true,"position":"left","name":"Petal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Sepal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    var i;\n    var text = params.value[0];\n    if (params.seriesName === null || params.seriesName === \"\"){\n        if (params.value.length > 1) {\n            for (i = 1; i < params.value.length; i++){\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.name + \" : \" + text;\n        }\n    } else {\n        if (params.value.length > 1) {\n            text = params.seriesName + \" :<br/>\" + text;\n            for (i = 1; i < params.value.length; i++) {\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.seriesName + \" :<br/>\"\n            + params.name + \" : \" + text;\n        }\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"dataZoom":{"show":true,"orient":"horizontal","height":30,"start":20,"end":60,"x":80}},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
+</div>
+<div id="references" class="section level1">
+<h1><span class="header-section-number">4</span> References</h1>
+<p><a href="http://echarts.baidu.com/echarts2/doc/option.html#title~dataZoom" class="uri">http://echarts.baidu.com/echarts2/doc/option.html#title~dataZoom</a></p>
+</div>
+
+<script type="text/javascript">
+window.onload = function() {
+  var i, fig = 1, caps = document.getElementsByClassName('caption');
+  for (i = 0; i < caps.length; i++) {
+    var cap = caps[i];
+    if (cap.parentElement.className !== 'figure' || cap.nodeName !== 'P')
+      continue;
+    cap.innerHTML = '<span>Figure ' + fig + ':</span> ' + cap.innerHTML;
+    fig++;
+  }
+  fig = 1;
+  caps = document.getElementsByTagName('caption');
+  for (i = 0; i < caps.length; i++) {
+    var cap = caps[i];
+    if (cap.parentElement.nodeName !== 'TABLE') continue;
+    cap.innerHTML = '<span>Table ' + fig + ':</span> ' + cap.innerHTML;
+    fig++;
+  }
+}
+</script>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

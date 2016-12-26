@@ -1,20 +1,23 @@
 ---
-title: "An Introduction to recharts Package"
+title: "recharts: An R Interface to Baidu ECharts 2"
 author: "Yiying Wang"
 date: "`r Sys.Date()`"
 output: 
   knitr:::html_vignette:
     number_sections: yes
+    theme: cosmo
     toc: yes
     self_contained: no
     lib_dir: libs
 vignette: >
-  %\VignetteIndexEntry{An Introduction to recharts Package}
+  %\VignetteIndexEntry{recharts: An R Interface to Baidu ECharts 2}
   %\VignetteEngine{knitr::rmarkdown_notangle}
   %\VignetteEncoding{UTF-8}
 ---
 
-This package is still under active development. It is based on the last release of Baidu Echarts2 (v2.2.7). The documentation here always reflects the latest development version of **recharts** on [Github](https://github.com/madlogos/recharts). To install the package:
+<strong>Note:</strong> This package was forked from [Yihui Xie](https://github.com/yihui/recharts) and is based on the last release of Baidu Echarts2 (v2.2.7). The documentation here always reflects the latest development version of **recharts** on [Github](https://github.com/madlogos/recharts). The package [recharts2](http://github.com/madlogos/recharts2) that is based on Echarts3 is still under development.
+
+To install the package:
 
 ```r
 if (!require(devtools)) library(devtools)
@@ -50,7 +53,7 @@ install_github("madlogos/recharts")
 1. [Mixed Plots](Mixed_Plots.html)
 1. Axis/Widget Configuration
     1. Tune Series
-        1. [`setSeries`](setSeries.html)
+        1. [`setSeries`](Misc_setSeries.html)
     1. Axis/Grid
         1. [`setAxis`](Widget_01_Axis.html)
         1. [`setPolar`](Widget_02_Polar.html)
@@ -67,7 +70,7 @@ install_github("madlogos/recharts")
         1. [`setDataZoom`](Widget_26_DataZoom.html)
         1. [`setRoam`](Widget_27_RoamController.html)
     1. Feature Lists
-        1. [`aesStyle`](aesStyle.html)
+        1. [`aesStyle`](Misc_aesStyle.html)
 
 1. Aesthetic Configuration
     1. [`setTooltip`](Widget_31_Tooltip.html)
@@ -131,22 +134,20 @@ str(args(echartr))
 |  y        | dependent variable(s). One or more columns of `data`. Always numeric. |
 +-----------+------------------------------------------------------------------+
 |  series   | series variable. A column of `data` which is treated as factors.   |
-|           |
-|           | - In Cartesian coordinate system charts, `series` is data series (linked with legends).   |
-|           | - In polar coordinate system charts, `series` is linked with polar systems. |
-|           | - In other chart types, mono-coordinate system charts refer to Cartesian coordinat system examples, while multi-coordinates system charts refer to polar system examples. |
 +-----------+------------------------------------------------------------------+
 |  weight   | weight variable used in bubble, bar/column, line/area chart, linking with the size of graph elements. |
 +-----------+------------------------------------------------------------------+
-|  z        | time variable. If `z` is assigned, a timeline widget will display. |
+|  facet    | facet variable to devide the canvas into facets. Only applicable for multi-coordinate system charts (e.g., pie charts). |
++-----------+------------------------------------------------------------------+
+|  t        | time variable. If `t` is assigned, a timeline widget will display. |
 +-----------+------------------------------------------------------------------+
 |  lat      | latitude variable for map/heatmap. |
 +-----------+------------------------------------------------------------------+
 |  lng      | longitude variable for map/heatmap. |
 +-----------+------------------------------------------------------------------+
-|  type     | chart type. Default 'auto'. `type` as a vector is linked with `series`. |
+|  type     | chart type. Default 'auto'. `type` as a vector is linked with `series`, while as a list is linked with `facet`. |
 +-----------+------------------------------------------------------------------+
-| subtype   | chart subtype. Default NULL. `subtype` as a vector is also linked with `series`.  |
+| subtype   | chart subtype. Default NULL. `subtype` as a vector is also linked with `series`, while as a list is linked with `facet`.  |
 +-----------+------------------------------------------------------------------+
 
 ### Supported Chart Types
@@ -186,9 +187,10 @@ Data must be a data.frame. The data series and timeline will display in the orig
 
 When it comes to timeline (`z`), you must be very cautious. All the combination sets of `x`, `y`, `series`, `weight` should be exactly equal across all the levels of `z`. Otherwise you will find confusious overlap of graphs across timeline.
 
-You should pay special attention to `series`, as it behaves differently in mono-coordinate-system charts (those under Cartesian coordinate system) and multi-coordinate-system charts (those under polar coordinate system). In the former scenario, `series` represents data series. But in the latter scenario, `series` represents index of coordinate systems while `x[,2]` represents data series. That's because `type` and `subtype` are mapped to the levels of `series`, and in multi-coordinate-system charts, users tend to map different types/subtypes to differnt charts instead of different data series. 
-
 #### Type And Subtype
+
+##### Mixed Types
+
 `recharts` supports mixed chart types in some cases, e.g., bar and line.
 
 ```{r}
@@ -207,6 +209,20 @@ echartr(d, carb, mean.mpg, gear, type='line',
     setSymbols('emptycircle')
 ```
 
+##### Associating Type/Subtype with Facets
+
+The above example shows how to associate type/subtype with series. If you want to associate type/subtype with facets, you need to wrap them in a list. Within each list, the vector of type/subtypes are associated with series, ie, list[[1]], list[[2]], ... are associated with facet 1, 2, ..., while list[[1]][1], list[[1]][2], ... are associated with series 1, 2, ...
+
+If facet has 2 levels and series has 3 levels, it means type and subtype should have  a structure of list(c(s1,s2,s3), c(s1,s2,s3)). recharts will try to supplement/cut the income params type and subtype to meet the mapping relationship.
+
+```{r}
+d1 <- data.frame(x=rep(LETTERS[1:6], 4), y=abs(rnorm(24)), 
+                 f=c(rep('i', 12), rep('ii', 12)), 
+                 s=rep(c(rep('I', 6), rep('II', 6)), 2))
+echartr(d1, x, y, s, facet=f, type='radar', 
+        subtype=list(c('fill', ''), c('', 'fill')))
+```
+
 ## Modify the Plot
 
 You can save the plot as an object and keep modifying the plot using `%>%`.
@@ -221,20 +237,22 @@ The above command made an Echarts object `g` containing two series: 'Automatic' 
 
 ```
 - x
-    - series
-        - list 1
-            - name: 'Automatic'
-            - data: ...
-            - type: 'scatter'
-        - list 2
-            - name: 'Manual'
-            - data: ...
-            - type: 'scatter'
-    - legend
-    - xAxis
-    - yAxis
-    - tooltip
-    ...
+  |-- series
+      |--- list 1
+           |---- name: 'Automatic'
+           |---- data: ...
+           |---- type: 'scatter'
+      |--- list 2
+           |---- name: 'Manual'
+           |---- data: ...
+           |---- type: 'scatter'
+      |--- ...
+  |-- legend
+  |-- xAxis
+  |-- yAxis
+  |-- grid  
+  |-- tooltip
+  |-- ...
 ```
 
 If you want to customize the definition of the series directly, you can call the low-level function `setSeries`.
@@ -417,10 +435,10 @@ We can also yield an echarts object using `echartr` and then modify the object d
 
 The following is the structure of the object `g` we producted by `echartr(mtcars, wt, mpg, factor(am, labels=c('Automatic', 'Mannual')))`.
 
-```r
+```{r}
 enquote(g)
 ```
 
 # Finale
 
-Normally we do not want R users to specify a long list of options like that. As R users, you are more familiar with (and often work with) data structures like data frames, matrices, tables, and so on. Ideally we hope you can just pass a familiar data object, and we configure ECharts automatically for you whenever possible. We are still _far away_ from our goal at this moment, but we will be happy to know your feedback, and you are welcome to contribute code through [Github pull requests](https://github.com/madlogos/recharts).
+Normally we do not want R users to specify a long list of options like that. As R users, you are more familiar with (and often work with) data structures like data frames, matrices, tables, and so on. Ideally we hope you can just pass a familiar data object, and we configure ECharts automatically for you whenever possible. We will be happy to know your feedback, and you are welcome to contribute code through [Github pull requests](https://github.com/madlogos/recharts).

@@ -1,0 +1,496 @@
+---
+title: "Basic Plots 31 - Map"
+author: "Yiying Wang"
+date: "`r Sys.Date()`"
+output: 
+  knitr:::html_vignette:
+    number_sections: yes
+    theme: cosmo
+    toc: yes
+    self_contained: no
+    lib_dir: libs
+vignette: >
+  %\VignetteIndexEntry{An Introduction to recharts Package}
+  %\VignetteEngine{knitr::rmarkdown_notangle}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+First, you should load `recharts`:
+```{r}
+library(recharts)
+```
+
+# Introduction
+
+Map includes 4 basic types:
+
+- China Map
+- China Map with Multiple Selection
+- World Map
+- World Map with Multiple Selection
+
+<table id='intro'>
+<tr><td>
+```{r,echo=FALSE}
+echartr(ChinaGDP[ChinaGDP$Year==2014,], Prov, GDP, type="map_china") %>%
+    setDataRange(splitNumber=0, 
+                 color=c('red','orange','yellow','limegreen','green')) %>%
+    setTitle("China GDP by Provice, 2014") %>%
+    setTheme('infographic', width=400, height=300)
+```
+</td>
+<td>
+```{r,echo=FALSE}
+echartr(ChinaGDP[ChinaGDP$Year==2014,], Prov, GDP, type="map_china_multi") %>%
+    setDataRange(splitNumber=0, min=0,
+                 color=c('red','orange','yellow','limegreen','green')) %>%
+    setTitle("China GDP by Provice, 2014") %>%
+    setTheme('roma', width=400, height=300)
+```
+</td></tr>
+<tr><td>
+```{r, echo=FALSE}
+worldgdp <- data.frame(
+    country=c('United States of America', 'China', 'Japan', 'Germany',
+              'United Kingdom', 'France', 'Brazil', 'Italy', 'India','Russia',
+              'Canada', 'Australia', 'South Korea', 'Spain', 'Mexico', 
+              'Indonesia', 'Netherlands', 'Turkey', 'Saudi Arabia', 
+              'Switzerland'),
+    GDP=c(17418925, 10380380, 4616335, 3859547, 2945146, 2846889, 2353025, 
+          2147952, 2049501, 1857461, 1788717, 1444189, 1416949, 1406855, 1282725,
+          888648, 866354, 806108, 752459, 712050))
+echartr(worldgdp, country, GDP, type="map_world") %>%
+    setDataRange(splitNumber=0, 
+                 color=getColFromPal('rainbow')) %>%
+    setTitle("World GDP Top 20, 2014") %>%
+    setTheme('macarons', width=400, height=300)
+```
+</td>
+<td>
+```{r,echo=FALSE}
+echartr(worldgdp, country, GDP, type="map_world_multi") %>%
+    setDataRange(splitNumber=0, 
+                 color=getColFromPal('rainbow')) %>%
+    setTitle("World GDP Top 20, 2014") %>%
+    setTheme('macarons2', width=400, height=300)
+```
+</td></tr>
+</table>
+
+The keys are:
+
+- Base Map Mode:
+    - Simply assign `type` and/or `subtype` to display the base map
+- Data Map Mode:
+  - character `x`
+    - `x[,1]` must be valid geographic names, e.g., 'United States of America' instead of 'USA' or 'U.S.'.
+  - numeric/logical `y`
+    - `y[,1]`: value
+    - `y[,2]`: logical, if is selected. Also allowed to use 1 for TRUE, 0 for FALSE.
+  - series is mapped to data series
+  - facet is mapped to separate maps, i.e., each level of facet represents a map. The facet variable should also be valid geograhic names.
+- You can additionally add map data to the echarts object
+    - `addNameMap` for geoName mapping/translation; 
+    - `addHeatMap` for additional heatmap graph layer
+    - `addMarkLine` or `addMarkPoint` to add markLines and/or markPoints
+        - `addGeoCoord` to define coordinates of the places for markLine and markPoint
+
+# Function Call
+
+```r
+echartr(data, <x>, <y>, <series>, <facet>, <lng>, <lat>, <t>, <type>, <subtype>)
+```
+
++--------+--------------------------------------------------------------------+
+| Arg    |  Requirement                                                       |
++========+====================================================================+
+|**data**| source data in the form of data.frame |
++--------+--------------------------------------------------------------------+
+| **x**  | character independent variable. Other type will be coerced to factors. Only the first one is accepted if multiple variables are provided. `x[,1]` must be valid geographic names.  |
++--------+--------------------------------------------------------------------+
+| **y**  | numeric dependent variable. Only the first 2 are accepted if multiple variables are provided. `y[,1]` acts as the value and `y[,2]` (logical) represents the status of selected/unselected. It is also allowed to use 1 for TRUE, 0 for FALSE in `y[,2]`. |
++--------+--------------------------------------------------------------------+
+| series | series variable which will be coerced to factors. Each level of `series` is treated as a group factor to produce data series. Only the first one is accepted if multiple variables are provided. |
++--------+--------------------------------------------------------------------+
+| facet  | facetting variable which will be coerced to factors. Each level of `facet` is treated as a subsetting factor to produce separate maps. Only the first one is accepted if multiple variables are provided. |
++--------+--------------------------------------------------------------------+
+|  t     | timeline variable which will be coerced to factors. Only the first one is accepted if multiple variables are provided. |
++--------+--------------------------------------------------------------------+
+| type   | 'map_world', 'map_world_multi', 'map_china', 'map_china_multi'. |
++--------+--------------------------------------------------------------------+
+| subtype| - map_world: c("sum", "average", [country names]) | 
+|        |     + sum: the map value is calculated by 'sum' (default algorithm). |
+|        |     + average: the map value is calculated by 'average'. |
+|        |     + move: `roam` method is 'move' |
+|        |     + scale: `roam` method is 'scale' |
+|        |     + `/country names/`: A set of strings that are valid in Echarts. Refer to 'valid country names' below. |
+|        | - map_world_multi: c("sum", "average", "move", "scale", `/country names/`) | 
+|        | - map_china: c("sum", "average", "move", "scale", `/China province names/`) | 
+|        |     + `/China province names/`: A set of strings that are valid in Echarts. Refer to 'valid china province names' below. |
+|        | - map_china_multi: c("sum", "average", "move", "scale", `/China province names/`) | 
++--------+--------------------------------------------------------------------+
+
+- **Valid country names:**
+    - "Afghanistan", "Angola", "Albania", "United Arab Emirates", "Argentina", "Armenia", "French Southern and Antarctic Lands", "Australia", "Austria", "Azerbaijan", "Burundi", "Belgium", "Benin", "Burkina Faso", "Bangladesh", "Bulgaria", "The Bahamas", "Bosnia and Herzegovina", "Belarus", "Belize", "Bermuda", "Bolivia", "Brazil", "Brunei", "Bhutan", "Botswana", "Central African Republic", "Canada", "Switzerland", "Chile", "China", "Ivory Coast", "Cameroon", "Democratic Republic of the Congo", "Republic of the Congo", "Colombia", "Costa Rica", "Cuba", "Northern Cyprus", "Cyprus", "Czech Republic", "Germany", "Djibouti", "Denmark", "Dominican Republic", "Algeria", "Ecuador", "Egypt", "Eritrea", "Spain", "Estonia", "Ethiopia", "Finland", "Fiji", "Falkland Islands", "France", "Gabon", "United Kingdom", "Georgia", "Ghana", "Guinea", "Gambia", "Guinea Bissau", "Equatorial Guinea", "Greece", "Greenland", "Guatemala", "French Guiana", "Guyana", "Honduras", "Croatia", "Haiti", "Hungary", "Indonesia", "India", "Ireland", "Iran", "Iraq", "Iceland", "Israel", "Italy", "Jamaica", "Jordan", "Japan", "Kazakhstan", "Kenya", "Kyrgyzstan", "Cambodia", "South Korea", "Kosovo", "Kuwait", "Laos", "Lebanon", "Liberia", "Libya", "Sri Lanka", "Lesotho", "Lithuania", "Luxembourg", "Latvia", "Morocco", "Moldova", "Madagascar", "Mexico", "Macedonia", "Mali", "Myanmar", "Montenegro", "Mongolia", "Mozambique", "Mauritania", "Malawi", "Malaysia", "Namibia", "New Caledonia", "Niger", "Nigeria", "Nicaragua", "Netherlands", "Norway", "Nepal", "New Zealand", "Oman", "Pakistan", "Panama", "Peru", "Philippines", "Papua New Guinea", "Poland", "Puerto Rico", "North Korea", "Portugal", "Paraguay", "Qatar", "Romania", "Russia", "Rwanda", "Western Sahara", "Saudi Arabia", "Sudan", "South Sudan", "Senegal", "Solomon Islands", "Sierra Leone", "El Salvador", "Somaliland", "Somalia", "Republic of Serbia", "Suriname", "Slovakia", "Slovenia", "Sweden", "Swaziland", "Syria", "Chad", "Togo", "Thailand", "Tajikistan", "Turkmenistan", "East Timor", "Trinidad and Tobago", "Tunisia", "Turkey", "United Republic of Tanzania", "Uganda", "Ukraine", "Uruguay", "United States of America", "Uzbekistan", "Venezuela", "Vietnam", "Vanuatu", "West Bank", "Yemen", "South Africa", "Zambia", "Zimbabwe"
+- **Valid China province names:**
+    - "新疆", "西藏", "内蒙古", "青海", "四川", "黑龙江", "甘肃", "云南", "广西", "湖南", "陕西", "广东", "吉林", "河北", "湖北", "贵州", "山东", "江西", "河南", "辽宁", "山西", "安徽", "福建", "浙江", "江苏", "重庆", "宁夏", "海南", "台湾", "北京", "天津", "上海", "香港", "澳门"
+
+# Showcase
+
+## Base Map Mode
+
+If you leave all params NULL except for `type` and/or `subtype`, you will get a base map with no data shown.
+
+### Complete Base Map
+
+Set `type` 'map_world' or 'map_china'. Leave all other params NULL.
+
+```{r}
+echartr(NULL, type='map_world') %>% setTitle('World Map')
+echartr(NULL, type='map_china') %>% setTitle('China Map')
+```
+
+### Partial Base map
+
+You can also display partial maps. Political zones of China can act as the independent mapType, so you can see its subordinate areas.
+
+```{r}
+echartr(NULL, type='map_world', subtype='United States of America') %>% 
+    setTitle('World Map|USA')
+echartr(NULL, type='map_china', subtype='上海') %>% 
+    setTitle('China Map|Shanghai')
+```
+
+## Extensive Base Map Mode
+
+### Multi-select Base Map
+
+Set `type` 'map_world_multi' or 'map_china_multi', you will get a base map for multiple selection. You can also apply subtypes to it.
+
+```{r}
+echartr(NULL, type='map_world_multi') %>% setTitle('World Map')
+echartr(NULL, type='map_china_multi', subtype='上海') %>% 
+    setTitle('China Map|Shanghai')
+```
+
+### Multiple Maps
+
+If you assign `facet` and `subtype` with valid geographic names, you will yield separated multiple maps. Note that `subtype` must be wrapped as list.
+
+```{r}
+data <- data.frame(x=c('United States of America', 'China', 'Japan'))
+echartr(data, x, facet=x, type='map_world', subtype=as.list(data$x))
+```
+
+## Data Map Mode
+
+You can attach data onto the base map to render it more informative.
+
+### Single Series
+
+If no `series` is assigned, the map does not differentiate data series.
+
+```{r}
+worldgdp <- data.frame(
+    country=c('United States of America', 'China', 'Japan', 'Germany',
+              'United Kingdom', 'France', 'Brazil', 'Italy', 'India','Russia',
+              'Canada', 'Australia', 'South Korea', 'Spain', 'Mexico', 
+              'Indonesia', 'Netherlands', 'Turkey', 'Saudi Arabia', 
+              'Switzerland'),
+    GDP=c(17418925, 10380380, 4616335, 3859547, 2945146, 2846889, 2353025, 
+          2147952, 2049501, 1857461, 1788717, 1444189, 1416949, 1406855, 1282725,
+          888648, 866354, 806108, 752459, 712050))
+echartr(worldgdp, country, GDP, type="map_world") %>%
+    setTitle("World GDP Top 20, 2014")
+```
+
+But point markers are not that informative. Let's color the areas by mapping the data to dataRange. Plus, set it 'move' and 'scale'.
+
+```{r}
+echartr(worldgdp, country, GDP, type="map_world", subtype="move + scale") %>%
+    setDataRange(splitNumber=0, color=getColFromPal('rainbow')) %>%
+    setTitle("World GDP Top 20, 2014")
+```
+
+### Multiple Series
+
+Let's use `ChinaGDP` dataset with 'Year' as data series variable.
+
+```{r}
+str(ChinaGDP)
+totGDP <- data.table::dcast(ChinaGDP, Prov~., sum, value.var='GDP')
+
+ChinaGDP <- ChinaGDP[order(ChinaGDP$Year),]
+echartr(ChinaGDP, Prov, GDP, Year, type="map_china") %>%
+    setDataRange(splitNumber=0, valueRange=range(totGDP[, 2]), 
+                 color=c('red','orange','yellow','limegreen','green')) %>%
+    setTitle("China GDP by Provice, 2012-2014")
+```
+
+This applies 'sum' as `mapvalueCalculation` method. Add 'average' to `subtype` to change the method to 'avarge'.
+
+```{r}
+echartr(ChinaGDP, Prov, GDP, Year, type="map_china", subtype='average') %>%
+    setDataRange(splitNumber=0, 
+                 color=c('red','orange','yellow','limegreen','green')) %>%
+    setTitle("China GDP by Provice, 2012-2014")
+```
+
+### Maps with Timeline
+
+Put 'Year' as `t`, we will get a map with timeline.
+
+```{r}
+echartr(ChinaGDP, Prov, GDP, t=Year, type="map_china", subtype='average') %>%
+    setDataRange(splitNumber=0, 
+                 color=c('red','orange','yellow','limegreen','green')) %>%
+    setTitle("China GDP by Provice, 2012-2014")
+```
+
+## Extensive Data Map Mode
+
+### Multi-select Data Map
+
+Just set `type` 'map_world_multi' or 'map_china_multi'. The rest are similar to above.
+
+### Multiple Maps
+
+Let's tile the countries with top 10 GDP on the chart rather than showing them where they are.
+
+```{r}
+worldgdp <- worldgdp[order(worldgdp$GDP, decreasing=TRUE),]
+worldgdp10 <- worldgdp[1:10, ]
+
+echartr(worldgdp10, country, GDP, facet=country, type='map_world', 
+        subtype=as.list(worldgdp10$country)) %>% 
+    setDataRange(color=c(
+        'red', 'orange', 'yellow', 'limegreen', 'green'), pos=4) %>%
+    setSymbols('none')
+```
+
+# Futher Setup
+
+Then you can configure the widgets, add markLines and/or markPoints, fortify the chart.
+
+## Add/Overide nameMap
+
+Maybe you want to show the China province names in English. You can use `addNameMap` or `overideNameMap` function.
+
+There is a preinstalled dataset **geoNameMap** listing some Chinese and English geographic names. 'LEVEL' is a number ranging from 0 to 3: 0 reprensents country, 1 reprensents province, 2 reprensents city, and, 3 reprensents county. 'FKEY' is foreign key of the parent level. E.g., 'China' is in the record with ID 31, so we can get all the China provinces by `geoNameMap[geoNameMap$FKEY==31,]`. 
+
+```{r}
+str(geoNameMap)
+```
+
+So we prepare a two-column dictionary of the geographic names: Col 1 is the name in the source language, Col 2 is that in the target language. That's the valid data structure `addNameMap` requires.
+
+```{r}
+dict <- geoNameMap[geoNameMap$FKEY==31, c("CN", "EN")]
+echartr(NULL, type="map_china_multi") %>% addNameMap(dict, mode='overide')
+```
+
+## Add/Overide markLine
+
+### `addMarkLine`
+
+Based on a base map, we can add markLines using `addMarkLine` (or `addML` for short) or `overideMarkLine`.
+
+This instance makes use of another preinstalled dataset **flight**.
+
+```{r}
+str(flight)
+```
+
+```{r}
+route <- flight$route
+names(route) <- c('name1', 'name2')
+coord <- flight$coord
+g <- echartr(NULL, type='map_china') %>% 
+    addML(series='北京', data=route[route$name1=='北京',]) %>% 
+    addML(series='上海', data=route[route$name1=='上海',]) %>% 
+    addML(series='广州', data=route[route$name1=='广州',])
+g
+```
+
+It is equivalent to
+```r
+g <- echartr(NULL, type='map_china') %>% 
+    addML(series=c('北京', '上海', '广州), data=route) 
+```
+
+### `addGeoCoord`
+
+But the markLines are not shown yet. You have to append the longitudes and latitudes of the places ever appear in the markLine dataset using `addGeoCoord`.
+
+```{r}
+g %>% addGeoCoord(coord)
+```
+
+## Add/Overide markPoint
+
+### `addMarkPoint`
+
+Based on a base map, we can add markLines using `addMarkPoint` (or `addMP` for short) or `overideMarkPoint`.
+
+This instance makes use of another preinstalled dataset **chinapm25**.
+
+```{r}
+str(chinapm25)
+```
+
+```{r}
+names(chinapm25) <- c('name', 'value', 'lng', 'lat')
+
+g <- echartr(NULL, type='map_china') %>% 
+    addMP(data=chinapm25[,c('name', 'value')], symbolSize=5, itemStyle=list(
+        normal=list(borderColor='#87cefa', borderWidth=1,
+                    label=list(show=FALSE)), 
+        emphasis=list(borderColor='#1e90ff', borderWidth=5, 
+                      label=list(show=FALSE))
+    )) %>%
+    addMP(series='Top 5', 
+          data=data.frame(
+              name=c('廊坊', '合肥', '菏泽', '武汉', '大庆'),
+              value=c(193, 194, 229, 273, 279)), 
+          symbol='emptyCircle',
+          symbolSize=JS('function (v) {return 10 + v/100;}'), 
+          effect=list(show=TRUE)
+    ) %>%
+    setDataRange(splitNumber=0, valueRange=c(0, 500), color=c(
+        'maroon', 'purple', 'red', 'orange', 'yellow', 'lightgreen'))
+g
+```
+
+### `addGeoCoord`
+
+#### Pre-installed geoCoord dataset
+
+Although `recharts` can recognize most of the cities, there still might be points missing coordinates. Again, we need to define the geoCoord using `addGeoCoord`.
+
+`addGeoCoord` requires a data.frame with three columns in order: `name`, `longitude` and `latitude`. Pay attention to the order of `lng` and `lat`.
+
+```{r}
+g %>% addGeoCoord(chinapm25[,c('name', 'lng', 'lat')]) %>% 
+    setTitle('PM2.5 in China Cities', 'Fictious Data')
+```
+
+#### Query the Coordinates
+
+What if I don't know the coordinates of the places? You need `geocode` (forked from [geoChina](github.com/caijun/geoChina)), which queries info from Google (so first you should be able to visit Google) or Baidu (in this way you need to provide Baidu api key). 
+
+```{r}
+geocode(c('北京', '上海'), api='google')
+```
+
+or `geocode(c('北京', '上海'), api='baidu', key='xxxxx')`.
+
+These are coordinates under WGS-84 system. If you want to apply them in Echarts, you need to convert them to BD-09 system. You can use `convWGS2BD` function or use `geocode` with `ocs`='BD-09' to do that.
+
+```{r}
+convWGS2BD(geocode(c('北京', '上海'), api='google'))
+```
+
+or `geocode(c('北京', '上海'), api='google', ocs='BD-09')`
+
+## `addMarkLine` And `addMarkPoint`
+
+In addition to the `addMarkLine` example, we `addMarkPOint` to yield the [Fictious Baidu Migration](http://echarts.baidu.com/echarts2/doc/example/map11.html) example.
+
+```{r}
+route <- flight$route
+names(route) <- c('name1', 'name2')
+coord <- flight$coord
+target <- data.frame(
+    name1=c(rep('北京', 10), rep('上海', 10), rep('广州', 10)),
+    name2=c(
+        "上海","广州","大连","南宁","南昌","拉萨","长春","包头","重庆","常州",
+        "包头","昆明","广州","郑州","长春","重庆","长沙","北京","丹东","大连",
+        "福州","太原","长春","重庆","西安","成都","常州","北京","北海","海口"),
+    value=c(95,90,80,70,60,50,40,30,20,10,95,90,80,70,60,50,40,30,20,10,95,90,
+            80,70,60,50,40,30,20,10))
+# series column mapping series of addML/addMP
+target$series <- paste0(target$name1, 'Top10')
+
+## apply addGeoCoord, and add markLines without values
+g <- echartr(NULL, type='map_china') %>% addGeoCoord(coord) %>%
+    addML(series=1, data=route, symbol=c('none', 'circle'), symbolSize=1, 
+          smooth=TRUE, itemStyle=list(normal=itemStyle(
+              color='#fff', borderWidth=1, borderColor='rgba(30,144,255,0.5)')))
+
+## modify itemStyle of the base map to align the areaStyle with bgColor and 
+## disable `hoverable`
+g <- g %>% setSeries(hoverable=FALSE, itemStyle=list(
+    normal=itemStyle(
+        borderColor='rgba(100,149,237,1)', borderWidth=0.5, 
+        areaStyle=areaStyle(color='#1b1b1b'))
+))
+
+g
+
+## add markLines with values
+line.effect <- list(
+    show=TRUE, scaleSize=1, period=30, color='#fff', shadowBlur=10)
+line.style <- list(normal=itemStyle(
+    borderWidth=1, lineStyle=lineStyle(type='solid', shadowBlur=10)))
+g1 <- g %>% 
+    addML(series=c('北京Top10', '上海Top10', '广州Top10'), data=target, 
+          smooth=TRUE, effect=line.effect, itemStyle=line.style)
+g1
+
+## add markPoints
+## series better be 2, 3, 4 rather than the series names
+jsSymbolSize <- JS('function (v) {return 10+v/10;}')
+mp.style <- list(normal=itemStyle(label=labelStyle(show=FALSE)), 
+                 emphasis=itemStyle(label=labelStyle(position='top')))
+g2 <- g1 %>%
+    addMP(series=2:4, data=target[,c("name2", "value", "series")],
+          effect=list(show=TRUE), symbolSize=jsSymbolSize, 
+          itmeStyle=mp.style) 
+g2
+
+## setDataRange
+g3 <- g2 %>%
+    setDataRange(
+        color=c('#ff3333', 'orange', 'yellow','limegreen','aquamarine'),
+        valueRange=c(0, 100), textStyle=list(color='#fff'),
+        splitNumber=0)
+
+## setTheme
+g3 <- g3 %>% setLegend(pos=10, selected='上海Top10', textStyle=list(color='#fff')) %>%
+    setTheme(palette=c('gold','aquamarine','limegreen'), bgColor='#1b1b1b') %>%
+    setToolbox(pos=3) %>% 
+    setTitle('Baidu Migration', 'Fictious Data', pos=12, 
+             textStyle=list(color='white'))
+g3
+```
+
+## Add/Overide heatMap
+
+Let's make up a fictious heatmap dataset. The dataset must be comprised of `lng`, `lat` and `heat value`.
+
+```{r}
+heatmap <- sapply(1:15, function(i){
+    x <- 100 + runif(1, 0, 1) * 16
+    y <- 24 + runif(1, 0, 1) * 12
+    lapply(0:floor(50 * abs(rnorm(1))), function(j){
+        c(x+runif(1, 0, 1)*2, y+runif(1, 0, 1)*2, runif(1, 0, 1))
+    })
+})
+heatmap <- data.frame(matrix(unlist(heatmap), byrow=TRUE, ncol=3))
+str(heatmap)
+```
+
+Then append/modify the heatmap to a base map using `addHeatmap` / `overideHeatmap`.
+
+```{r}
+echartr(NULL, type="map_china") %>% addHeatmap(data=heatmap)
+```
+
+------
+
+You can refer to related functions to play around on your own.
+

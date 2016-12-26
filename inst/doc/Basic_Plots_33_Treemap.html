@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Yiying Wang" />
+
+<meta name="date" content="2016-12-26" />
+
+<title>Basic Plots 33 - Treemap Chart</title>
+
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script src="libs/htmlwidgets-0.8/htmlwidgets.js"></script>
+<script src="libs/echarts-2.2.7/echarts-all.js"></script>
+<script src="libs/charts-ext-2.2.7/main.js"></script>
+<script src="libs/charts-ext-2.2.7/BMap.js"></script>
+<script src="libs/echarts-binding-0.2/echarts.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="/home/madlogos/R/x86_64-pc-linux-gnu-library/3.3/knitr/misc/vignette.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Basic Plots 33 - Treemap Chart</h1>
+<h4 class="author"><em>Yiying Wang</em></h4>
+<h4 class="date"><em>2016-12-26</em></h4>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction"><span class="toc-section-number">1</span> Introduction</a></li>
+<li><a href="#function-call"><span class="toc-section-number">2</span> Function Call</a></li>
+<li><a href="#showcase"><span class="toc-section-number">3</span> Showcase</a><ul>
+<li><a href="#data-preparation"><span class="toc-section-number">3.1</span> Data Preparation</a></li>
+<li><a href="#treemap-chart"><span class="toc-section-number">3.2</span> Treemap Chart</a><ul>
+<li><a href="#single-treemap"><span class="toc-section-number">3.2.1</span> Single Treemap</a></li>
+<li><a href="#multiple-treemaps"><span class="toc-section-number">3.2.2</span> Multiple Treemaps</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#futher-setup"><span class="toc-section-number">4</span> Futher Setup</a></li>
+</ul>
+</div>
+
+<p>First, you should load <code>recharts</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(recharts)</code></pre></div>
+<div id="introduction" class="section level1">
+<h1><span class="header-section-number">1</span> Introduction</h1>
+<p>Treemap chart includes 1 basic type:</p>
+<ul>
+<li>Treemap</li>
+</ul>
+<table id="intro">
+<tr>
+<td>
+<div id="htmlwidget-747d6173eb2a088aad4b" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-747d6173eb2a088aad4b">{"x":{"series":[{"type":"treemap","orient":"vertical","roam":true,"direction":"","data":[{"name":"IOS","value":231.5,"children":[{"name":"Apple","value":231.5}]},{"name":"Android","value":1201.4,"children":[{"name":"Samsung","value":324.8},{"name":"Huawei","value":106.6},{"name":"Lenovo","value":74},{"name":"Xiaomi","value":70.8},{"name":"Others","value":625.2,"children":[{"name":"LG","value":51.7},{"name":"Oppo","value":49.1},{"name":"Vivo","value":42.6},{"name":"ZTE","value":40},{"name":"Other","value":243}]}]}],"name":"Smartphone","center":["50%","50%"],"size":["85%","80%"],"itemStyle":{"normal":{"label":{"show":true,"formatter":"{b}"}},"emphasis":{"label":{"show":true}}}}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["IOS","Android","Samsung","Apple","Huawei","Lenovo","Xiaomi","Others","LG","Oppo","Vivo","ZTE","Other"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["Smartphone"],"x":"left","y":"top","orient":"horizontal"},"title":{"text":"Smartphone Sales 2015 (M)","subtext":"treemap","x":"right","y":"bottom","orient":"horizontal"},"theme":"infographic"},"evals":[],"jsHooks":[]}</script>
+</td>
+<td>
+</td>
+</tr>
+</table>
+<p>The keys are:</p>
+<ul>
+<li>character <code>x</code> with at least 2 columns: x[,1] are the nodes of the trees, x[,2] are parent nodes of the tree nodes. For root nodes, parent should be NA.</li>
+<li>numeric <code>y</code></li>
+<li><code>facet</code> is used to produce separate treemaps</li>
+</ul>
+</div>
+<div id="function-call" class="section level1">
+<h1><span class="header-section-number">2</span> Function Call</h1>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">echartr</span>(data, x, &lt;y&gt;, &lt;series&gt;, &lt;facet&gt;, &lt;t&gt;, &lt;type&gt;, &lt;subtype&gt;)</code></pre></div>
+<table>
+<colgroup>
+<col width="11%" />
+<col width="88%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Arg</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><strong>data</strong></p></td>
+<td><p>source data in the form of data.frame</p></td>
+</tr>
+<tr class="even">
+<td><p><strong>x</strong></p></td>
+<td><p>character independent variable. Each level of <code>x</code> is treated as a data series. Other type will be coerced to factors. Only the first two are accepted if multiple variables are provided: 1st one as nodes, 2nd one as parent nodes.</p></td>
+</tr>
+<tr class="odd">
+<td><p>y</p></td>
+<td><p>numeric dependent variable. Only the first one is accepted if multiple variables are provided.</p></td>
+</tr>
+<tr class="even">
+<td><p>series</p></td>
+<td><p>series variable which will be coerced to factors. Each level of <code>series</code> is treated as a grouping factor. Only the first one is accepted if multiple variables are provided.</p></td>
+</tr>
+<tr class="odd">
+<td><p>facet</p></td>
+<td><p>facetting variable which will be coerced to factors. Each level of <code>facet</code> is treated as a subsetting factor to produce separate trees. Only the first one is accepted if multiple variables are provided.</p></td>
+</tr>
+<tr class="even">
+<td><p>t</p></td>
+<td><p>timeline variable which will be coerced to factors. Only the first one is accepted if multiple variables are provided.</p></td>
+</tr>
+<tr class="odd">
+<td><p>type</p></td>
+<td><p>‘treemap’.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="showcase" class="section level1">
+<h1><span class="header-section-number">3</span> Showcase</h1>
+<div id="data-preparation" class="section level2">
+<h2><span class="header-section-number">3.1</span> Data Preparation</h2>
+<p>Let’s prepare a data.frame to show the typical structure.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
+    <span class="dt">node=</span><span class="kw">c</span>(<span class="st">&#39;IOS&#39;</span>, <span class="st">&#39;Android&#39;</span>, <span class="st">&#39;Samsung&#39;</span>, <span class="st">&#39;Apple&#39;</span>, <span class="st">&#39;Huawei&#39;</span>, <span class="st">&#39;Lenovo&#39;</span>, <span class="st">&#39;Xiaomi&#39;</span>, 
+           <span class="st">&#39;Others&#39;</span>, <span class="st">&#39;LG&#39;</span>, <span class="st">&#39;Oppo&#39;</span>, <span class="st">&#39;Vivo&#39;</span>, <span class="st">&#39;ZTE&#39;</span>, <span class="st">&#39;Other&#39;</span>),
+    <span class="dt">parent=</span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="ot">NA</span>, <span class="dv">2</span>), <span class="st">&#39;Android&#39;</span>, <span class="st">&#39;IOS&#39;</span>, <span class="kw">rep</span>(<span class="st">&#39;Android&#39;</span>, <span class="dv">4</span>), <span class="kw">rep</span>(<span class="st">&#39;Others&#39;</span>, <span class="dv">5</span>)),
+    <span class="dt">series=</span>(<span class="kw">rep</span>(<span class="st">&#39;Smartphone&#39;</span>, <span class="dv">13</span>)),
+    <span class="dt">value=</span><span class="kw">c</span>(<span class="fl">231.5</span>, <span class="fl">1201.4</span>, <span class="fl">324.8</span>, <span class="fl">231.5</span>, <span class="fl">106.6</span>, <span class="dv">74</span>, <span class="fl">70.8</span>, <span class="fl">625.2</span>, <span class="fl">51.7</span>, <span class="fl">49.1</span>,
+            <span class="fl">42.6</span>, <span class="dv">40</span>, <span class="dv">243</span>))
+knitr::<span class="kw">kable</span>(data)</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">node</th>
+<th align="left">parent</th>
+<th align="left">series</th>
+<th align="right">value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">IOS</td>
+<td align="left">NA</td>
+<td align="left">Smartphone</td>
+<td align="right">231.5</td>
+</tr>
+<tr class="even">
+<td align="left">Android</td>
+<td align="left">NA</td>
+<td align="left">Smartphone</td>
+<td align="right">1201.4</td>
+</tr>
+<tr class="odd">
+<td align="left">Samsung</td>
+<td align="left">Android</td>
+<td align="left">Smartphone</td>
+<td align="right">324.8</td>
+</tr>
+<tr class="even">
+<td align="left">Apple</td>
+<td align="left">IOS</td>
+<td align="left">Smartphone</td>
+<td align="right">231.5</td>
+</tr>
+<tr class="odd">
+<td align="left">Huawei</td>
+<td align="left">Android</td>
+<td align="left">Smartphone</td>
+<td align="right">106.6</td>
+</tr>
+<tr class="even">
+<td align="left">Lenovo</td>
+<td align="left">Android</td>
+<td align="left">Smartphone</td>
+<td align="right">74.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Xiaomi</td>
+<td align="left">Android</td>
+<td align="left">Smartphone</td>
+<td align="right">70.8</td>
+</tr>
+<tr class="even">
+<td align="left">Others</td>
+<td align="left">Android</td>
+<td align="left">Smartphone</td>
+<td align="right">625.2</td>
+</tr>
+<tr class="odd">
+<td align="left">LG</td>
+<td align="left">Others</td>
+<td align="left">Smartphone</td>
+<td align="right">51.7</td>
+</tr>
+<tr class="even">
+<td align="left">Oppo</td>
+<td align="left">Others</td>
+<td align="left">Smartphone</td>
+<td align="right">49.1</td>
+</tr>
+<tr class="odd">
+<td align="left">Vivo</td>
+<td align="left">Others</td>
+<td align="left">Smartphone</td>
+<td align="right">42.6</td>
+</tr>
+<tr class="even">
+<td align="left">ZTE</td>
+<td align="left">Others</td>
+<td align="left">Smartphone</td>
+<td align="right">40.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Other</td>
+<td align="left">Others</td>
+<td align="left">Smartphone</td>
+<td align="right">243.0</td>
+</tr>
+</tbody>
+</table>
+<p>The tree structure is defined by the mapping of nodes and parents.</p>
+<ul>
+<li>There are 1 series ‘Smartphone’, so we will see 1 treemap.
+<ul>
+<li>In the series ‘Smartphone’, we see ‘IOS’ and ‘Android’ have NA parent node. So ‘IOS’ and ‘Android’ will be the root nodes of this treemap.
+<ul>
+<li>Below the ‘Android’ root, we see 5 levels in parents nodes: ‘Samsung’, ‘Huawei’, ‘Lenovo’, ‘Xiaomi’ and ‘Others’. So ‘Android’ node will contain 5 level-1 nodes.
+<ul>
+<li>There are 5 sub-nodes under ‘Others’</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+<p>You will see a breadcumb navigator under the treemap. The area of each tile is defined by <code>value</code>.</p>
+</div>
+<div id="treemap-chart" class="section level2">
+<h2><span class="header-section-number">3.2</span> Treemap Chart</h2>
+<div id="single-treemap" class="section level3">
+<h3><span class="header-section-number">3.2.1</span> Single Treemap</h3>
+<p><code>type</code> is set ‘treemap’.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">echartr</span>(data, <span class="kw">c</span>(node, parent), value, <span class="dt">facet=</span>series, <span class="dt">type=</span><span class="st">&#39;treemap&#39;</span>) %&gt;%
+<span class="st">    </span><span class="kw">setTitle</span>(<span class="st">&#39;Smartphone Sales 2015 (Million)&#39;</span>, <span class="dt">pos=</span><span class="dv">5</span>)</code></pre></div>
+<div id="htmlwidget-b8a3f32603df2e5814dc" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b8a3f32603df2e5814dc">{"x":{"series":[{"type":"treemap","orient":"vertical","roam":true,"direction":"","data":[{"name":"IOS","value":231.5,"children":[{"name":"Apple","value":231.5}]},{"name":"Android","value":1201.4,"children":[{"name":"Samsung","value":324.8},{"name":"Huawei","value":106.6},{"name":"Lenovo","value":74},{"name":"Xiaomi","value":70.8},{"name":"Others","value":625.2,"children":[{"name":"LG","value":51.7},{"name":"Oppo","value":49.1},{"name":"Vivo","value":42.6},{"name":"ZTE","value":40},{"name":"Other","value":243}]}]}],"name":"Smartphone","center":["50%","50%"],"size":["85%","80%"],"itemStyle":{"normal":{"label":{"show":true,"formatter":"{b}"}},"emphasis":{"label":{"show":true}}}}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["IOS","Android","Samsung","Apple","Huawei","Lenovo","Xiaomi","Others","LG","Oppo","Vivo","ZTE","Other"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["Smartphone"],"x":"left","y":"top","orient":"horizontal"},"title":{"text":"Smartphone Sales 2015 (Million)","x":"right","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="multiple-treemaps" class="section level3">
+<h3><span class="header-section-number">3.2.2</span> Multiple Treemaps</h3>
+<p>You can modify the data a little bit to yield multiple <code>series</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data1 &lt;-<span class="st"> </span>data[<span class="dv">3</span>:<span class="dv">13</span>,]
+data1$series &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;Android&#39;</span>, <span class="st">&#39;IOS&#39;</span>, <span class="kw">rep</span>(<span class="st">&#39;Android&#39;</span>, <span class="dv">9</span>))
+data1$parent[<span class="dv">1</span>:<span class="dv">6</span>] &lt;-<span class="st"> </span><span class="ot">NA</span>
+knitr::<span class="kw">kable</span>(data1)</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="left">node</th>
+<th align="left">parent</th>
+<th align="left">series</th>
+<th align="right">value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>3</td>
+<td align="left">Samsung</td>
+<td align="left">NA</td>
+<td align="left">Android</td>
+<td align="right">324.8</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td align="left">Apple</td>
+<td align="left">NA</td>
+<td align="left">IOS</td>
+<td align="right">231.5</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td align="left">Huawei</td>
+<td align="left">NA</td>
+<td align="left">Android</td>
+<td align="right">106.6</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td align="left">Lenovo</td>
+<td align="left">NA</td>
+<td align="left">Android</td>
+<td align="right">74.0</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td align="left">Xiaomi</td>
+<td align="left">NA</td>
+<td align="left">Android</td>
+<td align="right">70.8</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td align="left">Others</td>
+<td align="left">NA</td>
+<td align="left">Android</td>
+<td align="right">625.2</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td align="left">LG</td>
+<td align="left">Others</td>
+<td align="left">Android</td>
+<td align="right">51.7</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td align="left">Oppo</td>
+<td align="left">Others</td>
+<td align="left">Android</td>
+<td align="right">49.1</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td align="left">Vivo</td>
+<td align="left">Others</td>
+<td align="left">Android</td>
+<td align="right">42.6</td>
+</tr>
+<tr class="even">
+<td>12</td>
+<td align="left">ZTE</td>
+<td align="left">Others</td>
+<td align="left">Android</td>
+<td align="right">40.0</td>
+</tr>
+<tr class="odd">
+<td>13</td>
+<td align="left">Other</td>
+<td align="left">Others</td>
+<td align="left">Android</td>
+<td align="right">243.0</td>
+</tr>
+</tbody>
+</table>
+<p>Thus we get two treemaps.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">echartr</span>(data1, <span class="kw">c</span>(node, parent), value, <span class="dt">facet=</span>series, <span class="dt">type=</span><span class="st">&#39;treemap&#39;</span>) %&gt;%
+<span class="st">    </span><span class="kw">setTitle</span>(<span class="st">&#39;Smartphone Sales 2015 (Million)&#39;</span>, <span class="dt">pos=</span><span class="dv">5</span>)</code></pre></div>
+<div id="htmlwidget-82131951ff3f67274d97" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-82131951ff3f67274d97">{"x":{"series":[{"type":"treemap","orient":"vertical","roam":true,"direction":"","data":[{"name":"Samsung","value":324.8},{"name":"Huawei","value":106.6},{"name":"Lenovo","value":74},{"name":"Xiaomi","value":70.8},{"name":"Others","value":625.2,"children":[{"name":"LG","value":51.7},{"name":"Oppo","value":49.1},{"name":"Vivo","value":42.6},{"name":"ZTE","value":40},{"name":"Other","value":243}]}],"name":"Android","center":["27.5%","50%"],"size":["40%","80%"],"itemStyle":{"normal":{"label":{"show":true,"formatter":"{b}"}},"emphasis":{"label":{"show":true}}}},{"type":"treemap","orient":"vertical","roam":true,"direction":"","data":[{"name":"Apple","value":231.5}],"name":"IOS","center":["72.5%","50%"],"size":["40%","80%"],"itemStyle":{"normal":{"label":{"show":true,"formatter":"{b}"}},"emphasis":{"label":{"show":true}}}}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["Samsung","Apple","Huawei","Lenovo","Xiaomi","Others","LG","Oppo","Vivo","ZTE","Other"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["Android","IOS"],"x":"left","y":"top","orient":"horizontal"},"title":{"text":"Smartphone Sales 2015 (Million)","x":"right","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</div>
+<div id="futher-setup" class="section level1">
+<h1><span class="header-section-number">4</span> Futher Setup</h1>
+<p>Then you can configure the widgets, add markLines and/or markPoints, fortify the chart.</p>
+<p>You can refer to related functions to play around on your own.</p>
+</div>
+
+<script type="text/javascript">
+window.onload = function() {
+  var i, fig = 1, caps = document.getElementsByClassName('caption');
+  for (i = 0; i < caps.length; i++) {
+    var cap = caps[i];
+    if (cap.parentElement.className !== 'figure' || cap.nodeName !== 'P')
+      continue;
+    cap.innerHTML = '<span>Figure ' + fig + ':</span> ' + cap.innerHTML;
+    fig++;
+  }
+  fig = 1;
+  caps = document.getElementsByTagName('caption');
+  for (i = 0; i < caps.length; i++) {
+    var cap = caps[i];
+    if (cap.parentElement.nodeName !== 'TABLE') continue;
+    cap.innerHTML = '<span>Table ' + fig + ':</span> ' + cap.innerHTML;
+    fig++;
+  }
+}
+</script>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

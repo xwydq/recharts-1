@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Yiying Wang" />
+
+<meta name="date" content="2016-12-26" />
+
+<title>Widget 23 - Timeline</title>
+
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script src="libs/htmlwidgets-0.8/htmlwidgets.js"></script>
+<script src="libs/echarts-2.2.7/echarts-all.js"></script>
+<script src="libs/charts-ext-2.2.7/main.js"></script>
+<script src="libs/charts-ext-2.2.7/BMap.js"></script>
+<script src="libs/echarts-binding-0.2/echarts.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="/home/madlogos/R/x86_64-pc-linux-gnu-library/3.3/knitr/misc/vignette.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Widget 23 - Timeline</h1>
+<h4 class="author"><em>Yiying Wang</em></h4>
+<h4 class="date"><em>2016-12-26</em></h4>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction"><span class="toc-section-number">1</span> Introduction</a></li>
+<li><a href="#function-call"><span class="toc-section-number">2</span> Function Call</a></li>
+<li><a href="#showcase"><span class="toc-section-number">3</span> Showcase</a></li>
+<li><a href="#references"><span class="toc-section-number">4</span> References</a></li>
+</ul>
+</div>
+
+<p>First, you should load <code>recharts</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(recharts)</code></pre></div>
+<div id="introduction" class="section level1">
+<h1><span class="header-section-number">1</span> Introduction</h1>
+<p>The default position of timeline is 6 o’clock.</p>
+<p>The recommended approach to use <code>setTimeline</code> is <code>chart %&gt;% setTimeline(...)</code>.</p>
+</div>
+<div id="function-call" class="section level1">
+<h1><span class="header-section-number">2</span> Function Call</h1>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">setTimeline</span>(chart, <span class="dt">show =</span> <span class="ot">TRUE</span>, <span class="dt">type =</span> <span class="kw">c</span>(<span class="st">&quot;time&quot;</span>, <span class="st">&quot;number&quot;</span>),
+  <span class="dt">realtime =</span> <span class="ot">TRUE</span>, <span class="dt">x =</span> <span class="dv">80</span>, <span class="dt">y =</span> <span class="ot">NULL</span>, <span class="dt">x2 =</span> <span class="dv">80</span>, <span class="dt">y2 =</span> <span class="dv">0</span>, <span class="dt">width =</span> <span class="ot">NULL</span>,
+  <span class="dt">height =</span> <span class="dv">50</span>, <span class="dt">bgColor =</span> <span class="st">&quot;rgba(0,0,0,0)&quot;</span>, <span class="dt">borderColor =</span> <span class="st">&quot;#ccc&quot;</span>,
+  <span class="dt">borderWidth =</span> <span class="dv">0</span>, <span class="dt">controlPosition =</span> <span class="kw">c</span>(<span class="st">&quot;left&quot;</span>, <span class="st">&quot;right&quot;</span>, <span class="st">&quot;none&quot;</span>),
+  <span class="dt">autoPlay =</span> <span class="ot">FALSE</span>, <span class="dt">loop =</span> <span class="ot">TRUE</span>, <span class="dt">playInterval =</span> <span class="dv">2000</span>, <span class="dt">lineStyle =</span> <span class="ot">NULL</span>,
+  <span class="dt">label =</span> <span class="ot">NULL</span>, <span class="dt">checkpointStyle =</span> <span class="ot">NULL</span>, <span class="dt">controlStyle =</span> <span class="ot">NULL</span>,
+  <span class="dt">symbol =</span> <span class="st">&quot;emptyDiamond&quot;</span>, <span class="dt">symbolSize =</span> <span class="dv">4</span>, <span class="dt">currentIndex =</span> <span class="dv">0</span>,
+  <span class="dt">data =</span> <span class="ot">NULL</span>, ...)</code></pre></div>
+<table>
+<colgroup>
+<col width="20%" />
+<col width="79%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Arg</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><strong>chart</strong></p></td>
+<td><p>Echarts object generated by <code>echartR</code> or <code>echart</code>.</p></td>
+</tr>
+<tr class="even">
+<td><p>show</p></td>
+<td><p>Logical. Show the timeline or not. Default TRUE. If you want to remove timeline from the echarts object, set it NULL.</p></td>
+</tr>
+<tr class="odd">
+<td><p>type</p></td>
+<td><p>‘time’ or ‘number’ format of the timeline. Default ‘time’.</p></td>
+</tr>
+<tr class="even">
+<td><p>realtime</p></td>
+<td><p>Logical. If or not the changes take effect in realtime manner. Default TRUE.</p></td>
+</tr>
+<tr class="odd">
+<td><p>x</p></td>
+<td><p>x coordinate of the upper left point of the timeline bar. Default 80.</p></td>
+</tr>
+<tr class="even">
+<td><p>y</p></td>
+<td><p>y coordinate of the upper left point of the timeline bar. Default NULL (automatic).</p></td>
+</tr>
+<tr class="odd">
+<td><p>x2</p></td>
+<td><p>x coordinate of the upper left point of the timeline bar. Default 80.</p></td>
+</tr>
+<tr class="even">
+<td><p>y2</p></td>
+<td><p>y coordinate of the upper left point of the timeline bar. Default 0.</p></td>
+</tr>
+<tr class="odd">
+<td><p>width</p></td>
+<td><p>Width of the timeline. Could be a number or a character in percent form. Default NULL.</p></td>
+</tr>
+<tr class="even">
+<td><p>height</p></td>
+<td><p>Height of the timeline. Default 50 (px).</p></td>
+</tr>
+<tr class="odd">
+<td><p>bgColor</p></td>
+<td><p>Background color of the timeline. Default “rgba(0,0,0,0)” (transparent).</p></td>
+</tr>
+<tr class="even">
+<td><p>borderColor</p></td>
+<td><p>Border color of the timeline. Default “#ccc”.</p></td>
+</tr>
+<tr class="odd">
+<td><p>borderWidth</p></td>
+<td><p>The border width of the timeline. Default 0px (not shown).</p></td>
+</tr>
+<tr class="even">
+<td><p>controlPosition</p></td>
+<td><p>Position of the control of the timeline. Could be ‘left’, ‘right’ or ‘none’. Default ‘left’.</p></td>
+</tr>
+<tr class="odd">
+<td><p>autoPlay</p></td>
+<td><p>Logical. Whether or not the timeline auto displays. Default FALSE.</p></td>
+</tr>
+<tr class="even">
+<td><p>loop</p></td>
+<td><p>Logical. Whether or not the timeline displays in loop mode. Default TRUE.</p></td>
+</tr>
+<tr class="odd">
+<td><p>playInterval</p></td>
+<td><p>Interval when displays each timeslice. Default 2000 (ms).</p></td>
+</tr>
+<tr class="even">
+<td><p>lineStyle</p></td>
+<td><p>A list. Line style of the timeline. Default value: <code>list(color=&quot;#666&quot;, width=1, type=&quot;dashed&quot;)</code>. Refer to function <code>lineStyle</code>.</p></td>
+</tr>
+<tr class="odd">
+<td><p>label</p></td>
+<td><p>A list. Label style of the timeline. Default value: <code>list(show=TRUE, interval=&quot;auto&quot;,</code> <code>rotate=0, formatter=NULL,</code> <code>textStyle=list(color=&quot;#333&quot;))</code>. Refer to function <code>labelStyle</code>.</p></td>
+</tr>
+<tr class="even">
+<td><p>checkpointStyle</p></td>
+<td><p>A list. Checkpoint style of the timeline. Default value: <code>list(symbol=&quot;auto&quot;,</code> <code>symbolSize=&quot;auto&quot;, color=&quot;auto&quot;,</code> <code>borderColor=&quot;auto&quot;, borderWidth=&quot;auto&quot;,</code> <code>label=list(show=FALSE,</code> <code>textStyle=list(color=&quot;auto&quot;))).</code> Supports features of ‘symbol’, ‘symbolSize’, ‘color’, ‘borderColor’, ‘borderWidth’, ‘label’.</p></td>
+</tr>
+<tr class="odd">
+<td><p>controlStyle</p></td>
+<td><p>A list. Control style of the timeline. Default value: <code>list(itemSize=15, itemGap=5,</code> <code>normal=list(color=&quot;#333&quot;),</code> <code>emphasis=list(color=&quot;#1e90ff&quot;))</code>. Supports features of ‘itemSize’, ‘itemGap’, ‘normal’, ‘emphasis’.</p></td>
+</tr>
+<tr class="even">
+<td><p>symbol</p></td>
+<td><p>Character. The symbol used in timeline. Default ‘emptyDiamond’. You can use symbols in <code>setSymbols</code>.</p></td>
+</tr>
+<tr class="odd">
+<td><p>symbolSize</p></td>
+<td><p>The size of the symbols. Default 4.</p></td>
+</tr>
+<tr class="even">
+<td><p>currentIndex</p></td>
+<td><p>The current index position, in correspondance with z. It is used to show specific timeline slices. Default 0.</p></td>
+</tr>
+<tr class="odd">
+<td><p>data</p></td>
+<td><p>The data list of the timeline, also used as timeline data label. Default NULL.</p></td>
+</tr>
+<tr class="even">
+<td><p>…</p></td>
+<td><p>Elipsis.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="showcase" class="section level1">
+<h1><span class="header-section-number">3</span> Showcase</h1>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g &lt;-<span class="st"> </span><span class="kw">echartr</span>(iris, Sepal.Width, Petal.Width, <span class="dt">t=</span>Species)
+g</code></pre></div>
+<div id="htmlwidget-ba07d58312b53fbd6b99" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ba07d58312b53fbd6b99">{"x":{"timeline":{"type":"number","data":["setosa","versicolor","virginica"],"x":80,"x2":80},"options":[{"series":[{"type":"scatter","data":[[3.5,0.2],[3,0.2],[3.2,0.2],[3.1,0.2],[3.6,0.2],[3.9,0.4],[3.4,0.3],[3.4,0.2],[2.9,0.2],[3.1,0.1],[3.7,0.2],[3.4,0.2],[3,0.1],[3,0.1],[4,0.2],[4.4,0.4],[3.9,0.4],[3.5,0.3],[3.8,0.3],[3.8,0.3],[3.4,0.2],[3.7,0.4],[3.6,0.2],[3.3,0.5],[3.4,0.2],[3,0.2],[3.4,0.4],[3.5,0.2],[3.4,0.2],[3.2,0.2],[3.1,0.2],[3.4,0.4],[4.1,0.1],[4.2,0.2],[3.1,0.2],[3.2,0.2],[3.5,0.2],[3.6,0.1],[3,0.2],[3.4,0.2],[3.5,0.3],[2.3,0.3],[3.2,0.2],[3.5,0.6],[3.8,0.4],[3,0.3],[3.8,0.2],[3.2,0.2],[3.7,0.2],[3.3,0.2]]}],"yAxis":[{"type":"value","show":true,"position":"left","name":"Petal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Sepal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    var i;\n    var text = params.value[0];\n    if (params.seriesName === null || params.seriesName === \"\"){\n        if (params.value.length > 1) {\n            for (i = 1; i < params.value.length; i++){\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.name + \" : \" + text;\n        }\n    } else {\n        if (params.value.length > 1) {\n            text = params.seriesName + \" :<br/>\" + text;\n            for (i = 1; i < params.value.length; i++) {\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.seriesName + \" :<br/>\"\n            + params.name + \" : \" + text;\n        }\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"}},{"series":[{"type":"scatter","data":[[3.2,1.4],[3.2,1.5],[3.1,1.5],[2.3,1.3],[2.8,1.5],[2.8,1.3],[3.3,1.6],[2.4,1],[2.9,1.3],[2.7,1.4],[2,1],[3,1.5],[2.2,1],[2.9,1.4],[2.9,1.3],[3.1,1.4],[3,1.5],[2.7,1],[2.2,1.5],[2.5,1.1],[3.2,1.8],[2.8,1.3],[2.5,1.5],[2.8,1.2],[2.9,1.3],[3,1.4],[2.8,1.4],[3,1.7],[2.9,1.5],[2.6,1],[2.4,1.1],[2.4,1],[2.7,1.2],[2.7,1.6],[3,1.5],[3.4,1.6],[3.1,1.5],[2.3,1.3],[3,1.3],[2.5,1.3],[2.6,1.2],[3,1.4],[2.6,1.2],[2.3,1],[2.7,1.3],[3,1.2],[2.9,1.3],[2.9,1.3],[2.5,1.1],[2.8,1.3]]}]},{"series":[{"type":"scatter","data":[[3.3,2.5],[2.7,1.9],[3,2.1],[2.9,1.8],[3,2.2],[3,2.1],[2.5,1.7],[2.9,1.8],[2.5,1.8],[3.6,2.5],[3.2,2],[2.7,1.9],[3,2.1],[2.5,2],[2.8,2.4],[3.2,2.3],[3,1.8],[3.8,2.2],[2.6,2.3],[2.2,1.5],[3.2,2.3],[2.8,2],[2.8,2],[2.7,1.8],[3.3,2.1],[3.2,1.8],[2.8,1.8],[3,1.8],[2.8,2.1],[3,1.6],[2.8,1.9],[3.8,2],[2.8,2.2],[2.8,1.5],[2.6,1.4],[3,2.3],[3.4,2.4],[3.1,1.8],[3,1.8],[3.1,2.1],[3.1,2.4],[3.1,2.3],[2.7,1.9],[3.2,2.3],[3.3,2.5],[3,2.3],[2.5,1.9],[3,2],[3.4,2.3],[3,1.8]]}]}]},"evals":["options.0.tooltip.formatter"],"jsHooks":[]}</script>
+<p>Initially timeline is shown. Let’s turn if off.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g %&gt;%<span class="st"> </span><span class="kw">setTimeline</span>(<span class="dt">show=</span><span class="ot">FALSE</span>)</code></pre></div>
+<div id="htmlwidget-b42ac10c2a6d87d3c17c" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b42ac10c2a6d87d3c17c">{"x":{"timeline":{"type":"number","data":["setosa","versicolor","virginica"],"x":80,"x2":80,"show":false},"options":[{"series":[{"type":"scatter","data":[[3.5,0.2],[3,0.2],[3.2,0.2],[3.1,0.2],[3.6,0.2],[3.9,0.4],[3.4,0.3],[3.4,0.2],[2.9,0.2],[3.1,0.1],[3.7,0.2],[3.4,0.2],[3,0.1],[3,0.1],[4,0.2],[4.4,0.4],[3.9,0.4],[3.5,0.3],[3.8,0.3],[3.8,0.3],[3.4,0.2],[3.7,0.4],[3.6,0.2],[3.3,0.5],[3.4,0.2],[3,0.2],[3.4,0.4],[3.5,0.2],[3.4,0.2],[3.2,0.2],[3.1,0.2],[3.4,0.4],[4.1,0.1],[4.2,0.2],[3.1,0.2],[3.2,0.2],[3.5,0.2],[3.6,0.1],[3,0.2],[3.4,0.2],[3.5,0.3],[2.3,0.3],[3.2,0.2],[3.5,0.6],[3.8,0.4],[3,0.3],[3.8,0.2],[3.2,0.2],[3.7,0.2],[3.3,0.2]]}],"yAxis":[{"type":"value","show":true,"position":"left","name":"Petal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Sepal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    var i;\n    var text = params.value[0];\n    if (params.seriesName === null || params.seriesName === \"\"){\n        if (params.value.length > 1) {\n            for (i = 1; i < params.value.length; i++){\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.name + \" : \" + text;\n        }\n    } else {\n        if (params.value.length > 1) {\n            text = params.seriesName + \" :<br/>\" + text;\n            for (i = 1; i < params.value.length; i++) {\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.seriesName + \" :<br/>\"\n            + params.name + \" : \" + text;\n        }\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"}},{"series":[{"type":"scatter","data":[[3.2,1.4],[3.2,1.5],[3.1,1.5],[2.3,1.3],[2.8,1.5],[2.8,1.3],[3.3,1.6],[2.4,1],[2.9,1.3],[2.7,1.4],[2,1],[3,1.5],[2.2,1],[2.9,1.4],[2.9,1.3],[3.1,1.4],[3,1.5],[2.7,1],[2.2,1.5],[2.5,1.1],[3.2,1.8],[2.8,1.3],[2.5,1.5],[2.8,1.2],[2.9,1.3],[3,1.4],[2.8,1.4],[3,1.7],[2.9,1.5],[2.6,1],[2.4,1.1],[2.4,1],[2.7,1.2],[2.7,1.6],[3,1.5],[3.4,1.6],[3.1,1.5],[2.3,1.3],[3,1.3],[2.5,1.3],[2.6,1.2],[3,1.4],[2.6,1.2],[2.3,1],[2.7,1.3],[3,1.2],[2.9,1.3],[2.9,1.3],[2.5,1.1],[2.8,1.3]]}]},{"series":[{"type":"scatter","data":[[3.3,2.5],[2.7,1.9],[3,2.1],[2.9,1.8],[3,2.2],[3,2.1],[2.5,1.7],[2.9,1.8],[2.5,1.8],[3.6,2.5],[3.2,2],[2.7,1.9],[3,2.1],[2.5,2],[2.8,2.4],[3.2,2.3],[3,1.8],[3.8,2.2],[2.6,2.3],[2.2,1.5],[3.2,2.3],[2.8,2],[2.8,2],[2.7,1.8],[3.3,2.1],[3.2,1.8],[2.8,1.8],[3,1.8],[2.8,2.1],[3,1.6],[2.8,1.9],[3.8,2],[2.8,2.2],[2.8,1.5],[2.6,1.4],[3,2.3],[3.4,2.4],[3.1,1.8],[3,1.8],[3.1,2.1],[3.1,2.4],[3.1,2.3],[2.7,1.9],[3.2,2.3],[3.3,2.5],[3,2.3],[2.5,1.9],[3,2],[3.4,2.3],[3,1.8]]}]}]},"evals":["options.0.tooltip.formatter"],"jsHooks":[]}</script>
+<p>Relocate the timeline. Note that <code>pos</code> argument does not apply.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g %&gt;%<span class="st"> </span><span class="kw">setTimeline</span>(<span class="dt">y=</span><span class="dv">40</span>)</code></pre></div>
+<div id="htmlwidget-4fad2cad8e9ce0d6abfc" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4fad2cad8e9ce0d6abfc">{"x":{"timeline":{"type":"number","data":["setosa","versicolor","virginica"],"x":80,"x2":80,"y":40},"options":[{"series":[{"type":"scatter","data":[[3.5,0.2],[3,0.2],[3.2,0.2],[3.1,0.2],[3.6,0.2],[3.9,0.4],[3.4,0.3],[3.4,0.2],[2.9,0.2],[3.1,0.1],[3.7,0.2],[3.4,0.2],[3,0.1],[3,0.1],[4,0.2],[4.4,0.4],[3.9,0.4],[3.5,0.3],[3.8,0.3],[3.8,0.3],[3.4,0.2],[3.7,0.4],[3.6,0.2],[3.3,0.5],[3.4,0.2],[3,0.2],[3.4,0.4],[3.5,0.2],[3.4,0.2],[3.2,0.2],[3.1,0.2],[3.4,0.4],[4.1,0.1],[4.2,0.2],[3.1,0.2],[3.2,0.2],[3.5,0.2],[3.6,0.1],[3,0.2],[3.4,0.2],[3.5,0.3],[2.3,0.3],[3.2,0.2],[3.5,0.6],[3.8,0.4],[3,0.3],[3.8,0.2],[3.2,0.2],[3.7,0.2],[3.3,0.2]]}],"yAxis":[{"type":"value","show":true,"position":"left","name":"Petal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Sepal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    var i;\n    var text = params.value[0];\n    if (params.seriesName === null || params.seriesName === \"\"){\n        if (params.value.length > 1) {\n            for (i = 1; i < params.value.length; i++){\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.name + \" : \" + text;\n        }\n    } else {\n        if (params.value.length > 1) {\n            text = params.seriesName + \" :<br/>\" + text;\n            for (i = 1; i < params.value.length; i++) {\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.seriesName + \" :<br/>\"\n            + params.name + \" : \" + text;\n        }\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"grid":{"y":120}},{"series":[{"type":"scatter","data":[[3.2,1.4],[3.2,1.5],[3.1,1.5],[2.3,1.3],[2.8,1.5],[2.8,1.3],[3.3,1.6],[2.4,1],[2.9,1.3],[2.7,1.4],[2,1],[3,1.5],[2.2,1],[2.9,1.4],[2.9,1.3],[3.1,1.4],[3,1.5],[2.7,1],[2.2,1.5],[2.5,1.1],[3.2,1.8],[2.8,1.3],[2.5,1.5],[2.8,1.2],[2.9,1.3],[3,1.4],[2.8,1.4],[3,1.7],[2.9,1.5],[2.6,1],[2.4,1.1],[2.4,1],[2.7,1.2],[2.7,1.6],[3,1.5],[3.4,1.6],[3.1,1.5],[2.3,1.3],[3,1.3],[2.5,1.3],[2.6,1.2],[3,1.4],[2.6,1.2],[2.3,1],[2.7,1.3],[3,1.2],[2.9,1.3],[2.9,1.3],[2.5,1.1],[2.8,1.3]]}]},{"series":[{"type":"scatter","data":[[3.3,2.5],[2.7,1.9],[3,2.1],[2.9,1.8],[3,2.2],[3,2.1],[2.5,1.7],[2.9,1.8],[2.5,1.8],[3.6,2.5],[3.2,2],[2.7,1.9],[3,2.1],[2.5,2],[2.8,2.4],[3.2,2.3],[3,1.8],[3.8,2.2],[2.6,2.3],[2.2,1.5],[3.2,2.3],[2.8,2],[2.8,2],[2.7,1.8],[3.3,2.1],[3.2,1.8],[2.8,1.8],[3,1.8],[2.8,2.1],[3,1.6],[2.8,1.9],[3.8,2],[2.8,2.2],[2.8,1.5],[2.6,1.4],[3,2.3],[3.4,2.4],[3.1,1.8],[3,1.8],[3.1,2.1],[3.1,2.4],[3.1,2.3],[2.7,1.9],[3.2,2.3],[3.3,2.5],[3,2.3],[2.5,1.9],[3,2],[3.4,2.3],[3,1.8]]}]}]},"evals":["options.0.tooltip.formatter"],"jsHooks":[]}</script>
+<p>Enable autoPlay and change playInterval.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g %&gt;%<span class="st"> </span><span class="kw">setTimeline</span>(<span class="dt">autoPlay=</span><span class="ot">TRUE</span>, <span class="dt">playInterval=</span><span class="dv">500</span>)</code></pre></div>
+<div id="htmlwidget-8e6dc534ff9a5e2d15e8" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-8e6dc534ff9a5e2d15e8">{"x":{"timeline":{"type":"number","data":["setosa","versicolor","virginica"],"x":80,"x2":80,"autoPlay":true,"playInterval":500},"options":[{"series":[{"type":"scatter","data":[[3.5,0.2],[3,0.2],[3.2,0.2],[3.1,0.2],[3.6,0.2],[3.9,0.4],[3.4,0.3],[3.4,0.2],[2.9,0.2],[3.1,0.1],[3.7,0.2],[3.4,0.2],[3,0.1],[3,0.1],[4,0.2],[4.4,0.4],[3.9,0.4],[3.5,0.3],[3.8,0.3],[3.8,0.3],[3.4,0.2],[3.7,0.4],[3.6,0.2],[3.3,0.5],[3.4,0.2],[3,0.2],[3.4,0.4],[3.5,0.2],[3.4,0.2],[3.2,0.2],[3.1,0.2],[3.4,0.4],[4.1,0.1],[4.2,0.2],[3.1,0.2],[3.2,0.2],[3.5,0.2],[3.6,0.1],[3,0.2],[3.4,0.2],[3.5,0.3],[2.3,0.3],[3.2,0.2],[3.5,0.6],[3.8,0.4],[3,0.3],[3.8,0.2],[3.2,0.2],[3.7,0.2],[3.3,0.2]]}],"yAxis":[{"type":"value","show":true,"position":"left","name":"Petal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Sepal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    var i;\n    var text = params.value[0];\n    if (params.seriesName === null || params.seriesName === \"\"){\n        if (params.value.length > 1) {\n            for (i = 1; i < params.value.length; i++){\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.name + \" : \" + text;\n        }\n    } else {\n        if (params.value.length > 1) {\n            text = params.seriesName + \" :<br/>\" + text;\n            for (i = 1; i < params.value.length; i++) {\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.seriesName + \" :<br/>\"\n            + params.name + \" : \" + text;\n        }\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"}},{"series":[{"type":"scatter","data":[[3.2,1.4],[3.2,1.5],[3.1,1.5],[2.3,1.3],[2.8,1.5],[2.8,1.3],[3.3,1.6],[2.4,1],[2.9,1.3],[2.7,1.4],[2,1],[3,1.5],[2.2,1],[2.9,1.4],[2.9,1.3],[3.1,1.4],[3,1.5],[2.7,1],[2.2,1.5],[2.5,1.1],[3.2,1.8],[2.8,1.3],[2.5,1.5],[2.8,1.2],[2.9,1.3],[3,1.4],[2.8,1.4],[3,1.7],[2.9,1.5],[2.6,1],[2.4,1.1],[2.4,1],[2.7,1.2],[2.7,1.6],[3,1.5],[3.4,1.6],[3.1,1.5],[2.3,1.3],[3,1.3],[2.5,1.3],[2.6,1.2],[3,1.4],[2.6,1.2],[2.3,1],[2.7,1.3],[3,1.2],[2.9,1.3],[2.9,1.3],[2.5,1.1],[2.8,1.3]]}]},{"series":[{"type":"scatter","data":[[3.3,2.5],[2.7,1.9],[3,2.1],[2.9,1.8],[3,2.2],[3,2.1],[2.5,1.7],[2.9,1.8],[2.5,1.8],[3.6,2.5],[3.2,2],[2.7,1.9],[3,2.1],[2.5,2],[2.8,2.4],[3.2,2.3],[3,1.8],[3.8,2.2],[2.6,2.3],[2.2,1.5],[3.2,2.3],[2.8,2],[2.8,2],[2.7,1.8],[3.3,2.1],[3.2,1.8],[2.8,1.8],[3,1.8],[2.8,2.1],[3,1.6],[2.8,1.9],[3.8,2],[2.8,2.2],[2.8,1.5],[2.6,1.4],[3,2.3],[3.4,2.4],[3.1,1.8],[3,1.8],[3.1,2.1],[3.1,2.4],[3.1,2.3],[2.7,1.9],[3.2,2.3],[3.3,2.5],[3,2.3],[2.5,1.9],[3,2],[3.4,2.3],[3,1.8]]}]}]},"evals":["options.0.tooltip.formatter"],"jsHooks":[]}</script>
+<p>Reformat and rename labels.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g %&gt;%<span class="st"> </span><span class="kw">setTimeline</span>(<span class="dt">label=</span><span class="kw">labelStyle</span>(<span class="dt">textStyle=</span><span class="kw">textStyle</span>(
+    <span class="dt">color=</span><span class="st">&#39;red&#39;</span>, <span class="dt">fontFamily=</span><span class="st">&#39;Courier New&#39;</span>)),
+    <span class="dt">data=</span><span class="kw">c</span>(<span class="st">&#39;iris 1&#39;</span>, <span class="st">&#39;iris 2&#39;</span>, <span class="st">&#39;iris 3&#39;</span>))</code></pre></div>
+<div id="htmlwidget-35477e6dcfc6b56a73bc" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-35477e6dcfc6b56a73bc">{"x":{"timeline":{"type":"number","data":["iris 1","iris 2","iris 3"],"x":80,"x2":80,"label":{"textStyle":{"color":"red","fontFamily":"Courier New"}}},"options":[{"series":[{"type":"scatter","data":[[3.5,0.2],[3,0.2],[3.2,0.2],[3.1,0.2],[3.6,0.2],[3.9,0.4],[3.4,0.3],[3.4,0.2],[2.9,0.2],[3.1,0.1],[3.7,0.2],[3.4,0.2],[3,0.1],[3,0.1],[4,0.2],[4.4,0.4],[3.9,0.4],[3.5,0.3],[3.8,0.3],[3.8,0.3],[3.4,0.2],[3.7,0.4],[3.6,0.2],[3.3,0.5],[3.4,0.2],[3,0.2],[3.4,0.4],[3.5,0.2],[3.4,0.2],[3.2,0.2],[3.1,0.2],[3.4,0.4],[4.1,0.1],[4.2,0.2],[3.1,0.2],[3.2,0.2],[3.5,0.2],[3.6,0.1],[3,0.2],[3.4,0.2],[3.5,0.3],[2.3,0.3],[3.2,0.2],[3.5,0.6],[3.8,0.4],[3,0.3],[3.8,0.2],[3.2,0.2],[3.7,0.2],[3.3,0.2]]}],"yAxis":[{"type":"value","show":true,"position":"left","name":"Petal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Sepal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    var i;\n    var text = params.value[0];\n    if (params.seriesName === null || params.seriesName === \"\"){\n        if (params.value.length > 1) {\n            for (i = 1; i < params.value.length; i++){\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.name + \" : \" + text;\n        }\n    } else {\n        if (params.value.length > 1) {\n            text = params.seriesName + \" :<br/>\" + text;\n            for (i = 1; i < params.value.length; i++) {\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.seriesName + \" :<br/>\"\n            + params.name + \" : \" + text;\n        }\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"}},{"series":[{"type":"scatter","data":[[3.2,1.4],[3.2,1.5],[3.1,1.5],[2.3,1.3],[2.8,1.5],[2.8,1.3],[3.3,1.6],[2.4,1],[2.9,1.3],[2.7,1.4],[2,1],[3,1.5],[2.2,1],[2.9,1.4],[2.9,1.3],[3.1,1.4],[3,1.5],[2.7,1],[2.2,1.5],[2.5,1.1],[3.2,1.8],[2.8,1.3],[2.5,1.5],[2.8,1.2],[2.9,1.3],[3,1.4],[2.8,1.4],[3,1.7],[2.9,1.5],[2.6,1],[2.4,1.1],[2.4,1],[2.7,1.2],[2.7,1.6],[3,1.5],[3.4,1.6],[3.1,1.5],[2.3,1.3],[3,1.3],[2.5,1.3],[2.6,1.2],[3,1.4],[2.6,1.2],[2.3,1],[2.7,1.3],[3,1.2],[2.9,1.3],[2.9,1.3],[2.5,1.1],[2.8,1.3]]}]},{"series":[{"type":"scatter","data":[[3.3,2.5],[2.7,1.9],[3,2.1],[2.9,1.8],[3,2.2],[3,2.1],[2.5,1.7],[2.9,1.8],[2.5,1.8],[3.6,2.5],[3.2,2],[2.7,1.9],[3,2.1],[2.5,2],[2.8,2.4],[3.2,2.3],[3,1.8],[3.8,2.2],[2.6,2.3],[2.2,1.5],[3.2,2.3],[2.8,2],[2.8,2],[2.7,1.8],[3.3,2.1],[3.2,1.8],[2.8,1.8],[3,1.8],[2.8,2.1],[3,1.6],[2.8,1.9],[3.8,2],[2.8,2.2],[2.8,1.5],[2.6,1.4],[3,2.3],[3.4,2.4],[3.1,1.8],[3,1.8],[3.1,2.1],[3.1,2.4],[3.1,2.3],[2.7,1.9],[3.2,2.3],[3.3,2.5],[3,2.3],[2.5,1.9],[3,2],[3.4,2.3],[3,1.8]]}]}]},"evals":["options.0.tooltip.formatter"],"jsHooks":[]}</script>
+<p>Other formats.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g %&gt;%<span class="st"> </span><span class="kw">setTimeline</span>(<span class="dt">bgColor=</span><span class="st">&#39;yellow&#39;</span>, <span class="dt">borderWidth =</span> <span class="dv">1</span>,
+                  <span class="dt">borderColor=</span><span class="st">&#39;gray&#39;</span>) %&gt;%
+<span class="st">    </span><span class="kw">setGrid</span>(<span class="dt">y2=</span><span class="dv">90</span>)</code></pre></div>
+<div id="htmlwidget-e2f4b6a6c914e8f64a58" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e2f4b6a6c914e8f64a58">{"x":{"timeline":{"type":"number","data":["setosa","versicolor","virginica"],"x":80,"x2":80,"backgroundColor":"#FFFF08","borderColor":"gray","borderWidth":1},"options":[{"series":[{"type":"scatter","data":[[3.5,0.2],[3,0.2],[3.2,0.2],[3.1,0.2],[3.6,0.2],[3.9,0.4],[3.4,0.3],[3.4,0.2],[2.9,0.2],[3.1,0.1],[3.7,0.2],[3.4,0.2],[3,0.1],[3,0.1],[4,0.2],[4.4,0.4],[3.9,0.4],[3.5,0.3],[3.8,0.3],[3.8,0.3],[3.4,0.2],[3.7,0.4],[3.6,0.2],[3.3,0.5],[3.4,0.2],[3,0.2],[3.4,0.4],[3.5,0.2],[3.4,0.2],[3.2,0.2],[3.1,0.2],[3.4,0.4],[4.1,0.1],[4.2,0.2],[3.1,0.2],[3.2,0.2],[3.5,0.2],[3.6,0.1],[3,0.2],[3.4,0.2],[3.5,0.3],[2.3,0.3],[3.2,0.2],[3.5,0.6],[3.8,0.4],[3,0.3],[3.8,0.2],[3.2,0.2],[3.7,0.2],[3.3,0.2]]}],"yAxis":[{"type":"value","show":true,"position":"left","name":"Petal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Sepal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    var i;\n    var text = params.value[0];\n    if (params.seriesName === null || params.seriesName === \"\"){\n        if (params.value.length > 1) {\n            for (i = 1; i < params.value.length; i++){\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.name + \" : \" + text;\n        }\n    } else {\n        if (params.value.length > 1) {\n            text = params.seriesName + \" :<br/>\" + text;\n            for (i = 1; i < params.value.length; i++) {\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.seriesName + \" :<br/>\"\n            + params.name + \" : \" + text;\n        }\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"grid":{"y2":90}},{"series":[{"type":"scatter","data":[[3.2,1.4],[3.2,1.5],[3.1,1.5],[2.3,1.3],[2.8,1.5],[2.8,1.3],[3.3,1.6],[2.4,1],[2.9,1.3],[2.7,1.4],[2,1],[3,1.5],[2.2,1],[2.9,1.4],[2.9,1.3],[3.1,1.4],[3,1.5],[2.7,1],[2.2,1.5],[2.5,1.1],[3.2,1.8],[2.8,1.3],[2.5,1.5],[2.8,1.2],[2.9,1.3],[3,1.4],[2.8,1.4],[3,1.7],[2.9,1.5],[2.6,1],[2.4,1.1],[2.4,1],[2.7,1.2],[2.7,1.6],[3,1.5],[3.4,1.6],[3.1,1.5],[2.3,1.3],[3,1.3],[2.5,1.3],[2.6,1.2],[3,1.4],[2.6,1.2],[2.3,1],[2.7,1.3],[3,1.2],[2.9,1.3],[2.9,1.3],[2.5,1.1],[2.8,1.3]]}]},{"series":[{"type":"scatter","data":[[3.3,2.5],[2.7,1.9],[3,2.1],[2.9,1.8],[3,2.2],[3,2.1],[2.5,1.7],[2.9,1.8],[2.5,1.8],[3.6,2.5],[3.2,2],[2.7,1.9],[3,2.1],[2.5,2],[2.8,2.4],[3.2,2.3],[3,1.8],[3.8,2.2],[2.6,2.3],[2.2,1.5],[3.2,2.3],[2.8,2],[2.8,2],[2.7,1.8],[3.3,2.1],[3.2,1.8],[2.8,1.8],[3,1.8],[2.8,2.1],[3,1.6],[2.8,1.9],[3.8,2],[2.8,2.2],[2.8,1.5],[2.6,1.4],[3,2.3],[3.4,2.4],[3.1,1.8],[3,1.8],[3.1,2.1],[3.1,2.4],[3.1,2.3],[2.7,1.9],[3.2,2.3],[3.3,2.5],[3,2.3],[2.5,1.9],[3,2],[3.4,2.3],[3,1.8]]}]}]},"evals":["options.0.tooltip.formatter"],"jsHooks":[]}</script>
+<p>Change the symbol.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g %&gt;%<span class="st"> </span><span class="kw">setTimeline</span>(<span class="dt">symbol=</span><span class="st">&#39;emptyRectangle&#39;</span>)</code></pre></div>
+<div id="htmlwidget-51bcf65644746f098b56" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-51bcf65644746f098b56">{"x":{"timeline":{"type":"number","data":["setosa","versicolor","virginica"],"x":80,"x2":80,"symbol":"emptyRectangle"},"options":[{"series":[{"type":"scatter","data":[[3.5,0.2],[3,0.2],[3.2,0.2],[3.1,0.2],[3.6,0.2],[3.9,0.4],[3.4,0.3],[3.4,0.2],[2.9,0.2],[3.1,0.1],[3.7,0.2],[3.4,0.2],[3,0.1],[3,0.1],[4,0.2],[4.4,0.4],[3.9,0.4],[3.5,0.3],[3.8,0.3],[3.8,0.3],[3.4,0.2],[3.7,0.4],[3.6,0.2],[3.3,0.5],[3.4,0.2],[3,0.2],[3.4,0.4],[3.5,0.2],[3.4,0.2],[3.2,0.2],[3.1,0.2],[3.4,0.4],[4.1,0.1],[4.2,0.2],[3.1,0.2],[3.2,0.2],[3.5,0.2],[3.6,0.1],[3,0.2],[3.4,0.2],[3.5,0.3],[2.3,0.3],[3.2,0.2],[3.5,0.6],[3.8,0.4],[3,0.3],[3.8,0.2],[3.2,0.2],[3.7,0.2],[3.3,0.2]]}],"yAxis":[{"type":"value","show":true,"position":"left","name":"Petal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Sepal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    var i;\n    var text = params.value[0];\n    if (params.seriesName === null || params.seriesName === \"\"){\n        if (params.value.length > 1) {\n            for (i = 1; i < params.value.length; i++){\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.name + \" : \" + text;\n        }\n    } else {\n        if (params.value.length > 1) {\n            text = params.seriesName + \" :<br/>\" + text;\n            for (i = 1; i < params.value.length; i++) {\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.seriesName + \" :<br/>\"\n            + params.name + \" : \" + text;\n        }\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"}},{"series":[{"type":"scatter","data":[[3.2,1.4],[3.2,1.5],[3.1,1.5],[2.3,1.3],[2.8,1.5],[2.8,1.3],[3.3,1.6],[2.4,1],[2.9,1.3],[2.7,1.4],[2,1],[3,1.5],[2.2,1],[2.9,1.4],[2.9,1.3],[3.1,1.4],[3,1.5],[2.7,1],[2.2,1.5],[2.5,1.1],[3.2,1.8],[2.8,1.3],[2.5,1.5],[2.8,1.2],[2.9,1.3],[3,1.4],[2.8,1.4],[3,1.7],[2.9,1.5],[2.6,1],[2.4,1.1],[2.4,1],[2.7,1.2],[2.7,1.6],[3,1.5],[3.4,1.6],[3.1,1.5],[2.3,1.3],[3,1.3],[2.5,1.3],[2.6,1.2],[3,1.4],[2.6,1.2],[2.3,1],[2.7,1.3],[3,1.2],[2.9,1.3],[2.9,1.3],[2.5,1.1],[2.8,1.3]]}]},{"series":[{"type":"scatter","data":[[3.3,2.5],[2.7,1.9],[3,2.1],[2.9,1.8],[3,2.2],[3,2.1],[2.5,1.7],[2.9,1.8],[2.5,1.8],[3.6,2.5],[3.2,2],[2.7,1.9],[3,2.1],[2.5,2],[2.8,2.4],[3.2,2.3],[3,1.8],[3.8,2.2],[2.6,2.3],[2.2,1.5],[3.2,2.3],[2.8,2],[2.8,2],[2.7,1.8],[3.3,2.1],[3.2,1.8],[2.8,1.8],[3,1.8],[2.8,2.1],[3,1.6],[2.8,1.9],[3.8,2],[2.8,2.2],[2.8,1.5],[2.6,1.4],[3,2.3],[3.4,2.4],[3.1,1.8],[3,1.8],[3.1,2.1],[3.1,2.4],[3.1,2.3],[2.7,1.9],[3.2,2.3],[3.3,2.5],[3,2.3],[2.5,1.9],[3,2],[3.4,2.3],[3,1.8]]}]}]},"evals":["options.0.tooltip.formatter"],"jsHooks":[]}</script>
+<p>Locate on the second timeslot on load. <code>currentIndex</code> should be 1.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g %&gt;%<span class="st"> </span><span class="kw">setTimeline</span>(<span class="dt">currentIndex=</span><span class="dv">1</span>)</code></pre></div>
+<div id="htmlwidget-315b76f7707a82fbb3df" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-315b76f7707a82fbb3df">{"x":{"timeline":{"type":"number","data":["setosa","versicolor","virginica"],"x":80,"x2":80,"currentIndex":1},"options":[{"series":[{"type":"scatter","data":[[3.5,0.2],[3,0.2],[3.2,0.2],[3.1,0.2],[3.6,0.2],[3.9,0.4],[3.4,0.3],[3.4,0.2],[2.9,0.2],[3.1,0.1],[3.7,0.2],[3.4,0.2],[3,0.1],[3,0.1],[4,0.2],[4.4,0.4],[3.9,0.4],[3.5,0.3],[3.8,0.3],[3.8,0.3],[3.4,0.2],[3.7,0.4],[3.6,0.2],[3.3,0.5],[3.4,0.2],[3,0.2],[3.4,0.4],[3.5,0.2],[3.4,0.2],[3.2,0.2],[3.1,0.2],[3.4,0.4],[4.1,0.1],[4.2,0.2],[3.1,0.2],[3.2,0.2],[3.5,0.2],[3.6,0.1],[3,0.2],[3.4,0.2],[3.5,0.3],[2.3,0.3],[3.2,0.2],[3.5,0.6],[3.8,0.4],[3,0.3],[3.8,0.2],[3.2,0.2],[3.7,0.2],[3.3,0.2]]}],"yAxis":[{"type":"value","show":true,"position":"left","name":"Petal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Sepal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    var i;\n    var text = params.value[0];\n    if (params.seriesName === null || params.seriesName === \"\"){\n        if (params.value.length > 1) {\n            for (i = 1; i < params.value.length; i++){\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.name + \" : \" + text;\n        }\n    } else {\n        if (params.value.length > 1) {\n            text = params.seriesName + \" :<br/>\" + text;\n            for (i = 1; i < params.value.length; i++) {\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.seriesName + \" :<br/>\"\n            + params.name + \" : \" + text;\n        }\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"}},{"series":[{"type":"scatter","data":[[3.2,1.4],[3.2,1.5],[3.1,1.5],[2.3,1.3],[2.8,1.5],[2.8,1.3],[3.3,1.6],[2.4,1],[2.9,1.3],[2.7,1.4],[2,1],[3,1.5],[2.2,1],[2.9,1.4],[2.9,1.3],[3.1,1.4],[3,1.5],[2.7,1],[2.2,1.5],[2.5,1.1],[3.2,1.8],[2.8,1.3],[2.5,1.5],[2.8,1.2],[2.9,1.3],[3,1.4],[2.8,1.4],[3,1.7],[2.9,1.5],[2.6,1],[2.4,1.1],[2.4,1],[2.7,1.2],[2.7,1.6],[3,1.5],[3.4,1.6],[3.1,1.5],[2.3,1.3],[3,1.3],[2.5,1.3],[2.6,1.2],[3,1.4],[2.6,1.2],[2.3,1],[2.7,1.3],[3,1.2],[2.9,1.3],[2.9,1.3],[2.5,1.1],[2.8,1.3]]}]},{"series":[{"type":"scatter","data":[[3.3,2.5],[2.7,1.9],[3,2.1],[2.9,1.8],[3,2.2],[3,2.1],[2.5,1.7],[2.9,1.8],[2.5,1.8],[3.6,2.5],[3.2,2],[2.7,1.9],[3,2.1],[2.5,2],[2.8,2.4],[3.2,2.3],[3,1.8],[3.8,2.2],[2.6,2.3],[2.2,1.5],[3.2,2.3],[2.8,2],[2.8,2],[2.7,1.8],[3.3,2.1],[3.2,1.8],[2.8,1.8],[3,1.8],[2.8,2.1],[3,1.6],[2.8,1.9],[3.8,2],[2.8,2.2],[2.8,1.5],[2.6,1.4],[3,2.3],[3.4,2.4],[3.1,1.8],[3,1.8],[3.1,2.1],[3.1,2.4],[3.1,2.3],[2.7,1.9],[3.2,2.3],[3.3,2.5],[3,2.3],[2.5,1.9],[3,2],[3.4,2.3],[3,1.8]]}]}]},"evals":["options.0.tooltip.formatter"],"jsHooks":[]}</script>
+</div>
+<div id="references" class="section level1">
+<h1><span class="header-section-number">4</span> References</h1>
+<p><a href="http://echarts.baidu.com/echarts2/doc/option.html#title~timeline" class="uri">http://echarts.baidu.com/echarts2/doc/option.html#title~timeline</a></p>
+</div>
+
+<script type="text/javascript">
+window.onload = function() {
+  var i, fig = 1, caps = document.getElementsByClassName('caption');
+  for (i = 0; i < caps.length; i++) {
+    var cap = caps[i];
+    if (cap.parentElement.className !== 'figure' || cap.nodeName !== 'P')
+      continue;
+    cap.innerHTML = '<span>Figure ' + fig + ':</span> ' + cap.innerHTML;
+    fig++;
+  }
+  fig = 1;
+  caps = document.getElementsByTagName('caption');
+  for (i = 0; i < caps.length; i++) {
+    var cap = caps[i];
+    if (cap.parentElement.nodeName !== 'TABLE') continue;
+    cap.innerHTML = '<span>Table ' + fig + ':</span> ' + cap.innerHTML;
+    fig++;
+  }
+}
+</script>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

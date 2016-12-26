@@ -1,0 +1,196 @@
+---
+title: "Basic Plots 22 - Funnel Chart"
+author: "Yiying Wang"
+date: "`r Sys.Date()`"
+output: 
+  knitr:::html_vignette:
+    number_sections: yes
+    theme: cosmo
+    toc: yes
+    self_contained: no
+    lib_dir: libs
+vignette: >
+  %\VignetteIndexEntry{Basic Plots 22 - Funnel Chart}
+  %\VignetteEngine{knitr::rmarkdown_notangle}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+First, you should load `recharts`:
+```{r}
+library(recharts)
+```
+
+# Introduction
+
+Funnel plot includes 2 basic types:
+
+- Funnel
+- Pyramid
+
+<table id='intro'>
+<tr><td>
+```{r,echo=FALSE}
+cars <- data.table::dcast(mtcars, carb~am, length, value.var='gear')
+cars <- data.table::melt(cars, id='carb')
+names(cars) <- c("carb", "am", "N")
+echartr(cars, carb, N, type='funnel') %>% 
+    setLegend(pos=3) %>%
+    setTheme('infographic', width=400, height=300) %>%
+    setTitle('mtcars: carb distibution by am','funnel')
+```
+</td>
+<td>
+```{r,echo=FALSE}
+echartr(cars, carb, N, type='pyramid') %>% 
+    setLegend(pos=3) %>%
+    setTheme('roma', width=400, height=300) %>%
+    setTitle('mtcars: carb distibution by am','pyramid')
+```
+</td></tr>
+</table>
+
+The keys are:
+
+- character `x` and numeric `y` and will be compacted using `data.table::dcast` with `fun=sum`
+- **`x` is used as series, `series` is used to produce stacked funnels, while `facet` is used to produce separate funnels!**
+- Pie and funnel charts can shift from one to another by clicking type shift buttons in the toolbox widget.
+
+# Function Call
+
+```r
+echartr(data, x, <y>, <series>, <facet>, <t>, <type>, <subtype>)
+```
+
++--------+--------------------------------------------------------------------+
+| Arg    |  Requirement                                                       |
++========+====================================================================+
+|**data**| source data in the form of data.frame                            |
++--------+--------------------------------------------------------------------+
+| **x**  | character independent variable. Each level of `x` is treated as a data series. Other type will be coerced to factors. Only the first one is accepted if multiple variables are provided. |
++--------+--------------------------------------------------------------------+
+| y      | numeric dependent variable. Only the first one is accepted if multiple variables are provided. |
++--------+--------------------------------------------------------------------+
+| series | series variable which will be coerced to factors. Each level of `series` is treated as a subsetting factor to produce stacked funnels. Only the first one is accepted if multiple variables are provided. |
++--------+--------------------------------------------------------------------+
+| facet  | facetting variable which will be coerced to factors. Each level of `facet` is treated as a subsetting factor to produce separate funnels. Only the first one is accepted if multiple variables are provided. |
++--------+--------------------------------------------------------------------+
+|  t     | timeline variable which will be coerced to factors. Only the first one is accepted if multiple variables are provided. |
++--------+--------------------------------------------------------------------+
+| type   | 'funnel', 'pyramid'. |
++--------+--------------------------------------------------------------------+
+| subtype| - funnel: c("left","center","right") | 
+|        |     + left: funnelAlign left |
+|        |     + center: funnelAlign center (default) |
+|        |     + right: funnelAlign right |
+|        | - pyramid: c("left","center","right")  |
+|        |     + left: funnelAlign left |
+|        |     + center: funnelAlign center (default) |
+|        |     + right: funnelAlign right |
++--------+--------------------------------------------------------------------+
+
+# Showcase
+
+## Data Preparation
+
+Let's look into `mtcars` dataset embeded in the package `datasets`. The distribution by carb and am is shown as below:
+
+```{r}
+cars <- data.table::dcast(mtcars, carb+am~., length, value.var='gear')
+names(cars) <- c("carb", "am", "N")
+knitr::kable(cars)
+```
+
+## Funnel Chart
+
+### Single Funnel
+
+`type` is set 'funnel'.
+
+```{r}
+echartr(cars, carb, N, type='funnel') %>% 
+    setTitle('mtcars: carb distibution')
+```
+
+### Stacked Funnel
+
+Set `series` to produce a stacked funnel chart.
+
+```{r}
+echartr(cars, carb, N, am, type='funnel') %>% 
+    setTitle('mtcars: carb distibution by am')
+```
+
+### Multiple Funnel
+
+Funnel chart uses `facet` as subsetting factor to produce seperate polar systems. So when we apply `am` (containing 2 levels) as `facet`, we get 2 funnels.
+
+```{r}
+echartr(cars, carb, N, facet=am, type='funnel') %>% 
+    setTitle('mtcars: carb distibution by am')
+```
+
+### With Timeline
+
+We need another variable as timeline. Let's say, 'gear'.
+
+```{r}
+cars_gear <- data.table::dcast(mtcars, carb+gear+am~., length, value.var='gear')
+names(cars_gear) <- c("carb", "gear", "am", "N")
+```
+
+In order to make timeline work properly, we need an expand.grid dataset to cover all the combination of `x` and `t` levels.
+
+```{r}
+fullData <- with(mtcars, data.frame(
+    expand.grid(unique(carb), unique(gear), unique(am))))
+names(fullData) <- c("carb", "gear", "am")
+cars_gear <- merge(cars_gear, fullData, all.y=TRUE)
+```
+
+```{r}
+echartr(cars_gear, carb, N, facet=am, t=gear, type='funnel') %>% 
+    setTitle('mtcars: carb distibution by am across gear')
+```
+
+### Different Alignment
+
+Left align.
+
+```{r}
+echartr(cars, carb, N, facet=am, type='funnel', subtype='left') %>% 
+    setTitle('mtcars: carb distibution by am across gear')
+```
+
+## Pyramid Chart
+
+`type` is set 'pyramid'.
+
+```{r}
+echartr(cars, carb, N, facet=am, type='pyramid') %>% 
+    setTitle('mtcars: carb distibution by am')
+```
+
+You can also mix `funnel` and `pyramid`. Note that you need to wrap `type` and `subtype` in list since they are thus associated with `facets`.
+
+```{r}
+echartr(cars, carb, N, facet=am, type=list('funnel', 'pyramid')) %>% 
+    setTitle('mtcars: carb distibution by am')
+```
+
+
+```{r}
+echartr(cars, carb, N, facet=am, type=list('funnel', 'pyramid'), 
+        subtype=list('right', 'left')) %>% 
+    setTitle('mtcars: carb distibution by am')
+```
+
+# Futher Setup
+
+Then you can configure the widgets, add markLines and/or markPoints, fortify the chart.
+
+You can refer to related functions to play around on your own.
+

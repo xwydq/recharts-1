@@ -409,7 +409,7 @@ series_pie <- function(lst, type, subtype, return=NULL, ...){
             width=paste0(dfpies[i, "radius"], '%'),
             x=paste0(dfpies[i, "center.x"]-dfpies[i, 'radius']/2, '%'),
             radius=paste0(dfpies[i, 'radius'], '%'),
-            max=ifelse(all(is.na(data[, dfpies[i, 'facets']])), 0,
+            max=ifelse(all(is.na(data[, as.character(dfpies[i, 'facets'])])), 0,
                        max(unname(data[, as.character(dfpies[i, 'facets'])]), na.rm=TRUE)),
             height=ifelse(rows==1, '70%', paste0(dfpies[i, 'radius'], '%')),
             y=ifelse(rows==1, rep('15%', length(pies)),

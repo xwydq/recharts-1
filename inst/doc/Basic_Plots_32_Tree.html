@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Yiying Wang" />
+
+<meta name="date" content="2016-12-26" />
+
+<title>Basic Plots 32 - Tree Chart</title>
+
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script src="libs/htmlwidgets-0.8/htmlwidgets.js"></script>
+<script src="libs/echarts-2.2.7/echarts-all.js"></script>
+<script src="libs/charts-ext-2.2.7/main.js"></script>
+<script src="libs/charts-ext-2.2.7/BMap.js"></script>
+<script src="libs/echarts-binding-0.2/echarts.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="/home/madlogos/R/x86_64-pc-linux-gnu-library/3.3/knitr/misc/vignette.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Basic Plots 32 - Tree Chart</h1>
+<h4 class="author"><em>Yiying Wang</em></h4>
+<h4 class="date"><em>2016-12-26</em></h4>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction"><span class="toc-section-number">1</span> Introduction</a></li>
+<li><a href="#function-call"><span class="toc-section-number">2</span> Function Call</a></li>
+<li><a href="#showcase"><span class="toc-section-number">3</span> Showcase</a><ul>
+<li><a href="#data-preparation"><span class="toc-section-number">3.1</span> Data Preparation</a></li>
+<li><a href="#tree-chart"><span class="toc-section-number">3.2</span> Tree Chart</a><ul>
+<li><a href="#single-tree"><span class="toc-section-number">3.2.1</span> Single Tree</a></li>
+<li><a href="#multiple-trees"><span class="toc-section-number">3.2.2</span> Multiple Trees</a></li>
+</ul></li>
+<li><a href="#inverse-tree-chart"><span class="toc-section-number">3.3</span> Inverse Tree Chart</a></li>
+<li><a href="#horizontal-tree"><span class="toc-section-number">3.4</span> Horizontal Tree</a></li>
+<li><a href="#inverse-horzontal-tree"><span class="toc-section-number">3.5</span> Inverse Horzontal Tree</a></li>
+</ul></li>
+<li><a href="#futher-setup"><span class="toc-section-number">4</span> Futher Setup</a></li>
+</ul>
+</div>
+
+<p>First, you should load <code>recharts</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(recharts)</code></pre></div>
+<div id="introduction" class="section level1">
+<h1><span class="header-section-number">1</span> Introduction</h1>
+<p>Tree chart includes 4 basic types:</p>
+<ul>
+<li>Horizontal tree</li>
+<li>Inverse horizontal tree</li>
+<li>Vertical tree</li>
+<li>Inverse vertical tree</li>
+</ul>
+<table id="intro">
+<tr>
+<td>
+<div id="htmlwidget-353b945c5f78574bc3e1" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-353b945c5f78574bc3e1">{"x":{"series":[{"type":"tree","orient":"vertical","roam":true,"direction":"","data":[{"name":"North America","value":1,"children":[{"name":"USA","value":1,"children":[{"name":"California","value":1},{"name":"New York","value":1},{"name":"Massachusetts","value":1}]},{"name":"Canada","value":1,"children":[{"name":"Quebec","value":1},{"name":"Ontario","value":1}]}]}],"name":"Tree 1","nodePadding":1,"rootLocation":{"x":"30%","y":"10%"},"itemStyle":{"normal":{"label":{"show":false,"formatter":"{b}"},"lineStyle":{"color":"#48b","shadowColor":"#000","shadowBlur":3,"shadowOffsetX":2,"shadowOffsetY":3,"type":"curve"}},"emphasis":{"label":{"show":true}}}},{"type":"tree","orient":"vertical","roam":true,"direction":"","data":[{"name":"South America","value":1,"children":[{"name":"Brazil","value":1,"children":[{"name":"Rio de Jeneiro","value":1},{"name":"Sao Paolo","value":1}]},{"name":"Argentina","value":1,"children":[{"name":"Buenos Aires","value":1},{"name":"Mendosa","value":1}]}]}],"name":"Tree 2","nodePadding":1,"rootLocation":{"x":"70%","y":"10%"},"itemStyle":{"normal":{"label":{"show":false,"formatter":"{b}"},"lineStyle":{"color":"#48b","shadowColor":"#000","shadowBlur":3,"shadowOffsetX":2,"shadowOffsetY":3,"type":"curve"}},"emphasis":{"label":{"show":true}}}}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["North America","USA","Canada","California","New York","Massachusetts","Quebec","Ontario","South America","Brazil","Argentina","Rio de Jeneiro","Sao Paolo","Buenos Aires","Mendosa"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["Tree 1","Tree 2"],"x":"left","y":"top","orient":"horizontal"},"title":{"text":"tree","x":"center","y":"bottom","orient":"horizontal"},"theme":"infographic"},"evals":[],"jsHooks":[]}</script>
+</td>
+<td>
+<div id="htmlwidget-fe3044e3031e2eb81f53" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-fe3044e3031e2eb81f53">{"x":{"series":[{"type":"tree","orient":"vertical","roam":true,"direction":"inverse","data":[{"name":"North America","value":1,"children":[{"name":"USA","value":1,"children":[{"name":"California","value":1},{"name":"New York","value":1},{"name":"Massachusetts","value":1}]},{"name":"Canada","value":1,"children":[{"name":"Quebec","value":1},{"name":"Ontario","value":1}]}]}],"name":"Tree 1","nodePadding":1,"rootLocation":{"x":"30%","y":"90%"},"itemStyle":{"normal":{"label":{"show":false,"formatter":"{b}"},"lineStyle":{"color":"#48b","shadowColor":"#000","shadowBlur":3,"shadowOffsetX":2,"shadowOffsetY":3,"type":"curve"}},"emphasis":{"label":{"show":true}}}},{"type":"tree","orient":"vertical","roam":true,"direction":"inverse","data":[{"name":"South America","value":1,"children":[{"name":"Brazil","value":1,"children":[{"name":"Rio de Jeneiro","value":1},{"name":"Sao Paolo","value":1}]},{"name":"Argentina","value":1,"children":[{"name":"Buenos Aires","value":1},{"name":"Mendosa","value":1}]}]}],"name":"Tree 2","nodePadding":1,"rootLocation":{"x":"70%","y":"90%"},"itemStyle":{"normal":{"label":{"show":false,"formatter":"{b}"},"lineStyle":{"color":"#48b","shadowColor":"#000","shadowBlur":3,"shadowOffsetX":2,"shadowOffsetY":3,"type":"curve"}},"emphasis":{"label":{"show":true}}}}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["North America","USA","Canada","California","New York","Massachusetts","Quebec","Ontario","South America","Brazil","Argentina","Rio de Jeneiro","Sao Paolo","Buenos Aires","Mendosa"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["Tree 1","Tree 2"],"x":"left","y":"top","orient":"horizontal"},"title":{"text":"tree_inv","x":"center","y":"bottom","orient":"horizontal"},"theme":"roma"},"evals":[],"jsHooks":[]}</script>
+</td>
+</tr>
+<tr>
+<td>
+<div id="htmlwidget-2a8de386c89bfb50eb10" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2a8de386c89bfb50eb10">{"x":{"series":[{"type":"tree","orient":"horizontal","roam":true,"direction":"","data":[{"name":"North America","value":1,"children":[{"name":"USA","value":1,"children":[{"name":"California","value":1},{"name":"New York","value":1},{"name":"Massachusetts","value":1}]},{"name":"Canada","value":1,"children":[{"name":"Quebec","value":1},{"name":"Ontario","value":1}]}]}],"name":"Tree 1","nodePadding":1,"rootLocation":{"x":"10%","y":"50%"},"itemStyle":{"normal":{"label":{"show":false,"formatter":"{b}"},"lineStyle":{"color":"#48b","shadowColor":"#000","shadowBlur":3,"shadowOffsetX":2,"shadowOffsetY":3,"type":"curve"}},"emphasis":{"label":{"show":true}}}},{"type":"tree","orient":"horizontal","roam":true,"direction":"","data":[{"name":"South America","value":1,"children":[{"name":"Brazil","value":1,"children":[{"name":"Rio de Jeneiro","value":1},{"name":"Sao Paolo","value":1}]},{"name":"Argentina","value":1,"children":[{"name":"Buenos Aires","value":1},{"name":"Mendosa","value":1}]}]}],"name":"Tree 2","nodePadding":1,"rootLocation":{"x":"50%","y":"50%"},"itemStyle":{"normal":{"label":{"show":false,"formatter":"{b}"},"lineStyle":{"color":"#48b","shadowColor":"#000","shadowBlur":3,"shadowOffsetX":2,"shadowOffsetY":3,"type":"curve"}},"emphasis":{"label":{"show":true}}}}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["North America","USA","Canada","California","New York","Massachusetts","Quebec","Ontario","South America","Brazil","Argentina","Rio de Jeneiro","Sao Paolo","Buenos Aires","Mendosa"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["Tree 1","Tree 2"],"x":"left","y":"top","orient":"horizontal"},"title":{"text":"htree","x":"center","y":"bottom","orient":"horizontal"},"theme":"macarons"},"evals":[],"jsHooks":[]}</script>
+</td>
+<td>
+<div id="htmlwidget-42e142e1b2d82580d7c9" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-42e142e1b2d82580d7c9">{"x":{"series":[{"type":"tree","orient":"horizontal","roam":true,"direction":"inverse","data":[{"name":"North America","value":1,"children":[{"name":"USA","value":1,"children":[{"name":"California","value":1},{"name":"New York","value":1},{"name":"Massachusetts","value":1}]},{"name":"Canada","value":1,"children":[{"name":"Quebec","value":1},{"name":"Ontario","value":1}]}]}],"name":"Tree 1","nodePadding":1,"rootLocation":{"x":"50%","y":"50%"},"itemStyle":{"normal":{"label":{"show":false,"formatter":"{b}"},"lineStyle":{"color":"#48b","shadowColor":"#000","shadowBlur":3,"shadowOffsetX":2,"shadowOffsetY":3,"type":"curve"}},"emphasis":{"label":{"show":true}}}},{"type":"tree","orient":"horizontal","roam":true,"direction":"inverse","data":[{"name":"South America","value":1,"children":[{"name":"Brazil","value":1,"children":[{"name":"Rio de Jeneiro","value":1},{"name":"Sao Paolo","value":1}]},{"name":"Argentina","value":1,"children":[{"name":"Buenos Aires","value":1},{"name":"Mendosa","value":1}]}]}],"name":"Tree 2","nodePadding":1,"rootLocation":{"x":"90%","y":"50%"},"itemStyle":{"normal":{"label":{"show":false,"formatter":"{b}"},"lineStyle":{"color":"#48b","shadowColor":"#000","shadowBlur":3,"shadowOffsetX":2,"shadowOffsetY":3,"type":"curve"}},"emphasis":{"label":{"show":true}}}}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["North America","USA","Canada","California","New York","Massachusetts","Quebec","Ontario","South America","Brazil","Argentina","Rio de Jeneiro","Sao Paolo","Buenos Aires","Mendosa"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["Tree 1","Tree 2"],"x":"left","y":"top","orient":"horizontal"},"title":{"text":"htree_inv","x":"center","y":"bottom","orient":"horizontal"},"theme":"macarons2"},"evals":[],"jsHooks":[]}</script>
+</td>
+</tr>
+</table>
+<p>The keys are:</p>
+<ul>
+<li>character <code>x</code> with at least 2 columns: x[,1] are the nodes of the trees, x[,2] are parent nodes of the tree nodes. For root nodes, parent should be NA.</li>
+<li>numeric <code>y</code></li>
+<li><code>facet</code> is used to produce separate trees</li>
+</ul>
+</div>
+<div id="function-call" class="section level1">
+<h1><span class="header-section-number">2</span> Function Call</h1>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">echartr</span>(data, x, &lt;y&gt;, &lt;series&gt;, &lt;facet&gt;, &lt;t&gt;, &lt;type&gt;, &lt;subtype&gt;)</code></pre></div>
+<table>
+<colgroup>
+<col width="11%" />
+<col width="88%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Arg</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><strong>data</strong></p></td>
+<td><p>source data in the form of data.frame</p></td>
+</tr>
+<tr class="even">
+<td><p><strong>x</strong></p></td>
+<td><p>character independent variable. Each level of <code>x</code> is treated as a data series. Other type will be coerced to factors. Only the first two are accepted if multiple variables are provided: 1st one as nodes, 2nd one as parent nodes.</p></td>
+</tr>
+<tr class="odd">
+<td><p>y</p></td>
+<td><p>numeric dependent variable. Only the first one is accepted if multiple variables are provided.</p></td>
+</tr>
+<tr class="even">
+<td><p>series</p></td>
+<td><p>series variable which will be coerced to factors. Each level of <code>series</code> is treated as a grouping factor. Only the first one is accepted if multiple variables are provided.</p></td>
+</tr>
+<tr class="odd">
+<td><p>facet</p></td>
+<td><p>facetting variable which will be coerced to factors. Each level of <code>facet</code> is treated as a subsetting factor to produce separate trees. Only the first one is accepted if multiple variables are provided.</p></td>
+</tr>
+<tr class="even">
+<td><p>t</p></td>
+<td><p>timeline variable which will be coerced to factors. Only the first one is accepted if multiple variables are provided.</p></td>
+</tr>
+<tr class="odd">
+<td><p>type</p></td>
+<td><p>‘tree’/‘vtree’, ‘tree_inv’/‘vtree_inv’, ‘htree’, ‘htree_inv’.</p></td>
+</tr>
+<tr class="even">
+<td><p>subtype</p></td>
+<td><ul>
+<li>tree: c(“curve”,“broken”,“dotted”,“dashed”,“solid”)
+<ul>
+<li>curve: nodes are connected by curve</li>
+<li>broken: nodes are connected by broken lines</li>
+<li>dotted: the connection lines are dotted</li>
+<li>solid: the connection lines are solid</li>
+<li>dashed: the connection lines are dashed</li>
+</ul></li>
+<li>tree_inv: c(“curve”,“broken”,“dotted”,“dashed”,“solid”)</li>
+<li>htree: c(“curve”,“broken”,“dotted”,“dashed”,“solid”)</li>
+<li>htree_inv: c(“curve”,“broken”,“dotted”,“dashed”,“solid”)</li>
+</ul></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="showcase" class="section level1">
+<h1><span class="header-section-number">3</span> Showcase</h1>
+<div id="data-preparation" class="section level2">
+<h2><span class="header-section-number">3.1</span> Data Preparation</h2>
+<p>Let’s prepare a data.frame to show the typical structure.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
+    <span class="dt">node=</span><span class="kw">c</span>(<span class="st">&#39;North America&#39;</span>, <span class="st">&#39;USA&#39;</span>, <span class="st">&#39;Canada&#39;</span>, <span class="st">&#39;California&#39;</span>, <span class="st">&#39;New York&#39;</span>, 
+           <span class="st">&#39;Massachusetts&#39;</span>, <span class="st">&#39;Quebec&#39;</span>, <span class="st">&#39;Ontario&#39;</span>, <span class="st">&#39;South America&#39;</span>,
+           <span class="st">&#39;Brazil&#39;</span>, <span class="st">&#39;Argentina&#39;</span>, <span class="st">&#39;Rio de Jeneiro&#39;</span>, <span class="st">&#39;Sao Paolo&#39;</span>, <span class="st">&#39;Buenos Aires&#39;</span>,
+           <span class="st">&#39;Mendosa&#39;</span>),
+    <span class="dt">parent=</span><span class="kw">c</span>(<span class="ot">NA</span>, <span class="kw">rep</span>(<span class="st">&#39;North America&#39;</span>, <span class="dv">2</span>), <span class="kw">rep</span>(<span class="st">&#39;USA&#39;</span>, <span class="dv">3</span>), <span class="kw">rep</span>(<span class="st">&#39;Canada&#39;</span>, <span class="dv">2</span>),
+             <span class="ot">NA</span>, <span class="kw">rep</span>(<span class="st">&#39;South America&#39;</span>, <span class="dv">2</span>), <span class="kw">rep</span>(<span class="st">&#39;Brazil&#39;</span>, <span class="dv">2</span>), <span class="kw">rep</span>(<span class="st">&#39;Argentina&#39;</span>, <span class="dv">2</span>)),
+    <span class="dt">series=</span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="st">&#39;Tree 1&#39;</span>, <span class="dv">8</span>), <span class="kw">rep</span>(<span class="st">&#39;Tree 2&#39;</span>, <span class="dv">7</span>)),
+    <span class="dt">value=</span><span class="kw">rep</span>(<span class="dv">1</span>, <span class="dv">15</span>))
+knitr::<span class="kw">kable</span>(data)</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">node</th>
+<th align="left">parent</th>
+<th align="left">series</th>
+<th align="right">value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">North America</td>
+<td align="left">NA</td>
+<td align="left">Tree 1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">USA</td>
+<td align="left">North America</td>
+<td align="left">Tree 1</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Canada</td>
+<td align="left">North America</td>
+<td align="left">Tree 1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">California</td>
+<td align="left">USA</td>
+<td align="left">Tree 1</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">New York</td>
+<td align="left">USA</td>
+<td align="left">Tree 1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Massachusetts</td>
+<td align="left">USA</td>
+<td align="left">Tree 1</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Quebec</td>
+<td align="left">Canada</td>
+<td align="left">Tree 1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Ontario</td>
+<td align="left">Canada</td>
+<td align="left">Tree 1</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">South America</td>
+<td align="left">NA</td>
+<td align="left">Tree 2</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Brazil</td>
+<td align="left">South America</td>
+<td align="left">Tree 2</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Argentina</td>
+<td align="left">South America</td>
+<td align="left">Tree 2</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Rio de Jeneiro</td>
+<td align="left">Brazil</td>
+<td align="left">Tree 2</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Sao Paolo</td>
+<td align="left">Brazil</td>
+<td align="left">Tree 2</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Buenos Aires</td>
+<td align="left">Argentina</td>
+<td align="left">Tree 2</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Mendosa</td>
+<td align="left">Argentina</td>
+<td align="left">Tree 2</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+<p>The tree structure is defined by the mapping of nodes and parents.</p>
+<ul>
+<li>There are two series ‘Tree 1’ and ‘Tree 2’, so we will see two trees.
+<ul>
+<li>In the series ‘Tree 1’, we see ‘North America’ has NA parent node. So ‘North America’ will be the root node of this tree.
+<ul>
+<li>Below the root, we see 2 levels in parents nodes: ‘USA’ and ‘Canada’. So ‘Tree 1’ tree will contain 2 level-1 nodes under the root ‘North America’.
+<ul>
+<li>There are 3 nodes with ‘USA’ as parent: ‘California’, “New York” and “Massachusetts”</li>
+<li>There are 2 nodes with ‘Canada’ as parent: ‘Ontario’ and ‘Quebec’</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+<div id="tree-chart" class="section level2">
+<h2><span class="header-section-number">3.2</span> Tree Chart</h2>
+<div id="single-tree" class="section level3">
+<h3><span class="header-section-number">3.2.1</span> Single Tree</h3>
+<p><code>type</code> is set ‘tree’.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">echartr</span>(data[data$series==<span class="st">&#39;Tree 1&#39;</span>,], <span class="kw">c</span>(node, parent), value, <span class="dt">type=</span><span class="st">&#39;tree&#39;</span>) %&gt;%
+<span class="st">    </span><span class="kw">setTitle</span>(<span class="st">&#39;Single Tree&#39;</span>)</code></pre></div>
+<div id="htmlwidget-5aaad5549712050ca4a2" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5aaad5549712050ca4a2">{"x":{"series":[{"type":"tree","orient":"vertical","roam":true,"direction":"","data":[{"name":"North America","value":1,"children":[{"name":"USA","value":1,"children":[{"name":"California","value":1},{"name":"New York","value":1},{"name":"Massachusetts","value":1}]},{"name":"Canada","value":1,"children":[{"name":"Quebec","value":1},{"name":"Ontario","value":1}]}]}],"nodePadding":1,"rootLocation":{"x":"50%","y":"10%"},"itemStyle":{"normal":{"label":{"show":false,"formatter":"{b}"},"lineStyle":{"color":"#48b","shadowColor":"#000","shadowBlur":3,"shadowOffsetX":2,"shadowOffsetY":3,"type":"curve"}},"emphasis":{"label":{"show":true}}}}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["North America","USA","Canada","California","New York","Massachusetts","Quebec","Ontario"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":[],"x":"left","y":"top","orient":"horizontal"},"title":{"text":"Single Tree","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="multiple-trees" class="section level3">
+<h3><span class="header-section-number">3.2.2</span> Multiple Trees</h3>
+<p>If you assign <code>series</code> with a valid data structure, you yield multiple trees. But Echarts does not map <code>series</code> with legend and color well. So you need to color the trees separately.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">echartr</span>(data, <span class="kw">c</span>(node, parent), value, <span class="dt">facet=</span>series, <span class="dt">type=</span><span class="st">&#39;tree&#39;</span>) %&gt;%
+<span class="st">    </span><span class="kw">setTitle</span>(<span class="st">&#39;Multiple Trees&#39;</span>)</code></pre></div>
+<div id="htmlwidget-83eff5bb5ee09d54a092" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-83eff5bb5ee09d54a092">{"x":{"series":[{"type":"tree","orient":"vertical","roam":true,"direction":"","data":[{"name":"North America","value":1,"children":[{"name":"USA","value":1,"children":[{"name":"California","value":1},{"name":"New York","value":1},{"name":"Massachusetts","value":1}]},{"name":"Canada","value":1,"children":[{"name":"Quebec","value":1},{"name":"Ontario","value":1}]}]}],"name":"Tree 1","nodePadding":1,"rootLocation":{"x":"30%","y":"10%"},"itemStyle":{"normal":{"label":{"show":false,"formatter":"{b}"},"lineStyle":{"color":"#48b","shadowColor":"#000","shadowBlur":3,"shadowOffsetX":2,"shadowOffsetY":3,"type":"curve"}},"emphasis":{"label":{"show":true}}}},{"type":"tree","orient":"vertical","roam":true,"direction":"","data":[{"name":"South America","value":1,"children":[{"name":"Brazil","value":1,"children":[{"name":"Rio de Jeneiro","value":1},{"name":"Sao Paolo","value":1}]},{"name":"Argentina","value":1,"children":[{"name":"Buenos Aires","value":1},{"name":"Mendosa","value":1}]}]}],"name":"Tree 2","nodePadding":1,"rootLocation":{"x":"70%","y":"10%"},"itemStyle":{"normal":{"label":{"show":false,"formatter":"{b}"},"lineStyle":{"color":"#48b","shadowColor":"#000","shadowBlur":3,"shadowOffsetX":2,"shadowOffsetY":3,"type":"curve"}},"emphasis":{"label":{"show":true}}}}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["North America","USA","Canada","California","New York","Massachusetts","Quebec","Ontario","South America","Brazil","Argentina","Rio de Jeneiro","Sao Paolo","Buenos Aires","Mendosa"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["Tree 1","Tree 2"],"x":"left","y":"top","orient":"horizontal"},"title":{"text":"Multiple Trees","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div id="inverse-tree-chart" class="section level2">
+<h2><span class="header-section-number">3.3</span> Inverse Tree Chart</h2>
+<p>Set <code>type</code> ‘tree_inv’. Here you can test <code>subtype</code>s.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">echartr</span>(data, <span class="kw">c</span>(node, parent), value, <span class="dt">facet=</span>series, <span class="dt">type=</span><span class="st">&#39;tree_inv&#39;</span>,
+        <span class="dt">subtype=</span><span class="st">&#39;broken&#39;</span>) %&gt;%<span class="st"> </span><span class="kw">setTitle</span>(<span class="st">&#39;tree_inv&#39;</span>)</code></pre></div>
+<div id="htmlwidget-aec69c9645164bf94010" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-aec69c9645164bf94010">{"x":{"series":[{"type":"tree","orient":"vertical","roam":true,"direction":"inverse","data":[{"name":"North America","value":1,"children":[{"name":"USA","value":1,"children":[{"name":"California","value":1},{"name":"New York","value":1},{"name":"Massachusetts","value":1}]},{"name":"Canada","value":1,"children":[{"name":"Quebec","value":1},{"name":"Ontario","value":1}]}]}],"name":"Tree 1","nodePadding":1,"rootLocation":{"x":"30%","y":"90%"},"itemStyle":{"normal":{"label":{"show":false,"formatter":"{b}"},"lineStyle":{"color":"#48b","shadowColor":"#000","shadowBlur":3,"shadowOffsetX":2,"shadowOffsetY":3,"type":"broken"}},"emphasis":{"label":{"show":true}}}},{"type":"tree","orient":"vertical","roam":true,"direction":"inverse","data":[{"name":"South America","value":1,"children":[{"name":"Brazil","value":1,"children":[{"name":"Rio de Jeneiro","value":1},{"name":"Sao Paolo","value":1}]},{"name":"Argentina","value":1,"children":[{"name":"Buenos Aires","value":1},{"name":"Mendosa","value":1}]}]}],"name":"Tree 2","nodePadding":1,"rootLocation":{"x":"70%","y":"90%"},"itemStyle":{"normal":{"label":{"show":false,"formatter":"{b}"},"lineStyle":{"color":"#48b","shadowColor":"#000","shadowBlur":3,"shadowOffsetX":2,"shadowOffsetY":3,"type":"broken"}},"emphasis":{"label":{"show":true}}}}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["North America","USA","Canada","California","New York","Massachusetts","Quebec","Ontario","South America","Brazil","Argentina","Rio de Jeneiro","Sao Paolo","Buenos Aires","Mendosa"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["Tree 1","Tree 2"],"x":"left","y":"top","orient":"horizontal"},"title":{"text":"tree_inv","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="horizontal-tree" class="section level2">
+<h2><span class="header-section-number">3.4</span> Horizontal Tree</h2>
+<p>Set <code>type</code> ‘htree’.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">echartr</span>(data, <span class="kw">c</span>(node, parent), value, <span class="dt">facet=</span>series, <span class="dt">type=</span><span class="st">&#39;htree&#39;</span>, 
+        <span class="dt">subtype=</span><span class="st">&#39;broken + dashed&#39;</span>) %&gt;%<span class="st"> </span><span class="kw">setTitle</span>(<span class="st">&#39;htree&#39;</span>)</code></pre></div>
+<div id="htmlwidget-f48ddc0121e4f0c72892" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-f48ddc0121e4f0c72892">{"x":{"series":[{"type":"tree","orient":"horizontal","roam":true,"direction":"","data":[{"name":"North America","value":1,"children":[{"name":"USA","value":1,"children":[{"name":"California","value":1},{"name":"New York","value":1},{"name":"Massachusetts","value":1}]},{"name":"Canada","value":1,"children":[{"name":"Quebec","value":1},{"name":"Ontario","value":1}]}]}],"name":"Tree 1","nodePadding":1,"rootLocation":{"x":"10%","y":"50%"},"itemStyle":{"normal":{"label":{"show":false,"formatter":"{b}"},"lineStyle":{"color":"#48b","shadowColor":"#000","shadowBlur":3,"shadowOffsetX":2,"shadowOffsetY":3,"type":"broken"}},"emphasis":{"label":{"show":true}}}},{"type":"tree","orient":"horizontal","roam":true,"direction":"","data":[{"name":"South America","value":1,"children":[{"name":"Brazil","value":1,"children":[{"name":"Rio de Jeneiro","value":1},{"name":"Sao Paolo","value":1}]},{"name":"Argentina","value":1,"children":[{"name":"Buenos Aires","value":1},{"name":"Mendosa","value":1}]}]}],"name":"Tree 2","nodePadding":1,"rootLocation":{"x":"50%","y":"50%"},"itemStyle":{"normal":{"label":{"show":false,"formatter":"{b}"},"lineStyle":{"color":"#48b","shadowColor":"#000","shadowBlur":3,"shadowOffsetX":2,"shadowOffsetY":3,"type":"broken"}},"emphasis":{"label":{"show":true}}}}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["North America","USA","Canada","California","New York","Massachusetts","Quebec","Ontario","South America","Brazil","Argentina","Rio de Jeneiro","Sao Paolo","Buenos Aires","Mendosa"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["Tree 1","Tree 2"],"x":"left","y":"top","orient":"horizontal"},"title":{"text":"htree","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="inverse-horzontal-tree" class="section level2">
+<h2><span class="header-section-number">3.5</span> Inverse Horzontal Tree</h2>
+<p>Set <code>type</code> ‘htree_inv’.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">echartr</span>(data, <span class="kw">c</span>(node, parent), value, <span class="dt">facet=</span>series, <span class="dt">type=</span><span class="st">&#39;htree_inv&#39;</span>, 
+        <span class="dt">subtype=</span><span class="st">&#39;broken + dotted&#39;</span>) %&gt;%<span class="st"> </span><span class="kw">setTitle</span>(<span class="st">&#39;htree_inv&#39;</span>)</code></pre></div>
+<div id="htmlwidget-c2344b5bfe40cf99cc8d" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-c2344b5bfe40cf99cc8d">{"x":{"series":[{"type":"tree","orient":"horizontal","roam":true,"direction":"inverse","data":[{"name":"North America","value":1,"children":[{"name":"USA","value":1,"children":[{"name":"California","value":1},{"name":"New York","value":1},{"name":"Massachusetts","value":1}]},{"name":"Canada","value":1,"children":[{"name":"Quebec","value":1},{"name":"Ontario","value":1}]}]}],"name":"Tree 1","nodePadding":1,"rootLocation":{"x":"50%","y":"50%"},"itemStyle":{"normal":{"label":{"show":false,"formatter":"{b}"},"lineStyle":{"color":"#48b","shadowColor":"#000","shadowBlur":3,"shadowOffsetX":2,"shadowOffsetY":3,"type":"broken"}},"emphasis":{"label":{"show":true}}}},{"type":"tree","orient":"horizontal","roam":true,"direction":"inverse","data":[{"name":"South America","value":1,"children":[{"name":"Brazil","value":1,"children":[{"name":"Rio de Jeneiro","value":1},{"name":"Sao Paolo","value":1}]},{"name":"Argentina","value":1,"children":[{"name":"Buenos Aires","value":1},{"name":"Mendosa","value":1}]}]}],"name":"Tree 2","nodePadding":1,"rootLocation":{"x":"90%","y":"50%"},"itemStyle":{"normal":{"label":{"show":false,"formatter":"{b}"},"lineStyle":{"color":"#48b","shadowColor":"#000","shadowBlur":3,"shadowOffsetX":2,"shadowOffsetY":3,"type":"broken"}},"emphasis":{"label":{"show":true}}}}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["North America","USA","Canada","California","New York","Massachusetts","Quebec","Ontario","South America","Brazil","Argentina","Rio de Jeneiro","Sao Paolo","Buenos Aires","Mendosa"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["Tree 1","Tree 2"],"x":"left","y":"top","orient":"horizontal"},"title":{"text":"htree_inv","x":"center","y":"bottom","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div id="futher-setup" class="section level1">
+<h1><span class="header-section-number">4</span> Futher Setup</h1>
+<p>Then you can configure the widgets, add markLines and/or markPoints, fortify the chart.</p>
+<p>You can refer to related functions to play around on your own.</p>
+</div>
+
+<script type="text/javascript">
+window.onload = function() {
+  var i, fig = 1, caps = document.getElementsByClassName('caption');
+  for (i = 0; i < caps.length; i++) {
+    var cap = caps[i];
+    if (cap.parentElement.className !== 'figure' || cap.nodeName !== 'P')
+      continue;
+    cap.innerHTML = '<span>Figure ' + fig + ':</span> ' + cap.innerHTML;
+    fig++;
+  }
+  fig = 1;
+  caps = document.getElementsByTagName('caption');
+  for (i = 0; i < caps.length; i++) {
+    var cap = caps[i];
+    if (cap.parentElement.nodeName !== 'TABLE') continue;
+    cap.innerHTML = '<span>Table ' + fig + ':</span> ' + cap.innerHTML;
+    fig++;
+  }
+}
+</script>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

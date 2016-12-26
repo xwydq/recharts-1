@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Yiying Wang" />
+
+<meta name="date" content="2016-12-26" />
+
+<title>Widget 11 - markLine</title>
+
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script src="libs/htmlwidgets-0.8/htmlwidgets.js"></script>
+<script src="libs/echarts-2.2.7/echarts-all.js"></script>
+<script src="libs/charts-ext-2.2.7/main.js"></script>
+<script src="libs/charts-ext-2.2.7/BMap.js"></script>
+<script src="libs/echarts-binding-0.2/echarts.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="/home/madlogos/R/x86_64-pc-linux-gnu-library/3.3/knitr/misc/vignette.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Widget 11 - markLine</h1>
+<h4 class="author"><em>Yiying Wang</em></h4>
+<h4 class="date"><em>2016-12-26</em></h4>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction"><span class="toc-section-number">1</span> Introduction</a></li>
+<li><a href="#function-call"><span class="toc-section-number">2</span> Function Call</a></li>
+<li><a href="#showcase"><span class="toc-section-number">3</span> Showcase</a><ul>
+<li><a href="#cartesian-coordinate-system"><span class="toc-section-number">3.1</span> Cartesian Coordinate System</a></li>
+<li><a href="#non-cartesian-coordinate-system"><span class="toc-section-number">3.2</span> Non-cartesian Coordinate System</a></li>
+</ul></li>
+<li><a href="#references"><span class="toc-section-number">4</span> References</a></li>
+</ul>
+</div>
+
+<p>First, you should load <code>recharts</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(recharts)</code></pre></div>
+<div id="introduction" class="section level1">
+<h1><span class="header-section-number">1</span> Introduction</h1>
+<p>Proper marklines makes a chart more informative. We can use <code>addMarkLine</code> (or <code>addML</code> for short) to add markLines series by series, timeline by timeline. We can also use <code>overideMarkLine</code> (or <code>overideML</code> for short) to overide existing markLines.</p>
+</div>
+<div id="function-call" class="section level1">
+<h1><span class="header-section-number">2</span> Function Call</h1>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">addMarkLine</span>(chart, <span class="dt">series =</span> <span class="ot">NULL</span>, <span class="dt">timeslots =</span> <span class="ot">NULL</span>, <span class="dt">data =</span> <span class="ot">NULL</span>,
+  <span class="dt">clickable =</span> <span class="ot">TRUE</span>, <span class="dt">symbol =</span> <span class="kw">c</span>(<span class="st">&quot;circle&quot;</span>, <span class="st">&quot;arrow&quot;</span>), <span class="dt">symbolSize =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">4</span>),
+  <span class="dt">symbolRotate =</span> <span class="ot">NULL</span>, <span class="dt">large =</span> <span class="ot">FALSE</span>, <span class="dt">smooth =</span> <span class="ot">FALSE</span>, <span class="dt">smoothness =</span> <span class="fl">0.2</span>,
+  <span class="dt">precision =</span> <span class="dv">2</span>, <span class="dt">bundling =</span> <span class="kw">list</span>(<span class="dt">enable =</span> <span class="ot">FALSE</span>, <span class="dt">maxTurningAngle =</span> <span class="dv">45</span>),
+  <span class="dt">effect =</span> <span class="kw">list</span>(<span class="dt">show =</span> <span class="ot">FALSE</span>), <span class="dt">itemStyle =</span> <span class="ot">NULL</span>, <span class="dt">mode =</span> <span class="kw">c</span>(<span class="st">&quot;add&quot;</span>,
+  <span class="st">&quot;overide&quot;</span>), ...)</code></pre></div>
+<p><code>overideML</code> is exactly the same as <code>addML(mode='overide', ...)</code>.</p>
+<table>
+<colgroup>
+<col width="17%" />
+<col width="82%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Arg</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><strong>chart</strong></p></td>
+<td><p>Echarts object generated by <code>echartR</code> or <code>echart</code>.</p></td>
+</tr>
+<tr class="even">
+<td><p>series</p></td>
+<td><p>Numeric (series index) or character (series name), numeric preferred. If set NULL, then apply the markPoint to all the series.</p></td>
+</tr>
+<tr class="odd">
+<td><p>timeslots</p></td>
+<td><p>Numeric (timeslot index) or character (timeslot name), numeric is preferred. If set NULL, then apply the markLine to all the timeslots. You can use z for short.</p></td>
+</tr>
+<tr class="even">
+<td><p>data</p></td>
+<td><p>Data.frame, the data of the markLines. It must contain the following columns: name1, name2, value / type and/or x1 / xAxis1, y1 / yAxis1, x2 / xAxis2, y2 / yAxis2 and/or series. When series is given, it must be cooresponding to the <code>series</code> argument in <code>addML</code> call.</p>
+<ul>
+<li><strong>generic</strong>:
+<ul>
+<li>generic form: columns [name1, name2, value, x1, y1, x2, y2]</li>
+<li>minimum form: columns [name1, x1, y1, x2, y2]</li>
+</ul></li>
+<li><strong>scatter, line, bar</strong>:
+<ul>
+<li>basic form: columns [name1, name2, value, x1, y1, x2, y2]</li>
+<li>minimum form: columns [name1, type] (type can only be ‘max’, ‘min’ or ‘average’)</li>
+<li>axis-mapping: columns [name1, name2, value, xAxis1, yAxis1, xAxis2, yAxis2]</li>
+</ul></li>
+<li><strong>k, eventRiver</strong>:
+<ul>
+<li>basic form: [name1, name2, value, x1, y1, x2, y2]</li>
+<li>axis-mapping: [name1, name2, value, xAxis1, yAxis1, xAxis2, yAxis2]</li>
+</ul></li>
+<li><strong>map</strong>:
+<ul>
+<li>[name1, name2, value]. You need to pass in [name1, lng1, lat1], [name2, lng2, lat2] using <code>addGeoCoord</code> separately.</li>
+</ul></li>
+</ul></td>
+</tr>
+<tr class="odd">
+<td><p>clickable</p></td>
+<td><p>Logical, if the graphs are clickable. Default TRUE.</p></td>
+</tr>
+<tr class="even">
+<td><p>symbol</p></td>
+<td><p>Symbol vector of the markLines, refer to <code>recharts:::validSymbols</code>. Default <code>c('circle', 'arrow')</code>.</p></td>
+</tr>
+<tr class="odd">
+<td><p>symbolSize</p></td>
+<td><p>Numeric vector or <code>JS</code> function defining the size of the the beginning symbol and the end symbol of the marklines. Default <code>c(2, 4)</code>.</p></td>
+</tr>
+<tr class="even">
+<td><p>symbolRotate</p></td>
+<td><p>Numeric -180 ~ 180. Default NULL.</p></td>
+</tr>
+<tr class="odd">
+<td><p>large</p></td>
+<td><p>Logical, if large effect is on. Default FALSE.</p></td>
+</tr>
+<tr class="even">
+<td><p>effect</p></td>
+<td><p>List. effect configurator of markLines. Default NULL, which is <code>list(show=FALSE, loop=TRUE,</code> <code>period=15, scaleSize=2,</code> <code>color=NULL, shadowColor=NULL, shadowBlur=0)</code></p></td>
+</tr>
+<tr class="odd">
+<td><p>itemStyle</p></td>
+<td><p>List. It is a list with the structure <code>list(normal=list(...), emphasis=list(...))</code>. Default NULL.</p></td>
+</tr>
+<tr class="even">
+<td><p>mode</p></td>
+<td><p>‘add’ or ‘overide’ the data part of markLine to the echarts object. Default ‘add’. You can use <code>overideMarkLine</code> to overide data part of existing markLine.</p></td>
+</tr>
+<tr class="odd">
+<td><p>…</p></td>
+<td><p>Elipsis.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="showcase" class="section level1">
+<h1><span class="header-section-number">3</span> Showcase</h1>
+<div id="cartesian-coordinate-system" class="section level2">
+<h2><span class="header-section-number">3.1</span> Cartesian Coordinate System</h2>
+<p>The example below is from <a href="Basic_Plots_01_Scatterplot.html">Scatterplot Manual</a>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lm &lt;-<span class="st"> </span><span class="kw">with</span>(iris, <span class="kw">lm</span>(Petal.Width~Sepal.Width))
+pred &lt;-<span class="st"> </span><span class="kw">predict</span>(lm, <span class="kw">data.frame</span>(<span class="dt">Sepal.Width=</span><span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">4.5</span>)))</code></pre></div>
+<p>We, respectively, add markLines of max, mean, min of data series 1 (‘setosa’), 2 (‘versicolor’) and 3 (‘virginica’). Then we addditionally add markLine of linear regression model.</p>
+<p>The fourth markLine calls a special data strucutre: a data.frame containing ‘name1’, ‘value’, ‘xAxis1’, ‘yAxis1’, ‘xAxis2’, and ‘yAxis2’. This is the only acceptable form for Cartesian coordinate system.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g =<span class="st"> </span><span class="kw">echartr</span>(iris, Sepal.Width, Petal.Width, Species) %&gt;%<span class="st"> </span>
+<span class="st">    </span><span class="kw">setToolbox</span>(<span class="dt">show=</span><span class="ot">FALSE</span>) %&gt;%<span class="st"> </span><span class="kw">setTheme</span>(<span class="dt">width=</span><span class="dv">400</span>, <span class="dt">height=</span><span class="dv">300</span>)</code></pre></div>
+<table>
+<tr>
+<td>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g =<span class="st"> </span>g %&gt;%<span class="st"> </span><span class="kw">addML</span>(<span class="dt">series=</span><span class="dv">1</span>, <span class="dt">data=</span><span class="kw">data.frame</span>(
+    <span class="dt">name1=</span><span class="st">&#39;Max&#39;</span>, <span class="dt">type=</span><span class="st">&#39;max&#39;</span>))
+g</code></pre></div>
+<div id="htmlwidget-af4bb61a06e73c8042c6" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-af4bb61a06e73c8042c6">{"x":{"series":[{"name":"setosa","type":"scatter","data":[[3.5,0.2],[3,0.2],[3.2,0.2],[3.1,0.2],[3.6,0.2],[3.9,0.4],[3.4,0.3],[3.4,0.2],[2.9,0.2],[3.1,0.1],[3.7,0.2],[3.4,0.2],[3,0.1],[3,0.1],[4,0.2],[4.4,0.4],[3.9,0.4],[3.5,0.3],[3.8,0.3],[3.8,0.3],[3.4,0.2],[3.7,0.4],[3.6,0.2],[3.3,0.5],[3.4,0.2],[3,0.2],[3.4,0.4],[3.5,0.2],[3.4,0.2],[3.2,0.2],[3.1,0.2],[3.4,0.4],[4.1,0.1],[4.2,0.2],[3.1,0.2],[3.2,0.2],[3.5,0.2],[3.6,0.1],[3,0.2],[3.4,0.2],[3.5,0.3],[2.3,0.3],[3.2,0.2],[3.5,0.6],[3.8,0.4],[3,0.3],[3.8,0.2],[3.2,0.2],[3.7,0.2],[3.3,0.2]],"markLine":{"data":[{"name":"Max","type":"max"}],"clickable":true,"symbol":["circle","arrow"],"smooth":false,"symbolSize":[2,4],"large":false,"effect":{"show":false},"smoothness":0.2,"precision":2,"bundling":{"enable":false,"maxTurningAngle":45}}},{"name":"versicolor","type":"scatter","data":[[3.2,1.4],[3.2,1.5],[3.1,1.5],[2.3,1.3],[2.8,1.5],[2.8,1.3],[3.3,1.6],[2.4,1],[2.9,1.3],[2.7,1.4],[2,1],[3,1.5],[2.2,1],[2.9,1.4],[2.9,1.3],[3.1,1.4],[3,1.5],[2.7,1],[2.2,1.5],[2.5,1.1],[3.2,1.8],[2.8,1.3],[2.5,1.5],[2.8,1.2],[2.9,1.3],[3,1.4],[2.8,1.4],[3,1.7],[2.9,1.5],[2.6,1],[2.4,1.1],[2.4,1],[2.7,1.2],[2.7,1.6],[3,1.5],[3.4,1.6],[3.1,1.5],[2.3,1.3],[3,1.3],[2.5,1.3],[2.6,1.2],[3,1.4],[2.6,1.2],[2.3,1],[2.7,1.3],[3,1.2],[2.9,1.3],[2.9,1.3],[2.5,1.1],[2.8,1.3]]},{"name":"virginica","type":"scatter","data":[[3.3,2.5],[2.7,1.9],[3,2.1],[2.9,1.8],[3,2.2],[3,2.1],[2.5,1.7],[2.9,1.8],[2.5,1.8],[3.6,2.5],[3.2,2],[2.7,1.9],[3,2.1],[2.5,2],[2.8,2.4],[3.2,2.3],[3,1.8],[3.8,2.2],[2.6,2.3],[2.2,1.5],[3.2,2.3],[2.8,2],[2.8,2],[2.7,1.8],[3.3,2.1],[3.2,1.8],[2.8,1.8],[3,1.8],[2.8,2.1],[3,1.6],[2.8,1.9],[3.8,2],[2.8,2.2],[2.8,1.5],[2.6,1.4],[3,2.3],[3.4,2.4],[3.1,1.8],[3,1.8],[3.1,2.1],[3.1,2.4],[3.1,2.3],[2.7,1.9],[3.2,2.3],[3.3,2.5],[3,2.3],[2.5,1.9],[3,2],[3.4,2.3],[3,1.8]]}],"legend":{"show":true,"data":["setosa","versicolor","virginica"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"value","show":true,"position":"left","name":"Petal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Sepal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    var i;\n    var text = params.value[0];\n    if (params.seriesName === null || params.seriesName === \"\"){\n        if (params.value.length > 1) {\n            for (i = 1; i < params.value.length; i++){\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.name + \" : \" + text;\n        }\n    } else {\n        if (params.value.length > 1) {\n            text = params.seriesName + \" :<br/>\" + text;\n            for (i = 1; i < params.value.length; i++) {\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.seriesName + \" :<br/>\"\n            + params.name + \" : \" + text;\n        }\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":false}},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
+</td>
+<td>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g =<span class="st"> </span>g %&gt;%<span class="st"> </span><span class="kw">addML</span>(<span class="dt">series=</span><span class="dv">2</span>, <span class="dt">data=</span><span class="kw">data.frame</span>(
+        <span class="dt">name1=</span><span class="st">&#39;Mean&#39;</span>, <span class="dt">type=</span><span class="st">&#39;average&#39;</span>)) 
+g</code></pre></div>
+<div id="htmlwidget-598f80fce6013fb20f6b" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-598f80fce6013fb20f6b">{"x":{"series":[{"name":"setosa","type":"scatter","data":[[3.5,0.2],[3,0.2],[3.2,0.2],[3.1,0.2],[3.6,0.2],[3.9,0.4],[3.4,0.3],[3.4,0.2],[2.9,0.2],[3.1,0.1],[3.7,0.2],[3.4,0.2],[3,0.1],[3,0.1],[4,0.2],[4.4,0.4],[3.9,0.4],[3.5,0.3],[3.8,0.3],[3.8,0.3],[3.4,0.2],[3.7,0.4],[3.6,0.2],[3.3,0.5],[3.4,0.2],[3,0.2],[3.4,0.4],[3.5,0.2],[3.4,0.2],[3.2,0.2],[3.1,0.2],[3.4,0.4],[4.1,0.1],[4.2,0.2],[3.1,0.2],[3.2,0.2],[3.5,0.2],[3.6,0.1],[3,0.2],[3.4,0.2],[3.5,0.3],[2.3,0.3],[3.2,0.2],[3.5,0.6],[3.8,0.4],[3,0.3],[3.8,0.2],[3.2,0.2],[3.7,0.2],[3.3,0.2]],"markLine":{"data":[{"name":"Max","type":"max"}],"clickable":true,"symbol":["circle","arrow"],"smooth":false,"symbolSize":[2,4],"large":false,"effect":{"show":false},"smoothness":0.2,"precision":2,"bundling":{"enable":false,"maxTurningAngle":45}}},{"name":"versicolor","type":"scatter","data":[[3.2,1.4],[3.2,1.5],[3.1,1.5],[2.3,1.3],[2.8,1.5],[2.8,1.3],[3.3,1.6],[2.4,1],[2.9,1.3],[2.7,1.4],[2,1],[3,1.5],[2.2,1],[2.9,1.4],[2.9,1.3],[3.1,1.4],[3,1.5],[2.7,1],[2.2,1.5],[2.5,1.1],[3.2,1.8],[2.8,1.3],[2.5,1.5],[2.8,1.2],[2.9,1.3],[3,1.4],[2.8,1.4],[3,1.7],[2.9,1.5],[2.6,1],[2.4,1.1],[2.4,1],[2.7,1.2],[2.7,1.6],[3,1.5],[3.4,1.6],[3.1,1.5],[2.3,1.3],[3,1.3],[2.5,1.3],[2.6,1.2],[3,1.4],[2.6,1.2],[2.3,1],[2.7,1.3],[3,1.2],[2.9,1.3],[2.9,1.3],[2.5,1.1],[2.8,1.3]],"markLine":{"data":[{"name":"Mean","type":"average"}],"clickable":true,"symbol":["circle","arrow"],"smooth":false,"symbolSize":[2,4],"large":false,"effect":{"show":false},"smoothness":0.2,"precision":2,"bundling":{"enable":false,"maxTurningAngle":45}}},{"name":"virginica","type":"scatter","data":[[3.3,2.5],[2.7,1.9],[3,2.1],[2.9,1.8],[3,2.2],[3,2.1],[2.5,1.7],[2.9,1.8],[2.5,1.8],[3.6,2.5],[3.2,2],[2.7,1.9],[3,2.1],[2.5,2],[2.8,2.4],[3.2,2.3],[3,1.8],[3.8,2.2],[2.6,2.3],[2.2,1.5],[3.2,2.3],[2.8,2],[2.8,2],[2.7,1.8],[3.3,2.1],[3.2,1.8],[2.8,1.8],[3,1.8],[2.8,2.1],[3,1.6],[2.8,1.9],[3.8,2],[2.8,2.2],[2.8,1.5],[2.6,1.4],[3,2.3],[3.4,2.4],[3.1,1.8],[3,1.8],[3.1,2.1],[3.1,2.4],[3.1,2.3],[2.7,1.9],[3.2,2.3],[3.3,2.5],[3,2.3],[2.5,1.9],[3,2],[3.4,2.3],[3,1.8]]}],"legend":{"show":true,"data":["setosa","versicolor","virginica"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"value","show":true,"position":"left","name":"Petal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Sepal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    var i;\n    var text = params.value[0];\n    if (params.seriesName === null || params.seriesName === \"\"){\n        if (params.value.length > 1) {\n            for (i = 1; i < params.value.length; i++){\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.name + \" : \" + text;\n        }\n    } else {\n        if (params.value.length > 1) {\n            text = params.seriesName + \" :<br/>\" + text;\n            for (i = 1; i < params.value.length; i++) {\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.seriesName + \" :<br/>\"\n            + params.name + \" : \" + text;\n        }\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":false}},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
+</td>
+</tr>
+<tr>
+<td>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g =<span class="st"> </span>g %&gt;%<span class="st">  </span><span class="kw">addML</span>(<span class="dt">series=</span><span class="dv">3</span>, <span class="dt">data=</span><span class="kw">data.frame</span>(
+    <span class="dt">name1=</span><span class="st">&#39;Min&#39;</span>, <span class="dt">type=</span><span class="st">&#39;min&#39;</span>)) 
+g</code></pre></div>
+<div id="htmlwidget-3ca14a2cfc09b4b85358" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3ca14a2cfc09b4b85358">{"x":{"series":[{"name":"setosa","type":"scatter","data":[[3.5,0.2],[3,0.2],[3.2,0.2],[3.1,0.2],[3.6,0.2],[3.9,0.4],[3.4,0.3],[3.4,0.2],[2.9,0.2],[3.1,0.1],[3.7,0.2],[3.4,0.2],[3,0.1],[3,0.1],[4,0.2],[4.4,0.4],[3.9,0.4],[3.5,0.3],[3.8,0.3],[3.8,0.3],[3.4,0.2],[3.7,0.4],[3.6,0.2],[3.3,0.5],[3.4,0.2],[3,0.2],[3.4,0.4],[3.5,0.2],[3.4,0.2],[3.2,0.2],[3.1,0.2],[3.4,0.4],[4.1,0.1],[4.2,0.2],[3.1,0.2],[3.2,0.2],[3.5,0.2],[3.6,0.1],[3,0.2],[3.4,0.2],[3.5,0.3],[2.3,0.3],[3.2,0.2],[3.5,0.6],[3.8,0.4],[3,0.3],[3.8,0.2],[3.2,0.2],[3.7,0.2],[3.3,0.2]],"markLine":{"data":[{"name":"Max","type":"max"}],"clickable":true,"symbol":["circle","arrow"],"smooth":false,"symbolSize":[2,4],"large":false,"effect":{"show":false},"smoothness":0.2,"precision":2,"bundling":{"enable":false,"maxTurningAngle":45}}},{"name":"versicolor","type":"scatter","data":[[3.2,1.4],[3.2,1.5],[3.1,1.5],[2.3,1.3],[2.8,1.5],[2.8,1.3],[3.3,1.6],[2.4,1],[2.9,1.3],[2.7,1.4],[2,1],[3,1.5],[2.2,1],[2.9,1.4],[2.9,1.3],[3.1,1.4],[3,1.5],[2.7,1],[2.2,1.5],[2.5,1.1],[3.2,1.8],[2.8,1.3],[2.5,1.5],[2.8,1.2],[2.9,1.3],[3,1.4],[2.8,1.4],[3,1.7],[2.9,1.5],[2.6,1],[2.4,1.1],[2.4,1],[2.7,1.2],[2.7,1.6],[3,1.5],[3.4,1.6],[3.1,1.5],[2.3,1.3],[3,1.3],[2.5,1.3],[2.6,1.2],[3,1.4],[2.6,1.2],[2.3,1],[2.7,1.3],[3,1.2],[2.9,1.3],[2.9,1.3],[2.5,1.1],[2.8,1.3]],"markLine":{"data":[{"name":"Mean","type":"average"}],"clickable":true,"symbol":["circle","arrow"],"smooth":false,"symbolSize":[2,4],"large":false,"effect":{"show":false},"smoothness":0.2,"precision":2,"bundling":{"enable":false,"maxTurningAngle":45}}},{"name":"virginica","type":"scatter","data":[[3.3,2.5],[2.7,1.9],[3,2.1],[2.9,1.8],[3,2.2],[3,2.1],[2.5,1.7],[2.9,1.8],[2.5,1.8],[3.6,2.5],[3.2,2],[2.7,1.9],[3,2.1],[2.5,2],[2.8,2.4],[3.2,2.3],[3,1.8],[3.8,2.2],[2.6,2.3],[2.2,1.5],[3.2,2.3],[2.8,2],[2.8,2],[2.7,1.8],[3.3,2.1],[3.2,1.8],[2.8,1.8],[3,1.8],[2.8,2.1],[3,1.6],[2.8,1.9],[3.8,2],[2.8,2.2],[2.8,1.5],[2.6,1.4],[3,2.3],[3.4,2.4],[3.1,1.8],[3,1.8],[3.1,2.1],[3.1,2.4],[3.1,2.3],[2.7,1.9],[3.2,2.3],[3.3,2.5],[3,2.3],[2.5,1.9],[3,2],[3.4,2.3],[3,1.8]],"markLine":{"data":[{"name":"Min","type":"min"}],"clickable":true,"symbol":["circle","arrow"],"smooth":false,"symbolSize":[2,4],"large":false,"effect":{"show":false},"smoothness":0.2,"precision":2,"bundling":{"enable":false,"maxTurningAngle":45}}}],"legend":{"show":true,"data":["setosa","versicolor","virginica"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"value","show":true,"position":"left","name":"Petal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Sepal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    var i;\n    var text = params.value[0];\n    if (params.seriesName === null || params.seriesName === \"\"){\n        if (params.value.length > 1) {\n            for (i = 1; i < params.value.length; i++){\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.name + \" : \" + text;\n        }\n    } else {\n        if (params.value.length > 1) {\n            text = params.seriesName + \" :<br/>\" + text;\n            for (i = 1; i < params.value.length; i++) {\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.seriesName + \" :<br/>\"\n            + params.name + \" : \" + text;\n        }\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":false}},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
+</td>
+<td>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g %&gt;%<span class="st"> </span><span class="kw">addML</span>(<span class="dt">series=</span><span class="st">&#39;Linear Regr&#39;</span>, <span class="dt">data=</span><span class="kw">data.frame</span>(
+    <span class="dt">name1=</span><span class="st">&#39;Regr&#39;</span>, <span class="dt">value=</span><span class="kw">round</span>(lm$coefficients[<span class="dv">2</span>], <span class="dv">3</span>), 
+    <span class="dt">xAxis1=</span><span class="dv">2</span>, <span class="dt">yAxis1=</span>pred[<span class="dv">1</span>], <span class="dt">xAxis2=</span><span class="fl">4.5</span>, <span class="dt">yAxis2=</span>pred[<span class="dv">2</span>]))</code></pre></div>
+<div id="htmlwidget-7fedaaf592a5a0153638" style="width:400px;height:300px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-7fedaaf592a5a0153638">{"x":{"series":[{"name":"setosa","type":"scatter","data":[[3.5,0.2],[3,0.2],[3.2,0.2],[3.1,0.2],[3.6,0.2],[3.9,0.4],[3.4,0.3],[3.4,0.2],[2.9,0.2],[3.1,0.1],[3.7,0.2],[3.4,0.2],[3,0.1],[3,0.1],[4,0.2],[4.4,0.4],[3.9,0.4],[3.5,0.3],[3.8,0.3],[3.8,0.3],[3.4,0.2],[3.7,0.4],[3.6,0.2],[3.3,0.5],[3.4,0.2],[3,0.2],[3.4,0.4],[3.5,0.2],[3.4,0.2],[3.2,0.2],[3.1,0.2],[3.4,0.4],[4.1,0.1],[4.2,0.2],[3.1,0.2],[3.2,0.2],[3.5,0.2],[3.6,0.1],[3,0.2],[3.4,0.2],[3.5,0.3],[2.3,0.3],[3.2,0.2],[3.5,0.6],[3.8,0.4],[3,0.3],[3.8,0.2],[3.2,0.2],[3.7,0.2],[3.3,0.2]],"markLine":{"data":[{"name":"Max","type":"max"}],"clickable":true,"symbol":["circle","arrow"],"smooth":false,"symbolSize":[2,4],"large":false,"effect":{"show":false},"smoothness":0.2,"precision":2,"bundling":{"enable":false,"maxTurningAngle":45}}},{"name":"versicolor","type":"scatter","data":[[3.2,1.4],[3.2,1.5],[3.1,1.5],[2.3,1.3],[2.8,1.5],[2.8,1.3],[3.3,1.6],[2.4,1],[2.9,1.3],[2.7,1.4],[2,1],[3,1.5],[2.2,1],[2.9,1.4],[2.9,1.3],[3.1,1.4],[3,1.5],[2.7,1],[2.2,1.5],[2.5,1.1],[3.2,1.8],[2.8,1.3],[2.5,1.5],[2.8,1.2],[2.9,1.3],[3,1.4],[2.8,1.4],[3,1.7],[2.9,1.5],[2.6,1],[2.4,1.1],[2.4,1],[2.7,1.2],[2.7,1.6],[3,1.5],[3.4,1.6],[3.1,1.5],[2.3,1.3],[3,1.3],[2.5,1.3],[2.6,1.2],[3,1.4],[2.6,1.2],[2.3,1],[2.7,1.3],[3,1.2],[2.9,1.3],[2.9,1.3],[2.5,1.1],[2.8,1.3]],"markLine":{"data":[{"name":"Mean","type":"average"}],"clickable":true,"symbol":["circle","arrow"],"smooth":false,"symbolSize":[2,4],"large":false,"effect":{"show":false},"smoothness":0.2,"precision":2,"bundling":{"enable":false,"maxTurningAngle":45}}},{"name":"virginica","type":"scatter","data":[[3.3,2.5],[2.7,1.9],[3,2.1],[2.9,1.8],[3,2.2],[3,2.1],[2.5,1.7],[2.9,1.8],[2.5,1.8],[3.6,2.5],[3.2,2],[2.7,1.9],[3,2.1],[2.5,2],[2.8,2.4],[3.2,2.3],[3,1.8],[3.8,2.2],[2.6,2.3],[2.2,1.5],[3.2,2.3],[2.8,2],[2.8,2],[2.7,1.8],[3.3,2.1],[3.2,1.8],[2.8,1.8],[3,1.8],[2.8,2.1],[3,1.6],[2.8,1.9],[3.8,2],[2.8,2.2],[2.8,1.5],[2.6,1.4],[3,2.3],[3.4,2.4],[3.1,1.8],[3,1.8],[3.1,2.1],[3.1,2.4],[3.1,2.3],[2.7,1.9],[3.2,2.3],[3.3,2.5],[3,2.3],[2.5,1.9],[3,2],[3.4,2.3],[3,1.8]],"markLine":{"data":[{"name":"Min","type":"min"}],"clickable":true,"symbol":["circle","arrow"],"smooth":false,"symbolSize":[2,4],"large":false,"effect":{"show":false},"smoothness":0.2,"precision":2,"bundling":{"enable":false,"maxTurningAngle":45}}},{"name":"Linear Regr","type":"scatter","data":[["-"]],"markLine":{"data":[[{"name":"Regr","value":"-0.64","xAxis":2,"yAxis":1.876319},{"name":"","xAxis":4.5,"yAxis":0.2756276}]],"clickable":true,"symbol":["circle","arrow"],"smooth":false,"symbolSize":[2,4],"large":false,"effect":{"show":false},"smoothness":0.2,"precision":2,"bundling":{"enable":false,"maxTurningAngle":45}}}],"legend":{"show":true,"data":["setosa","versicolor","virginica","Linear Regr"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"value","show":true,"position":"left","name":"Petal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Sepal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    var i;\n    var text = params.value[0];\n    if (params.seriesName === null || params.seriesName === \"\"){\n        if (params.value.length > 1) {\n            for (i = 1; i < params.value.length; i++){\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.name + \" : \" + text;\n        }\n    } else {\n        if (params.value.length > 1) {\n            text = params.seriesName + \" :<br/>\" + text;\n            for (i = 1; i < params.value.length; i++) {\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.seriesName + \" :<br/>\"\n            + params.name + \" : \" + text;\n        }\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":false}},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
+</td>
+</tr>
+</table>
+<p>We can also combine the markLine data into one data.frame with valid columns names: ‘name1’, ‘type’, ‘series’, etc., of which ‘series’ must be corrsponding to the <code>series</code> argumnet (i.e. each row of data will be mapped to <code>series</code> argument of <code>addML</code>).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
+    <span class="dt">name1=</span><span class="kw">c</span>(<span class="st">&#39;Max&#39;</span>, <span class="st">&#39;Mean&#39;</span>, <span class="st">&#39;Min&#39;</span>, <span class="st">&#39;Linear Regr&#39;</span>), 
+    <span class="dt">type=</span><span class="kw">c</span>(<span class="st">&#39;max&#39;</span>, <span class="st">&#39;average&#39;</span>, <span class="st">&#39;min&#39;</span>, <span class="ot">NA</span>),
+    <span class="dt">series=</span><span class="kw">c</span>(<span class="kw">levels</span>(iris$Species), <span class="st">&#39;Linear Regr&#39;</span>),
+    <span class="dt">value=</span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="ot">NA</span>, <span class="dv">3</span>), <span class="kw">round</span>(lm$coefficients[<span class="dv">2</span>], <span class="dv">3</span>)),
+    <span class="dt">xAxis1=</span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="ot">NA</span>, <span class="dv">3</span>), <span class="dv">2</span>),
+    <span class="dt">yAxis1=</span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="ot">NA</span>, <span class="dv">3</span>), pred[<span class="dv">1</span>]), 
+    <span class="dt">xAxis2=</span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="ot">NA</span>, <span class="dv">3</span>), <span class="fl">4.5</span>),
+    <span class="dt">yAxis2=</span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="ot">NA</span>, <span class="dv">3</span>), pred[<span class="dv">2</span>])
+)
+knitr::<span class="kw">kable</span>(data)</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">name1</th>
+<th align="left">type</th>
+<th align="left">series</th>
+<th align="right">value</th>
+<th align="right">xAxis1</th>
+<th align="right">yAxis1</th>
+<th align="right">xAxis2</th>
+<th align="right">yAxis2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Max</td>
+<td align="left">max</td>
+<td align="left">setosa</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">Mean</td>
+<td align="left">average</td>
+<td align="left">versicolor</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">Min</td>
+<td align="left">min</td>
+<td align="left">virginica</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">Linear Regr</td>
+<td align="left">NA</td>
+<td align="left">Linear Regr</td>
+<td align="right">-0.64</td>
+<td align="right">2</td>
+<td align="right">1.876319</td>
+<td align="right">4.5</td>
+<td align="right">0.2756276</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">echartr</span>(iris, Sepal.Width, Petal.Width, Species) %&gt;%
+<span class="st">    </span><span class="kw">addML</span>(<span class="dt">series=</span><span class="kw">c</span>(<span class="kw">levels</span>(iris$Species), <span class="st">&#39;Linear Regr&#39;</span>), <span class="dt">data=</span>data)</code></pre></div>
+<div id="htmlwidget-db0a5b172a1416b91db1" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-db0a5b172a1416b91db1">{"x":{"series":[{"name":"setosa","type":"scatter","data":[[3.5,0.2],[3,0.2],[3.2,0.2],[3.1,0.2],[3.6,0.2],[3.9,0.4],[3.4,0.3],[3.4,0.2],[2.9,0.2],[3.1,0.1],[3.7,0.2],[3.4,0.2],[3,0.1],[3,0.1],[4,0.2],[4.4,0.4],[3.9,0.4],[3.5,0.3],[3.8,0.3],[3.8,0.3],[3.4,0.2],[3.7,0.4],[3.6,0.2],[3.3,0.5],[3.4,0.2],[3,0.2],[3.4,0.4],[3.5,0.2],[3.4,0.2],[3.2,0.2],[3.1,0.2],[3.4,0.4],[4.1,0.1],[4.2,0.2],[3.1,0.2],[3.2,0.2],[3.5,0.2],[3.6,0.1],[3,0.2],[3.4,0.2],[3.5,0.3],[2.3,0.3],[3.2,0.2],[3.5,0.6],[3.8,0.4],[3,0.3],[3.8,0.2],[3.2,0.2],[3.7,0.2],[3.3,0.2]],"markLine":{"data":[{"name":"Max","type":"max"}],"clickable":true,"symbol":["circle","arrow"],"smooth":false,"symbolSize":[2,4],"large":false,"effect":{"show":false},"smoothness":0.2,"precision":2,"bundling":{"enable":false,"maxTurningAngle":45}}},{"name":"versicolor","type":"scatter","data":[[3.2,1.4],[3.2,1.5],[3.1,1.5],[2.3,1.3],[2.8,1.5],[2.8,1.3],[3.3,1.6],[2.4,1],[2.9,1.3],[2.7,1.4],[2,1],[3,1.5],[2.2,1],[2.9,1.4],[2.9,1.3],[3.1,1.4],[3,1.5],[2.7,1],[2.2,1.5],[2.5,1.1],[3.2,1.8],[2.8,1.3],[2.5,1.5],[2.8,1.2],[2.9,1.3],[3,1.4],[2.8,1.4],[3,1.7],[2.9,1.5],[2.6,1],[2.4,1.1],[2.4,1],[2.7,1.2],[2.7,1.6],[3,1.5],[3.4,1.6],[3.1,1.5],[2.3,1.3],[3,1.3],[2.5,1.3],[2.6,1.2],[3,1.4],[2.6,1.2],[2.3,1],[2.7,1.3],[3,1.2],[2.9,1.3],[2.9,1.3],[2.5,1.1],[2.8,1.3]],"markLine":{"data":[{"name":"Mean","type":"average"}],"clickable":true,"symbol":["circle","arrow"],"smooth":false,"symbolSize":[2,4],"large":false,"effect":{"show":false},"smoothness":0.2,"precision":2,"bundling":{"enable":false,"maxTurningAngle":45}}},{"name":"virginica","type":"scatter","data":[[3.3,2.5],[2.7,1.9],[3,2.1],[2.9,1.8],[3,2.2],[3,2.1],[2.5,1.7],[2.9,1.8],[2.5,1.8],[3.6,2.5],[3.2,2],[2.7,1.9],[3,2.1],[2.5,2],[2.8,2.4],[3.2,2.3],[3,1.8],[3.8,2.2],[2.6,2.3],[2.2,1.5],[3.2,2.3],[2.8,2],[2.8,2],[2.7,1.8],[3.3,2.1],[3.2,1.8],[2.8,1.8],[3,1.8],[2.8,2.1],[3,1.6],[2.8,1.9],[3.8,2],[2.8,2.2],[2.8,1.5],[2.6,1.4],[3,2.3],[3.4,2.4],[3.1,1.8],[3,1.8],[3.1,2.1],[3.1,2.4],[3.1,2.3],[2.7,1.9],[3.2,2.3],[3.3,2.5],[3,2.3],[2.5,1.9],[3,2],[3.4,2.3],[3,1.8]],"markLine":{"data":[{"name":"Min","type":"min"}],"clickable":true,"symbol":["circle","arrow"],"smooth":false,"symbolSize":[2,4],"large":false,"effect":{"show":false},"smoothness":0.2,"precision":2,"bundling":{"enable":false,"maxTurningAngle":45}}},{"name":"Linear Regr","type":"scatter","data":[["-"]],"markLine":{"data":[[{"name":"Linear Regr","value":"-0.64","xAxis":2,"yAxis":1.876319},{"name":"","xAxis":4.5,"yAxis":0.2756276}]],"clickable":true,"symbol":["circle","arrow"],"smooth":false,"symbolSize":[2,4],"large":false,"effect":{"show":false},"smoothness":0.2,"precision":2,"bundling":{"enable":false,"maxTurningAngle":45}}}],"legend":{"show":true,"data":["setosa","versicolor","virginica","Linear Regr"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"value","show":true,"position":"left","name":"Petal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Sepal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    var i;\n    var text = params.value[0];\n    if (params.seriesName === null || params.seriesName === \"\"){\n        if (params.value.length > 1) {\n            for (i = 1; i < params.value.length; i++){\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.name + \" : \" + text;\n        }\n    } else {\n        if (params.value.length > 1) {\n            text = params.seriesName + \" :<br/>\" + text;\n            for (i = 1; i < params.value.length; i++) {\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.seriesName + \" :<br/>\"\n            + params.name + \" : \" + text;\n        }\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"}},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
+</div>
+<div id="non-cartesian-coordinate-system" class="section level2">
+<h2><span class="header-section-number">3.2</span> Non-cartesian Coordinate System</h2>
+<p>When it applies to non-cartesian coordinate system (polar or geographic), do not provide an axis-mapping form of dataset. For polar coordinate system, x and y are cooresponding to position on the canvas, while for geographic system, it accepts lng and lat from <code>addGeoCoord</code> instead of <code>addML</code> call.</p>
+<p>Note that the zero point on the canvas is upper-left point.</p>
+<p>Let’s use the example in <a href="Basic_Plot2_11_Pie.html">Pie Chart Manual</a>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">titanic &lt;-<span class="st"> </span>data.table::<span class="kw">melt</span>(<span class="kw">apply</span>(Titanic, <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">4</span>), sum))
+<span class="kw">names</span>(titanic) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;Class&#39;</span>, <span class="st">&#39;Survived&#39;</span>, <span class="st">&#39;Count&#39;</span>)
+g &lt;-<span class="st"> </span><span class="kw">echartr</span>(titanic, Survived, Count, <span class="dt">facet=</span>Class, <span class="dt">type=</span><span class="st">&#39;pie&#39;</span>) </code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
+    <span class="dt">name1=</span><span class="kw">c</span>(<span class="st">&#39;hor&#39;</span>, <span class="st">&#39;ver&#39;</span>), <span class="dt">name2=</span><span class="kw">c</span>(<span class="st">&#39;&#39;</span>, <span class="st">&#39;&#39;</span>), <span class="dt">value=</span><span class="kw">c</span>(<span class="ot">NA</span>, <span class="ot">NA</span>), <span class="dt">x1=</span><span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">336</span>), 
+    <span class="dt">y1=</span><span class="kw">c</span>(<span class="dv">240</span>, <span class="dv">470</span>), <span class="dt">x2=</span><span class="kw">c</span>(<span class="dv">660</span>, <span class="dv">336</span>), <span class="dt">y2=</span><span class="kw">c</span>(<span class="dv">240</span>, <span class="dv">10</span>)
+)
+knitr::<span class="kw">kable</span>(data)</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">name1</th>
+<th align="left">name2</th>
+<th align="left">value</th>
+<th align="right">x1</th>
+<th align="right">y1</th>
+<th align="right">x2</th>
+<th align="right">y2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">hor</td>
+<td align="left"></td>
+<td align="left">NA</td>
+<td align="right">10</td>
+<td align="right">240</td>
+<td align="right">660</td>
+<td align="right">240</td>
+</tr>
+<tr class="even">
+<td align="left">ver</td>
+<td align="left"></td>
+<td align="left">NA</td>
+<td align="right">336</td>
+<td align="right">470</td>
+<td align="right">336</td>
+<td align="right">10</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g %&gt;%<span class="st"> </span><span class="kw">addML</span>(<span class="dt">series=</span><span class="st">&#39;crossing&#39;</span>, <span class="dt">data=</span>data) %&gt;%<span class="st"> </span>
+<span class="st">    </span><span class="kw">setSeries</span>(<span class="dt">series=</span><span class="st">&#39;crossing&#39;</span>, <span class="dt">type=</span><span class="st">&#39;line&#39;</span>)</code></pre></div>
+<div id="htmlwidget-30da36dde684c6061bcf" style="width:672px;height:480px;" class="echarts html-widget"></div>
+<script type="application/json" data-for="htmlwidget-30da36dde684c6061bcf">{"x":{"series":[{"name":"1st","type":"pie","data":[{"name":"No","value":122,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Yes","value":203,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["27.5%","27.5%"],"width":"42.5%","x":"6.25%","radius":"42.5%","max":203,"height":"42.5%","y":"6.25%","selectedMode":"single"},{"name":"2nd","type":"pie","data":[{"name":"No","value":167,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Yes","value":118,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["72.5%","27.5%"],"width":"42.5%","x":"51.25%","radius":"42.5%","max":167,"height":"42.5%","y":"6.25%","selectedMode":"single"},{"name":"3rd","type":"pie","data":[{"name":"No","value":528,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Yes","value":178,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["27.5%","72.5%"],"width":"42.5%","x":"6.25%","radius":"42.5%","max":528,"height":"42.5%","y":"51.25%","selectedMode":"single"},{"name":"Crew","type":"pie","data":[{"name":"No","value":673,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}},{"name":"Yes","value":212,"itemStyle":{"normal":{"label":{"show":false},"labelLine":{"show":false}}}}],"center":["72.5%","72.5%"],"width":"42.5%","x":"51.25%","radius":"42.5%","max":673,"height":"42.5%","y":"51.25%","selectedMode":"single"},{"name":"crossing","type":"line","data":[["-"]],"markLine":{"data":[[{"name":"hor","value":"","x":10,"y":240},{"name":"","x":660,"y":240}],[{"name":"ver","value":"","x":336,"y":470},{"name":"","x":336,"y":10}]],"clickable":true,"symbol":["circle","arrow"],"smooth":false,"symbolSize":[2,4],"large":false,"effect":{"show":false},"smoothness":0.2,"precision":2,"bundling":{"enable":false,"maxTurningAngle":45}}}],"xAxis":[{"type":"category","show":false,"position":"bottom","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["No","Yes"]}],"yAxis":[{"type":"value","show":false,"position":"left","name":"","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"grid":{"borderWidth":0},"tooltip":{"show":true,"trigger":"item","axisPointer":{"type":"none","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"{a} <br/>{b} : {c} ({d}%)","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["pie","funnel"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"legend":{"show":true,"data":["No","Yes","crossing"],"x":"left","y":"top","orient":"horizontal"}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div id="references" class="section level1">
+<h1><span class="header-section-number">4</span> References</h1>
+<p><a href="http://echarts.baidu.com/echarts2/doc/option.html#tooltip-line1~series-i(line).markLine" class="uri">http://echarts.baidu.com/echarts2/doc/option.html#tooltip-line1~series-i(line).markLine</a></p>
+</div>
+
+<script type="text/javascript">
+window.onload = function() {
+  var i, fig = 1, caps = document.getElementsByClassName('caption');
+  for (i = 0; i < caps.length; i++) {
+    var cap = caps[i];
+    if (cap.parentElement.className !== 'figure' || cap.nodeName !== 'P')
+      continue;
+    cap.innerHTML = '<span>Figure ' + fig + ':</span> ' + cap.innerHTML;
+    fig++;
+  }
+  fig = 1;
+  caps = document.getElementsByTagName('caption');
+  for (i = 0; i < caps.length; i++) {
+    var cap = caps[i];
+    if (cap.parentElement.nodeName !== 'TABLE') continue;
+    cap.innerHTML = '<span>Table ' + fig + ':</span> ' + cap.innerHTML;
+    fig++;
+  }
+}
+</script>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
