@@ -23,11 +23,11 @@ WordCloud has only 1 type: wordCloud
 <table id='intro'>
 <tr><td>
 ```{r,echo=FALSE}
-getBaiduHot <- function(url, top=30, HTMLencoding='GB2312'){
+getBaiduHot <- function(url, top=30, HTMLencoding=NULL){
     baiduhot <- paste0(readLines(url), collapse="")
     charset <- gsub('^.+charset=([[:alnum:]-]+?)[^[:alnum:]-].+$', "\\1", baiduhot)
-    if (!is.null(charset)) HTMLencoding <- charset
-    baiduhot <- iconv(baiduhot, from=HTMLencoding)
+    if (is.null(HTMLencoding)) if (!is.null(charset)) HTMLencoding <- charset
+    baiduhot <- stringr::str_conv(baiduhot, HTMLencoding)
     hotword <- gsub(".+?<a class=\"list-title\"[^>]+?>([^<>]+?)</a>.+?<span class=\"icon-(rise|fair|fall)\">(\\d+?)</span>.+?","\\1\t\\3\t\\2\t", baiduhot)
     hotword <- enc2native(gsub("^(.+?)\t{4,}.+$","\\1",hotword))
     hotword <- t(matrix(unlist(strsplit(hotword,"\t")), nrow=3))
@@ -37,9 +37,9 @@ getBaiduHot <- function(url, top=30, HTMLencoding='GB2312'){
     hotword <- hotword[order(hotword$Freq, decreasing=TRUE),]
     return(hotword[1:top,])
 }
-hotword <- getBaiduHot("http://top.baidu.com/buzz?b=1")
+hotword <- getBaiduHot("http://top.baidu.com/buzz?b=1", HTMLencoding = 'GBK')
 
-echartr(hotword[1:30,], Keyword, Freq, type='wordCloud') %>% 
+echartr(hotword, Keyword, Freq, type='wordCloud') %>% 
     setTheme('infographic', width=400, height=300)
 ```
 </td>
@@ -84,12 +84,12 @@ Fetch the Baidu buzz hotword web page and parse it into a data.frame Keyword and
 For this purpose, we composed a function `getBaiduHot` to parse the _Baidu Hot Word Trend_ web page.
 
 ```{r}
-getBaiduHot <- function(url, top=30, HTMLencoding='GB2312'){
+getBaiduHot <- function(url, top=30, HTMLencoding=NULL){
     baiduhot <- paste0(readLines(url), collapse="")
     charset <- gsub('^.+charset=([[:alnum:]-]+?)[^[:alnum:]-].+$', "\\1", 
                     baiduhot)
-    if (!is.null(charset)) HTMLencoding <- charset
-    baiduhot <- iconv(baiduhot, from=HTMLencoding)
+    if (is.null(HTMLencoding)) if (!is.null(charset)) HTMLencoding <- charset
+    baiduhot <- stringr::str_conv(baiduhot, HTMLencoding)
     hotword <- gsub(".+?<a class=\"list-title\"[^>]+?>([^<>]+?)</a>.+?<span class=\"icon-(rise|fair|fall)\">(\\d+?)</span>.+?","\\1\t\\3\t\\2\t", baiduhot)
     hotword <- enc2native(gsub("^(.+?)\t{4,}.+$","\\1", hotword))
     hotword <- t(matrix(unlist(strsplit(hotword,"\t")), nrow=3))
@@ -99,7 +99,7 @@ getBaiduHot <- function(url, top=30, HTMLencoding='GB2312'){
     hotword <- hotword[order(hotword$Freq, decreasing=TRUE),]
     return(hotword[1:top,])
 }
-hotword <- getBaiduHot("http://top.baidu.com/buzz?b=1")
+hotword <- getBaiduHot("http://top.baidu.com/buzz?b=1", HTMLencoding = 'GBK')
 knitr::kable(hotword)
 ```
 

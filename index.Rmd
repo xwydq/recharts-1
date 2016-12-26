@@ -7,8 +7,6 @@ output:
     toc_float: yes
 ---
 
----
-
 Note:</strong> This package was forked from [Yihui Xie](https://github.com/yihui/recharts) and is based on the last release of Baidu Echarts2 (v2.2.7). The documentation here always reflects the latest development version of **recharts** on [Github](https://github.com/madlogos/recharts). The package [recharts2](http://github.com/madlogos/recharts2) that is based on Echarts3 is still under development.
 
 To install the package:

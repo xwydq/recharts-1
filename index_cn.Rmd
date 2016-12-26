@@ -7,8 +7,6 @@ output:
     toc_float: yes
 ---
 
----
-
 `recharts` 是从[Yihui Xie](https://github.com/yihui/recharts) fork而来。它基于百度Echarts2的最后一个稳定发布版(v2.2.7)开发。本文档始终反映**recharts**最新的特性([Github](https://github.com/madlogos/recharts))。基于Echarts3的[recharts2](https://github.com/madlogos/recharts2)包仍在开发中。
 
 安装方法：
