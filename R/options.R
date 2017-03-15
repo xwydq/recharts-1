@@ -246,9 +246,17 @@ setAxis = function(
 
 #' @export
 #' @rdname setAxis
+set_axis <- setAxis
+
+#' @export
+#' @rdname setAxis
 setYAxis = function(chart, ...) {  # set primary y axis
     setAxis(chart, which = 'y', ...)
 }
+
+#' @export
+#' @rdname setAxis
+set_axis_y <- setYAxis
 
 #' @export
 #' @rdname setAxis
@@ -258,15 +266,28 @@ setY1Axis = function(chart, ...) {  # set secondary y axis
 
 #' @export
 #' @rdname setAxis
+set_axis_y1 <- setY1Axis
+
+#' @export
+#' @rdname setAxis
 setXAxis = function(chart, ...) {  # set primary x axis
     setAxis(chart, which = 'x', ...)
 }
 
 #' @export
 #' @rdname setAxis
+set_axis_x <- setXAxis
+
+
+#' @export
+#' @rdname setAxis
 setX1Axis = function(chart, ...) {  # set secondary x axis
     setAxis(chart, which = 'x1', ...)
 }
+
+#' @export
+#' @rdname setAxis
+set_axis_x1 <- setX1Axis
 
 axisType = function(data, which = c('x', 'y')) {
     if (is.numeric(data) || is.null(data)) return('value')
@@ -337,6 +358,7 @@ flipAxis <- function(chart, flip=TRUE, ...){
 #' @return A modified echarts object
 #' @export
 #' @seealso \code{\link{relocWidget}}
+#'
 #' @references \url{http://echarts.baidu.com/echarts2/doc/option.html#title~grid}
 #' @examples
 #' \dontrun{
@@ -390,9 +412,17 @@ setGrid <- function(chart, x=80, y=60, x2=80, y2=60, width=NULL, height=NULL,
 
 #' @export
 #' @rdname setGrid
+set_grid <- setGrid
+
+#' @export
+#' @rdname setGrid
 relocTitle <- function(chart, x=NULL, y=NULL, ...){
     setGrid(chart, x=x, y=y, widget='title', ...)
 }
+
+#' @export
+#' @rdname setGrid
+move_title <- relocTitle
 
 #' @export
 #' @rdname setGrid
@@ -402,9 +432,21 @@ relocLegend <- function(chart, x=NULL, y=NULL, ...){
 
 #' @export
 #' @rdname setGrid
+move_legend <- relocLegend
+
+#' @export
+#' @rdname setGrid
 relocDataZoom <- function(chart, x=NULL, y=NULL, ...){
     setGrid(chart, x=x, y=y, widget='dataZoom', ...)
 }
+
+#' @export
+#' @rdname setGrid
+move_datazoom <- relocDataZoom
+
+#' @export
+#' @rdname setGrid
+move_dz <- relocDataZoom
 
 #' @export
 #' @rdname setGrid
@@ -414,9 +456,25 @@ relocDataRange <- function(chart, x=NULL, y=NULL, ...){
 
 #' @export
 #' @rdname setGrid
+move_datarange <- relocDataRange
+
+#' @export
+#' @rdname setGrid
+move_dr <- relocDataRange
+
+#' @export
+#' @rdname setGrid
 relocTimeline <- function(chart, x=NULL, y=NULL, x2=NULL, y2=NULL, ...){
     setGrid(chart, x=x, y=y, x2=x2, y2=y2, widget='timeline', ...)
 }
+
+#' @export
+#' @rdname setGrid
+move_timeline <- relocTimeline
+
+#' @export
+#' @rdname setGrid
+move_tl <- relocTimeline
 
 #' @export
 #' @rdname setGrid
@@ -426,9 +484,25 @@ relocToolbox <- function(chart, x=NULL, y=NULL, ...){
 
 #' @export
 #' @rdname setGrid
+move_toolbox <- relocToolbox
+
+#' @export
+#' @rdname setGrid
+move_tb <- relocToolbox
+
+#' @export
+#' @rdname setGrid
 relocRoam <- function(chart, x=NULL, y=NULL, ...){
     setGrid(chart, x=x, y=y, widget='roamController', ...)
 }
+
+#' @export
+#' @rdname setGrid
+move_roam <- relocRoam
+
+#' @export
+#' @rdname setGrid
+move_rc <- relocRoam
 
 #' Re-locate Echarts Widgets (Position of Upper-left/Lower-right Point)
 #'
@@ -445,6 +519,7 @@ relocRoam <- function(chart, x=NULL, y=NULL, ...){
 #' the redundent elements will be dropped.
 #' @return A modified Echarts object
 #' @export
+#'
 #' @seealso \code{\link{setGrid}}
 #' @examples
 #' \dontrun{
@@ -471,6 +546,9 @@ relocWidget <- function(chart, widgets, x=NULL, y=NULL, x2=NULL, y2=NULL){
     return(chart)
 }
 
+#' @rdname relocWidget
+#' @export
+move_widget <- relocWidget
 
 .getGridParam <- function(chart, control, pos, size, horizontal=TRUE){
     stopifnot(length(pos) == 4)  ## x, y, x2, y2
@@ -524,8 +602,11 @@ relocWidget <- function(chart, widgets, x=NULL, y=NULL, x2=NULL, y2=NULL){
     return(c(pos, x, y, x2, y2, height, width, unname(lst['orient']=='horizontal')))
 }
 
-
-
+#' Tune The Position of An Echarts Object
+#'
+#' The funcion is used to tune x, y, x2, x2 of an Echarts object regarding its controls,
+#' such as title, timeline, legend, toolbox, dataRange, dataZoom, roamController.
+#' @param chart An Echarts object
 #' @export
 #' @importFrom data.table data.table dcast
 tuneGrid <- function(chart, ...){
@@ -702,6 +783,10 @@ tuneGrid <- function(chart, ...){
         }
     return(chart)
 }
+
+#' @rdname tuneGrid
+#' @export
+tune_grid <- tuneGrid
 
 makeTitle <- function(title=NULL, subtitle=NULL, link=NULL, sublink=NULL,
                       pos=6, bgColor=NULL, borderColor=NULL,
@@ -937,6 +1022,10 @@ setTitle <- function(chart, title=NULL, subtitle=NULL, link=NULL, sublink=NULL,
     return(chart %>% tuneGrid())
 }
 
+#' @rdname setTitle
+#' @export
+set_title <- setTitle
+
 makeToolbox <- function(toolbox=c(TRUE,'cn'), type='auto',
                         show=c('mark', 'dataZoom', 'dataView', 'magicType',
                                'restore', 'saveAsImage'), pos=1,
@@ -1117,6 +1206,17 @@ setToolbox <- function(chart, show=TRUE, language='cn',
     return(chart %>% tuneGrid())
 }
 
+#' @rdname setToolbox
+#' @export
+set_toolbox <- setToolbox
+
+#' @rdname setToolbox
+#' @export
+setTB <- setToolbox
+
+#' @rdname setToolbox
+#' @export
+set_tb <- setToolbox
 
 makeDataZoom <- function(show=FALSE, pos=6, range=NULL, width=30,
                          fill='rgba(144,197,237,0.2)',
@@ -1244,6 +1344,18 @@ setDataZoom <- function(chart, show=TRUE, pos=6, range=NULL, width=30,
 
     return(chart %>% tuneGrid())
 }
+
+#' @rdname setDataZoom
+#' @export
+set_datazoom <- setDataZoom
+
+#' @rdname setDataZoom
+#' @export
+set_dz <- setDataZoom
+
+#' @rdname setDataZoom
+#' @export
+setDZ <- setDataZoom
 
 makeDataRange <- function(show=FALSE, pos=8, min=NULL, max=NULL, splitNumber=5,
                           itemGap=5, labels=NULL, calculable=FALSE,
@@ -1402,6 +1514,17 @@ setDataRange <- function(
     return(chart %>% tuneGrid())
 }
 
+#' @rdname setDataRange
+#' @export
+set_datarange <- setDataRange
+
+#' @rdname setDataRange
+#' @export
+set_dr <- setDataRange
+
+#' @rdname setDataRange
+#' @export
+setDR <- setDataRange
 
 #' Set \code{symbolList} of Echarts
 #'
@@ -1472,6 +1595,17 @@ setSymbols <- function(chart, symbols=NULL, ...){
 
 }
 
+#' @rdname setSymbols
+#' @export
+set_symbols <- setSymbols
+
+#' @rdname setSymbols
+#' @export
+set_symbol <- setSymbols
+
+#' @rdname setSymbols
+#' @export
+set_sl <- setSymbols
 
 #' Set \code{roamController} of Echarts
 #'
@@ -1543,6 +1677,14 @@ setRoam <- function(chart, show=TRUE, pos=2, width=80, height=120,
     }
     return(chart)
 }
+
+#' @rdname setRoam
+#' @export
+set_roam <- setRoam
+
+#' @rdname setRoam
+#' @export
+set_rc <- setRoam
 
 #' Set \code{legend} of Echarts
 #'
@@ -1656,6 +1798,9 @@ setLegend <- function(
     return(chart %>% tuneGrid())
 }
 
+#' @rdname setLegend
+#' @export
+set_legend <- setLegend
 
 autoPolar <- function(chart, type){
     if (!inherits(chart, 'echarts'))
@@ -1826,6 +1971,9 @@ setPolar <- function(chart, polarIndex=NULL, center=c('50%', '50%'), radius='90%
     return(chart)
 }
 
+#' @rdname setPolar
+#' @export
+set_polar <- setPolar
 
 #' Set Theme Or Misc Aesthetics (color, background, animation, border effects) of Echarts
 #'
@@ -2121,6 +2269,11 @@ setTheme <- function(
 
     return(chart %>% tuneGrid())
 }
+
+#' @rdname setTheme
+#' @export
+set_theme <- setTheme
+
 
 makeTooltip <- function(type, trigger=NULL, formatter=NULL,
                         islandFormatter='{a} < br/>{b} : {c}',
@@ -2505,6 +2658,14 @@ setTooltip <- function(chart, series=NULL, timeslots=NULL, trigger=NULL,
 #' @rdname setTooltip
 setTT <- setTooltip
 
+#' @export
+#' @rdname setTooltip
+set_tt <- setTooltip
+
+#' @export
+#' @rdname setTooltip
+set_tooltip <- setTooltip
+
 #' Set \code{timeline} of Echarts
 #'
 #' Set timeline of Echarts when the echarts object contains timeline slices (t). \cr
@@ -2689,6 +2850,18 @@ setTimeline <- function(chart, show=TRUE, type=c('time', 'number'), realtime=TRU
     return(chart %>% tuneGrid())
 }
 
+#' @export
+#' @rdname setTimeline
+setTL <- setTimeline
+
+#' @export
+#' @rdname setTimeline
+set_timeline <- setTimeline
+
+#' @export
+#' @rdname setTimeline
+set_tl <- setTimeline
+
 #' Add \code{geoCoord} to An Echarts Object
 #'
 #' Add \code{geoCoord} object to echarts object. It is used for maps. \cr \cr
@@ -2765,9 +2938,25 @@ addGeoCoord <- function(chart, geoCoord=NULL, mode=c('add', 'overide')){
 
 #' @export
 #' @rdname addGeoCoord
+addGC <- addGeoCoord
+
+#' @export
+#' @rdname addGeoCoord
+add_gc <- addGeoCoord
+
+#' @export
+#' @rdname addGeoCoord
+add_geocoord <- addGeoCoord
+
+#' @export
+#' @rdname addGeoCoord
 overideGeoCoord <- function(chart, geoCoord=NULL){
     return(addGeoCoord(chart, geoCoord, mode='overide'))
 }
+
+#' @export
+#' @rdname addGeoCoord
+overideGC <- overideGeoCoord
 
 #' Add \code{heatmap} to Echarts Object
 #'
@@ -2919,6 +3108,22 @@ overideHeatmap <- function(chart, ...){
     return(addHeatmap(chart, mode='overide', ...))
 }
 
+#' @export
+#' @rdname addHeatmap
+addHM <- addHeatmap
+
+#' @export
+#' @rdname addHeatmap
+add_heatmap <- addHeatmap
+
+#' @export
+#' @rdname addHeatmap
+add_hm <- addHeatmap
+
+#' @export
+#' @rdname addHeatmap
+overideHM <- overideHeatmap
+
 #' Add \code{nameMap} to Echarts Object
 #'
 #' For map charts, you can add \code{nameMap} to translate the place names from one to another.
@@ -2939,6 +3144,7 @@ overideHeatmap <- function(chart, ...){
 #'
 #' @return A modified echarts object
 #' @export
+#'
 #' @seealso \code{data(geoNameMap)}
 #' @references \url{http://echarts.baidu.com/echarts2/doc/option.html#title~series-i(map).nameMap}
 #' @examples
@@ -2983,6 +3189,22 @@ addNameMap <- function(chart, nameMap, mode=c('add', 'overide')){
 overideNameMap <- function(chart, ...){
     return(addNameMap(chart, mode='overide', ...))
 }
+
+#' @export
+#' @rdname addNameMap
+addNM <- addNameMap
+
+#' @export
+#' @rdname addNameMap
+add_namemap <- addNameMap
+
+#' @export
+#' @rdname addNameMap
+add_nm <- addNameMap
+
+#' @export
+#' @rdname addNameMap
+overideNM <- overideNameMap
 
 #' Add \code{markLine} to An Echarts Object
 #'
@@ -3255,6 +3477,14 @@ addMarkline <- addMarkLine
 
 #' @export
 #' @rdname addMarkLine
+add_markline <-addMarkLine
+
+#' @export
+#' @rdname addMarkLine
+add_ml <- addMarkLine
+
+#' @export
+#' @rdname addMarkLine
 overideMarkLine <- function(chart, ...){
     return(addMarkLine(chart, mode='overide', ...))
 }
@@ -3519,6 +3749,14 @@ addMP <- addMarkPoint
 
 #' @export
 #' @rdname addMarkPoint
+add_markpoint <- addMarkPoint
+
+#' @export
+#' @rdname addMarkPoint
+add_mp <- addMarkPoint
+
+#' @export
+#' @rdname addMarkPoint
 addMarkpoint <- addMarkPoint
 
 #' @export
@@ -3535,6 +3773,13 @@ overideMarkpoint <- overideMarkPoint
 #' @rdname addMarkPoint
 overideMP <- overideMarkPoint
 
+#' @export
+#' @rdname addMarkPoint
+overide_mp <- overideMarkPoint
+
+#' @export
+#' @rdname addMarkPoint
+overide_markpoint <- overideMarkPoint
 
 #' Set `series` Element by Element
 #'
@@ -3868,6 +4113,9 @@ setSeries <- function(chart, series=NULL, timeslots=NULL, ...){
     return(chart)
 }
 
+#' @export
+#' @rdname setSeries
+set_series <- setSeries
 
 #' Define Aesthetic Elements of Echarts Object
 #'
@@ -4033,7 +4281,16 @@ aesStyle <- function(element=c('text', 'line', 'area', 'chord', 'node', 'link'),
 
 #' @export
 #' @rdname aesStyle
+aes_style <- aesStyle
+
+
+#' @export
+#' @rdname aesStyle
 lineStyle <- function(...) aesStyle('line', ...)
+
+#' @export
+#' @rdname aesStyle
+style_line <- lineStyle
 
 #' @export
 #' @rdname aesStyle
@@ -4041,7 +4298,15 @@ textStyle <- function(...) aesStyle('text', ...)
 
 #' @export
 #' @rdname aesStyle
+style_text <- textStyle
+
+#' @export
+#' @rdname aesStyle
 areaStyle <- function(...) aesStyle('area', ...)
+
+#' @export
+#' @rdname aesStyle
+style_area <- areaStyle
 
 #' @export
 #' @rdname aesStyle
@@ -4049,12 +4314,23 @@ chordStyle <- function(...) aesStyle('chord', ...)
 
 #' @export
 #' @rdname aesStyle
+style_chord <- chordStyle
+
+#' @export
+#' @rdname aesStyle
 nodeStyle <- function(...) aesStyle('node', ...)
+
+#' @export
+#' @rdname aesStyle
+style_node <- nodeStyle
 
 #' @export
 #' @rdname aesStyle
 linkStyle <- function(...) aesStyle('link', ...)
 
+#' @export
+#' @rdname aesStyle
+style_link <- linkStyle
 
 #' @export
 #' @rdname aesStyle
@@ -4074,6 +4350,10 @@ labelStyle <- function(...){
 
 #' @export
 #' @rdname aesStyle
+style_label <- labelStyle
+
+#' @export
+#' @rdname aesStyle
 labelLineStyle <- function(...){
     lst <- list(...)
     validParts <- c(
@@ -4087,6 +4367,15 @@ labelLineStyle <- function(...){
 
 #' @export
 #' @rdname aesStyle
+style_labelline <- labelLineStyle
+
+#' @export
+#' @rdname aesStyle
+style_ll <- labelLineStyle
+
+
+#' @export
+#' @rdname aesStyle
 itemStyle <- function(...){
     lst <- list(...)
     validParts <- c(
@@ -4097,6 +4386,9 @@ itemStyle <- function(...){
     return(lst)
 }
 
+#' @export
+#' @rdname aesStyle
+style_item <- itemStyle
 
 #---------------------Legacy eAxis functions----------------------------
 eAxis = function(

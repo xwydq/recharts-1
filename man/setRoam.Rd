@@ -2,9 +2,21 @@
 % Please edit documentation in R/options.R
 \name{setRoam}
 \alias{setRoam}
+\alias{set_roam}
+\alias{set_rc}
 \title{Set \code{roamController} of Echarts}
 \usage{
 setRoam(chart, show = TRUE, pos = 2, width = 80, height = 120,
+  bgColor = "rgba(0,0,0,0)", borderColor = "#ccc", borderWidth = 0,
+  fillerColor = "#fff", handleColor = "#6495ed", step = 15,
+  mapTypeControl = NULL, ...)
+
+set_roam(chart, show = TRUE, pos = 2, width = 80, height = 120,
+  bgColor = "rgba(0,0,0,0)", borderColor = "#ccc", borderWidth = 0,
+  fillerColor = "#fff", handleColor = "#6495ed", step = 15,
+  mapTypeControl = NULL, ...)
+
+set_rc(chart, show = TRUE, pos = 2, width = 80, height = 120,
   bgColor = "rgba(0,0,0,0)", borderColor = "#ccc", borderWidth = 0,
   fillerColor = "#fff", handleColor = "#6495ed", step = 15,
   mapTypeControl = NULL, ...)
@@ -53,4 +65,3 @@ Set \code{roamController} of echarts object for map. you can modify it by settin
 \references{
 \url{http://echarts.baidu.com/echarts2/doc/option.html#title~roamController}
 }
-

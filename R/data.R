@@ -1,4 +1,4 @@
-#' Province-specific GDP 2012-2014 in China
+#' [Dataset] Province-specific GDP 2012-2014 in China
 #'
 #' A data.frame comprising of province-specific GDP (2012-14) in China.
 #' @docType data
@@ -15,7 +15,7 @@
 #' str(ChinaGDP)
 NULL
 
-#' PM2.5 in China Cities (Fictious Data)
+#' [Dataset] PM2.5 in China Cities (Fictious Data)
 #'
 #' A data.frame comprising of PM2.5 data in China cities.
 #' @docType data
@@ -33,7 +33,7 @@ NULL
 #' str(chinapm25)
 NULL
 
-#' Deutsch Soccer Team And Clubs
+#' [Dataset] Deutsch Soccer Team And Clubs
 #'
 #' A data.frame comprising of Deutsch soccer team players and their clubs. It contains
 #' two Deutsch team (\code{year} == 2014 and \code{year} == 2016)
@@ -53,7 +53,7 @@ NULL
 #' str(deutsch)
 NULL
 
-#' Events Data for eventRiver
+#' [Dataset] Events Data for eventRiver
 #'
 #' A data.frame comprising of fictious events.
 #' @docType data
@@ -72,7 +72,7 @@ NULL
 #' str(events)
 NULL
 
-#' Fictious Flights in China (Beijing, Shanghai, Guangzhou)
+#' [Dataset] Fictious Flights in China (Beijing, Shanghai, Guangzhou)
 #'
 #' A list comprising of two data.frame: route among cities and coordinates of the cities.
 #' @docType data
@@ -95,7 +95,7 @@ NULL
 #' str(flight)
 NULL
 
-#' Chinese and English Names of Geographic Names
+#' [Dataset] Chinese and English Names of Geographic Names
 #'
 #' A data.frame acting as a dictionary of Chinese-English-names of a bunch of geograhic names.
 #' @docType data
@@ -114,7 +114,7 @@ NULL
 #' str(geoNameMap)
 NULL
 
-#' For- and Against- Relationship in Mid-east (2013)
+#' [Dataset] For- and Against- Relationship in Mid-east (2013)
 #'
 #' A matrix of the relationship (for- or against-) of the political powers involved
 #' in Mid-east. You have to re-organize it before processing.
@@ -127,7 +127,7 @@ NULL
 #' str(mideast)
 NULL
 
-#' Stock Index Records of Shanghai Stock Exchange (2013H1)
+#' [Dataset] Stock Index Records of Shanghai Stock Exchange (2013H1)
 #'
 #' A data.frame of stock index records of SHSE in 2013H1.
 #' @docType data
@@ -146,7 +146,7 @@ NULL
 #' str(stock)
 NULL
 
-#' Family Network of the Yus of Shaoxing
+#' [Dataset] Family Network of the Yus of Shaoxing
 #'
 #' A list comprising of two data.frame: nodes (people related to the family) and
 #' links (their relationship). The Yus have contributed significantly to connecting

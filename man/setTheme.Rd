@@ -2,9 +2,17 @@
 % Please edit documentation in R/options.R
 \name{setTheme}
 \alias{setTheme}
+\alias{set_theme}
 \title{Set Theme Or Misc Aesthetics (color, background, animation, border effects) of Echarts}
 \usage{
 setTheme(chart, theme = c("asis", "default", "macarons", "infographic",
+  "blue", "dark", "gray", "green", "helianthus", "macarons2", "mint", "red",
+  "roma", "sakura", "shine", "vintage"), palette = "asis", bgColor = NULL,
+  renderAsImage = FALSE, calculable = FALSE, calculableColor = NULL,
+  calculableHolderColor = NULL, animation = TRUE, animationEasing = NULL,
+  animationDuration = NULL, width = NULL, height = NULL, ...)
+
+set_theme(chart, theme = c("asis", "default", "macarons", "infographic",
   "blue", "dark", "gray", "green", "helianthus", "macarons2", "mint", "red",
   "roma", "sakura", "shine", "vintage"), palette = "asis", bgColor = NULL,
   renderAsImage = FALSE, calculable = FALSE, calculableColor = NULL,
@@ -119,6 +127,7 @@ You should write in the format below: \cr
 \code{list(color=c('#ff7f50','#87cefa','#da70d6','#32cd32','#6495ed'), \cr
  title=list(x='left', y='top'), legend=list(orient='horizontal'))}
 }
+
 \examples{
 \dontrun{
 g <- echartR(iris, Sepal.Width, Petal.Width, series=Species)
@@ -169,4 +178,3 @@ g \%>\% setTheme(palette=c('red', 'gold', 'deepskyblue'), 'gray95',
 \seealso{
 \code{\link{brewer.pal}}, \code{\link{colors}}
 }
-

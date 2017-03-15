@@ -2,9 +2,13 @@
 % Please edit documentation in R/geoCoord.R
 \name{convGCJ2BD}
 \alias{convGCJ2BD}
+\alias{gcj2bd}
+\alias{gcj2bd}
 \title{Transform GCJ-02 (Google CN/Amap) coordinates to BD-09 (Baidu)}
 \usage{
 convGCJ2BD(y, ...)
+
+gcj2bd(y, ...)
 }
 \arguments{
 \item{y}{\itemize{
@@ -31,9 +35,6 @@ This function encrypts GCJ-02 into BD-09 coordinates (Baidu coordinates).
 \note{
 Latitude is the horizontal line serving as y-axis metric, longitude is
 the vertical line serving as x-axis metric.
-}
-\section{GIS}{
-
 }
 \examples{
 \dontrun{
@@ -77,13 +78,12 @@ convGCJ2BD(df)  # get
 }
 
 }
-\author{
-Yiying Wang, \email{wangy@aetna.com}
-}
 \references{
 \url{https://on4wp7.codeplex.com/SourceControl/changeset/view/21483#353936}
 }
 \seealso{
 \code{\link{convBD2GCJ}}, \code{\link{convCoord}}
 }
-
+\author{
+Yiying Wang, \email{wangy@aetna.com}
+}

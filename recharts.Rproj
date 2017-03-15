@@ -20,4 +20,4 @@ PackageUseDevtools: Yes
 PackageInstallArgs: --with-keep.source
 PackageBuildArgs: -v && Rscript -e "Rd2roxygen::rab(install=TRUE)"
 PackageCheckArgs: --as-cran
-PackageRoxygenize: rd,collate,namespace,vignette
+PackageRoxygenize: rd,collate,namespace

@@ -3,7 +3,7 @@
 \docType{data}
 \name{events}
 \alias{events}
-\title{Events Data for eventRiver}
+\title{[Dataset] Events Data for eventRiver}
 \format{A data.frame (30 * 5) \cr
 \tabular{lll}{
  Var \tab Type \tab Meaning \cr
@@ -23,4 +23,3 @@ str(events)
 \references{
 \url{https://madlogos.github.io/recharts/Basic_Plots_05_eventRiver.html}
 }
-

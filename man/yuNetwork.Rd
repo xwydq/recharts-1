@@ -3,7 +3,7 @@
 \docType{data}
 \name{yuNetwork}
 \alias{yuNetwork}
-\title{Family Network of the Yus of Shaoxing}
+\title{[Dataset] Family Network of the Yus of Shaoxing}
 \format{A data.frame (49 * 3) nodes \cr
 \tabular{lll}{
  Var \tab Type \tab Meaning \cr
@@ -31,4 +31,3 @@ str(yuNetwork)
 \references{
 \url{https://madlogos.github.io/recharts/Basic_Plots_11_Force.html}
 }
-

@@ -1,3 +1,25 @@
+#' recharts: An R Interface to ECharts 2
+#'
+#' \pkg{recharts} provides an interface to the JavaScript library ECharts 2
+#' (developed by Baidu Inc.) for data visualization.
+#'
+#' @details The goal of this package is to make it easy to create charts with only
+#' a few lines of R code. R users should be able to get started with ECharts
+#' without having to know HTML or JavaScript, although advanced users will benefit
+#' from their knowledge of JavaScript.
+#' \cr \cr
+#' The package \pkg{recharts} was invented by Taiyun Wei and Yang Zhou. And this
+#' version was forked from Yihui Xie's repo.
+#' \cr \cr
+#' You can find the manual by \code{browseVignettes("recharts")}.
+#' @author \strong{Maintainer} Yiying Wang \email{madlogos@@gmail.com}
+#' @references You can also visit the official dev site
+#' \url{http://madlogos.github.io/recharts}(Eng) /
+#' \url{http://madlogos.github.io/recharts/index_cn.html}(Chs) to read the manual.
+#' @name recharts
+#' @docType package
+NULL
+
 #' @importFrom magrittr %>%
 #' @export %>%
 #' @importFrom htmlwidgets JS
@@ -5,3 +27,5 @@
 NULL
 
 EChartsVersion = '2.2.7'
+
+

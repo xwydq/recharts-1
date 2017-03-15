@@ -2,9 +2,12 @@
 % Please edit documentation in R/utils.R
 \name{getColFromPal}
 \alias{getColFromPal}
+\alias{get_pal_color}
 \title{Get The Colors Vector From A Named Palette}
 \usage{
 getColFromPal(palname = NULL, n = 6)
+
+get_pal_color(palname = NULL, n = 6)
 }
 \arguments{
 \item{palname}{name of the palette. Default NULL to get echarts default. Could be:
@@ -50,4 +53,3 @@ show_col(getColFromPal('hc'))
 \code{\link{RColorBrewer}}, \code{\link{scales}}, \code{\link{ggthemes}},
 \code{\link{show_col}}
 }
-

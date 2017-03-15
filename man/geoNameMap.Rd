@@ -3,7 +3,7 @@
 \docType{data}
 \name{geoNameMap}
 \alias{geoNameMap}
-\title{Chinese and English Names of Geographic Names}
+\title{[Dataset] Chinese and English Names of Geographic Names}
 \format{A data.frame (3735 * 5) \cr
 \tabular{lll}{
  Var \tab Type \tab Meaning \cr
@@ -23,4 +23,3 @@ str(geoNameMap)
 \references{
 \url{https://madlogos.github.io/recharts/Basic_Plots_31_Map.html}
 }
-

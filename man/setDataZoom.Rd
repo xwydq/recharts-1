@@ -2,9 +2,27 @@
 % Please edit documentation in R/options.R
 \name{setDataZoom}
 \alias{setDataZoom}
+\alias{set_datazoom}
+\alias{set_dz}
+\alias{setDZ}
 \title{Set \code{dataZoom} Bar of Echarts}
 \usage{
 setDataZoom(chart, show = TRUE, pos = 6, range = NULL, width = 30,
+  fill = "rgba(144,197,237,0.2)", handle = "rgba(70,130,180,0.8)",
+  bgColor = "rgba(0,0,0,0)", dataBgColor = "#eee", showDetail = TRUE,
+  realtime = FALSE, zoomLock = FALSE, ...)
+
+set_datazoom(chart, show = TRUE, pos = 6, range = NULL, width = 30,
+  fill = "rgba(144,197,237,0.2)", handle = "rgba(70,130,180,0.8)",
+  bgColor = "rgba(0,0,0,0)", dataBgColor = "#eee", showDetail = TRUE,
+  realtime = FALSE, zoomLock = FALSE, ...)
+
+set_dz(chart, show = TRUE, pos = 6, range = NULL, width = 30,
+  fill = "rgba(144,197,237,0.2)", handle = "rgba(70,130,180,0.8)",
+  bgColor = "rgba(0,0,0,0)", dataBgColor = "#eee", showDetail = TRUE,
+  realtime = FALSE, zoomLock = FALSE, ...)
+
+setDZ(chart, show = TRUE, pos = 6, range = NULL, width = 30,
   fill = "rgba(144,197,237,0.2)", handle = "rgba(70,130,180,0.8)",
   bgColor = "rgba(0,0,0,0)", dataBgColor = "#eee", showDetail = TRUE,
   realtime = FALSE, zoomLock = FALSE, ...)
@@ -62,4 +80,3 @@ g1 \%>\% setDataZoom(fill=rgba(c(col2rgb('lightgreen'), 0.2)),
 \references{
 \url{http://echarts.baidu.com/echarts2/doc/option.html#title~dataZoom}
 }
-

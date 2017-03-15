@@ -10,7 +10,7 @@ output:
     self_contained: no
     lib_dir: libs
 vignette: >
-  %\VignetteIndexEntry{Low-level Function: setSeries}
+  %\VignetteIndexEntry{Misc 02 - Low-level Function: setSeries}
   %\VignetteEngine{knitr::rmarkdown_notangle}
   %\VignetteEncoding{UTF-8}
 ---

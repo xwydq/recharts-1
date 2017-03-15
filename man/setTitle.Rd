@@ -2,9 +2,15 @@
 % Please edit documentation in R/options.R
 \name{setTitle}
 \alias{setTitle}
+\alias{set_title}
 \title{Set \code{title} (And Subtitle) of Echarts}
 \usage{
 setTitle(chart, title = NULL, subtitle = NULL, link = NULL,
+  sublink = NULL, pos = 6, bgColor = NULL, borderColor = NULL,
+  borderWidth = NULL, textStyle = NULL, subtextStyle = NULL,
+  show = TRUE, ...)
+
+set_title(chart, title = NULL, subtitle = NULL, link = NULL,
   sublink = NULL, pos = 6, bgColor = NULL, borderColor = NULL,
   borderWidth = NULL, textStyle = NULL, subtextStyle = NULL,
   show = TRUE, ...)
@@ -104,4 +110,3 @@ setTitle(
 \references{
 \url{http://echarts.baidu.com/echarts2/doc/option.html#title~title}
 }
-

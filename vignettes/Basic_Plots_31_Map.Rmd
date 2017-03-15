@@ -10,7 +10,7 @@ output:
     self_contained: no
     lib_dir: libs
 vignette: >
-  %\VignetteIndexEntry{An Introduction to recharts Package}
+  %\VignetteIndexEntry{Basic Plots 31 - Map}
   %\VignetteEngine{knitr::rmarkdown_notangle}
   %\VignetteEncoding{UTF-8}
 ---

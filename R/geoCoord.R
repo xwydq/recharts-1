@@ -125,7 +125,7 @@ getCoordArgs <- function(y, ...){
 #' WGS-84 coordinates are gloabal coordinates.
 #' This function encrypts it into GCJ-02 that is mandated by Chinese Gov't.
 #'
-#' @section GIS:
+#' @aliases wgs2gcj
 #' @note Latitude is the horizontal line serving as y-axis metric, longitude is
 #' the vertical line serving as x-axis metric.
 #' @author Yiying Wang, \email{wangy@@aetna.com}
@@ -201,6 +201,10 @@ convWGS2GCJ <- function(y, ...){
     return(output)
 }
 
+#' @rdname convWGS2GCJ
+#' @export
+wgs2gcj <- convWGS2GCJ
+
 .wgs2gcj <- function(coord, ...){
     if (length(coord) > 1){
         wgLat <- coord[1]
@@ -237,7 +241,6 @@ convWGS2GCJ <- function(y, ...){
 #' GCJ-02 is coordinate system mandated by Chinese Gov't.
 #' This function decrypts it back to WGS-84 coordinates (gloabal coordinates).
 #'
-#' @section GIS:
 #' @note Latitude is the horizontal line serving as y-axis metric, longitude is
 #' the vertical line serving as x-axis metric.
 #' @author Yiying Wang, \email{wangy@@aetna.com}
@@ -312,6 +315,10 @@ convGCJ2WGS <- function(y, ...){
     return(output)
 }
 
+#' @rdname convGCJ2WGS
+#' @export
+gcj2wgs <- convGCJ2WGS
+
 .gcj2wgs <- function(coord, ...){
     if (length(coord) > 1){
         gcLat <- coord[1]
@@ -342,7 +349,7 @@ convGCJ2WGS <- function(y, ...){
 #' coordinates that encrypts GCJ-02 further more.
 #' This function encrypts GCJ-02 into BD-09 coordinates (Baidu coordinates).
 #'
-#' @section GIS:
+#' @aliases gcj2bd
 #' @note Latitude is the horizontal line serving as y-axis metric, longitude is
 #' the vertical line serving as x-axis metric.
 #' @author Yiying Wang, \email{wangy@@aetna.com}
@@ -417,6 +424,10 @@ convGCJ2BD <- function(y, ...){
     return(output)
 }
 
+#' @rdname convGCJ2BD
+#' @export
+gcj2bd <- convGCJ2BD
+
 .gcj2bd <- function(coord, ...){
     if (length(coord) > 1){
         gcLat <- coord[1]
@@ -444,7 +455,7 @@ convGCJ2BD <- function(y, ...){
 #' coordinates that encrypts GCJ-02 further more.
 #' This function decrypts BD-09 back to GCJ-02 coordinates (Chinese coordinates).
 #'
-#' @section GIS:
+#' @aliases bd2gcj
 #' @note Latitude is the horizontal line serving as y-axis metric, longitude is
 #' the vertical line serving as x-axis metric.
 #' @author Yiying Wang, \email{wangy@@aetna.com}
@@ -520,6 +531,10 @@ convBD2GCJ <- function(y, ...){
     return(output)
 }
 
+#' @rdname convBD2GCJ
+#' @export
+bd2gcj <- convBD2GCJ
+
 .bd2gcj <- function(coord, ...){
     if (length(coord) >1){
         bdLat <- coord[1]
@@ -545,7 +560,7 @@ convBD2GCJ <- function(y, ...){
 #' BD-09 is Baidu specific coordinates that encrypts GCJ-02 further more.
 #' This function encrypts WGS-84 (Global) into BD-09 coordinates (Baidu coordinates).
 #'
-#' @section GIS:
+#' @aliases wgs2bd
 #' @note Latitude is the horizontal line serving as y-axis metric, longitude is
 #' the vertical line serving as x-axis metric.
 #' @author Yiying Wang, \email{wangy@@aetna.com}
@@ -614,12 +629,16 @@ convWGS2BD <- function(y, ...){
     return(convGCJ2BD(intermediate))
 }
 
+#' @rdname convWGS2BD
+#' @export
+wgs2bd <- convWGS2BD
+
 #' Transform BD-09 (Baidu) coordinates to WGS-84 (Global Coord)
 #'
 #' BD-09 is Baidu specific coordinates that encrypts GCJ-02 further more.
 #' This function decrypts BD-09 back to WGS-84 coordinates (Global coordinates).
 #'
-#' @section GIS:
+#' @aliases bd2wgs
 #' @note Latitude is the horizontal line serving as y-axis metric, longitude is
 #' the vertical line serving as x-axis metric.
 #' @author Yiying Wang, \email{wangy@@aetna.com}
@@ -689,13 +708,17 @@ convBD2WGS <- function(y, ...){
     return(convGCJ2WGS(intermediate))
 }
 
+#' @rdname convBD2WGS
+#' @export
+bd2wgs <- convBD2WGS
+
 #' Generic Function to Convert coordinates
 #'
 #' the general function that converts lat/lon coordintes from one GCS to another
 #' GCS including WGS-84, GCJ-02 and BD-09 either locally or by calling Baidu
 #' Maps API.
 #'
-#' @section GIS:
+#' @aliases ecoord
 #' @param lat a numeric latitude
 #' @param lon a numeric longitude
 #' @param from the inputting GCS
@@ -803,6 +826,10 @@ convCoord <- function(lat, lon, from = c('WGS-84', 'GCJ-02', 'BD-09'),
     }
 }
 
+#' @rdname convCoord
+#' @export
+ecoord <- convCoord
+
 #' Geocode
 #'
 #' geocodes an address using Google or Baidu Maps API. Note that in most cases by
@@ -810,7 +837,6 @@ convCoord <- function(lat, lon, from = c('WGS-84', 'GCJ-02', 'BD-09'),
 #' at \url{https://developers.google.com/maps/terms} or the Baidu Maps API Terms
 #' of Use at \url{http://developer.baidu.com/map/law.htm}.
 #'
-#' @section GIS:
 #' @param address a character vector specifying a location of interest (e.g.,
 #' "Tsinghua Univeristy").
 #' @param api use Google or Baidu Maps API. When using Baidu Maps API, the address must be in Chinese.
@@ -1078,7 +1104,6 @@ NULLtoNA <- function(x){
 #' geohost(ip = c("61.135.169.81", "12.215.42.19"))
 #' geohost(ip = c("61.135.169.81", "12.215.42.19"), api = "ipinfo.io")
 #' }
-
 geohost <- function(ip = '', api = c("freegeoip.net", "ipinfo.io")) {
     # check parameters
     stopifnot(is.character(ip))
@@ -1126,7 +1151,6 @@ ip.country <- function(){
 #' of Service at \url{https://developers.google.com/maps/terms} or the Baidu Maps
 #' API Terms of Use at \url{http://developer.baidu.com/map/law.htm}.
 #'
-#' @section GIS:
 #' @param latlng a location in latitude/longitude format
 #' @param ics the coordinate system of inputing location, including WGS-84, GCJ-02
 #' and BD-09, which are the GCSs of Google Earth, Google Map in China and Baidu
@@ -1170,7 +1194,6 @@ ip.country <- function(){
 #' revgeocode(latlng, ics = 'WGS-84', api = 'google', output = 'address')
 #' revgeocode(latlng, ics = 'WGS-84', api = 'google', output = 'address', time = 2)
 #' }
-
 revgeocode <- function(latlng, ics = c('WGS-84', 'GCJ-02', 'BD-09'),
                        api = c('google', 'baidu'), key = '',
                        output = c('address', 'addressc'), messaging = FALSE,

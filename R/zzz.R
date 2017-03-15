@@ -4,8 +4,8 @@ validChartTypes <- read.csv(
 
 validSymbols <- c('circle', 'rectangle', 'triangle', 'diamond', 'emptyCircle',
                   'emptyRectangle', 'emptyTriangle', 'emptyDiamond', 'heart',
-                  'droplet', 'pin', 'arrow', 'star3', 'star4', 'star5', 'star6',
-                  'star7', 'star8', 'star9', 'star10', 'star', 'none')
+                  'droplet', 'pin', 'arrow', 'star', 'star3', 'star4', 'star5',
+                  'star6', 'star7', 'star8', 'star9', 'star10', 'none')
 
 .onLoad <- function(libname, pkgname='recharts'){
     if (Sys.info()[['sysname']] == 'Windows'){

@@ -2,9 +2,13 @@
 % Please edit documentation in R/geoCoord.R
 \name{convWGS2GCJ}
 \alias{convWGS2GCJ}
+\alias{wgs2gcj}
+\alias{wgs2gcj}
 \title{Transform WGS-84 (Global) coordinates to GCJ-02 (Google CN/Amap)}
 \usage{
 convWGS2GCJ(y, ...)
+
+wgs2gcj(y, ...)
 }
 \arguments{
 \item{y}{\itemize{
@@ -30,9 +34,6 @@ This function encrypts it into GCJ-02 that is mandated by Chinese Gov't.
 \note{
 Latitude is the horizontal line serving as y-axis metric, longitude is
 the vertical line serving as x-axis metric.
-}
-\section{GIS}{
-
 }
 \examples{
 \dontrun{
@@ -76,13 +77,12 @@ convWGS2GCJ(df)  # get
 }
 
 }
-\author{
-Yiying Wang, \email{wangy@aetna.com}
-}
 \references{
 \url{https://on4wp7.codeplex.com/SourceControl/changeset/view/21483#353936}
 }
 \seealso{
 \code{\link{convGCJ2WGS}}, \code{\link{convCoord}}.
 }
-
+\author{
+Yiying Wang, \email{wangy@aetna.com}
+}

@@ -2,9 +2,15 @@
 % Please edit documentation in R/misc.R
 \name{reheadHTMLTable}
 \alias{reheadHTMLTable}
+\alias{rehead_html_table}
+\alias{rehead_html_table}
 \title{Reformat HTML Table}
 \usage{
 reheadHTMLTable(dataset, heading, footRows = 0, align = c("left",
+  rep("center", ncol - 1)), concatCol = NULL, caption = NULL,
+  tableWidth = "100\%")
+
+rehead_html_table(dataset, heading, footRows = 0, align = c("left",
   rep("center", ncol - 1)), concatCol = NULL, caption = NULL,
   tableWidth = "100\%")
 }
@@ -42,4 +48,3 @@ reheadHTMLTable(head(iris), heading)
 \seealso{
 \code{\link{knitr::kable}}
 }
-

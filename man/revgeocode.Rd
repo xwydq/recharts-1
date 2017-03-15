@@ -42,9 +42,6 @@ API Terms of Use at \url{http://developer.baidu.com/map/law.htm}.
 \details{
 note that the google maps api limits to 2500 queries a day.
 }
-\section{GIS}{
-
-}
 \examples{
 \dontrun{
 # reverse geocode Beijing railway station
@@ -66,14 +63,13 @@ revgeocode(latlng, ics = 'WGS-84', api = 'google', output = 'address')
 revgeocode(latlng, ics = 'WGS-84', api = 'google', output = 'address', time = 2)
 }
 }
-\author{
-Jun Cai (\email{cai-j12@mails.tsinghua.edu.cn}), PhD student from
-Center for Earth System Science, Tsinghua University
-}
 \seealso{
 \code{\link{geocode}}, \code{\link{geohost}}.
 
 Google Maps API at \url{http://code.google.com/apis/maps/documentation/geocoding/}
 and Baidu Maps API at \url{http://developer.baidu.com/map/webservice-geocoding.htm}
 }
-
+\author{
+Jun Cai (\email{cai-j12@mails.tsinghua.edu.cn}), PhD student from
+Center for Earth System Science, Tsinghua University
+}

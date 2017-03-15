@@ -11,7 +11,7 @@ Authors@R: c(
     person("Yiying", "Wang", role = "aut", email = "madlogos@gmail.com"),
     person("Baidu Inc", role = c("ctb", "cph"), comment = "the ECharts library under htmlwidgets/lib")
     )
-Description: Provides an R interface to the JavaScript library ECharts for
+Description: Provides an R interface to the JavaScript library ECharts 2 for
     interactive data visualization.
 Imports:
     htmltools,
@@ -32,4 +32,4 @@ Suggests:
 License: MIT + file LICENSE
 LazyData: TRUE
 VignetteBuilder: knitr
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1

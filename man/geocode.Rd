@@ -44,9 +44,6 @@ of Use at \url{http://developer.baidu.com/map/law.htm}.
 \details{
 note that the google maps api limits to 2500 queries a day.
 }
-\section{GIS}{
-
-}
 \examples{
 \dontrun{
 geocode('Tsinghua University', api = 'google', ocs = 'GCJ-02')
@@ -76,14 +73,13 @@ geocode(c('Tsinghua University', 'Beijing railway station'), api = 'baidu',
 key = 'your baidu maps api key', ocs = 'WGS-84', output = 'latlngc')
 }
 }
-\author{
-Jun Cai (\email{cai-j12@mails.tsinghua.edu.cn}), PhD student from
-Center for Earth System Science, Tsinghua University
-}
 \seealso{
 \code{\link{revgeocode}}, \code{\link{geohost}}.
 
 Google Maps API at \url{http://code.google.com/apis/maps/documentation/geocoding/}
 and Baidu Maps API at \url{http://developer.baidu.com/map/webservice-geocoding.htm}
 }
-
+\author{
+Jun Cai (\email{cai-j12@mails.tsinghua.edu.cn}), PhD student from
+Center for Earth System Science, Tsinghua University
+}

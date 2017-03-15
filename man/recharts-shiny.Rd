@@ -2,12 +2,18 @@
 % Please edit documentation in R/shiny.R
 \name{eChartOutput}
 \alias{eChartOutput}
+\alias{output_echart}
 \alias{renderEChart}
+\alias{render_echart}
 \title{Wrapper functions for Shiny}
 \usage{
 eChartOutput(outputId, width = "100\%", height = "400px")
 
+output_echart(outputId, width = "100\%", height = "400px")
+
 renderEChart(expr, env = parent.frame(), quoted = FALSE)
+
+render_echart(expr, env = parent.frame(), quoted = FALSE)
 }
 \arguments{
 \item{outputId}{the output id to be used in the \code{output} object on the
@@ -42,4 +48,3 @@ app = shinyApp(
 
 if (interactive()) print(app)}
 }
-

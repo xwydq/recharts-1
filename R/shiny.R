@@ -2,6 +2,7 @@
 #'
 #' Use \code{eChartOutput()} to create a container for a ECharts widget in the
 #' UI, and \code{renderEChart()} to render the widget on the server side.
+#'
 #' @param outputId the output id to be used in the \code{output} object on the
 #'   server side
 #' @param width the width of the chart
@@ -24,6 +25,11 @@ eChartOutput = function(outputId, width = '100%', height = '400px') {
   htmlwidgets::shinyWidgetOutput(outputId, 'echarts', width, height, package = 'recharts')
 }
 
+#' @rdname recharts-shiny
+#' @export
+output_echart <- eChartOutput
+
+
 #' @param expr an R expression to return an EChart widget
 #' @inheritParams htmlwidgets::shinyRenderWidget
 #' @rdname recharts-shiny
@@ -32,3 +38,7 @@ renderEChart = function(expr, env = parent.frame(), quoted = FALSE) {
   if (!quoted) expr = substitute(expr)  # force quoted
   htmlwidgets::shinyRenderWidget(expr, eChartOutput, env, quoted = TRUE)
 }
+
+#' @rdname recharts-shiny
+#' @export
+render_echart <- renderEChart

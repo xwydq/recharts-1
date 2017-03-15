@@ -10,7 +10,7 @@ output:
     self_contained: no
     lib_dir: libs
 vignette: >
-  %\VignetteIndexEntry{aesStyle}
+  %\VignetteIndexEntry{Misc 01 - aesStyle}
   %\VignetteEngine{knitr::rmarkdown_notangle}
   %\VignetteEncoding{UTF-8}
 ---

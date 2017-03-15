@@ -2,9 +2,13 @@
 % Please edit documentation in R/utils.R
 \name{invertColor}
 \alias{invertColor}
+\alias{invert_color}
 \title{Invert A Color to Its Conplementary Color}
 \usage{
 invertColor(color, mode = c("bw", "opposite", "hue", "saturation",
+  "lumination", ""), ...)
+
+invert_color(color, mode = c("bw", "opposite", "hue", "saturation",
   "lumination", ""), ...)
 }
 \arguments{
@@ -40,4 +44,3 @@ show_col(c('darkred', unlist(col)))
 \seealso{
 \code{\link{hsv}}, \code{\link{rgb2hsv}}, \code{\link{rgb}},
 }
-

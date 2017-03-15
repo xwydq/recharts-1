@@ -2,9 +2,14 @@
 % Please edit documentation in R/geoCoord.R
 \name{convCoord}
 \alias{convCoord}
+\alias{ecoord}
+\alias{ecoord}
 \title{Generic Function to Convert coordinates}
 \usage{
 convCoord(lat, lon, from = c("WGS-84", "GCJ-02", "BD-09"), to = c("WGS-84",
+  "GCJ-02", "BD-09"), api = FALSE)
+
+ecoord(lat, lon, from = c("WGS-84", "GCJ-02", "BD-09"), to = c("WGS-84",
   "GCJ-02", "BD-09"), api = FALSE)
 }
 \arguments{
@@ -34,9 +39,6 @@ Note that the baidu maps api limits to 20 lat/lon coordinates per query.
 Since the coordinate conversion results of Baidu Maps API and local algorithms
 are the same, it is recommended to use local algorithms.
 }
-\section{GIS}{
-
-}
 \examples{
 \dontrun{
 # latitude/longitude coordinates of Beijing railway station
@@ -64,12 +66,11 @@ lng = c(116.3203, 116.2998)
 convCoord(lat, lng, from = 'WGS-84', to = 'GCJ-02')
 }
 }
-\author{
-Jun Cai (\email{cai-j12@mails.tsinghua.edu.cn}), PhD student from
-Center for Earth System Science, Tsinghua University
-}
 \seealso{
 \code{\link{convWGS2GCJ}}, \code{\link{convWGS2BD}}, \code{\link{convGCJ2WGS}},
 \code{\link{convGCJ2BD}}, \code{\link{convBD2WGS}}, \code{\link{convBD2GCJ}}.
 }
-
+\author{
+Jun Cai (\email{cai-j12@mails.tsinghua.edu.cn}), PhD student from
+Center for Earth System Science, Tsinghua University
+}

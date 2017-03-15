@@ -2,9 +2,14 @@
 % Please edit documentation in R/options.R
 \name{setLegend}
 \alias{setLegend}
+\alias{set_legend}
 \title{Set \code{legend} of Echarts}
 \usage{
 setLegend(chart, show = TRUE, pos = 11, selected = NULL, itemGap = 5,
+  borderColor = "#ccc", borderWidth = 0, textStyle = list(color = "auto"),
+  formatter = NULL, overideData = NULL, ...)
+
+set_legend(chart, show = TRUE, pos = 11, selected = NULL, itemGap = 5,
   borderColor = "#ccc", borderWidth = 0, textStyle = list(color = "auto"),
   formatter = NULL, overideData = NULL, ...)
 }
@@ -65,4 +70,3 @@ g1 \%>\% setLegend(pos=12, selected='none',
 \references{
 \url{http://echarts.baidu.com/echarts2/doc/option.html#title~legend}
 }
-

@@ -30,6 +30,7 @@ by default, ipinfo API is limited to 1,000 requests per day.
 \section{GIS}{
 
 }
+
 \examples{
 \dontrun{
 # geocode host IP
@@ -43,15 +44,14 @@ geohost(ip = c("61.135.169.81", "12.215.42.19"))
 geohost(ip = c("61.135.169.81", "12.215.42.19"), api = "ipinfo.io")
 }
 }
-\author{
-Jun Cai (\email{cai-j12@mails.tsinghua.edu.cn}), PhD student from
-Center for Earth System Science, Tsinghua University
-}
 \references{
-freegeoip.net IP lookup API at \url{http://freegeoip.net}#'
+freegeoip.net IP lookup API at \url{http://freegeoip.net}
 ipinfo.io IP lookup API at \url{http://ipinfo.io/developers}
 }
 \seealso{
 \code{\link{geocode}}, \code{\link{revgeocode}}.
 }
-
+\author{
+Jun Cai (\email{cai-j12@mails.tsinghua.edu.cn}), PhD student from
+Center for Earth System Science, Tsinghua University
+}

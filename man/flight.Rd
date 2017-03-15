@@ -3,7 +3,7 @@
 \docType{data}
 \name{flight}
 \alias{flight}
-\title{Fictious Flights in China (Beijing, Shanghai, Guangzhou)}
+\title{[Dataset] Fictious Flights in China (Beijing, Shanghai, Guangzhou)}
 \format{A data.frame (150 * 2) route \cr
 \tabular{lll}{
  Var \tab Type \tab Meaning \cr
@@ -27,4 +27,3 @@ str(flight)
 \references{
 \url{https://madlogos.github.io/recharts/Basic_Plots_31_Map.html}
 }
-

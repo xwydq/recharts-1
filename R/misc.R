@@ -190,6 +190,7 @@
 #' Reformat HTML Table
 #'
 #' Convert a data frame to an HTML table object and reformat it.
+#' @aliases rehead_html_table
 #' @param dataset The dataset to draw table.
 #' @param heading The heading you want to input.
 #'        '|' indicates colspan, '=' indicates rowspan.
@@ -358,6 +359,11 @@ reheadHTMLTable <- function(dataset, heading, footRows=0,
                    rehead))
     }
 }
+
+#' @rdname reheadHTMLTable
+#' @export
+rehead_html_table <- reheadHTMLTable
+
 #------------percent format---------------
 convNum2Pct <- function(vector,digits=0){
     if (is.na(digits)) digits=0

@@ -2,9 +2,33 @@
 % Please edit documentation in R/options.R
 \name{setToolbox}
 \alias{setToolbox}
+\alias{set_toolbox}
+\alias{setTB}
+\alias{set_tb}
 \title{Set \code{toolbox} of Echarts}
 \usage{
 setToolbox(chart, show = TRUE, language = "cn", controls = c("mark",
+  "dataZoom", "dataView", "magicType", "restore", "saveAsImage"), pos = 1,
+  bgColor = "rgba(0,0,0,0)", borderColor = "#ccc", borderWidth = 0,
+  padding = 5, itemGap = 10, itemSize = 16, color = c("#1e90ff",
+  "#22bb22", "#4b0082", "#d2691e"), disableColor = "#ddd",
+  effectiveColor = "red", showTitle = TRUE, textStyle = NULL, ...)
+
+set_toolbox(chart, show = TRUE, language = "cn", controls = c("mark",
+  "dataZoom", "dataView", "magicType", "restore", "saveAsImage"), pos = 1,
+  bgColor = "rgba(0,0,0,0)", borderColor = "#ccc", borderWidth = 0,
+  padding = 5, itemGap = 10, itemSize = 16, color = c("#1e90ff",
+  "#22bb22", "#4b0082", "#d2691e"), disableColor = "#ddd",
+  effectiveColor = "red", showTitle = TRUE, textStyle = NULL, ...)
+
+setTB(chart, show = TRUE, language = "cn", controls = c("mark",
+  "dataZoom", "dataView", "magicType", "restore", "saveAsImage"), pos = 1,
+  bgColor = "rgba(0,0,0,0)", borderColor = "#ccc", borderWidth = 0,
+  padding = 5, itemGap = 10, itemSize = 16, color = c("#1e90ff",
+  "#22bb22", "#4b0082", "#d2691e"), disableColor = "#ddd",
+  effectiveColor = "red", showTitle = TRUE, textStyle = NULL, ...)
+
+set_tb(chart, show = TRUE, language = "cn", controls = c("mark",
   "dataZoom", "dataView", "magicType", "restore", "saveAsImage"), pos = 1,
   bgColor = "rgba(0,0,0,0)", borderColor = "#ccc", borderWidth = 0,
   padding = 5, itemGap = 10, itemSize = 16, color = c("#1e90ff",
@@ -69,4 +93,3 @@ g \%>\% setToolbox(TRUE, 'en')
 \references{
 \url{http://echarts.baidu.com/echarts2/doc/option.html#title~toolbox}
 }
-

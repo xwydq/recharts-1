@@ -608,6 +608,10 @@ getColFromPal <- function(palname=NULL, n=6){
     return(as.vector(colObj))
 }
 
+#' @rdname getColFromPal
+#' @export
+get_pal_color <- getColFromPal
+
 #' Get Hex Color Vector (Not Exported)
 #'
 #' Get color vector from a palette/color name. It is wider than \code{\link{getColFromPal}}.
@@ -622,7 +626,7 @@ getColFromPal <- function(palname=NULL, n=6){
 #'
 #' @return A vector of hex colors
 #'
-#' @seealso \code{\link{getColFromPal}} \code{\link{RColorBrewer}} \code{\link{ggthemes}}
+#' @seealso \code{\link{getColFromPal}}  \code{\link{RColorBrewer}}  \code{\link{ggthemes}}
 #' @examples
 #' \dontrun{
 #' library(scales)
@@ -687,6 +691,7 @@ isDate <- function(x, format=NULL){
         if (!is(try(as.Date(x,format=format),TRUE),"try-error")) TRUE else FALSE
     }
 }
+
 isTime <- function(x, origin=NULL, tz='CST'){
     if (is.null(origin)){
         return(FALSE)
@@ -942,6 +947,10 @@ invertColor <- function(color, mode=c('bw', 'opposite', 'hue', 'saturation',
     }
 }
 
+#' @rdname invertColor
+#' @export
+invert_color <- invertColor
+
 autoMultiPolarChartLayout <- function(n, col.max=5, gap=5, top=5, bottom=5,
                                       left=5, right=5){
     layouts <- data.frame(row=ceiling(n/(1:col.max)), col=1:col.max)
@@ -968,6 +977,7 @@ autoMultiPolarChartLayout <- function(n, col.max=5, gap=5, top=5, bottom=5,
 }
 
 parseTreeNodes <- function(data, name='name', parent='parent'){
+    # return a tree by recursive parsing
     name <- as.character(substitute(name))
     parent <- as.character(substitute(parent))
     name <- name[length(name)]
@@ -1083,6 +1093,9 @@ vecPos <- function(pos){
     return(as.vector(unlist(TblPos[pos,])))
 }
 
+#' @rdname position.orient
+#' @export
+oripos_vec <- vecPos
 
 #' @param x String, 'left', 'right' or 'center'
 #' @param y String, 'top', 'center' or 'vertical'
@@ -1114,6 +1127,10 @@ clockPos <- function(x, y, orient){
     names(TblPos) <- c("x","y","z")
     return(which(TblPos$x==x & TblPos$y==y & TblPos$z==orient))
 }
+
+#' @rdname position.orient
+#' @export
+oripos_clock <- clockPos
 
 exchange <- function(x, y){
     a <- x

@@ -3,7 +3,7 @@
 \docType{data}
 \name{ChinaGDP}
 \alias{ChinaGDP}
-\title{Province-specific GDP 2012-2014 in China}
+\title{[Dataset] Province-specific GDP 2012-2014 in China}
 \format{A data.frame (93 * 3) \cr
 \tabular{lll}{
  Var \tab Type \tab Meaning \cr
@@ -21,4 +21,3 @@ str(ChinaGDP)
 \references{
 \url{https://madlogos.github.io/recharts/Basic_Plots_31_Map.html}
 }
-

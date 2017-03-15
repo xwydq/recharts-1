@@ -2,36 +2,69 @@
 % Please edit documentation in R/options.R
 \name{aesStyle}
 \alias{aesStyle}
-\alias{areaStyle}
-\alias{chordStyle}
-\alias{itemStyle}
-\alias{labelLineStyle}
-\alias{labelStyle}
+\alias{aes_style}
 \alias{lineStyle}
-\alias{linkStyle}
-\alias{nodeStyle}
+\alias{style_line}
 \alias{textStyle}
+\alias{style_text}
+\alias{areaStyle}
+\alias{style_area}
+\alias{chordStyle}
+\alias{style_chord}
+\alias{nodeStyle}
+\alias{style_node}
+\alias{linkStyle}
+\alias{style_link}
+\alias{labelStyle}
+\alias{style_label}
+\alias{labelLineStyle}
+\alias{style_labelline}
+\alias{style_ll}
+\alias{itemStyle}
+\alias{style_item}
 \title{Define Aesthetic Elements of Echarts Object}
 \usage{
 aesStyle(element = c("text", "line", "area", "chord", "node", "link"), ...)
 
+aes_style(element = c("text", "line", "area", "chord", "node", "link"), ...)
+
 lineStyle(...)
+
+style_line(...)
 
 textStyle(...)
 
+style_text(...)
+
 areaStyle(...)
+
+style_area(...)
 
 chordStyle(...)
 
+style_chord(...)
+
 nodeStyle(...)
+
+style_node(...)
 
 linkStyle(...)
 
+style_link(...)
+
 labelStyle(...)
+
+style_label(...)
 
 labelLineStyle(...)
 
+style_labelline(...)
+
+style_ll(...)
+
 itemStyle(...)
+
+style_item(...)
 }
 \arguments{
 \item{element}{String, could be 'text', 'line', 'area', 'chord', 'node', or 'link',
@@ -160,4 +193,3 @@ itemStyle <- list(normal=itemStyle(lineStyle=styLine, label=lab),
               )
 }
 }
-

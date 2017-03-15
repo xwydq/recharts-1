@@ -3,7 +3,7 @@
 \docType{data}
 \name{chinapm25}
 \alias{chinapm25}
-\title{PM2.5 in China Cities (Fictious Data)}
+\title{[Dataset] PM2.5 in China Cities (Fictious Data)}
 \format{A data.frame (199 * 4) \cr
 \tabular{lll}{
  Var \tab Type \tab Meaning \cr
@@ -22,4 +22,3 @@ str(chinapm25)
 \references{
 \url{https://madlogos.github.io/recharts/Basic_Plots_31_Map.html}
 }
-

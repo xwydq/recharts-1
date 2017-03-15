@@ -32,6 +32,5 @@ show_col(getColors(c('red', 'gold', 'skyblue')))
 }
 }
 \seealso{
-\code{\link{getColFromPal}} \code{\link{RColorBrewer}} \code{\link{ggthemes}}
+\code{\link{getColFromPal}}  \code{\link{RColorBrewer}}  \code{\link{ggthemes}}
 }
-

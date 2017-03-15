@@ -3,7 +3,7 @@
 \docType{data}
 \name{deutsch}
 \alias{deutsch}
-\title{Deutsch Soccer Team And Clubs}
+\title{[Dataset] Deutsch Soccer Team And Clubs}
 \format{A data.frame (26 * 5) \cr
 \tabular{lll}{
  Var \tab Type \tab Meaning \cr
@@ -24,4 +24,3 @@ str(deutsch)
 \references{
 \url{https://madlogos.github.io/recharts/Basic_Plots_12_Chord.html}
 }
-

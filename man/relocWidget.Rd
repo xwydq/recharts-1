@@ -2,9 +2,12 @@
 % Please edit documentation in R/options.R
 \name{relocWidget}
 \alias{relocWidget}
+\alias{move_widget}
 \title{Re-locate Echarts Widgets (Position of Upper-left/Lower-right Point)}
 \usage{
 relocWidget(chart, widgets, x = NULL, y = NULL, x2 = NULL, y2 = NULL)
+
+move_widget(chart, widgets, x = NULL, y = NULL, x2 = NULL, y2 = NULL)
 }
 \arguments{
 \item{chart}{Echarts object}
@@ -41,4 +44,3 @@ g \%>\% relocWidgets('dataZoom', x=150)
 \seealso{
 \code{\link{setGrid}}
 }
-

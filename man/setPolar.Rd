@@ -2,10 +2,17 @@
 % Please edit documentation in R/options.R
 \name{setPolar}
 \alias{setPolar}
+\alias{set_polar}
 \title{Set \code{polar} of Echarts (For Radar Charts)}
 \usage{
 setPolar(chart, polarIndex = NULL, center = c("50\%", "50\%"),
-  radius = "75\%", startAngle = 90, splitNumber = 5, boundaryGap = c(0,
+  radius = "90\%", startAngle = 90, splitNumber = 5, boundaryGap = c(0,
+  0), scale = FALSE, axisLine = NULL, axisLabel = NULL,
+  splitLine = NULL, splitArea = NULL, type = c("polygon", "circle"),
+  indicator = NULL, axisName = NULL, ...)
+
+set_polar(chart, polarIndex = NULL, center = c("50\%", "50\%"),
+  radius = "90\%", startAngle = 90, splitNumber = 5, boundaryGap = c(0,
   0), scale = FALSE, axisLine = NULL, axisLabel = NULL,
   splitLine = NULL, splitArea = NULL, type = c("polygon", "circle"),
   indicator = NULL, axisName = NULL, ...)
@@ -83,4 +90,3 @@ g \%>\% setPolar(c(1,3), type='circle') \%>\%
 \references{
 \url{http://echarts.baidu.com/echarts2/doc/option.html#title~polar}
 }
-

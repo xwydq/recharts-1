@@ -3,7 +3,7 @@
 \docType{data}
 \name{mideast}
 \alias{mideast}
-\title{For- and Against- Relationship in Mid-east (2013)}
+\title{[Dataset] For- and Against- Relationship in Mid-east (2013)}
 \format{A matrix (16 * 16) \cr
 Mutual attitude of the political powers (for or against/weight)}
 \description{
@@ -17,4 +17,3 @@ str(mideast)
 \references{
 \url{https://madlogos.github.io/recharts/Basic_Plots_12_Chord.html}
 }
-

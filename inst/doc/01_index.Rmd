@@ -10,7 +10,7 @@ output:
     self_contained: no
     lib_dir: libs
 vignette: >
-  %\VignetteIndexEntry{recharts: An R Interface to Baidu ECharts 2}
+  %\VignetteIndexEntry{An Introduction to recharts}
   %\VignetteEngine{knitr::rmarkdown_notangle}
   %\VignetteEncoding{UTF-8}
 ---

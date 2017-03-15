@@ -3,7 +3,7 @@
 \docType{data}
 \name{stock}
 \alias{stock}
-\title{Stock Index Records of Shanghai Stock Exchange (2013H1)}
+\title{[Dataset] Stock Index Records of Shanghai Stock Exchange (2013H1)}
 \format{A data.frame (88 * 5) \cr
 \tabular{lll}{
  Var \tab Type \tab Meaning \cr
@@ -23,4 +23,3 @@ str(stock)
 \references{
 \url{https://madlogos.github.io/recharts/Basic_Plots_04_K.html}
 }
-

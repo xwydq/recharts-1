@@ -4,7 +4,6 @@ series_scatter <- function(lst, type, subtype, return=NULL, ...){
     if (is.null(lst$x) || is.null(lst$y))
         stop('scatter charts need x and y!')
     lst <- mergeList(list(weight=NULL, series=NULL), lst)
-    if (!is.numeric(lst$x[,1])) stop('x and y must be numeric')
     data <- cbind(lst$y[,1], lst$x[,1])
 
     if (!is.null(lst$weight)){  # weight as symbolSize

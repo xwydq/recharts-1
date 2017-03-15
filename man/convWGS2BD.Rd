@@ -2,9 +2,13 @@
 % Please edit documentation in R/geoCoord.R
 \name{convWGS2BD}
 \alias{convWGS2BD}
+\alias{wgs2bd}
+\alias{wgs2bd}
 \title{Transform WGS-84 (Global GeoSys) coordinates to BD-09 (Baidu)}
 \usage{
 convWGS2BD(y, ...)
+
+wgs2bd(y, ...)
 }
 \arguments{
 \item{y}{\itemize{
@@ -30,9 +34,6 @@ This function encrypts WGS-84 (Global) into BD-09 coordinates (Baidu coordinates
 \note{
 Latitude is the horizontal line serving as y-axis metric, longitude is
 the vertical line serving as x-axis metric.
-}
-\section{GIS}{
-
 }
 \examples{
 \dontrun{
@@ -76,13 +77,12 @@ convWGS2BD(df)  # get
 }
 
 }
-\author{
-Yiying Wang, \email{wangy@aetna.com}
-}
 \references{
 \url{https://on4wp7.codeplex.com/SourceControl/changeset/view/21483#353936}
 }
 \seealso{
 \code{\link{convBD2WGS}}, \code{\link{convWGS2GCJ}}, \code{\link{convCoord}}
 }
-
+\author{
+Yiying Wang, \email{wangy@aetna.com}
+}
