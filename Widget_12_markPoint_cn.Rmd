@@ -23,11 +23,43 @@ library(recharts)
 
 # 用法Function Call
 
+所有函数名都有小驼峰法和小写连划线(Hadly Wickham推荐此法)两种形式。为了便于偷懒，还有缩写版（如markPoint缩写成mp）。
+
 ```r
 addMarkPoint(chart, series = NULL, timeslots = NULL, data = NULL,
   clickable = TRUE, symbol = "pin", symbolSize = 10,
   symbolRotate = NULL, large = FALSE, effect = list(show = FALSE),
   itemStyle = NULL, ...)
+
+addMP(chart, series = NULL, timeslots = NULL, data = NULL,
+  clickable = TRUE, symbol = "pin", symbolSize = 10,
+  symbolRotate = NULL, large = FALSE, effect = list(show = FALSE),
+  itemStyle = NULL, ...)
+
+add_markpoint(chart, series = NULL, timeslots = NULL, data = NULL,
+  clickable = TRUE, symbol = "pin", symbolSize = 10,
+  symbolRotate = NULL, large = FALSE, effect = list(show = FALSE),
+  itemStyle = NULL, ...)
+
+add_mp(chart, series = NULL, timeslots = NULL, data = NULL,
+  clickable = TRUE, symbol = "pin", symbolSize = 10,
+  symbolRotate = NULL, large = FALSE, effect = list(show = FALSE),
+  itemStyle = NULL, ...)
+
+addMarkpoint(chart, series = NULL, timeslots = NULL, data = NULL,
+  clickable = TRUE, symbol = "pin", symbolSize = 10,
+  symbolRotate = NULL, large = FALSE, effect = list(show = FALSE),
+  itemStyle = NULL, ...)
+
+overideMarkPoint(chart, ...)
+
+overideMarkpoint(chart, ...)
+
+overideMP(chart, ...)
+
+overide_mp(chart, ...)
+
+overide_markpoint(chart, ...)
 ```
 
 `overideMP`等价于`addMP(mode='overide', ...)`.

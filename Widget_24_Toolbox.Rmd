@@ -25,8 +25,31 @@ The recommended approach to use `setToolbox` is `chart %>% setToolbox(...)`.
 
 # Function Call
 
+All the function names have two forms: small camel and lowercase_underscore (endorsed by Hadley Wickham). To be lazy, we also provide short forms as well (e.g., tb for toolbox).
+
 ```r
 setToolbox(chart, show = TRUE, language = "cn", controls = c("mark",
+  "dataZoom", "dataView", "magicType", "restore", "saveAsImage"), pos = 1,
+  bgColor = "rgba(0,0,0,0)", borderColor = "#ccc", borderWidth = 0,
+  padding = 5, itemGap = 10, itemSize = 16, color = c("#1e90ff",
+  "#22bb22", "#4b0082", "#d2691e"), disableColor = "#ddd",
+  effectiveColor = "red", showTitle = TRUE, textStyle = NULL, ...)
+
+set_toolbox(chart, show = TRUE, language = "cn", controls = c("mark",
+  "dataZoom", "dataView", "magicType", "restore", "saveAsImage"), pos = 1,
+  bgColor = "rgba(0,0,0,0)", borderColor = "#ccc", borderWidth = 0,
+  padding = 5, itemGap = 10, itemSize = 16, color = c("#1e90ff",
+  "#22bb22", "#4b0082", "#d2691e"), disableColor = "#ddd",
+  effectiveColor = "red", showTitle = TRUE, textStyle = NULL, ...)
+
+setTB(chart, show = TRUE, language = "cn", controls = c("mark",
+  "dataZoom", "dataView", "magicType", "restore", "saveAsImage"), pos = 1,
+  bgColor = "rgba(0,0,0,0)", borderColor = "#ccc", borderWidth = 0,
+  padding = 5, itemGap = 10, itemSize = 16, color = c("#1e90ff",
+  "#22bb22", "#4b0082", "#d2691e"), disableColor = "#ddd",
+  effectiveColor = "red", showTitle = TRUE, textStyle = NULL, ...)
+
+set_tb(chart, show = TRUE, language = "cn", controls = c("mark",
   "dataZoom", "dataView", "magicType", "restore", "saveAsImage"), pos = 1,
   bgColor = "rgba(0,0,0,0)", borderColor = "#ccc", borderWidth = 0,
   padding = 5, itemGap = 10, itemSize = 16, color = c("#1e90ff",

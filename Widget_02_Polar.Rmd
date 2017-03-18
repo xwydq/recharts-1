@@ -23,9 +23,17 @@ Radar charts are based on Polar Coordinate System, which calls for center and ra
 
 # Function Call
 
+All the function names have two forms: small camel and lowercase_underscore (endorsed by Hadley Wickham).
+
 ```r
 setPolar(chart, polarIndex = NULL, center = c("50%", "50%"),
-  radius = "75%", startAngle = 90, splitNumber = 5, boundaryGap = c(0,
+  radius = "90%", startAngle = 90, splitNumber = 5, boundaryGap = c(0,
+  0), scale = FALSE, axisLine = NULL, axisLabel = NULL,
+  splitLine = NULL, splitArea = NULL, type = c("polygon", "circle"),
+  indicator = NULL, axisName = NULL, ...)
+  
+set_polar(chart, polarIndex = NULL, center = c("50%", "50%"),
+  radius = "90%", startAngle = 90, splitNumber = 5, boundaryGap = c(0,
   0), scale = FALSE, axisLine = NULL, axisLabel = NULL,
   splitLine = NULL, splitArea = NULL, type = c("polygon", "circle"),
   indicator = NULL, axisName = NULL, ...)

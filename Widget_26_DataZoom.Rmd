@@ -25,8 +25,25 @@ The recommended approach to use `setDataZoom` is `chart %>% setDataZoom(...)`.
 
 # Function Call
 
+All the function names have two forms: small camel and lowercase_underscore (endorsed by Hadley Wickham). To be lazy, we also provide short forms as well (e.g., dz for dataZoom).
+
 ```r
 setDataZoom(chart, show = TRUE, pos = 6, range = NULL, width = 30,
+  fill = "rgba(144,197,237,0.2)", handle = "rgba(70,130,180,0.8)",
+  bgColor = "rgba(0,0,0,0)", dataBgColor = "#eee", showDetail = TRUE,
+  realtime = FALSE, zoomLock = FALSE, ...)
+
+set_datazoom(chart, show = TRUE, pos = 6, range = NULL, width = 30,
+  fill = "rgba(144,197,237,0.2)", handle = "rgba(70,130,180,0.8)",
+  bgColor = "rgba(0,0,0,0)", dataBgColor = "#eee", showDetail = TRUE,
+  realtime = FALSE, zoomLock = FALSE, ...)
+
+set_dz(chart, show = TRUE, pos = 6, range = NULL, width = 30,
+  fill = "rgba(144,197,237,0.2)", handle = "rgba(70,130,180,0.8)",
+  bgColor = "rgba(0,0,0,0)", dataBgColor = "#eee", showDetail = TRUE,
+  realtime = FALSE, zoomLock = FALSE, ...)
+
+setDZ(chart, show = TRUE, pos = 6, range = NULL, width = 30,
   fill = "rgba(144,197,237,0.2)", handle = "rgba(70,130,180,0.8)",
   bgColor = "rgba(0,0,0,0)", dataBgColor = "#eee", showDetail = TRUE,
   realtime = FALSE, zoomLock = FALSE, ...)

@@ -23,9 +23,17 @@ library(recharts)
 
 # 用法Function Call
 
+所有函数名都有小驼峰法和小写连划线(Hadly Wickham推荐此法)两种形式。
+
 ```r
 setPolar(chart, polarIndex = NULL, center = c("50%", "50%"),
-  radius = "75%", startAngle = 90, splitNumber = 5, boundaryGap = c(0,
+  radius = "90%", startAngle = 90, splitNumber = 5, boundaryGap = c(0,
+  0), scale = FALSE, axisLine = NULL, axisLabel = NULL,
+  splitLine = NULL, splitArea = NULL, type = c("polygon", "circle"),
+  indicator = NULL, axisName = NULL, ...)
+
+set_polar(chart, polarIndex = NULL, center = c("50%", "50%"),
+  radius = "90%", startAngle = 90, splitNumber = 5, boundaryGap = c(0,
   0), scale = FALSE, axisLine = NULL, axisLabel = NULL,
   splitLine = NULL, splitArea = NULL, type = c("polygon", "circle"),
   indicator = NULL, axisName = NULL, ...)

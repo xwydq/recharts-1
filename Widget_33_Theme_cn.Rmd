@@ -27,8 +27,17 @@ library(recharts)
 
 # 用法Function Call
 
+所有函数名都有小驼峰法和小写连划线(Hadly Wickham推荐此法)两种形式。
+
 ```r
 setTheme(chart, theme = c("asis", "default", "macarons", "infographic",
+  "blue", "dark", "gray", "green", "helianthus", "macarons2", "mint", "red",
+  "roma", "sakura", "shine", "vintage"), palette = "asis", bgColor = NULL,
+  renderAsImage = FALSE, calculable = FALSE, calculableColor = NULL,
+  calculableHolderColor = NULL, animation = TRUE, animationEasing = NULL,
+  animationDuration = NULL, width = NULL, height = NULL, ...)
+
+set_theme(chart, theme = c("asis", "default", "macarons", "infographic",
   "blue", "dark", "gray", "green", "helianthus", "macarons2", "mint", "red",
   "roma", "sakura", "shine", "vintage"), palette = "asis", bgColor = NULL,
   renderAsImage = FALSE, calculable = FALSE, calculableColor = NULL,

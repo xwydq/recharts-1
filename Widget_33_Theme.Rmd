@@ -27,8 +27,17 @@ library(recharts)
 
 # Function Call
 
+All the function names have two forms: small camel and lowercase_underscore (endorsed by Hadley Wickham). 
+
 ```r
 setTheme(chart, theme = c("asis", "default", "macarons", "infographic",
+  "blue", "dark", "gray", "green", "helianthus", "macarons2", "mint", "red",
+  "roma", "sakura", "shine", "vintage"), palette = "asis", bgColor = NULL,
+  renderAsImage = FALSE, calculable = FALSE, calculableColor = NULL,
+  calculableHolderColor = NULL, animation = TRUE, animationEasing = NULL,
+  animationDuration = NULL, width = NULL, height = NULL, ...)
+
+set_theme(chart, theme = c("asis", "default", "macarons", "infographic",
   "blue", "dark", "gray", "green", "helianthus", "macarons2", "mint", "red",
   "roma", "sakura", "shine", "vintage"), palette = "asis", bgColor = NULL,
   renderAsImage = FALSE, calculable = FALSE, calculableColor = NULL,

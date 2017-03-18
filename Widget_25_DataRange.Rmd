@@ -25,12 +25,32 @@ The recommended approach to use `setDataRange` is `chart %>% setDataRange(...)`.
 
 # Function Call
 
+All the function names have two forms: small camel and lowercase_underscore (endorsed by Hadley Wickham). To be lazy, we also provide short forms as well (e.g., dr for dataRange).
+
 ```r
 setDataRange(chart, show = TRUE, pos = 8, valueRange = NULL,
   splitNumber = 5, itemGap = 5, labels = NULL, calculable = FALSE,
   borderColor = "#ccc", borderWidth = 0, selectedMode = list(TRUE,
   "single", "multiple"), color = c("#1e90ff", "#f0ffff"), splitList = NULL,
   initialRange = NULL, ...)
+
+set_datarange(chart, show = TRUE, pos = 8, valueRange = NULL,
+  splitNumber = 5, itemGap = 5, labels = NULL, calculable = FALSE,
+  borderColor = "#ccc", borderWidth = 0, selectedMode = list(TRUE,
+  "single", "multiple"), color = c("#1e90ff", "#f0ffff"), splitList = NULL,
+  initialRange = NULL, ...)
+
+set_dr(chart, show = TRUE, pos = 8, valueRange = NULL, splitNumber = 5,
+  itemGap = 5, labels = NULL, calculable = FALSE, borderColor = "#ccc",
+  borderWidth = 0, selectedMode = list(TRUE, "single", "multiple"),
+  color = c("#1e90ff", "#f0ffff"), splitList = NULL, initialRange = NULL,
+  ...)
+
+setDR(chart, show = TRUE, pos = 8, valueRange = NULL, splitNumber = 5,
+  itemGap = 5, labels = NULL, calculable = FALSE, borderColor = "#ccc",
+  borderWidth = 0, selectedMode = list(TRUE, "single", "multiple"),
+  color = c("#1e90ff", "#f0ffff"), splitList = NULL, initialRange = NULL,
+  ...)
 ```
 
 +-------------+----------------------------------------------------------------+

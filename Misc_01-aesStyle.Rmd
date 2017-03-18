@@ -35,26 +35,39 @@ Inside an itemStyle list object, there are three types of elements:
 
 # Function Call
 
+All the function names have two forms: small camel and lowercase_underscore (endorsed by Hadley Wickham). To be lazy, we also provide short forms as well (e.g., ll for labelLine).
+
 ```r
 aesStyle(element = c("text", "line", "area", "chord", "node", "link"), ...)
+aes_style(element = c("text", "line", "area", "chord", "node", "link"), ...)
 
 lineStyle(...)
+style_line(...)
 
 textStyle(...)
+style_text(...)
 
 areaStyle(...)
+style_area(...)
 
 chordStyle(...)
+style_chord(...)
 
 nodeStyle(...)
+style_node(...)
 
 linkStyle(...)
+style_link(...)
 
 labelStyle(...)
+style_label(...)
 
 labelLineStyle(...)
+style_labelline(...)
+style_ll(...)
 
 itemStyle(...)
+style_item(...)
 ```
 
 +--------------+---------------------------------------------------------------+
@@ -88,7 +101,7 @@ barBorderWidth	| numeric vector length 1 or 4 (right-bottom-left-top), default 0
 label	| for line, bar, k, scatter, pie, map, force, funnel charts and markPoint, markLine, see `labelStyle`
 labelLine	| for pie and funnel chart, see `labelLineStyle`
 
-### `labelStyle`
+### `labelStyle` / `style_label`
 
 +------------+-----------------------------------------------------------------+
 | Arg        | Instruction |
@@ -113,7 +126,7 @@ labelLine	| for pie and funnel chart, see `labelLineStyle`
 | y          | treemap only, numeric |
 +------------+-----------------------------------------------------------------+
 
-### `labelLineStyle`
+### `labelLineStyle` / `style_ll` / `style_labelline`
 
 Arg         | Instruction
 ------------|-----------------------------------------------------------
@@ -121,7 +134,7 @@ show	| TRUE|FALSE, default TRUE
 length	| numeric or 'auto', default 40
 lineStyle	| see `lineStyle`
 
-### `textStyle`
+### `textStyle` / `style_text`
 
 Arg         | Instruction
 ------------|-----------------------------------------------------------
@@ -134,7 +147,7 @@ fontSize	| numeric, default 12
 fontStyle	| 'normal' / 'italic' / 'oblique', default 'normal'
 fontWeight	| 'normal' / 'bold' / 'bolder' / 'lighter' or numeric, default 'normal'
 
-### `lineStyle`
+### `lineStyle` / `style_line`
 
 Arg         | Instruction
 ------------|-----------------------------------------------------------
@@ -146,14 +159,14 @@ shadowBlur	| numeric, default 5
 shadowOffsetX	| numeric, default 3
 shadowOffsetY	| numeric, default 3
 
-### `areaStyle`
+### `areaStyle` / `style_area`
 
 Arg         | Instruction
 ------------|-----------------------------------------------------------
 color	| color vector, 'rgba', hex color, or color names.
 type	| only 'default'
 
-### `chordStyle`
+### `chordStyle` / `style_chord`
 
 Arg         | Instruction
 ------------|-----------------------------------------------------------
@@ -162,7 +175,7 @@ color	| color vector, 'rgba', hex color, or color names.
 borderWidth	| numeric, default 1
 borderColor	| color vector, 'rgba', hex color, or color names.
 
-### `nodeStyle`
+### `nodeStyle` / `style_node`
 
 Arg         | Instruction
 ------------|-----------------------------------------------------------
@@ -170,7 +183,7 @@ color	| color vector, 'rgba', hex color, or color names.
 borderWidth	| numeric, default 1
 borderColor	| color vector, 'rgba', hex color, or color names.
 
-### `linkStyle`
+### `linkStyle` / `style_link`
 
 Arg         | Instruction
 ------------|-----------------------------------------------------------

@@ -19,7 +19,7 @@ library(recharts)
 
 # 介绍Introduction
 
-`aesStyle`包含一大族函数，用于创建Echarts样式元件。比如，Echarts大量使用`itemStyle`，而在recharts中，你既可以用`itemStyle`函数，或直接写出itemStyle的list对象。
+`aesStyle`包含一大族函数，用于创建Echarts样式元件。比如，Echarts大量使用`itemStyle`，而在recharts中，你既可以用`itemStyle`函数，也可以直接写出itemStyle的list对象。
 
 在itemStyle的list对象内部，包含三类元素：
 
@@ -35,26 +35,39 @@ library(recharts)
 
 # 用法Function Call
 
+所有函数名都有小驼峰法和小写连划线(Hadly Wickham推荐此法)两种形式。为了便于偷懒，还有缩写版（如labelLine缩写成ll）。
+
 ```r
 aesStyle(element = c("text", "line", "area", "chord", "node", "link"), ...)
+aes_style(element = c("text", "line", "area", "chord", "node", "link"), ...)
 
 lineStyle(...)
+style_line(...)
 
 textStyle(...)
+style_text(...)
 
 areaStyle(...)
+style_area(...)
 
 chordStyle(...)
+style_chord(...)
 
 nodeStyle(...)
+style_node(...)
 
 linkStyle(...)
+style_link(...)
 
 labelStyle(...)
+style_label(...)
 
 labelLineStyle(...)
+style_labelline(...)
+style_ll(...)
 
 itemStyle(...)
+style_item(...)
 ```
 
 +--------------+---------------------------------------------------------------+
@@ -88,7 +101,7 @@ barBorderWidth	| 数值型向量，长度为1或4(顺时针右-下-左-上), 默
 label	| 用于线图/面积图/条图/柱图/k线图/散点图/气泡图/饼图/环形图/地图/力导向布局图/漏斗图/金字塔图和标注点/标注线，参见`labelStyle`
 labelLine	| 用于饼图/环形图和漏斗图，参见`labelLineStyle`
 
-### `labelStyle`
+### `labelStyle` / `style_label`
 
 +------------+-----------------------------------------------------------------+
 | 参数       | 说明  |
@@ -113,7 +126,7 @@ labelLine	| 用于饼图/环形图和漏斗图，参见`labelLineStyle`
 | y          | 仅用于矩形树图，数值型 |
 +------------+-----------------------------------------------------------------+
 
-### `labelLineStyle`
+### `labelLineStyle` / `style_ll` / `style_labelline`
 
 参数        | 说明
 ------------|-----------------------------------------------------------
@@ -121,7 +134,7 @@ show	| TRUE/FALSE, 默认为TRUE
 length	| 数值型或'auto', 默认为 40
 lineStyle	| 参见`lineStyle`
 
-### `textStyle`
+### `textStyle` / `style_text`
 
 参数        | 说明
 ------------|-----------------------------------------------------------
@@ -134,7 +147,7 @@ fontSize	| 数值型，默认为12
 fontStyle	| 'normal' / 'italic' / 'oblique', 默认为'normal'
 fontWeight	| 'normal' / 'bold' / 'bolder' / 'lighter' 祸数值型，默认为'normal'
 
-### `lineStyle`
+### `lineStyle` / `style_line`
 
 参数        | 说明
 ------------|-----------------------------------------------------------
@@ -146,14 +159,14 @@ shadowBlur	| 数值型，默认为5
 shadowOffsetX	| 数值型，默认为3
 shadowOffsetY	| 数值型，默认为3
 
-### `areaStyle`
+### `areaStyle` / `style_area`
 
 参数        | 说明
 ------------|-----------------------------------------------------------
 color	| 颜色向量, 可以是'rgba', 十六进制值, 或颜色名称
 type	| 仅能用'default'
 
-### `chordStyle`
+### `chordStyle` / `style_chord`
 
 参数        | 说明
 ------------|-----------------------------------------------------------
@@ -162,7 +175,7 @@ color	| 颜色向量, 可以是'rgba', 十六进制值, 或颜色名称
 borderWidth	| 数值型，默认为1
 borderColor	| 颜色向量, 可以是'rgba', 十六进制值, 或颜色名称
 
-### `nodeStyle`
+### `nodeStyle` / `style_node`
 
 参数        | 说明
 ------------|-----------------------------------------------------------
@@ -170,7 +183,7 @@ color	| 颜色向量, 可以是'rgba', 十六进制值, 或颜色名称
 borderWidth	| 数值型，默认为1
 borderColor	| 颜色向量, 可以是'rgba', 十六进制值, 或颜色名称
 
-### `linkStyle`
+### `linkStyle` / `style_link`
 
 参数        | 说明
 ------------|-----------------------------------------------------------

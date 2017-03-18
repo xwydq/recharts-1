@@ -129,9 +129,11 @@ First, get the other two web pages and rbind the datasets.
 
 ```{r}
 hotword$t <- 'Realtime'
-hotword1 <- getBaiduHot("http://top.baidu.com/buzz?b=341&fr=topbuzz_b1")
+hotword1 <- getBaiduHot("http://top.baidu.com/buzz?b=341&fr=topbuzz_b1",
+                        HTMLencoding = 'GBK')
 hotword1$t <- 'Today'
-hotword2 <- getBaiduHot("http://top.baidu.com/buzz?b=42&c=513&fr=topbuzz_b341")
+hotword2 <- getBaiduHot("http://top.baidu.com/buzz?b=42&c=513&fr=topbuzz_b341",
+                        HTMLencoding = 'GBK')
 hotword2$t <- '7-days'
 hotword <- do.call('rbind', list(hotword, hotword1, hotword2))
 hotword$t <- factor(hotword$t, levels=c('Realtime', 'Today', '7-days'))

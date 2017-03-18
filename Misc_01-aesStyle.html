@@ -279,25 +279,37 @@ div.tocify {
 </div>
 <div id="function-call" class="section level1">
 <h1><span class="header-section-number">2</span> Function Call</h1>
+<p>All the function names have two forms: small camel and lowercase_underscore (endorsed by Hadley Wickham). To be lazy, we also provide short forms as well (e.g., ll for labelLine).</p>
 <pre class="r"><code>aesStyle(element = c(&quot;text&quot;, &quot;line&quot;, &quot;area&quot;, &quot;chord&quot;, &quot;node&quot;, &quot;link&quot;), ...)
+aes_style(element = c(&quot;text&quot;, &quot;line&quot;, &quot;area&quot;, &quot;chord&quot;, &quot;node&quot;, &quot;link&quot;), ...)
 
 lineStyle(...)
+style_line(...)
 
 textStyle(...)
+style_text(...)
 
 areaStyle(...)
+style_area(...)
 
 chordStyle(...)
+style_chord(...)
 
 nodeStyle(...)
+style_node(...)
 
 linkStyle(...)
+style_link(...)
 
 labelStyle(...)
+style_label(...)
 
 labelLineStyle(...)
+style_labelline(...)
+style_ll(...)
 
-itemStyle(...)</code></pre>
+itemStyle(...)
+style_item(...)</code></pre>
 <table>
 <colgroup>
 <col width="18%" />
@@ -399,8 +411,8 @@ itemStyle(...)</code></pre>
 </tbody>
 </table>
 </div>
-<div id="labelstyle" class="section level3">
-<h3><span class="header-section-number">2.1.2</span> <code>labelStyle</code></h3>
+<div id="labelstyle-style_label" class="section level3">
+<h3><span class="header-section-number">2.1.2</span> <code>labelStyle</code> / <code>style_label</code></h3>
 <table>
 <colgroup>
 <col width="16%" />
@@ -453,8 +465,8 @@ itemStyle(...)</code></pre>
 </tbody>
 </table>
 </div>
-<div id="labellinestyle" class="section level3">
-<h3><span class="header-section-number">2.1.3</span> <code>labelLineStyle</code></h3>
+<div id="labellinestyle-style_ll-style_labelline" class="section level3">
+<h3><span class="header-section-number">2.1.3</span> <code>labelLineStyle</code> / <code>style_ll</code> / <code>style_labelline</code></h3>
 <table>
 <thead>
 <tr class="header">
@@ -478,8 +490,8 @@ itemStyle(...)</code></pre>
 </tbody>
 </table>
 </div>
-<div id="textstyle" class="section level3">
-<h3><span class="header-section-number">2.1.4</span> <code>textStyle</code></h3>
+<div id="textstyle-style_text" class="section level3">
+<h3><span class="header-section-number">2.1.4</span> <code>textStyle</code> / <code>style_text</code></h3>
 <table>
 <thead>
 <tr class="header">
@@ -523,8 +535,8 @@ itemStyle(...)</code></pre>
 </tbody>
 </table>
 </div>
-<div id="linestyle" class="section level3">
-<h3><span class="header-section-number">2.1.5</span> <code>lineStyle</code></h3>
+<div id="linestyle-style_line" class="section level3">
+<h3><span class="header-section-number">2.1.5</span> <code>lineStyle</code> / <code>style_line</code></h3>
 <table>
 <colgroup>
 <col width="17%" />
@@ -568,8 +580,8 @@ itemStyle(...)</code></pre>
 </tbody>
 </table>
 </div>
-<div id="areastyle" class="section level3">
-<h3><span class="header-section-number">2.1.6</span> <code>areaStyle</code></h3>
+<div id="areastyle-style_area" class="section level3">
+<h3><span class="header-section-number">2.1.6</span> <code>areaStyle</code> / <code>style_area</code></h3>
 <table>
 <thead>
 <tr class="header">
@@ -589,8 +601,8 @@ itemStyle(...)</code></pre>
 </tbody>
 </table>
 </div>
-<div id="chordstyle" class="section level3">
-<h3><span class="header-section-number">2.1.7</span> <code>chordStyle</code></h3>
+<div id="chordstyle-style_chord" class="section level3">
+<h3><span class="header-section-number">2.1.7</span> <code>chordStyle</code> / <code>style_chord</code></h3>
 <table>
 <thead>
 <tr class="header">
@@ -618,8 +630,8 @@ itemStyle(...)</code></pre>
 </tbody>
 </table>
 </div>
-<div id="nodestyle" class="section level3">
-<h3><span class="header-section-number">2.1.8</span> <code>nodeStyle</code></h3>
+<div id="nodestyle-style_node" class="section level3">
+<h3><span class="header-section-number">2.1.8</span> <code>nodeStyle</code> / <code>style_node</code></h3>
 <table>
 <thead>
 <tr class="header">
@@ -643,8 +655,8 @@ itemStyle(...)</code></pre>
 </tbody>
 </table>
 </div>
-<div id="linkstyle" class="section level3">
-<h3><span class="header-section-number">2.1.9</span> <code>linkStyle</code></h3>
+<div id="linkstyle-style_link" class="section level3">
+<h3><span class="header-section-number">2.1.9</span> <code>linkStyle</code> / <code>style_link</code></h3>
 <table>
 <thead>
 <tr class="header">
@@ -718,6 +730,15 @@ $(document).ready(function () {
 
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "libs/mathjax-local/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 
 </body>
 </html>

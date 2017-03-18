@@ -42,10 +42,10 @@ install_github("madlogos/recharts")
             1. [Map](Basic_Plots_31_Map.html)
             1. [Tree Chart](Basic_Plots_32_Tree.html)
             1. [Treemap](Basic_Plots_33_Treemap.html)
-1. [Mixed Plots](Mixed_Plots.html)
+1. [Mixed Plots](Misc_03-Mixed_Plots.html)
 1. Axis/Widget Configuration
     1. Tune Series
-        1. [`setSeries`](setSeries.html)
+        1. [`setSeries`](Misc_02-setSeries.html)
     1. Axis/Grid
         1. [`setAxis`](Widget_01_Axis.html)
         1. [`setPolar`](Widget_02_Polar.html)
@@ -62,13 +62,13 @@ install_github("madlogos/recharts")
         1. [`setDataZoom`](Widget_26_DataZoom.html)
         1. [`setRoam`](Widget_27_RoamController.html)
     1. Feature Lists
-        1. [`aesStyle`](aesStyle.html)
+        1. [`aesStyle`](Misc_01-aesStyle.html)
 
 1. Aesthetic Configuration
     1. [`setTooltip`](Widget_31_Tooltip.html)
     1. [`setSymbols`](Widget_32_SymbolList.html)
     1. [`setTheme`](Widget_33_Theme.html)
-1. [Customization](Cust_Plots.html)
+1. [Customization](Misc_04-Cust_Plots.html)
 
 # Hello World
 
@@ -78,6 +78,8 @@ The R package **recharts** provides an interface to the JavaScript library [ECha
 library(recharts)
 echartr(iris, Sepal.Length, Sepal.Width, series = Species)
 ```
+
+> You can always call `browseVignettes("recharts")` to view the manual locally.
 
 The **recharts** package was built on top of [**htmlwidgets**](http://htmlwidgets.org), which can save us a lot of time on managing JavaScript dependencies and dealing with different types of output documents such as R Markdown and Shiny. You just create a chart, and we will take care of the rest of things when the chart is renderd in R Markdown, Shiny, or the R console / RStudio.
 
@@ -175,15 +177,20 @@ The input param list could be
 
 #### Data Requirements
 
-Data must be a data.frame. The data series and timeline will display in the original order of `series` and `z`, so you should sort the data.frame before making charts so as to make sure the display order is exactly what you want.
+Data must be a data.frame. The data series and timeline will display in the original order of `series` and `t`, so you should sort the data.frame before making charts so as to make sure the display order is exactly what you want.
 
-When it comes to timeline (`z`), you must be very cautious. All the combination sets of `x`, `y`, `series`, `weight` should be exactly equal across all the levels of `z`. Otherwise you will find confusious overlap of graphs across timeline.
+When it comes to timeline (`t`), you must be very cautious. All the combination sets of `x`, `y`, `series`, `weight` should be exactly equal across all the levels of `t`. Otherwise you will find confusious overlap of graphs across timeline.
 
 #### Type And Subtype
 
 ##### Mixed Types
 
 `recharts` supports mixed chart types in some cases, e.g., bar and line.
+
+By now, `recharts` only supports the following misure of types:
+- Cartesian coordinate charts: scatterplot/bubble, bar/column, line/area charts
+- Polar coordinate charts: funnel, pie/ring charts
+- Others: force, chord charts
 
 ```{r}
 d <- data.table::dcast(mtcars, carb+gear~., mean, value.var='mpg')
@@ -206,6 +213,13 @@ echartr(d, carb, mean.mpg, gear, type='line',
 The above example shows how to associate type/subtype with series. If you want to associate type/subtype with facets, you need to wrap them in a list. Within each list, the vector of type/subtypes are associated with series, ie, list[[1]], list[[2]], ... are associated with facet 1, 2, ..., while list[[1]][1], list[[1]][2], ... are associated with series 1, 2, ...
 
 If facet has 2 levels and series has 3 levels, it means type and subtype should have  a structure of list(c(s1,s2,s3), c(s1,s2,s3)). recharts will try to supplement/cut the income params type and subtype to meet the mapping relationship.
+
+Series/facet | facet **1** | facet **2**  | ... | facet **i**
+---------+------+-------+-------+------------
+series _1_  | list[[**1**]][_1_] | list[[**2**]][_1_] | ... | list[[**i**]][_1_]
+series _2_  | list[[**1**]][_2_] | list[[**2**]][_2_] | ... | list[[**i**]][_2_]
+... | ... | ... | ... | ...
+series _j_  | list[[**1**]][_j_] | list[[**2**]][_j_] | ... | list[[**i**]][_j_]
 
 ```{r}
 d1 <- data.frame(x=rep(LETTERS[1:6], 4), y=abs(rnorm(24)), 
@@ -297,6 +311,8 @@ g %>% setLegend(selected='Automatic', textStyle=list(color='lime'))
 ### Toolbox
 
 Modify toolbox as English, and put it to the upper-right of the chart with vertical display. 
+
+> Refer to `vecPos()` function to see how `pos` is defined.
 
 ```{r}
 g %>% setToolbox(lang='en', pos=2)
@@ -419,6 +435,23 @@ chordEx1 = list(
 echart(chordEx1)
 ```
 
+It is exactly the same as
+
+```r
+mat <- as.data.frame(rbind(
+        c(11975,  5871, 8916, 2868),
+        c( 1951, 10048, 2060, 6171),
+        c( 8010, 16145, 8090, 8045),
+        c( 1013,   990,  940, 6907)
+      ))
+names(mat) <- c("group1", "group2", "group3", "group4")
+mat$name <- names(mat)
+
+echartr(mat, x=name, y=c(group1, group2, group3, group4), type="chord", 
+        subtype='ribbon + asc + descsub + hidelab + scaletext') %>%
+        setTitle("测试数据", subtitle="From d3.js", pos=5)
+```
+
 Apparently, all we did was to translate the JavaScript object in the [original example](http://echarts.baidu.com/doc/example/chord1.html) into R. Note we translated the function `tooltip.fomatter` using the `JS()` function in **htmlwidgets**. All other objects can be mapped naturally to R.
 
 ## Modify the Echarts Object
@@ -429,6 +462,28 @@ The following is the structure of the object `g` we producted by `echartr(mtcars
 
 ```{r}
 enquote(g)
+```
+
+## Save Echarts Object As HTML
+
+Echarts is actually of htmlwidgets class. So you can simply call `htmlwidgets::saveWidget` function to save the object as HTML.
+
+## Shiny
+
+Refer to `renderEchart` function to use `recharts` for Shiny.
+
+```r
+library(recharts)
+library(shiny)
+app = shinyApp(
+  ui = fluidPage(eChartOutput('myChart')),
+  server = function(input, output) {
+    chart = echartr(data.frame(x = rnorm(100), y = rnorm(100)), x, y)
+    output$myChart = renderEChart(chart)
+  }
+)
+
+if (interactive()) print(app)
 ```
 
 # Finale

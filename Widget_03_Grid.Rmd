@@ -27,25 +27,43 @@ As every call of recharts functions automatically resizes the widgets, you are r
 
 # Function Call
 
+All the function names have two forms: small camel and lowercase_underscore (endorsed by Hadley Wickham). To be lazy, we also provide short forms as well (e.g., dz for dataZoom).
+
 ```r
 setGrid(chart, x = 80, y = 60, x2 = 80, y2 = 60, width = NULL,
   height = NULL, bgColor = NULL, borderColor = NULL, borderWidth = 1,
   widget = c("pane", "timeline", "legend", "title", "dataZoom", "dataRange",
   "toolbox", "roamController"), ...)
+set_grid(chart, x = 80, y = 60, x2 = 80, y2 = 60, width = NULL,
+  height = NULL, bgColor = NULL, borderColor = NULL, borderWidth = 1,
+  widget = c("pane", "timeline", "legend", "title", "dataZoom", "dataRange",
+  "toolbox", "roamController"), ...)
 
 relocTitle(chart, x = NULL, y = NULL, ...)
+move_title(chart, x = NULL, y = NULL, ...)
 
 relocLegend(chart, x = NULL, y = NULL, ...)
+move_legend(chart, x = NULL, y = NULL, ...)
 
 relocDataZoom(chart, x = NULL, y = NULL, ...)
+move_datazoom(chart, x = NULL, y = NULL, ...)
+move_dz(chart, x = NULL, y = NULL, ...)
 
 relocDataRange(chart, x = NULL, y = NULL, ...)
+move_datarange(chart, x = NULL, y = NULL, ...)
+move_dr(chart, x = NULL, y = NULL, ...)
 
 relocTimeline(chart, x = NULL, y = NULL, x2 = NULL, y2 = NULL, ...)
+move_timeline(chart, x = NULL, y = NULL, x2 = NULL, y2 = NULL, ...)
+move_tl(chart, x = NULL, y = NULL, x2 = NULL, y2 = NULL, ...)
 
 relocToolbox(chart, x = NULL, y = NULL, ...)
+move_toolbox(chart, x = NULL, y = NULL, ...)
+move_tb(chart, x = NULL, y = NULL, ...)
 
 relocRoam(chart, x = NULL, y = NULL, ...)
+move_roam(chart, x = NULL, y = NULL, ...)
+move_rc(chart, x = NULL, y = NULL, ...)
 ```
 
 +-------------+----------------------------------------------------------------+

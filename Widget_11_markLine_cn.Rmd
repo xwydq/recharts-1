@@ -23,6 +23,8 @@ library(recharts)
 
 # 用法Function Call
 
+所有函数名都有小驼峰法和小写连划线(Hadly Wickham推荐此法)两种形式。为了便于偷懒，还有缩写版（如markLine缩写成ml）。
+
 ```r
 addMarkLine(chart, series = NULL, timeslots = NULL, data = NULL,
   clickable = TRUE, symbol = c("circle", "arrow"), symbolSize = c(2, 4),
@@ -30,6 +32,40 @@ addMarkLine(chart, series = NULL, timeslots = NULL, data = NULL,
   precision = 2, bundling = list(enable = FALSE, maxTurningAngle = 45),
   effect = list(show = FALSE), itemStyle = NULL, mode = c("add",
   "overide"), ...)
+
+addML(chart, series = NULL, timeslots = NULL, data = NULL,
+  clickable = TRUE, symbol = c("circle", "arrow"), symbolSize = c(2, 4),
+  symbolRotate = NULL, large = FALSE, smooth = FALSE, smoothness = 0.2,
+  precision = 2, bundling = list(enable = FALSE, maxTurningAngle = 45),
+  effect = list(show = FALSE), itemStyle = NULL, mode = c("add",
+  "overide"), ...)
+
+addMarkline(chart, series = NULL, timeslots = NULL, data = NULL,
+  clickable = TRUE, symbol = c("circle", "arrow"), symbolSize = c(2, 4),
+  symbolRotate = NULL, large = FALSE, smooth = FALSE, smoothness = 0.2,
+  precision = 2, bundling = list(enable = FALSE, maxTurningAngle = 45),
+  effect = list(show = FALSE), itemStyle = NULL, mode = c("add",
+  "overide"), ...)
+
+add_markline(chart, series = NULL, timeslots = NULL, data = NULL,
+  clickable = TRUE, symbol = c("circle", "arrow"), symbolSize = c(2, 4),
+  symbolRotate = NULL, large = FALSE, smooth = FALSE, smoothness = 0.2,
+  precision = 2, bundling = list(enable = FALSE, maxTurningAngle = 45),
+  effect = list(show = FALSE), itemStyle = NULL, mode = c("add",
+  "overide"), ...)
+
+add_ml(chart, series = NULL, timeslots = NULL, data = NULL,
+  clickable = TRUE, symbol = c("circle", "arrow"), symbolSize = c(2, 4),
+  symbolRotate = NULL, large = FALSE, smooth = FALSE, smoothness = 0.2,
+  precision = 2, bundling = list(enable = FALSE, maxTurningAngle = 45),
+  effect = list(show = FALSE), itemStyle = NULL, mode = c("add",
+  "overide"), ...)
+
+overideMarkLine(chart, ...)
+
+overideMarkline(chart, ...)
+
+overideML(chart, ...)
 ```
 
 `overideML`与`addML(mode='overide', ...)`等价。

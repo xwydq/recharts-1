@@ -25,8 +25,15 @@ library(recharts)
 
 # 用法Function Call
 
+所有函数名都有小驼峰法和小写连划线(Hadly Wickham推荐此法)两种形式。
+
 ```r
 setTitle(chart, title = NULL, subtitle = NULL, link = NULL,
+  sublink = NULL, pos = 6, bgColor = NULL, borderColor = NULL,
+  borderWidth = NULL, textStyle = NULL, subtextStyle = NULL,
+  show = TRUE, ...)
+
+set_title(chart, title = NULL, subtitle = NULL, link = NULL,
   sublink = NULL, pos = 6, bgColor = NULL, borderColor = NULL,
   borderWidth = NULL, textStyle = NULL, subtextStyle = NULL,
   show = TRUE, ...)

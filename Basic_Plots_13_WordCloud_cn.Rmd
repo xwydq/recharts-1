@@ -29,7 +29,7 @@ getBaiduHot <- function(url, top=30, HTMLencoding=NULL){
     if (is.null(HTMLencoding)) if (!is.null(charset)) HTMLencoding <- charset
     baiduhot <- stringr::str_conv(baiduhot, HTMLencoding)
     hotword <- gsub(".+?<a class=\"list-title\"[^>]+?>([^<>]+?)</a>.+?<span class=\"icon-(rise|fair|fall)\">(\\d+?)</span>.+?","\\1\t\\3\t\\2\t", baiduhot)
-    hotword <- enc2native(gsub("^(.+?)\t{4,}.+$","\\1",hotword))
+    hotword <- enc2native(gsub("^(.+?)\t{4,}.+$","\\1", hotword))
     hotword <- t(matrix(unlist(strsplit(hotword,"\t")), nrow=3))
     hotword <- as.data.frame(hotword, stringsAsFactors=FALSE)
     names(hotword) <- c("Keyword", "Freq", "Trend")
@@ -129,9 +129,11 @@ echartr(hotword, Keyword, Freq, Trend, type='wordCloud') %>%
 
 ```{r}
 hotword$t <- 'Realtime'
-hotword1 <- getBaiduHot("http://top.baidu.com/buzz?b=341&fr=topbuzz_b1")
+hotword1 <- getBaiduHot("http://top.baidu.com/buzz?b=341&fr=topbuzz_b1", 
+                        HTMLencoding = 'GBK')
 hotword1$t <- 'Today'
-hotword2 <- getBaiduHot("http://top.baidu.com/buzz?b=42&c=513&fr=topbuzz_b341")
+hotword2 <- getBaiduHot("http://top.baidu.com/buzz?b=42&c=513&fr=topbuzz_b341",
+                        HTMLencoding = 'GBK')
 hotword2$t <- '7-days'
 hotword <- do.call('rbind', list(hotword, hotword1, hotword2))
 hotword$t <- factor(hotword$t, levels=c('Realtime', 'Today', '7-days'))

@@ -25,6 +25,8 @@ library(recharts)
 
 # 用法Function Call
 
+所有函数名都有小驼峰法和小写连划线(Hadly Wickham推荐此法)两种形式。为了便于偷懒，还有缩写版（如timeline缩写成tl）。
+
 ```r
 setTimeline(chart, show = TRUE, type = c("time", "number"),
   realtime = TRUE, x = 80, y = NULL, x2 = 80, y2 = 0, width = NULL,
@@ -34,6 +36,31 @@ setTimeline(chart, show = TRUE, type = c("time", "number"),
   label = NULL, checkpointStyle = NULL, controlStyle = NULL,
   symbol = "emptyDiamond", symbolSize = 4, currentIndex = 0,
   data = NULL, ...)
+
+setTL(chart, show = TRUE, type = c("time", "number"), realtime = TRUE,
+  x = 80, y = NULL, x2 = 80, y2 = 0, width = NULL, height = 50,
+  bgColor = "rgba(0,0,0,0)", borderColor = "#ccc", borderWidth = 0,
+  controlPosition = c("left", "right", "none"), autoPlay = FALSE,
+  loop = TRUE, playInterval = 2000, lineStyle = NULL, label = NULL,
+  checkpointStyle = NULL, controlStyle = NULL, symbol = "emptyDiamond",
+  symbolSize = 4, currentIndex = 0, data = NULL, ...)
+
+set_timeline(chart, show = TRUE, type = c("time", "number"),
+  realtime = TRUE, x = 80, y = NULL, x2 = 80, y2 = 0, width = NULL,
+  height = 50, bgColor = "rgba(0,0,0,0)", borderColor = "#ccc",
+  borderWidth = 0, controlPosition = c("left", "right", "none"),
+  autoPlay = FALSE, loop = TRUE, playInterval = 2000, lineStyle = NULL,
+  label = NULL, checkpointStyle = NULL, controlStyle = NULL,
+  symbol = "emptyDiamond", symbolSize = 4, currentIndex = 0,
+  data = NULL, ...)
+
+set_tl(chart, show = TRUE, type = c("time", "number"), realtime = TRUE,
+  x = 80, y = NULL, x2 = 80, y2 = 0, width = NULL, height = 50,
+  bgColor = "rgba(0,0,0,0)", borderColor = "#ccc", borderWidth = 0,
+  controlPosition = c("left", "right", "none"), autoPlay = FALSE,
+  loop = TRUE, playInterval = 2000, lineStyle = NULL, label = NULL,
+  checkpointStyle = NULL, controlStyle = NULL, symbol = "emptyDiamond",
+  symbolSize = 4, currentIndex = 0, data = NULL, ...)
 ```
 
 +---------------+--------------------------------------------------------------+

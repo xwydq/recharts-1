@@ -25,6 +25,8 @@ The recommended approach to use `setTimeline` is `chart %>% setTimeline(...)`.
 
 # Function Call
 
+All the function names have two forms: small camel and lowercase_underscore (endorsed by Hadley Wickham). To be lazy, we also provide short forms as well (e.g., tl for timeline).
+
 ```r
 setTimeline(chart, show = TRUE, type = c("time", "number"),
   realtime = TRUE, x = 80, y = NULL, x2 = 80, y2 = 0, width = NULL,
@@ -34,6 +36,31 @@ setTimeline(chart, show = TRUE, type = c("time", "number"),
   label = NULL, checkpointStyle = NULL, controlStyle = NULL,
   symbol = "emptyDiamond", symbolSize = 4, currentIndex = 0,
   data = NULL, ...)
+
+setTL(chart, show = TRUE, type = c("time", "number"), realtime = TRUE,
+  x = 80, y = NULL, x2 = 80, y2 = 0, width = NULL, height = 50,
+  bgColor = "rgba(0,0,0,0)", borderColor = "#ccc", borderWidth = 0,
+  controlPosition = c("left", "right", "none"), autoPlay = FALSE,
+  loop = TRUE, playInterval = 2000, lineStyle = NULL, label = NULL,
+  checkpointStyle = NULL, controlStyle = NULL, symbol = "emptyDiamond",
+  symbolSize = 4, currentIndex = 0, data = NULL, ...)
+
+set_timeline(chart, show = TRUE, type = c("time", "number"),
+  realtime = TRUE, x = 80, y = NULL, x2 = 80, y2 = 0, width = NULL,
+  height = 50, bgColor = "rgba(0,0,0,0)", borderColor = "#ccc",
+  borderWidth = 0, controlPosition = c("left", "right", "none"),
+  autoPlay = FALSE, loop = TRUE, playInterval = 2000, lineStyle = NULL,
+  label = NULL, checkpointStyle = NULL, controlStyle = NULL,
+  symbol = "emptyDiamond", symbolSize = 4, currentIndex = 0,
+  data = NULL, ...)
+
+set_tl(chart, show = TRUE, type = c("time", "number"), realtime = TRUE,
+  x = 80, y = NULL, x2 = 80, y2 = 0, width = NULL, height = 50,
+  bgColor = "rgba(0,0,0,0)", borderColor = "#ccc", borderWidth = 0,
+  controlPosition = c("left", "right", "none"), autoPlay = FALSE,
+  loop = TRUE, playInterval = 2000, lineStyle = NULL, label = NULL,
+  checkpointStyle = NULL, controlStyle = NULL, symbol = "emptyDiamond",
+  symbolSize = 4, currentIndex = 0, data = NULL, ...)
 ```
 
 +---------------+--------------------------------------------------------------+

@@ -25,8 +25,16 @@ The recommended approach to use `setSymbols` is `chart %>% setSymbols(...)`.
 
 # Function Call
 
+All the function names have two forms: small camel and lowercase_underscore (endorsed by Hadley Wickham). To be lazy, we also provide short forms as well (e.g., sl for symbolList).
+
 ```r
 setSymbols(chart, symbols = NULL, ...)
+
+set_symbols(chart, symbols = NULL, ...)
+
+set_symbol(chart, symbols = NULL, ...)
+
+set_sl(chart, symbols = NULL, ...)
 ```
 
 +--------------+---------------------------------------------------------------+

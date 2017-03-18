@@ -23,11 +23,43 @@ Proper markpoints makes a chart more informative. We can use `addMarkPoint` (or 
 
 # Function Call
 
+All the function names have two forms: small camel and lowercase_underscore (endorsed by Hadley Wickham). To be lazy, we also provide short forms as well (e.g., mp for markPoint).
+
 ```r
 addMarkPoint(chart, series = NULL, timeslots = NULL, data = NULL,
   clickable = TRUE, symbol = "pin", symbolSize = 10,
   symbolRotate = NULL, large = FALSE, effect = list(show = FALSE),
   itemStyle = NULL, ...)
+
+addMP(chart, series = NULL, timeslots = NULL, data = NULL,
+  clickable = TRUE, symbol = "pin", symbolSize = 10,
+  symbolRotate = NULL, large = FALSE, effect = list(show = FALSE),
+  itemStyle = NULL, ...)
+
+add_markpoint(chart, series = NULL, timeslots = NULL, data = NULL,
+  clickable = TRUE, symbol = "pin", symbolSize = 10,
+  symbolRotate = NULL, large = FALSE, effect = list(show = FALSE),
+  itemStyle = NULL, ...)
+
+add_mp(chart, series = NULL, timeslots = NULL, data = NULL,
+  clickable = TRUE, symbol = "pin", symbolSize = 10,
+  symbolRotate = NULL, large = FALSE, effect = list(show = FALSE),
+  itemStyle = NULL, ...)
+
+addMarkpoint(chart, series = NULL, timeslots = NULL, data = NULL,
+  clickable = TRUE, symbol = "pin", symbolSize = 10,
+  symbolRotate = NULL, large = FALSE, effect = list(show = FALSE),
+  itemStyle = NULL, ...)
+
+overideMarkPoint(chart, ...)
+
+overideMarkpoint(chart, ...)
+
+overideMP(chart, ...)
+
+overide_mp(chart, ...)
+
+overide_markpoint(chart, ...)
 ```
 
 `overideMP` is exactly the same as `addMP(mode='overide', ...)`.

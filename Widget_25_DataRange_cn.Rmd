@@ -25,12 +25,32 @@ library(recharts)
 
 # 用法Function Call
 
+所有函数名都有小驼峰法和小写连划线(Hadly Wickham推荐此法)两种形式。为了便于偷懒，还有缩写版（如dataRange缩写成dr）。
+
 ```r
 setDataRange(chart, show = TRUE, pos = 8, valueRange = NULL,
   splitNumber = 5, itemGap = 5, labels = NULL, calculable = FALSE,
   borderColor = "#ccc", borderWidth = 0, selectedMode = list(TRUE,
   "single", "multiple"), color = c("#1e90ff", "#f0ffff"), splitList = NULL,
   initialRange = NULL, ...)
+
+set_datarange(chart, show = TRUE, pos = 8, valueRange = NULL,
+  splitNumber = 5, itemGap = 5, labels = NULL, calculable = FALSE,
+  borderColor = "#ccc", borderWidth = 0, selectedMode = list(TRUE,
+  "single", "multiple"), color = c("#1e90ff", "#f0ffff"), splitList = NULL,
+  initialRange = NULL, ...)
+
+set_dr(chart, show = TRUE, pos = 8, valueRange = NULL, splitNumber = 5,
+  itemGap = 5, labels = NULL, calculable = FALSE, borderColor = "#ccc",
+  borderWidth = 0, selectedMode = list(TRUE, "single", "multiple"),
+  color = c("#1e90ff", "#f0ffff"), splitList = NULL, initialRange = NULL,
+  ...)
+
+setDR(chart, show = TRUE, pos = 8, valueRange = NULL, splitNumber = 5,
+  itemGap = 5, labels = NULL, calculable = FALSE, borderColor = "#ccc",
+  borderWidth = 0, selectedMode = list(TRUE, "single", "multiple"),
+  color = c("#1e90ff", "#f0ffff"), splitList = NULL, initialRange = NULL,
+  ...)
 ```
 
 +-------------+----------------------------------------------------------------+

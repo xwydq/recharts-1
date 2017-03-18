@@ -23,6 +23,8 @@ library(recharts)
 
 # 用法Function Call
 
+所有函数名都有小驼峰法和小写连划线(Hadly Wickham推荐此法)两种形式。
+
 ```r
 setAxis(chart, series = NULL, which = c("x", "y", "x1", "y1"),
   type = c("value", "category", "time", "log"), show = TRUE,
@@ -33,14 +35,27 @@ setAxis(chart, series = NULL, which = c("x", "y", "x1", "y1"),
   axisTick = list(show = FALSE), axisLabel = list(show = TRUE),
   splitLine = list(show = TRUE), splitArea = list(show = FALSE),
   data = list())
+set_axis(chart, series = NULL, which = c("x", "y", "x1", "y1"),
+  type = c("value", "category", "time", "log"), show = TRUE,
+  position = c("bottom", "top", "left", "right"), name = "",
+  nameLocation = c("end", "start"), nameTextStyle = emptyList(),
+  boundaryGap = c(0, 0), min = NULL, max = NULL, scale = TRUE,
+  splitNumber = NULL, axisLine = list(show = TRUE, onZero = FALSE),
+  axisTick = list(show = FALSE), axisLabel = list(show = TRUE),
+  splitLine = list(show = TRUE), splitArea = list(show = FALSE),
+  data = list())
 
 setYAxis(chart, ...)
+set_axis_y(chart, ...)
 
 setY1Axis(chart, ...)
+set_axis_y1(chart, ...)
 
 setXAxis(chart, ...)
+set_axis_x(chart, ...)
 
 setX1Axis(chart, ...)
+set_axis_x1(chart, ...)
 ```
 
 +-------------+----------------------------------------------------------------+

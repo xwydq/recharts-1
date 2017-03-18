@@ -25,8 +25,20 @@ The recommended approach to use `setRoam` is `chart %>% setRoam(...)`.
 
 # Function Call
 
+All the function names have two forms: small camel and lowercase_underscore (endorsed by Hadley Wickham). To be lazy, we also provide short forms as well (e.g., rc for roamController).
+
 ```r
 setRoam(chart, show = TRUE, pos = 2, width = 80, height = 120,
+  bgColor = "rgba(0,0,0,0)", borderColor = "#ccc", borderWidth = 0,
+  fillerColor = "#fff", handleColor = "#6495ed", step = 15,
+  mapTypeControl = NULL, ...)
+
+set_roam(chart, show = TRUE, pos = 2, width = 80, height = 120,
+  bgColor = "rgba(0,0,0,0)", borderColor = "#ccc", borderWidth = 0,
+  fillerColor = "#fff", handleColor = "#6495ed", step = 15,
+  mapTypeControl = NULL, ...)
+
+set_rc(chart, show = TRUE, pos = 2, width = 80, height = 120,
   bgColor = "rgba(0,0,0,0)", borderColor = "#ccc", borderWidth = 0,
   fillerColor = "#fff", handleColor = "#6495ed", step = 15,
   mapTypeControl = NULL, ...)

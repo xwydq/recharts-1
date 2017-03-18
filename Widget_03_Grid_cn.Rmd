@@ -27,25 +27,43 @@ library(recharts)
 
 # 用法Function Call
 
+所有函数名都有小驼峰法和小写连划线(Hadly Wickham推荐此法)两种形式。为了便于偷懒，还有缩写版（如dataZoom缩写成dz）。
+
 ```r
 setGrid(chart, x = 80, y = 60, x2 = 80, y2 = 60, width = NULL,
   height = NULL, bgColor = NULL, borderColor = NULL, borderWidth = 1,
   widget = c("pane", "timeline", "legend", "title", "dataZoom", "dataRange",
   "toolbox", "roamController"), ...)
+set_grid(chart, x = 80, y = 60, x2 = 80, y2 = 60, width = NULL,
+  height = NULL, bgColor = NULL, borderColor = NULL, borderWidth = 1,
+  widget = c("pane", "timeline", "legend", "title", "dataZoom", "dataRange",
+  "toolbox", "roamController"), ...)
 
 relocTitle(chart, x = NULL, y = NULL, ...)
+move_title(chart, x = NULL, y = NULL, ...)
 
 relocLegend(chart, x = NULL, y = NULL, ...)
+move_legend(chart, x = NULL, y = NULL, ...)
 
 relocDataZoom(chart, x = NULL, y = NULL, ...)
+move_datazoom(chart, x = NULL, y = NULL, ...)
+move_dz(chart, x = NULL, y = NULL, ...)
 
 relocDataRange(chart, x = NULL, y = NULL, ...)
+move_datarange(chart, x = NULL, y = NULL, ...)
+move_dr(chart, x = NULL, y = NULL, ...)
 
 relocTimeline(chart, x = NULL, y = NULL, x2 = NULL, y2 = NULL, ...)
+move_timeline(chart, x = NULL, y = NULL, x2 = NULL, y2 = NULL, ...)
+move_tl(chart, x = NULL, y = NULL, x2 = NULL, y2 = NULL, ...)
 
 relocToolbox(chart, x = NULL, y = NULL, ...)
+move_toolbox(chart, x = NULL, y = NULL, ...)
+move_tb(chart, x = NULL, y = NULL, ...)
 
 relocRoam(chart, x = NULL, y = NULL, ...)
+move_roam(chart, x = NULL, y = NULL, ...)
+move_rc(chart, x = NULL, y = NULL, ...)
 ```
 
 +-------------+----------------------------------------------------------------+

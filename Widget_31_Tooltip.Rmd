@@ -27,6 +27,8 @@ The recommended approach to use `setTT` is `chart %>% setTT(...)`.
 
 # Function Call
 
+All the function names have two forms: small camel and lowercase_underscore (endorsed by Hadley Wickham). To be lazy, we also provide short forms as well (e.g., tt for tooltip).
+
 ```r
 setTooltip(chart, series = NULL, timeslots = NULL, trigger = NULL,
   formatter = NULL, islandFormatter = "{a} < br/>{b} : {c}",
@@ -36,9 +38,30 @@ setTooltip(chart, series = NULL, timeslots = NULL, trigger = NULL,
   borderColor = "#333", borderWidth = 0, borderRadius = 4, show = TRUE,
   ...)
   
-```
+setTT(chart, series = NULL, timeslots = NULL, trigger = NULL,
+  formatter = NULL, islandFormatter = "{a} < br/>{b} : {c}",
+  position = NULL, enterable = FALSE, axisPointer = NULL,
+  textStyle = NULL, showDelay = 20, hideDelay = 100,
+  transitionDuration = 0.4, bgColor = "rgba(0,0,0,0.7)",
+  borderColor = "#333", borderWidth = 0, borderRadius = 4, show = TRUE,
+  ...)
 
-You can use `setTT` for short.
+set_tt(chart, series = NULL, timeslots = NULL, trigger = NULL,
+  formatter = NULL, islandFormatter = "{a} < br/>{b} : {c}",
+  position = NULL, enterable = FALSE, axisPointer = NULL,
+  textStyle = NULL, showDelay = 20, hideDelay = 100,
+  transitionDuration = 0.4, bgColor = "rgba(0,0,0,0.7)",
+  borderColor = "#333", borderWidth = 0, borderRadius = 4, show = TRUE,
+  ...)
+
+set_tooltip(chart, series = NULL, timeslots = NULL, trigger = NULL,
+  formatter = NULL, islandFormatter = "{a} < br/>{b} : {c}",
+  position = NULL, enterable = FALSE, axisPointer = NULL,
+  textStyle = NULL, showDelay = 20, hideDelay = 100,
+  transitionDuration = 0.4, bgColor = "rgba(0,0,0,0.7)",
+  borderColor = "#333", borderWidth = 0, borderRadius = 4, show = TRUE,
+  ...)
+```
 
 +------------------+-----------------------------------------------------------+
 |   Arg            |  Requirement                                              |

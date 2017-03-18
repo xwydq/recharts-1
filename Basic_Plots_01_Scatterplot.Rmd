@@ -131,7 +131,7 @@ Bubble chart with timeline, multiple series are similar to ordinary scatter plot
 
 Then you can configure the widgets, add markLines and/or markPoints, fortify the chart.
 
-## `addMarkLine` And `addMarkPoint`
+## [`addMarkLine`](Widget_11_markLine.html) And [`addMarkPoint`](Widget_12_markPoint.html)
 
 You can fit a linear regression model and define two points for the markLine.
 

@@ -42,10 +42,10 @@ install_github("madlogos/recharts")
             1. [地图Map](Basic_Plots_31_Map_cn.html)
             1. [树图Tree Chart](Basic_Plots_32_Tree_cn.html)
             1. [矩形树图Treemap](Basic_Plots_33_Treemap_cn.html)
-1. [混合图类](Mixed_Plots_cn.html)
+1. [混合图类](Misc_03-Mixed_Plots_cn.html)
 1. 坐标轴/控件配置
     1. 调整数据系列
-        1. [设置系列`setSeries`](setSeries_cn.html)
+        1. [设置系列`setSeries`](Misc_02-setSeries_cn.html)
     1. 坐标轴/制图区
         1. [设置坐标轴`setAxis`](Widget_01_Axis_cn.html)
         1. [设置极坐标系`setPolar`](Widget_02_Polar_cn.html)
@@ -62,12 +62,12 @@ install_github("madlogos/recharts")
         1. [设置缩放漫游`setDataZoom`](Widget_26_DataZoom_cn.html)
         1. [设置地图漫游`setRoam`](Widget_27_RoamController_cn.html)
     1. 样式特性
-        1. [样式`aesStyle`](aesStyle_cn.html)
+        1. [样式`aesStyle`](Misc_01-aesStyle_cn.html)
 1. 美工
     1. [设置提示框`setTooltip`](Widget_31_Tooltip_cn.html)
     1. [设置符号`setSymbols`](Widget_32_SymbolList_cn.html)
     1. [设置主题`setTheme`](Widget_33_Theme_cn.html)
-1. [定制化](Cust_Plots_cn.html)
+1. [定制化](Misc_04-Cust_Plots_cn.html)
 
 # Hello World
 
@@ -77,6 +77,8 @@ install_github("madlogos/recharts")
 library(recharts)
 echartr(iris, Sepal.Length, Sepal.Width, series = Species)
 ```
+
+> 通过`browseVignettes("recharts")`可以离线查看本手册。
 
 **recharts**建基于[**htmlwidgets**](http://htmlwidgets.org)包之上，这样做的优点是极大地节省了开发者管理JavaScript依赖包和处理不同类型的输出文档（如R Markdown和Shiny）的时间。你只需要创建一幅图，而如何输出这幅图（无论R Markdown, Shiny, 还是R控制台/ RStudio）则交由htmlwidgets来处理。
 
@@ -175,9 +177,9 @@ echartr(mtcars, wt, mpg, am, weight=gear, type='bubble')
 
 #### 数据要求Data Requirements
 
-数据必须以数据框形式传入。数据系列和时间轴会以`series`和`z`变量的原始顺序排序。所以作图前，必须先对数据框进行相应的排序，以确保作出的图里，图例和时间轴以正确的顺序显示。
+数据必须以数据框形式传入。数据系列和时间轴会以`series`和`t`变量的原始顺序排序。所以作图前，必须先对数据框进行相应的排序，以确保作出的图里，图例和时间轴以正确的顺序显示。
 
-用到时间轴(`t`)时，务必格外小心。`x`、`y`、`series`、`weight`变量一旦用到，就要确保每个`z`水平上，这些变量都完备地排列组合了。否则你会发现各组图形在时间轴上莫名其妙地重叠呈现。
+用到时间轴(`t`)时，务必格外小心。`x`、`y`、`series`、`weight`变量一旦用到，就要确保每个`t`水平上，这些变量都完备地排列组合了。否则你会发现各组图形在时间轴上莫名其妙地重叠呈现。
 
 
 #### 图类和亚类Type/Subtype
@@ -185,6 +187,11 @@ echartr(mtcars, wt, mpg, am, weight=gear, type='bubble')
 ##### 类和亚类混合
 
 `recharts`在某些情况下支持混合作图，比如柱图和线图。
+
+目前`recharts`只支持下列混合
+- 直角坐标系图类：散点/气泡、柱/条图、线/面积图
+- 极坐标图类：漏斗图、饼/环图
+- 其他：力导向图、和弦图
 
 ```{r}
 d <- data.table::dcast(mtcars, carb+gear~., mean, value.var='mpg')
@@ -207,6 +214,13 @@ echartr(d, carb, mean.mpg, gear, type='line',
 上面的例子显示了如何将有类/亚类映射到数据系列(series)。如果你想将类/亚类映射到分面，需要将它们写成列表(list)，而列表中的每个向量，则依次映射到数据系列(series)。即list[[1]], list[[2]], ...映射分面1、2, ...，而list[[1]]的1、2、...向量则映射系列1、2、...。
 
 如facet为2个水平，series为3个水平，意味着type和subtype应为list(c(s1,s2,s3), c(s1,s2,s3))结构。recharts会尝试将传入参数type和subtype进行补齐或截断，以达到一一映射。
+
+系列/分面 | 分面**1** | 分面**2**  | ... | 分面**i**
+---------+------+-------+-------+------------
+系列_1_  | list[[**1**]][_1_] | list[[**2**]][_1_] | ... | list[[**i**]][_1_]
+系列_2_  | list[[**1**]][_2_] | list[[**2**]][_2_] | ... | list[[**i**]][_2_]
+... | ... | ... | ... | ...
+系列_j_  | list[[**1**]][_j_] | list[[**2**]][_j_] | ... | list[[**i**]][_j_]
 
 ```{r}
 d1 <- data.frame(x=rep(LETTERS[1:6], 4), y=abs(rnorm(24)), 
@@ -249,7 +263,7 @@ g = echartr(mtcars, wt, mpg, factor(am, labels=c('Automatic', 'Manual')))
   |-- ...
 ```
 
-如果你想直接修改数据系列的定义，可以调用低阶函数`setSeries`。
+如果你想直接修改数据系列的定义，可以调用低级函数`setSeries`。
 
 我们把'Manual'系列(索引号为2)的symbolSize改为8，symbolRotate改为30。
 
@@ -299,6 +313,8 @@ g %>% setLegend(selected='Automatic', textStyle=list(color='lime'))
 ### 工具箱Toolbox
 
 修改工具箱显示语言为英文，并置于交互图右上角，垂直显示。
+
+> 关于`pos`变量如何定义，请参考`vecPos`函数。
 
 ```{r}
 g %>% setToolbox(lang='en', pos=2)
@@ -423,6 +439,23 @@ echart(chordEx1)
 
 显然，上述例子就是把[原例子](http://echarts.baidu.com/doc/example/chord1.html)中的JavaScript对象翻译成了R对象。注意，我们是用**htmlwidgets**中的`JS()`函数翻译了`tooltip.fomatter`函数。其他所有对象都可以自然地映射到R。
 
+这个例子等价于
+
+```r
+mat <- as.data.frame(rbind(
+        c(11975,  5871, 8916, 2868),
+        c( 1951, 10048, 2060, 6171),
+        c( 8010, 16145, 8090, 8045),
+        c( 1013,   990,  940, 6907)
+      ))
+names(mat) <- c("group1", "group2", "group3", "group4")
+mat$name <- names(mat)
+
+echartr(mat, x=name, y=c(group1, group2, group3, group4), type="chord", 
+        subtype='ribbon + asc + descsub + hidelab + scaletext') %>%
+        setTitle("测试数据", subtitle="From d3.js", pos=5)
+```
+
 ## 修改Echarts对象Modify the Echarts Object
 
 如果熟悉Echarts的数据结构，我们也可以用`echartr`创建Echarts对象，然后直接修改它，就如同修改其他S3 list一样。
@@ -431,6 +464,28 @@ echart(chordEx1)
 
 ```{r}
 enquote(g)
+```
+
+## 将Echarts对象保存为HTML
+
+Echarts本质上是一个htmlwidgets对象。所以只要调用htmlwidgets包的saveWidget函数即可将其保存为HTML文件。
+
+## Shiny
+
+也可以将Echarts用于Shiny。具体可参考`renderEchart`函数。
+
+```r
+library(recharts)
+library(shiny)
+app = shinyApp(
+  ui = fluidPage(eChartOutput('myChart')),
+  server = function(input, output) {
+    chart = echartr(data.frame(x = rnorm(100), y = rnorm(100)), x, y)
+    output$myChart = renderEChart(chart)
+  }
+)
+
+if (interactive()) print(app)
 ```
 
 # 结语Finale

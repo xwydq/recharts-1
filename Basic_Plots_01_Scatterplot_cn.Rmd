@@ -131,7 +131,7 @@ echartr(iris, Sepal.Width, Petal.Width, weight=Petal.Length) %>%
 
 接下来可以配置控件、添加标注点/标注线，以及美化成图。
 
-## 标注线和标注点`addMarkLine` And `addMarkPoint`
+## 标注线和标注点[`addMarkLine`](Widget_11_markLine_cn.html) And [`addMarkPoint`](Widget_12_markPoint_cn.html)
 
 可以拟合一条回归曲线，并定义标注线的两个点。
 

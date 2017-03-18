@@ -23,6 +23,8 @@ Proper marklines makes a chart more informative. We can use `addMarkLine` (or `a
 
 # Function Call
 
+All the function names have two forms: small camel and lowercase_underscore (endorsed by Hadley Wickham). To be lazy, we also provide short forms as well (e.g., ml for markLine).
+
 ```r
 addMarkLine(chart, series = NULL, timeslots = NULL, data = NULL,
   clickable = TRUE, symbol = c("circle", "arrow"), symbolSize = c(2, 4),
@@ -30,6 +32,40 @@ addMarkLine(chart, series = NULL, timeslots = NULL, data = NULL,
   precision = 2, bundling = list(enable = FALSE, maxTurningAngle = 45),
   effect = list(show = FALSE), itemStyle = NULL, mode = c("add",
   "overide"), ...)
+
+addML(chart, series = NULL, timeslots = NULL, data = NULL,
+  clickable = TRUE, symbol = c("circle", "arrow"), symbolSize = c(2, 4),
+  symbolRotate = NULL, large = FALSE, smooth = FALSE, smoothness = 0.2,
+  precision = 2, bundling = list(enable = FALSE, maxTurningAngle = 45),
+  effect = list(show = FALSE), itemStyle = NULL, mode = c("add",
+  "overide"), ...)
+
+addMarkline(chart, series = NULL, timeslots = NULL, data = NULL,
+  clickable = TRUE, symbol = c("circle", "arrow"), symbolSize = c(2, 4),
+  symbolRotate = NULL, large = FALSE, smooth = FALSE, smoothness = 0.2,
+  precision = 2, bundling = list(enable = FALSE, maxTurningAngle = 45),
+  effect = list(show = FALSE), itemStyle = NULL, mode = c("add",
+  "overide"), ...)
+
+add_markline(chart, series = NULL, timeslots = NULL, data = NULL,
+  clickable = TRUE, symbol = c("circle", "arrow"), symbolSize = c(2, 4),
+  symbolRotate = NULL, large = FALSE, smooth = FALSE, smoothness = 0.2,
+  precision = 2, bundling = list(enable = FALSE, maxTurningAngle = 45),
+  effect = list(show = FALSE), itemStyle = NULL, mode = c("add",
+  "overide"), ...)
+
+add_ml(chart, series = NULL, timeslots = NULL, data = NULL,
+  clickable = TRUE, symbol = c("circle", "arrow"), symbolSize = c(2, 4),
+  symbolRotate = NULL, large = FALSE, smooth = FALSE, smoothness = 0.2,
+  precision = 2, bundling = list(enable = FALSE, maxTurningAngle = 45),
+  effect = list(show = FALSE), itemStyle = NULL, mode = c("add",
+  "overide"), ...)
+
+overideMarkLine(chart, ...)
+
+overideMarkline(chart, ...)
+
+overideML(chart, ...)
 ```
 
 `overideML` is exactly the same as `addML(mode='overide', ...)`.

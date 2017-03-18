@@ -25,8 +25,15 @@ The recommended approach to use `setTitle` is `chart %>% setTitle(...)`.
 
 # Function Call
 
+All the function names have two forms: small camel and lowercase_underscore (endorsed by Hadley Wickham). 
+
 ```r
 setTitle(chart, title = NULL, subtitle = NULL, link = NULL,
+  sublink = NULL, pos = 6, bgColor = NULL, borderColor = NULL,
+  borderWidth = NULL, textStyle = NULL, subtextStyle = NULL,
+  show = TRUE, ...)
+
+set_title(chart, title = NULL, subtitle = NULL, link = NULL,
   sublink = NULL, pos = 6, bgColor = NULL, borderColor = NULL,
   borderWidth = NULL, textStyle = NULL, subtextStyle = NULL,
   show = TRUE, ...)

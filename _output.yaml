@@ -4,6 +4,7 @@ html_document:
   theme: cosmo
   mathjax: null
   toc_depth: 2
+  toc_float: true
   lib_dir: libs
   includes:
     in_header: include/in_header.html

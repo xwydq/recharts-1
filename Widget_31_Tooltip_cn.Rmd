@@ -27,6 +27,8 @@ library(recharts)
 
 # 用法Function Call
 
+所有函数名都有小驼峰法和小写连划线(Hadly Wickham推荐此法)两种形式。为了便于偷懒，还有缩写版（如tooltip缩写成tt）。
+
 ```r
 setTooltip(chart, series = NULL, timeslots = NULL, trigger = NULL,
   formatter = NULL, islandFormatter = "{a} < br/>{b} : {c}",
@@ -35,10 +37,32 @@ setTooltip(chart, series = NULL, timeslots = NULL, trigger = NULL,
   transitionDuration = 0.4, bgColor = "rgba(0,0,0,0.7)",
   borderColor = "#333", borderWidth = 0, borderRadius = 4, show = TRUE,
   ...)
-  
+
+setTT(chart, series = NULL, timeslots = NULL, trigger = NULL,
+  formatter = NULL, islandFormatter = "{a} < br/>{b} : {c}",
+  position = NULL, enterable = FALSE, axisPointer = NULL,
+  textStyle = NULL, showDelay = 20, hideDelay = 100,
+  transitionDuration = 0.4, bgColor = "rgba(0,0,0,0.7)",
+  borderColor = "#333", borderWidth = 0, borderRadius = 4, show = TRUE,
+  ...)
+
+set_tt(chart, series = NULL, timeslots = NULL, trigger = NULL,
+  formatter = NULL, islandFormatter = "{a} < br/>{b} : {c}",
+  position = NULL, enterable = FALSE, axisPointer = NULL,
+  textStyle = NULL, showDelay = 20, hideDelay = 100,
+  transitionDuration = 0.4, bgColor = "rgba(0,0,0,0.7)",
+  borderColor = "#333", borderWidth = 0, borderRadius = 4, show = TRUE,
+  ...)
+
+set_tooltip(chart, series = NULL, timeslots = NULL, trigger = NULL,
+  formatter = NULL, islandFormatter = "{a} < br/>{b} : {c}",
+  position = NULL, enterable = FALSE, axisPointer = NULL,
+  textStyle = NULL, showDelay = 20, hideDelay = 100,
+  transitionDuration = 0.4, bgColor = "rgba(0,0,0,0.7)",
+  borderColor = "#333", borderWidth = 0, borderRadius = 4, show = TRUE,
+  ...)
 ```
 
-可以简写为`setTT`。
 
 +------------------+-----------------------------------------------------------+
 |   参数           |  要求                                            |
