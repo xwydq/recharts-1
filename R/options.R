@@ -4033,8 +4033,8 @@ setSeries <- function(chart, series=NULL, timeslots=NULL, ...){
         stop('chart is not an Echarts object. ',
              'Check if you have missed a %>% in your pipe chain.')
     validTypes <- c(
-        'line', 'bar', 'scatter', 'pie', 'radar', 'chord','force', 'map', 'gauge',
-        'funnel', 'eventRiver', 'treemap', 'tree', 'wordCloud', 'heatmap')
+        'line', 'bar', 'scatter', 'k', 'pie', 'radar', 'chord', 'force', 'map',
+        'gauge', 'funnel', 'eventRiver', 'treemap', 'tree', 'wordCloud', 'heatmap')
     hasT <- 'timeline' %in% names(chart$x)
     lst <- list(...)
 
@@ -4104,7 +4104,8 @@ setSeries <- function(chart, series=NULL, timeslots=NULL, ...){
                         chart$x$options[[t]]$series <- append(
                             chart$x$options[[t]]$series, list(
                                 filterSeriesParts(lst, type)
-                            ))
+                            )
+                        )
                     }
                 }
             }

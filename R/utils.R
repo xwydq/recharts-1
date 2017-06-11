@@ -327,7 +327,7 @@ analyzeSeries <- function(chart, series){
 
 
 filterSeriesParts <- function(lst, type){
-    stopifnot(type %in% c('line', 'bar', 'scatter', 'pie', 'radar', 'chord',
+    stopifnot(type %in% c('line', 'bar', 'scatter', 'k', 'pie', 'radar', 'chord',
                           'force', 'map', 'gauge', 'funnel', 'eventRiver',
                           'treemap', 'tree', 'wordCloud', 'heatmap'))
     fixedParts <- c('type', 'name', 'tooltip', 'data', 'itemStyle', 'markPoint',
