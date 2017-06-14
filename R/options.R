@@ -2650,7 +2650,8 @@ setTooltip <- function(chart, series=NULL, timeslots=NULL, trigger=NULL,
     }
 
     eval(parse(text=paste(lhs, "<-", rhs)))
-
+    if (class(formatter) %in% c("JS_EVAL", "character"))
+        chart$x$tooltip$formatter <- formatter
     return(chart)
 }
 
