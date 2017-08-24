@@ -5,11 +5,13 @@
 \alias{set_legend}
 \title{Set \code{legend} of Echarts}
 \usage{
-setLegend(chart, show = TRUE, pos = 11, selected = NULL, itemGap = 5,
+setLegend(chart, show = TRUE, pos = 11, selected = NULL,
+  selectedMode = c("multiple", "single"), itemGap = 5,
   borderColor = "#ccc", borderWidth = 0, textStyle = list(color = "auto"),
   formatter = NULL, overideData = NULL, ...)
 
-set_legend(chart, show = TRUE, pos = 11, selected = NULL, itemGap = 5,
+set_legend(chart, show = TRUE, pos = 11, selected = NULL,
+  selectedMode = c("multiple", "single"), itemGap = 5,
   borderColor = "#ccc", borderWidth = 0, textStyle = list(color = "auto"),
   formatter = NULL, overideData = NULL, ...)
 }
@@ -24,6 +26,8 @@ Or you can define the position vector \code{c(x, y, orient)} yourself.}
 
 \item{selected}{A vector of series names that are selected on load. If you assign 'none',
 then none of the series will be selected in the beginning.}
+
+\item{selectedMode}{'multiple' or 'single'. Default 'multiple'.}
 
 \item{itemGap}{The gap between legend items. Default 5px.}
 

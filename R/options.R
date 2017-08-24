@@ -1698,6 +1698,7 @@ set_rc <- setRoam
 #' Or you can define the position vector \code{c(x, y, orient)} yourself.
 #' @param selected A vector of series names that are selected on load. If you assign 'none',
 #' then none of the series will be selected in the beginning.
+#' @param selectedMode 'multiple' or 'single'. Default 'multiple'.
 #' @param itemGap The gap between legend items. Default 5px.
 #' @param borderColor The border color of the legend. Default '#ccc'.
 #' @param borderWidth The border width of the legend. Default 0px (not shown).
@@ -1730,8 +1731,9 @@ set_rc <- setRoam
 #'                  textStyle=list(fontFamily='Courier New', fontSize=16))
 #' }
 setLegend <- function(
-    chart, show=TRUE, pos=11, selected=NULL, itemGap=5, borderColor='#ccc',
-    borderWidth=0, textStyle=list(color='auto'), formatter=NULL, overideData=NULL,
+    chart, show=TRUE, pos=11, selected=NULL, selectedMode=c("multiple", "single"),
+    itemGap=5, borderColor='#ccc', borderWidth=0, textStyle=list(color='auto'),
+    formatter=NULL, overideData=NULL,
 ...){
     if (!inherits(chart, 'echarts'))
         stop('chart is not an Echarts object. ',
@@ -1754,16 +1756,13 @@ setLegend <- function(
         lstLegend[c('x', 'y', 'orient')] <- pos
     }
 
+    selectedMode <- match.arg(selectedMode)
+    lstLegend[['selectedMode']] <- selectedMode
     if (!is.null(selected)){
         unselected <- unique(series[! series %in% selected])
         lstLegend[['selected']] <- emptyList()
         for (item in unselected){
             lstLegend[['selected']][[item]] <- FALSE
-        }
-        if (length(selected) != length(series)){
-            if (length(unselected) == length(unique(series))-1)
-                lstLegend[['selectedMode']] <- 'single'
-            else lstLegend[['selectedMode']] <- 'multiple'
         }
     }
     if (!missing(itemGap)) lstLegend[['itemGap']] <- itemGap
