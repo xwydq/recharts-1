@@ -46,11 +46,13 @@ HTMLWidgets.widget({
         //instance.setTheme(themeObj);
 
     }
+    instance.clear();
 	instance.setOption(x);
   },
 
   resize: function(el, width, height, instance) {
-    location.reload();
+    //location.reload();
+    instance.resize();
   }
 
 
