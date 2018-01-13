@@ -14,11 +14,14 @@ Authors@R: c(
 Description: Provides an R interface to the JavaScript library ECharts 2 for
     interactive data visualization.
 Imports:
+    curl,
+    digest,
     htmltools,
     htmlwidgets (>= 0.4),
     magrittr,
     compiler,
     data.table,
+    plyr,
     dplyr,
     ggthemes,
     Hmisc,
