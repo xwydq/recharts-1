@@ -16,8 +16,7 @@ Description: Provides an R interface to the JavaScript library ECharts 2 for
 Imports:
     htmltools,
     htmlwidgets (>= 0.4),
-    magrittr
-Suggests:
+    magrittr,
     compiler,
     data.table,
     dplyr,
