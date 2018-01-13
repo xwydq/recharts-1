@@ -1,6 +1,8 @@
+[![Build Status](https://travis-ci.org/madlogos/recharts.svg?branch=master)](https://travis-ci.org/madlogos/recharts)
+
 v 0.2
 
-[中文](#百度echarts2的r语言接口)
+[中文](#百度echarts2的r语言接口) | [English](#an-r-interface-to-baidu-echarts-2)
 
 # An R Interface to Baidu Echarts 2
 
@@ -137,7 +139,7 @@ Under the terms of [MIT](http://www.opensource.org/licenses/mit-license.php) + f
 
 -----
 
-[English](#an-r-interface-to-baidu-echarts-2)
+[English](#an-r-interface-to-baidu-echarts-2) | [中文](#百度echarts2的r语言接口)
 
 # 百度Echarts2的R语言接口
 
