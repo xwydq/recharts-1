@@ -176,8 +176,8 @@ $(document).ready(function () {
 </ul>
 </div>
 
-<p>First, you should load <code>recharts</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(recharts)</code></pre></div>
+<p>First, you should load <code>rechartsX</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rechartsX)</code></pre></div>
 <div id="introduction" class="section level1">
 <h1><span class="header-section-number">1</span> Introduction</h1>
 <p>Chord plot includes 2 basic types:</p>
@@ -201,7 +201,7 @@ $(document).ready(function () {
 <ul>
 <li>data structure:</li>
 <li>matrix mode: A data.frame comprising of a column of name, and a numeric matrix. Assign the name column to x, the matrix to y.</li>
-<li>node/link mode: node data.frame [x, NA, series, weight]; link data.frame [x, x1, relation, value]. Combine them using <code>rbind</code>. If you don’t provide node data.frame, recharts will build it automatically. Assign the param list [x, x1, series/relation, weight/value] accordingly.</li>
+<li>node/link mode: node data.frame [x, NA, series, weight]; link data.frame [x, x1, relation, value]. Combine them using <code>rbind</code>. If you don’t provide node data.frame, rechartsX will build it automatically. Assign the param list [x, x1, series/relation, weight/value] accordingly.</li>
 </ul>
 </div>
 <div id="function-call" class="section level1">
@@ -427,7 +427,7 @@ knitr::<span class="kw">kable</span>(grpmtx, <span class="dt">align=</span><span
 </tr>
 </tbody>
 </table>
-<p>There is not a numeric matrix structure inside the data.frame, so it is node/link mode. There are no NAs in column 1 or 2, so in this case, <code>recharts</code> will build a node data.frame based on the data.frame given, which looks like:</p>
+<p>There is not a numeric matrix structure inside the data.frame, so it is node/link mode. There are no NAs in column 1 or 2, so in this case, <code>rechartsX</code> will build a node data.frame based on the data.frame given, which looks like:</p>
 <table>
 <thead>
 <tr class="header">
@@ -701,7 +701,7 @@ knitr::<span class="kw">kable</span>(grpmtx, <span class="dt">align=</span><span
 <p>What we need to do is duplicate the source and target columns to build a matrix.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">deutsch14 &lt;-<span class="st"> </span>deutsch[deutsch$year==<span class="dv">2014</span>,]
 deutsch14 &lt;-<span class="st"> </span><span class="kw">rbind</span>(deutsch14, deutsch14)
-deutsch14[<span class="dv">14</span>:<span class="dv">26</span>, <span class="kw">c</span>(<span class="st">&#39;player&#39;</span>, <span class="st">&#39;club&#39;</span>)] &lt;-<span class="st"> </span>recharts:::<span class="kw">exchange</span>(
+deutsch14[<span class="dv">14</span>:<span class="dv">26</span>, <span class="kw">c</span>(<span class="st">&#39;player&#39;</span>, <span class="st">&#39;club&#39;</span>)] &lt;-<span class="st"> </span>rechartsX:::<span class="kw">exchange</span>(
     deutsch14[<span class="dv">14</span>:<span class="dv">26</span>, <span class="st">&#39;player&#39;</span>], deutsch14[<span class="dv">14</span>:<span class="dv">26</span>, <span class="st">&#39;club&#39;</span>])
 knitr::<span class="kw">kable</span>(<span class="kw">with</span>(deutsch14, <span class="kw">table</span>(player, club)))</code></pre></div>
 <table>

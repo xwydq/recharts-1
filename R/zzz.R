@@ -1,5 +1,5 @@
 validChartTypes <- read.csv(
-        system.file('validChartTypes.csv', package = 'recharts'), header=TRUE,
+        system.file('validChartTypes.csv', package = 'rechartsX'), header=TRUE,
         stringsAsFactors=FALSE)
 
 validSymbols <- c('circle', 'rectangle', 'triangle', 'diamond', 'emptyCircle',
@@ -7,7 +7,7 @@ validSymbols <- c('circle', 'rectangle', 'triangle', 'diamond', 'emptyCircle',
                   'droplet', 'pin', 'arrow', 'star', 'star3', 'star4', 'star5',
                   'star6', 'star7', 'star8', 'star9', 'star10', 'none')
 
-.onLoad <- function(libname, pkgname='recharts'){
+.onLoad <- function(libname, pkgname='rechartsX'){
     if (Sys.info()[['sysname']] == 'Windows'){
         Sys.setlocale('LC_CTYPE', 'Chs')
     }else{

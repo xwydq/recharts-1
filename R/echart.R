@@ -6,7 +6,7 @@
 #' @param data a data object (usually a data frame or a list)
 #' @rdname eChart
 #' @export
-#' @examples library(recharts)
+#' @examples library(rechartsX)
 #' echart(iris, ~ Sepal.Length, ~ Sepal.Width)
 #' echart(iris, ~ Sepal.Length, ~ Sepal.Width, series = ~ Species)
 echart = function(data, ...) {
@@ -23,7 +23,7 @@ echart = function(data, ...) {
 echart.list = function(data, width = NULL, height = NULL,  ...) {
     htmlwidgets::createWidget(
         'echarts', x = data, width = width, height = height,
-        package = 'recharts'
+        package = 'rechartsX'
     )
 }
 
@@ -54,7 +54,7 @@ echart.data.frame = function(
     }
 
     series = evalFormula(series, data)
-    data_fun = getFromNamespace(paste0('data_', type), 'recharts')
+    data_fun = getFromNamespace(paste0('data_', type), 'rechartsX')
 
     params = structure(list(
         series = data_fun(x, y, series),
@@ -69,7 +69,7 @@ echart.data.frame = function(
 
     chart = htmlwidgets::createWidget(
         'echarts', x = params, width = width, height = height,
-        package = 'recharts', dependencies = getDependency(type)
+        package = 'rechartsX', dependencies = getDependency(type)
     )
 
     chart %>% eAxis('x', name = xlab) %>% eAxis('y', name = ylab)
@@ -100,29 +100,29 @@ eChart = echart
 #' @param facet facet variable to divide the canvas. It takes effect in multiple
 #' coordinate system charts (e.g., polar coordinate system (pie, radar, ...) and
 #' some other charts (e.g., map, tree, ...)).
-#' @param t timeline variable. When \code{t} is defined, recharts builds a timeline
+#' @param t timeline variable. When \code{t} is defined, rechartsX builds a timeline
 #' widget to show the changes along with time.
 #' @param lat latitude variable (-180 ~ 180) for map/heatmap
 #' @param lng longitude variable (-90 ~ 90) for map/heatmap
-#' @param type chart type. Now recharts supports major types of
+#' @param type chart type. Now rechartsX supports major types of
 #' \itemize{
-#'   \item \href{http://madlogos.github.io/recharts/Basic_Plots_01_Scatterplot.html}{scatter/point/bubble}
-#'   \item \href{http://madlogos.github.io/recharts/Basic_Plots_02_Bar.html}{bar/column/histogram}
-#'   \item \href{http://madlogos.github.io/recharts/Basic_Plots_03_Line.html}{line/area/curve/wave}
-#'   \item \href{http://madlogos.github.io/recharts/Basic_Plots_04_K.html}{candlestick/k}
-#'   \item \href{http://madlogos.github.io/recharts/Basic_Plots_05_eventRiver.html}{eventRiver}
-#'   \item \href{http://madlogos.github.io/recharts/Basic_Plots_21_Pie.html}{pie/ring/rose}
-#'   \item \href{http://madlogos.github.io/recharts/Basic_Plots_22_Funnel.html}{funnel/pyramid}
-#'   \item \href{http://madlogos.github.io/recharts/Basic_Plots_23_Radar.html}{radar/spider/star}
-#'   \item \href{http://madlogos.github.io/recharts/Basic_Plots_11_Force.html}{force/force_line}
-#'   \item \href{http://madlogos.github.io/recharts/Basic_Plots_12_Chord.html}{chord}
-#'   \item \href{http://madlogos.github.io/recharts/Basic_Plots_24_Gauge.html}{gauge}
-#'   \item \href{http://madlogos.github.io/recharts/Basic_Plots_13_WordCloud.html}{wordCloud}
-#'   \item \href{http://madlogos.github.io/recharts/Basic_Plots_14_Venn.html}{venn}
-#'   \item \href{http://madlogos.github.io/recharts/Basic_Plots_31_Map.html}{map_world/map_china/map_world_multi/map_china_multi}
-#'   \item \href{http://madlogos.github.io/recharts/Basic_Plots_32_Tree.html}{tree/htree/tree_inv/htree_inv}
-#'   \item \href{http://madlogos.github.io/recharts/Basic_Plots_33_Treemap.html}{treemap}
-#'   \item \href{http://madlogos.github.io/recharts/Basic_Plots_15_Heatmap.html}{heatmap}
+#'   \item \href{http://madlogos.github.io/rechartsX/Basic_Plots_01_Scatterplot.html}{scatter/point/bubble}
+#'   \item \href{http://madlogos.github.io/rechartsX/Basic_Plots_02_Bar.html}{bar/column/histogram}
+#'   \item \href{http://madlogos.github.io/rechartsX/Basic_Plots_03_Line.html}{line/area/curve/wave}
+#'   \item \href{http://madlogos.github.io/rechartsX/Basic_Plots_04_K.html}{candlestick/k}
+#'   \item \href{http://madlogos.github.io/rechartsX/Basic_Plots_05_eventRiver.html}{eventRiver}
+#'   \item \href{http://madlogos.github.io/rechartsX/Basic_Plots_21_Pie.html}{pie/ring/rose}
+#'   \item \href{http://madlogos.github.io/rechartsX/Basic_Plots_22_Funnel.html}{funnel/pyramid}
+#'   \item \href{http://madlogos.github.io/rechartsX/Basic_Plots_23_Radar.html}{radar/spider/star}
+#'   \item \href{http://madlogos.github.io/rechartsX/Basic_Plots_11_Force.html}{force/force_line}
+#'   \item \href{http://madlogos.github.io/rechartsX/Basic_Plots_12_Chord.html}{chord}
+#'   \item \href{http://madlogos.github.io/rechartsX/Basic_Plots_24_Gauge.html}{gauge}
+#'   \item \href{http://madlogos.github.io/rechartsX/Basic_Plots_13_WordCloud.html}{wordCloud}
+#'   \item \href{http://madlogos.github.io/rechartsX/Basic_Plots_14_Venn.html}{venn}
+#'   \item \href{http://madlogos.github.io/rechartsX/Basic_Plots_31_Map.html}{map_world/map_china/map_world_multi/map_china_multi}
+#'   \item \href{http://madlogos.github.io/rechartsX/Basic_Plots_32_Tree.html}{tree/htree/tree_inv/htree_inv}
+#'   \item \href{http://madlogos.github.io/rechartsX/Basic_Plots_33_Treemap.html}{treemap}
+#'   \item \href{http://madlogos.github.io/rechartsX/Basic_Plots_15_Heatmap.html}{heatmap}
 #' }
 #' @param subtype some chart types support subtypes.
 #' \describe{
@@ -145,14 +145,14 @@ eChart = echart
 #'   "dotted","solid","dashed")}
 #'   \item{radar/spider/star}{"fill"}
 #' }
-#' @param elementId htmlwidgets elementId of the chart object. If set NULL, recharts will
+#' @param elementId htmlwidgets elementId of the chart object. If set NULL, rechartsX will
 #' assign a random elementId to the object.
 #' @param ... Elipsis
 #'
 #' @import compiler
 #' @export
 #' @references
-#' Online Manual: \url{http://madlogos.github.io/recharts}
+#' Online Manual: \url{http://madlogos.github.io/rechartsX}
 echartr = function(
     data, x = NULL, y = NULL, series = NULL, weight = NULL, facet = NULL,
     t = NULL, lat = NULL, lng = NULL, type = 'auto', subtype = NULL,
@@ -275,9 +275,9 @@ echartr = function(
                 warning('echartr only accepts the first geoJSON file.')
             geoJSON <- subtype[grep('.+[Jj][Ss][Oo][Nn]$', subtype)][1]
             con <- system.file('htmlwidgets/lib/echarts/ext/loadGeoJSON.js',
-                               package='recharts')
+                               package='rechartsX')
             paramPath <- system.file('htmlwidgets/lib/echarts/ext',
-                                     package='recharts')
+                                     package='rechartsX')
             if (file.exists(con)){
                 writeLines(paste0(
                     "require('", paramPath, "/param').params.newmap = { ",
@@ -323,7 +323,7 @@ echartr = function(
                  grepl("^(funnel|pie)", dfType$type) ||
                  grepl("^(force|chord)", dfType$type) ||
                  grepl("^(tree|treemap)", dfType$type)))
-            stop(paste("recharts does not support such mixed types yet."))
+            stop(paste("rechartsX does not support such mixed types yet."))
     }
 
     # if (nlevels(as.factor(dfType$xyflip)) > 1)
@@ -334,7 +334,7 @@ echartr = function(
     .makeSeriesList <- cmpfun(function(t){  # each timeline create a options list
         #browser()
         series_fun = getFromNamespace(paste0('series_', dfType$type[1]),
-                                    'recharts')
+                                    'rechartsX')
 
         if (is.null(t)){  # no timeline
             time_metaData = lapply(metaData, function(df){
@@ -383,7 +383,7 @@ echartr = function(
 
     # -------------------output-------------------------------
     chart = htmlwidgets::createWidget(
-        'echarts', params, width = NULL, height = NULL, package = 'recharts',
+        'echarts', params, width = NULL, height = NULL, package = 'rechartsX',
         dependencies = NULL
     )
 
@@ -438,7 +438,7 @@ getDependency = function(type) {
     if (is.null(type)) return()
     htmltools::htmlDependency(
         'echarts-module', EChartsVersion,
-        src = system.file('htmlwidgets/lib/echarts', package = 'recharts'),
+        src = system.file('htmlwidgets/lib/echarts', package = 'rechartsX'),
         script = sprintf('%s.js', type)
     )
 }

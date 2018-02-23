@@ -19,9 +19,9 @@ vignette: >
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-First, you should load `recharts`:
+First, you should load `rechartsX`:
 ```{r}
-library(recharts)
+library(rechartsX)
 ```
 
 # Introduction
@@ -369,7 +369,7 @@ g
 
 #### Pre-installed geoCoord dataset
 
-Although `recharts` can recognize most of the cities, there still might be points missing coordinates. Again, we need to define the geoCoord using `addGeoCoord`.
+Although `rechartsX` can recognize most of the cities, there still might be points missing coordinates. Again, we need to define the geoCoord using `addGeoCoord`.
 
 `addGeoCoord` requires a data.frame with three columns in order: `name`, `longitude` and `latitude`. Pay attention to the order of `lng` and `lat`.
 

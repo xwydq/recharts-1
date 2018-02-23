@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/madlogos/recharts.svg?branch=master)](https://travis-ci.org/madlogos/recharts)
+[![Build Status](https://travis-ci.org/madlogos/rechartsX.svg?branch=master)](https://travis-ci.org/madlogos/rechartsX)
 
 v 0.2
 
@@ -8,7 +8,7 @@ v 0.2
 
 [Echarts2](http://http://echarts.baidu.com/echarts2) is an open source javascript visualization library developed by Baidu Inc. for interactive charts. Compared to other popular js libraries, Echarts is more Chinese-friendly. The latest stable release of Echarts2 is 2.2.7. The most up-to-date version is Echarts 3.3.2. 
 
-This package is to facilitate `R` users to make use of Echarts2 library (Echarts3 will be supported in recharts2 package). A hello world example is as below:
+This package is to facilitate `R` users to make use of Echarts2 library (Echarts3 will be supported in rechartsX2 package). A hello world example is as below:
 
 ```r
 echartr(iris, Sepal.Length, Sepal.Width, Species) %>% setTheme('macarons')
@@ -16,13 +16,13 @@ echartr(iris, Sepal.Length, Sepal.Width, Species) %>% setTheme('macarons')
 
 ![hello_world](inst/figure-html/hello_world.png)
 
-> The initial `recharts` package was developed by Yang Zhou and Taiyun Wei. The current branch was forked from [Yihui Xie](https://github.com/yihui/recharts). 
+> The initial `rechartsX` package was developed by Yang Zhou and Taiyun Wei. The current branch was forked from [Yihui Xie](https://github.com/yihui/rechartsX). 
 
 # Installation
 
 ```r
 if (!require(devtools)) library(devtools)
-devtools::install_github('madlogos/recharts')
+devtools::install_github('madlogos/rechartsX')
 ```
 
 As the package is under development, you may come across errors when requiring the package directly from Github. You can alternatively download the codes from Github and compile the codes using RStudio.
@@ -31,8 +31,8 @@ As the package is under development, you may come across errors when requiring t
 
 - `R` help system
 - Official online manuals
-	- [中文](https://madlogos.github.io/recharts/index_cn.html)
-	- [English](https://madlogos.github.io/recharts)
+	- [中文](https://madlogos.github.io/rechartsX/index_cn.html)
+	- [English](https://madlogos.github.io/rechartsX)
 
 # Development
 
@@ -91,41 +91,41 @@ Finally, you can use `relocWidget`functions to relocate/resize the echarts objec
 1. Mono-coordinate System
     1. Cartesian Coordinate System
         1. Scatter
-            1. [scatter|bubble](http://madlogos.github.io/recharts/Basic_Plots_01_Scatterplot.html)
+            1. [scatter|bubble](http://madlogos.github.io/rechartsX/Basic_Plots_01_Scatterplot.html)
         1. Bar
-            1. [bar|hbar](http://madlogos.github.io/recharts/Basic_Plots_02_Bar.html#horizontal-bar-chart)
-            1. [vbar|column](http://madlogos.github.io/recharts/Basic_Plots_02_Bar.html#vertical-bar-column-chart)
-            1. [histogram|hist](http://madlogos.github.io/recharts/Basic_Plots_02_Bar.html#histogram)
+            1. [bar|hbar](http://madlogos.github.io/rechartsX/Basic_Plots_02_Bar.html#horizontal-bar-chart)
+            1. [vbar|column](http://madlogos.github.io/rechartsX/Basic_Plots_02_Bar.html#vertical-bar-column-chart)
+            1. [histogram|hist](http://madlogos.github.io/rechartsX/Basic_Plots_02_Bar.html#histogram)
         1. Line
-            1. [line](http://madlogos.github.io/recharts/Basic_Plots_03_Line.html#line-chart)
-            1. [curve](http://madlogos.github.io/recharts/Basic_Plots_03_Line.html#curve-smooth-line-chart)
-            1. [area](http://madlogos.github.io/recharts/Basic_Plots_03_Line.html#area-chart)
-            1. [wave](http://madlogos.github.io/recharts/Basic_Plots_03_Line.html#wave-smooth-area-chart)
+            1. [line](http://madlogos.github.io/rechartsX/Basic_Plots_03_Line.html#line-chart)
+            1. [curve](http://madlogos.github.io/rechartsX/Basic_Plots_03_Line.html#curve-smooth-line-chart)
+            1. [area](http://madlogos.github.io/rechartsX/Basic_Plots_03_Line.html#area-chart)
+            1. [wave](http://madlogos.github.io/rechartsX/Basic_Plots_03_Line.html#wave-smooth-area-chart)
         1. K
-            1. [k|candlestick](http://madlogos.github.io/recharts/Basic_Plots_04_K.html)
+            1. [k|candlestick](http://madlogos.github.io/rechartsX/Basic_Plots_04_K.html)
         1. eventRiver
-            1. [eventRiver](http://madlogos.github.io/recharts/Basic_Plots_05_eventRiver.html)
+            1. [eventRiver](http://madlogos.github.io/rechartsX/Basic_Plots_05_eventRiver.html)
     1. Others
-        1. [Force](http://madlogos.github.io/recharts/Basic_Plots_11_Force.html)
-        1. [Chord](http://madlogos.github.io/recharts/Basic_Plots_12_Chord.html)
-        1. [Word Cloud](http://madlogos.github.io/recharts/Basic_Plots_13_WordCloud.html)
-        1. [Venn Chart](http://madlogos.github.io/recharts/Basic_Plots_14_Venn.html)
-        1. [Heatmap](http://madlogos.github.io/recharts/Basic_Plots_15_Heatmap.html)
+        1. [Force](http://madlogos.github.io/rechartsX/Basic_Plots_11_Force.html)
+        1. [Chord](http://madlogos.github.io/rechartsX/Basic_Plots_12_Chord.html)
+        1. [Word Cloud](http://madlogos.github.io/rechartsX/Basic_Plots_13_WordCloud.html)
+        1. [Venn Chart](http://madlogos.github.io/rechartsX/Basic_Plots_14_Venn.html)
+        1. [Heatmap](http://madlogos.github.io/rechartsX/Basic_Plots_15_Heatmap.html)
 1. Multi-coordinate System
     1. Polar Coordinate System
         1. Pie
-            1. [pie](http://madlogos.github.io/recharts/Basic_Plots_21_Pie.html#pie-chart)
-            1. [ring](http://madlogos.github.io/recharts/Basic_Plots_21_Pie.html#ring-chart)
-            1. [Rose](http://madlogos.github.io/recharts/Basic_Plots_21_Pie.html#nightingale-rose-chart)
+            1. [pie](http://madlogos.github.io/rechartsX/Basic_Plots_21_Pie.html#pie-chart)
+            1. [ring](http://madlogos.github.io/rechartsX/Basic_Plots_21_Pie.html#ring-chart)
+            1. [Rose](http://madlogos.github.io/rechartsX/Basic_Plots_21_Pie.html#nightingale-rose-chart)
         1. Funnel
-            1. [Funnel](http://madlogos.github.io/recharts/Basic_Plots_22_Funnel.html#funnel-chart)
-            1. [Pyramid](http://madlogos.github.io/recharts/Basic_Plots_22_Funnel.html#pyramid-chart)
-        1. [Radar Chart](http://madlogos.github.io/recharts/Basic_Plots_23_Radar.html)
-        1. [Gauge Chart](http://madlogos.github.io/recharts/Basic_Plots_24_Gauge.html)
+            1. [Funnel](http://madlogos.github.io/rechartsX/Basic_Plots_22_Funnel.html#funnel-chart)
+            1. [Pyramid](http://madlogos.github.io/rechartsX/Basic_Plots_22_Funnel.html#pyramid-chart)
+        1. [Radar Chart](http://madlogos.github.io/rechartsX/Basic_Plots_23_Radar.html)
+        1. [Gauge Chart](http://madlogos.github.io/rechartsX/Basic_Plots_24_Gauge.html)
     1. Others
-        1. [Map](http://madlogos.github.io/recharts/Basic_Plots_31_Map.html)
-        1. [Tree Chart](http://madlogos.github.io/recharts/Basic_Plots_32_Tree.html)
-        1. [Treemap](http://madlogos.github.io/recharts/Basic_Plots_33_Treemap.html)
+        1. [Map](http://madlogos.github.io/rechartsX/Basic_Plots_31_Map.html)
+        1. [Tree Chart](http://madlogos.github.io/rechartsX/Basic_Plots_32_Tree.html)
+        1. [Treemap](http://madlogos.github.io/rechartsX/Basic_Plots_33_Treemap.html)
 
 ## To-do
 
@@ -145,20 +145,20 @@ Under the terms of [MIT](http://www.opensource.org/licenses/mit-license.php) + f
 
 [Echarts2](http://http://echarts.baidu.com/echarts2)是百度发布的一个开源javascript图形库，用于创建交互图。与其他流行的js库相比，Echarts对中文更友好。Echarts2最新的发布版为2.2.7，而Echarts家族的最新版本为3.3.2。
 
-该加载包是为了便利`R`用户使用Echarts2库 (recharts2包将提供对Echarts3的支持). 下面是一个hello world案例：
+该加载包是为了便利`R`用户使用Echarts2库 (rechartsX2包将提供对Echarts3的支持). 下面是一个hello world案例：
 
 ```r
 echartr(iris, Sepal.Length, Sepal.Width, Species) %>% setTheme('macarons')
 ```
 ![hello_world](inst/figure-html/hello_world.png)
 
-> `recharts`起先由Yang Zhou和Taiyun Wei开发。当前分支fork自[Yihui Xie](https://github.com/yihui/recharts)。
+> `rechartsX`起先由Yang Zhou和Taiyun Wei开发。当前分支fork自[Yihui Xie](https://github.com/yihui/rechartsX)。
 
 # 安装
 
 ```r
 if (!require(devtools)) library(devtools)
-devtools::install_github('madlogos/recharts')
+devtools::install_github('madlogos/rechartsX')
 ```
 
 此包仍在开发中，从Github直接安装可能遇到错误。可以从Github下载源代码包，然后在RStudio里编译。
@@ -167,8 +167,8 @@ devtools::install_github('madlogos/recharts')
 
 - `R`帮助系统
 - 官方在线手册
-	- [中文](https://madlogos.github.io/recharts/index_cn.html)
-	- [English](https://madlogos.github.io/recharts)
+	- [中文](https://madlogos.github.io/rechartsX/index_cn.html)
+	- [English](https://madlogos.github.io/rechartsX)
 
 # 开发
 
@@ -227,41 +227,41 @@ Echarts对象其实是一个S3列表，包括下列元素：
 1. 单坐标系
     1. 直角坐标系
         1. 散点图
-            1. [scatter|bubble](http://madlogos.github.io/recharts/Basic_Plots_01_Scatterplot.html)
+            1. [scatter|bubble](http://madlogos.github.io/rechartsX/Basic_Plots_01_Scatterplot.html)
         1. 柱图
-            1. [bar|hbar](http://madlogos.github.io/recharts/Basic_Plots_02_Bar.html#horizontal-bar-chart)
-            1. [vbar|column](http://madlogos.github.io/recharts/Basic_Plots_02_Bar.html#vertical-bar-column-chart)
-            1. [histogram|hist](http://madlogos.github.io/recharts/Basic_Plots_02_Bar.html#histogram)
+            1. [bar|hbar](http://madlogos.github.io/rechartsX/Basic_Plots_02_Bar.html#horizontal-bar-chart)
+            1. [vbar|column](http://madlogos.github.io/rechartsX/Basic_Plots_02_Bar.html#vertical-bar-column-chart)
+            1. [histogram|hist](http://madlogos.github.io/rechartsX/Basic_Plots_02_Bar.html#histogram)
         1. 线图
-            1. [line](http://madlogos.github.io/recharts/Basic_Plots_03_Line.html#line-chart)
-            1. [curve](http://madlogos.github.io/recharts/Basic_Plots_03_Line.html#curve-smooth-line-chart)
-            1. [area](http://madlogos.github.io/recharts/Basic_Plots_03_Line.html#area-chart)
-            1. [wave](http://madlogos.github.io/recharts/Basic_Plots_03_Line.html#wave-smooth-area-chart)
+            1. [line](http://madlogos.github.io/rechartsX/Basic_Plots_03_Line.html#line-chart)
+            1. [curve](http://madlogos.github.io/rechartsX/Basic_Plots_03_Line.html#curve-smooth-line-chart)
+            1. [area](http://madlogos.github.io/rechartsX/Basic_Plots_03_Line.html#area-chart)
+            1. [wave](http://madlogos.github.io/rechartsX/Basic_Plots_03_Line.html#wave-smooth-area-chart)
         1. K线图
-            1. [k|candlestick](http://madlogos.github.io/recharts/Basic_Plots_04_K.html)
+            1. [k|candlestick](http://madlogos.github.io/rechartsX/Basic_Plots_04_K.html)
         1. 事件河流图
-            1. [eventRiver](http://madlogos.github.io/recharts/Basic_Plots_05_eventRiver.html)
+            1. [eventRiver](http://madlogos.github.io/rechartsX/Basic_Plots_05_eventRiver.html)
     1. 其他
-        1. [Force](http://madlogos.github.io/recharts/Basic_Plots_11_Force.html)
-        1. [Chord](http://madlogos.github.io/recharts/Basic_Plots_12_Chord.html)
-        1. [Word Cloud](http://madlogos.github.io/recharts/Basic_Plots_13_WordCloud.html)
-        1. [Venn Chart](http://madlogos.github.io/recharts/Basic_Plots_14_Venn.html)
-        1. [Heatmap](http://madlogos.github.io/recharts/Basic_Plots_15_Heatmap.html)
+        1. [Force](http://madlogos.github.io/rechartsX/Basic_Plots_11_Force.html)
+        1. [Chord](http://madlogos.github.io/rechartsX/Basic_Plots_12_Chord.html)
+        1. [Word Cloud](http://madlogos.github.io/rechartsX/Basic_Plots_13_WordCloud.html)
+        1. [Venn Chart](http://madlogos.github.io/rechartsX/Basic_Plots_14_Venn.html)
+        1. [Heatmap](http://madlogos.github.io/rechartsX/Basic_Plots_15_Heatmap.html)
 1. 多坐标系
     1. 极坐标系
         1. 饼图
-            1. [pie](http://madlogos.github.io/recharts/Basic_Plots_21_Pie.html#pie-chart)
-            1. [ring](http://madlogos.github.io/recharts/Basic_Plots_21_Pie.html#ring-chart)
-            1. [Rose](http://madlogos.github.io/recharts/Basic_Plots_21_Pie.html#nightingale-rose-chart)
+            1. [pie](http://madlogos.github.io/rechartsX/Basic_Plots_21_Pie.html#pie-chart)
+            1. [ring](http://madlogos.github.io/rechartsX/Basic_Plots_21_Pie.html#ring-chart)
+            1. [Rose](http://madlogos.github.io/rechartsX/Basic_Plots_21_Pie.html#nightingale-rose-chart)
         1. 漏斗图
-            1. [Funnel](http://madlogos.github.io/recharts/Basic_Plots_22_Funnel.html#funnel-chart)
-            1. [Pyramid](http://madlogos.github.io/recharts/Basic_Plots_22_Funnel.html#pyramid-chart)
-        1. [Radar Chart](http://madlogos.github.io/recharts/Basic_Plots_23_Radar.html)
-        1. [Gauge Chart](http://madlogos.github.io/recharts/Basic_Plots_24_Gauge.html)
+            1. [Funnel](http://madlogos.github.io/rechartsX/Basic_Plots_22_Funnel.html#funnel-chart)
+            1. [Pyramid](http://madlogos.github.io/rechartsX/Basic_Plots_22_Funnel.html#pyramid-chart)
+        1. [Radar Chart](http://madlogos.github.io/rechartsX/Basic_Plots_23_Radar.html)
+        1. [Gauge Chart](http://madlogos.github.io/rechartsX/Basic_Plots_24_Gauge.html)
     1. 其他
-        1. [Map](http://madlogos.github.io/recharts/Basic_Plots_31_Map.html)
-        1. [Tree Chart](http://madlogos.github.io/recharts/Basic_Plots_32_Tree.html)
-        1. [Treemap](http://madlogos.github.io/recharts/Basic_Plots_33_Treemap.html)
+        1. [Map](http://madlogos.github.io/rechartsX/Basic_Plots_31_Map.html)
+        1. [Tree Chart](http://madlogos.github.io/rechartsX/Basic_Plots_32_Tree.html)
+        1. [Treemap](http://madlogos.github.io/rechartsX/Basic_Plots_33_Treemap.html)
 
 ## 下一步
 

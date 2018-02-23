@@ -29,7 +29,7 @@ overideNM(chart, ...)
 \describe{
  \item{data.frame/matrix}{A data.frame or matrix comprising of 2 columns: \code{nameToTranslate &
  nameTranslatedTo}. E.g., You can load a preinstalled Chinese-English geographic
- dictionary using \code{recharts:::geoNameMap}.}
+ dictionary using \code{rechartsX:::geoNameMap}.}
  \item{list}{The nameMap in list should follow the structure: \code{list(list(
 `United States of America`='USA'), list('United Kingdom'='GB'), ...)}}
 }}

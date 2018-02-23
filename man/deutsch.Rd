@@ -22,5 +22,5 @@ data(deutsch)
 str(deutsch)
 }
 \references{
-\url{https://madlogos.github.io/recharts/Basic_Plots_12_Chord.html}
+\url{https://madlogos.github.io/rechartsX/Basic_Plots_12_Chord.html}
 }

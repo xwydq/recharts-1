@@ -19,9 +19,9 @@ vignette: >
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-First, you should load `recharts`:
+First, you should load `rechartsX`:
 ```{r}
-library(recharts)
+library(rechartsX)
 ```
 
 # Introduction
@@ -67,7 +67,7 @@ addMarkLine(chart, series = NULL, timeslots = NULL, data = NULL,
 +-------------+----------------------------------------------------------------+
 | clickable   | Logical, if the graphs are clickable. Default TRUE. |
 +-------------+----------------------------------------------------------------+
-| symbol      | Symbol vector of the markLines, refer to `recharts:::validSymbols`. Default `c('circle', 'arrow')`. |
+| symbol      | Symbol vector of the markLines, refer to `rechartsX:::validSymbols`. Default `c('circle', 'arrow')`. |
 +-------------+----------------------------------------------------------------+
 | symbolSize  | Numeric vector or `JS` function defining the size of the the beginning symbol and the end symbol of the marklines. Default `c(2, 4)`. |
 +-------------+----------------------------------------------------------------+

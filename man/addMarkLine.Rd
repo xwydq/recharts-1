@@ -80,7 +80,7 @@ When series is given, it must be cooresponding to the \code{series} argument.
 
 \item{clickable}{Logical, if the graphs are clickable. Default TRUE.}
 
-\item{symbol}{Symbol vector of the markLines, refer to \code{recharts:::validSymbols}.
+\item{symbol}{Symbol vector of the markLines, refer to \code{rechartsX:::validSymbols}.
 Default \code{c('circle', 'arrow')}.}
 
 \item{symbolSize}{Numeric vector or \code{JS} function defining the size of the

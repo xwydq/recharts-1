@@ -45,7 +45,7 @@ echart method for list
 echart method for data.frame
 }
 \examples{
-library(recharts)
+library(rechartsX)
 echart(iris, ~ Sepal.Length, ~ Sepal.Width)
 echart(iris, ~ Sepal.Length, ~ Sepal.Width, series = ~ Species)
 }

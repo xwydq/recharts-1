@@ -196,8 +196,8 @@ $(document).ready(function () {
 </ul>
 </div>
 
-<p>First, you should load <code>recharts</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(recharts)</code></pre></div>
+<p>First, you should load <code>rechartsX</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rechartsX)</code></pre></div>
 <div id="introduction" class="section level1">
 <h1><span class="header-section-number">1</span> Introduction</h1>
 <p>Map includes 4 basic types:</p>
@@ -563,7 +563,7 @@ g</code></pre></div>
 <h3><span class="header-section-number">4.3.2</span> <code>addGeoCoord</code></h3>
 <div id="pre-installed-geocoord-dataset" class="section level4">
 <h4><span class="header-section-number">4.3.2.1</span> Pre-installed geoCoord dataset</h4>
-<p>Although <code>recharts</code> can recognize most of the cities, there still might be points missing coordinates. Again, we need to define the geoCoord using <code>addGeoCoord</code>.</p>
+<p>Although <code>rechartsX</code> can recognize most of the cities, there still might be points missing coordinates. Again, we need to define the geoCoord using <code>addGeoCoord</code>.</p>
 <p><code>addGeoCoord</code> requires a data.frame with three columns in order: <code>name</code>, <code>longitude</code> and <code>latitude</code>. Pay attention to the order of <code>lng</code> and <code>lat</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g %&gt;%<span class="st"> </span><span class="kw">addGeoCoord</span>(chinapm25[,<span class="kw">c</span>(<span class="st">&#39;name&#39;</span>, <span class="st">&#39;lng&#39;</span>, <span class="st">&#39;lat&#39;</span>)]) %&gt;%<span class="st"> </span>
 <span class="st">    </span><span class="kw">setTitle</span>(<span class="st">&#39;PM2.5 in China Cities&#39;</span>, <span class="st">&#39;Fictious Data&#39;</span>)</code></pre></div>

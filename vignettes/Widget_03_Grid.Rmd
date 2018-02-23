@@ -19,9 +19,9 @@ vignette: >
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-First, you should load `recharts`:
+First, you should load `rechartsX`:
 ```{r}
-library(recharts)
+library(rechartsX)
 ```
 
 # Introduction
@@ -30,7 +30,7 @@ library(recharts)
 
 `setGrid` family has two types of functions: setting grid and relocating widgets. The key is four parameters: x, y, x2, y2. The point (x, y) is the upper-left point of the widget/pane, while the point (x2, y2) is the lower-right point of the widgt/pane.
 
-As every call of recharts functions automatically resizes the widgets, you are recommanded to put `setGrid` at the end of a pipe chain call.
+As every call of rechartsX functions automatically resizes the widgets, you are recommanded to put `setGrid` at the end of a pipe chain call.
 
 # Function Call
 

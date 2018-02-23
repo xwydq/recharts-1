@@ -83,7 +83,7 @@ Note that markLine dataset is compatible with \code{addMarkPoint}.
 
 \item{clickable}{Logical, if the points are clickable. Default TRUE.}
 
-\item{symbol}{Symbol of the markpoints, refer to \code{recharts:::validSymbols}.
+\item{symbol}{Symbol of the markpoints, refer to \code{rechartsX:::validSymbols}.
 Default 'pin'.}
 
 \item{symbolSize}{Numeric or vector \code{c(height, width)} or JS function. Default 10.}

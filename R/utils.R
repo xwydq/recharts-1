@@ -470,7 +470,7 @@ getColFromPal <- function(palname=NULL, n=6){
             "#9BCA63", "#FAD860", "#F3A43B", "#60C0DD", "#D7504B", "#C6E579",
             "#F4E001", "#F0805A", "#26C0C0"))
     echartJS <- paste(readLines(
-        system.file('htmlwidgets/echarts.js', package='recharts'),
+        system.file('htmlwidgets/echarts.js', package='rechartsX'),
         encoding='UTF-8'), collapse='')
     lapply(c("blue", "dark", "gray", "green", "helianthus", "macarons2", "mint",
              "red", "roma", "sakura", "shine", "vintage"), function(theme) {

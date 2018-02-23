@@ -1,4 +1,4 @@
-Package: recharts
+Package: rechartsX
 Type: Package
 Title: An R Interface to ECharts 2
 Version: 0.2-1

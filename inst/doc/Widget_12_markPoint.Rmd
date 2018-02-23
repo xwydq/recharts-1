@@ -19,9 +19,9 @@ vignette: >
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-First, you should load `recharts`:
+First, you should load `rechartsX`:
 ```{r}
-library(recharts)
+library(rechartsX)
 ```
 
 # Introduction
@@ -72,7 +72,7 @@ addMarkPoint(chart, series = NULL, timeslots = NULL, data = NULL,
 +-------------+----------------------------------------------------------------+
 | clickable   | Logical, if the points are clickable. Default TRUE. |
 +-------------+----------------------------------------------------------------+
-| symbol      | Symbol of the markpoints, refer to recharts:::validSymbols. Default 'pin'. |
+| symbol      | Symbol of the markpoints, refer to rechartsX:::validSymbols. Default 'pin'. |
 +-------------+----------------------------------------------------------------+
 | symbolSize  | Numeric or vector `c(height, width)` or `JS` function. Default 10. |
 +-------------+----------------------------------------------------------------+

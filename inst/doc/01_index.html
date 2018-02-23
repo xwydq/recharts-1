@@ -13,7 +13,7 @@
 
 <meta name="date" content="2017-03-15" />
 
-<title>recharts: An R Interface to Baidu ECharts 2</title>
+<title>rechartsX: An R Interface to Baidu ECharts 2</title>
 
 <script src="libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -151,7 +151,7 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">recharts: An R Interface to Baidu ECharts 2</h1>
+<h1 class="title toc-ignore">rechartsX: An R Interface to Baidu ECharts 2</h1>
 <h4 class="author"><em>Yiying Wang</em></h4>
 <h4 class="date"><em>2017-03-15</em></h4>
 
@@ -192,10 +192,10 @@ $(document).ready(function () {
 </ul>
 </div>
 
-<p><strong>Note:</strong> This package was forked from <a href="https://github.com/yihui/recharts">Yihui Xie</a> and is based on the last release of Baidu Echarts2 (v2.2.7). The documentation here always reflects the latest development version of <strong>recharts</strong> on <a href="https://github.com/madlogos/recharts">Github</a>. The package <a href="http://github.com/madlogos/recharts2">recharts2</a> that is based on Echarts3 is still under development.</p>
+<p><strong>Note:</strong> This package was forked from <a href="https://github.com/yihui/rechartsX">Yihui Xie</a> and is based on the last release of Baidu Echarts2 (v2.2.7). The documentation here always reflects the latest development version of <strong>rechartsX</strong> on <a href="https://github.com/madlogos/rechartsX">Github</a>. The package <a href="http://github.com/madlogos/rechartsX2">rechartsX2</a> that is based on Echarts3 is still under development.</p>
 <p>To install the package:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">if (!<span class="kw">require</span>(devtools)) <span class="kw">library</span>(devtools)
-<span class="kw">install_github</span>(<span class="st">&quot;madlogos/recharts&quot;</span>)</code></pre></div>
+<span class="kw">install_github</span>(<span class="st">&quot;madlogos/rechartsX&quot;</span>)</code></pre></div>
 <div id="knowledge-map-of-the-guidance" class="section level1">
 <h1><span class="header-section-number">1</span> Knowledge Map of the Guidance</h1>
 <ol style="list-style-type: decimal">
@@ -281,17 +281,17 @@ $(document).ready(function () {
 </div>
 <div id="hello-world" class="section level1">
 <h1><span class="header-section-number">2</span> Hello World</h1>
-<p>The R package <strong>recharts</strong> provides an interface to the JavaScript library <a href="http://echarts.baidu.com/echarts2">ECharts2</a> for data visualization. The goal of this package is to make it easy to create charts with only a few lines of R code. R users should be able to get started with ECharts without having to know HTML or JavaScript, although advanced users will benefit from their knowledge of JavaScript. Here is an example of a scatterplot that shows the basic syntax of this package:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(recharts)</code></pre></div>
+<p>The R package <strong>rechartsX</strong> provides an interface to the JavaScript library <a href="http://echarts.baidu.com/echarts2">ECharts2</a> for data visualization. The goal of this package is to make it easy to create charts with only a few lines of R code. R users should be able to get started with ECharts without having to know HTML or JavaScript, although advanced users will benefit from their knowledge of JavaScript. Here is an example of a scatterplot that shows the basic syntax of this package:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rechartsX)</code></pre></div>
 <pre><code>## 
-## Attaching package: &#39;recharts&#39;</code></pre>
+## Attaching package: &#39;rechartsX&#39;</code></pre>
 <pre><code>## The following objects are masked _by_ &#39;.GlobalEnv&#39;:
 ## 
 ##     ChinaGDP, chinapm25, events, mideast, stock</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">echartr</span>(iris, Sepal.Length, Sepal.Width, <span class="dt">series =</span> Species)</code></pre></div>
 <div id="htmlwidget-52c1a3f212de9155bf09" style="width:672px;height:480px;" class="echarts html-widget"></div>
 <script type="application/json" data-for="htmlwidget-52c1a3f212de9155bf09">{"x":{"series":[{"name":"setosa","type":"scatter","data":[[5.1,3.5],[4.9,3],[4.7,3.2],[4.6,3.1],[5,3.6],[5.4,3.9],[4.6,3.4],[5,3.4],[4.4,2.9],[4.9,3.1],[5.4,3.7],[4.8,3.4],[4.8,3],[4.3,3],[5.8,4],[5.7,4.4],[5.4,3.9],[5.1,3.5],[5.7,3.8],[5.1,3.8],[5.4,3.4],[5.1,3.7],[4.6,3.6],[5.1,3.3],[4.8,3.4],[5,3],[5,3.4],[5.2,3.5],[5.2,3.4],[4.7,3.2],[4.8,3.1],[5.4,3.4],[5.2,4.1],[5.5,4.2],[4.9,3.1],[5,3.2],[5.5,3.5],[4.9,3.6],[4.4,3],[5.1,3.4],[5,3.5],[4.5,2.3],[4.4,3.2],[5,3.5],[5.1,3.8],[4.8,3],[5.1,3.8],[4.6,3.2],[5.3,3.7],[5,3.3]]},{"name":"versicolor","type":"scatter","data":[[7,3.2],[6.4,3.2],[6.9,3.1],[5.5,2.3],[6.5,2.8],[5.7,2.8],[6.3,3.3],[4.9,2.4],[6.6,2.9],[5.2,2.7],[5,2],[5.9,3],[6,2.2],[6.1,2.9],[5.6,2.9],[6.7,3.1],[5.6,3],[5.8,2.7],[6.2,2.2],[5.6,2.5],[5.9,3.2],[6.1,2.8],[6.3,2.5],[6.1,2.8],[6.4,2.9],[6.6,3],[6.8,2.8],[6.7,3],[6,2.9],[5.7,2.6],[5.5,2.4],[5.5,2.4],[5.8,2.7],[6,2.7],[5.4,3],[6,3.4],[6.7,3.1],[6.3,2.3],[5.6,3],[5.5,2.5],[5.5,2.6],[6.1,3],[5.8,2.6],[5,2.3],[5.6,2.7],[5.7,3],[5.7,2.9],[6.2,2.9],[5.1,2.5],[5.7,2.8]]},{"name":"virginica","type":"scatter","data":[[6.3,3.3],[5.8,2.7],[7.1,3],[6.3,2.9],[6.5,3],[7.6,3],[4.9,2.5],[7.3,2.9],[6.7,2.5],[7.2,3.6],[6.5,3.2],[6.4,2.7],[6.8,3],[5.7,2.5],[5.8,2.8],[6.4,3.2],[6.5,3],[7.7,3.8],[7.7,2.6],[6,2.2],[6.9,3.2],[5.6,2.8],[7.7,2.8],[6.3,2.7],[6.7,3.3],[7.2,3.2],[6.2,2.8],[6.1,3],[6.4,2.8],[7.2,3],[7.4,2.8],[7.9,3.8],[6.4,2.8],[6.3,2.8],[6.1,2.6],[7.7,3],[6.3,3.4],[6.4,3.1],[6,3],[6.9,3.1],[6.7,3.1],[6.9,3.1],[5.8,2.7],[6.8,3.2],[6.7,3.3],[6.7,3],[6.3,2.5],[6.5,3],[6.2,3.4],[5.9,3]]}],"legend":{"show":true,"data":["setosa","versicolor","virginica"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"value","show":true,"position":"left","name":"Sepal.Width","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"value","show":true,"position":"bottom","name":"Sepal.Length","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"cross","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n    var i;\n    var text = params.value[0];\n    if (params.seriesName === null || params.seriesName === \"\"){\n        if (params.value.length > 1) {\n            for (i = 1; i < params.value.length; i++){\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.name + \" : \" + text;\n        }\n    } else {\n        if (params.value.length > 1) {\n            text = params.seriesName + \" :<br/>\" + text;\n            for (i = 1; i < params.value.length; i++) {\n                text += \" ,    \" + params.value[i];\n            }\n            return text;\n        } else {\n            return params.seriesName + \" :<br/>\"\n            + params.name + \" : \" + text;\n        }\n    }\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":false},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"}},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
-<p>The <strong>recharts</strong> package was built on top of <a href="http://htmlwidgets.org"><strong>htmlwidgets</strong></a>, which can save us a lot of time on managing JavaScript dependencies and dealing with different types of output documents such as R Markdown and Shiny. You just create a chart, and we will take care of the rest of things when the chart is renderd in R Markdown, Shiny, or the R console / RStudio.</p>
+<p>The <strong>rechartsX</strong> package was built on top of <a href="http://htmlwidgets.org"><strong>htmlwidgets</strong></a>, which can save us a lot of time on managing JavaScript dependencies and dealing with different types of output documents such as R Markdown and Shiny. You just create a chart, and we will take care of the rest of things when the chart is renderd in R Markdown, Shiny, or the R console / RStudio.</p>
 <p>The main function in this package is the <code>echartr()</code> function (an S3 generic function), and we want to make it smart enough to deal with different types of R data automatically. For example, when a data frame is passed to <code>echart()</code>, and the <code>x</code>/<code>y</code> variables are numeric, it should automatically figure out that you probably need a scatterplot, and the axes will be automatically generated. Of course, you can also override the automatic guess.</p>
 </div>
 <div id="quick-start" class="section level1">
@@ -389,7 +389,7 @@ $(document).ready(function () {
 <div id="supported-chart-types" class="section level3">
 <h3><span class="header-section-number">3.2.2</span> Supported Chart Types</h3>
 <p><code>echartr</code> now supports the following types (the regex patterns in ‘name’ column, case insensitive). The ‘type’ column lists chart type names supported by Echarts2.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr::<span class="kw">kable</span>(recharts:::validChartTypes[,<span class="kw">c</span>(<span class="dv">1</span>:<span class="dv">3</span>,<span class="dv">5</span>)])</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr::<span class="kw">kable</span>(rechartsX:::validChartTypes[,<span class="kw">c</span>(<span class="dv">1</span>:<span class="dv">3</span>,<span class="dv">5</span>)])</code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -606,7 +606,7 @@ $(document).ready(function () {
 </tr>
 </tbody>
 </table>
-<p>You assign <code>data</code> and <code>x</code>, <code>y</code>, then <code>echartr</code> automatically processes the data using <code>recharts:::series_scatter</code> function.</p>
+<p>You assign <code>data</code> and <code>x</code>, <code>y</code>, then <code>echartr</code> automatically processes the data using <code>rechartsX:::series_scatter</code> function.</p>
 <p>If <code>series</code> is assigned, a series-specfic scatterplot is shown.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">echartr</span>(mtcars, wt, mpg, <span class="kw">factor</span>(am, <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&#39;Automatic&#39;</span>, <span class="st">&#39;Manual&#39;</span>)))</code></pre></div>
 <div id="htmlwidget-7d6285b765d7c62e2dda" style="width:672px;height:480px;" class="echarts html-widget"></div>
@@ -636,7 +636,7 @@ $(document).ready(function () {
 <h4><span class="header-section-number">3.2.3.3</span> Type And Subtype</h4>
 <div id="mixed-types" class="section level5">
 <h5><span class="header-section-number">3.2.3.3.1</span> Mixed Types</h5>
-<p><code>recharts</code> supports mixed chart types in some cases, e.g., bar and line.</p>
+<p><code>rechartsX</code> supports mixed chart types in some cases, e.g., bar and line.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d &lt;-<span class="st"> </span>data.table::<span class="kw">dcast</span>(mtcars, carb+gear~., mean, <span class="dt">value.var=</span><span class="st">&#39;mpg&#39;</span>)
 <span class="kw">names</span>(d)[<span class="dv">3</span>] &lt;-<span class="st"> &#39;mean.mpg&#39;</span>
 d$carb &lt;-<span class="st"> </span><span class="kw">as.character</span>(d$carb)
@@ -644,7 +644,7 @@ d$carb &lt;-<span class="st"> </span><span class="kw">as.character</span>(d$carb
 <span class="st">    </span><span class="kw">setSymbols</span>(<span class="st">&#39;emptycircle&#39;</span>)</code></pre></div>
 <div id="htmlwidget-b586c3c8a6a383e5a3df" style="width:672px;height:480px;" class="echarts html-widget"></div>
 <script type="application/json" data-for="htmlwidget-b586c3c8a6a383e5a3df">{"x":{"series":[{"name":"3","type":"bar","data":[20.3333333333333,17.15,16.3,12.62,"-","-"]},{"name":"4","type":"bar","data":[29.1,24.75,"-",19.75,"-","-"]},{"name":"5","type":"line","data":["-",28.2,"-",15.8,19.7,15]}],"legend":{"show":true,"data":["3","4","5"],"x":"left","y":"top","orient":"horizontal"},"yAxis":[{"type":"value","show":true,"position":"left","name":"mean.mpg","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false}}],"xAxis":[{"type":"category","show":true,"position":"bottom","name":"carb","nameLocation":"end","boundaryGap":[0,0],"scale":true,"axisLine":{"show":true,"onZero":false},"axisTick":{"show":false},"axisLabel":{"show":true},"splitLine":{"show":true},"splitArea":{"show":false},"data":["1","2","3","4","6","8"]}],"tooltip":{"show":true,"trigger":"axis","axisPointer":{"type":"shadow","crossStyle":{"type":"dashed"},"lineStyle":{"type":"solid","width":1},"shadowStyle":{"color":"rgba(150,150,150,0.3)","width":"auto","type":"default"}},"textStyle":{"color":"#fff"},"formatter":"function (params) {\n       var i;\n       var j;\n       var text;\n       var text1;\n       var sName = \"\";\n       if (params.length > 1){\n            if (params[0].value.length >1) {\n                text1 = params[0].value[0];\n            } else {\n                text1 = params[0].value;\n            }\n            text = params[0].name;\n            if (params[0].seriesName) {\n                sName = params[0].seriesName;\n            }\n       } else {\n            if (params[0].value.length > 1) {\n                text1 = params[0].value[0];\n            } else {\n                text1 = params[0].value;\n            }\n            text = params[0].name;\n            if (params[0].seriesName) {\n                sName = params[0].seriesName;\n            }\n       }\n       if (params.length > 1){\n           text += \"<br/>\" + params[0].seriesName + \" :  \" + text1;\n           if (params[0].value.length > 1){\n                for (j = 1; j < params[0].value.length; j++){\n                    text += \", \" + params[0].value[j];\n                }\n           }\n           for (i = 1; i < params.length; i++) {\n                if (params[i].value.length > 1){\n                   text += \"<br/>\" + params[i].seriesName + \" :  \"\n                        + params[i].value[0];\n                   for (j = 1; j < params[i].value.length; j++){\n                        text += \", \" + params[i].value[j];\n                   }\n                } else {\n                   text += \"<br/>\" + params[i].seriesName + \" :  \"\n                        + params[i].value;\n                }\n           }\n       } else {\n           if (params[0].seriesName){\n               text += \"<br/>\" + params[0].seriesName + \" :  \" + text1;\n           } else {\n               text += \" :  \" + text1;\n           }\n           if (params[0].value.length > 1){\n                for (j = 1; j < params[0].value.length; j++){\n                    text += \", \" + params[0].value[j];\n                }\n           }\n       }\n       return text;\n    }","islandFormatter":"{a} < br/>{b} : {c}","enterable":false,"showDelay":20,"hideDelay":100,"transitionDuration":0.4,"backgroundColor":"rgba(0,0,0,0.7)","borderColor":"#333","borderWidth":0,"borderRadius":4},"toolbox":{"show":true,"feature":{"mark":{"show":true},"dataZoom":{"show":true},"dataView":{"show":true,"readOnly":false},"magicType":{"show":true,"type":["line","bar","tiled","stack"]},"restore":{"show":true},"saveAsImage":{"show":true}},"x":"right","y":"top","orient":"horizontal"},"symbolList":["emptyCircle","emptyCircle","emptyCircle"]},"evals":["tooltip.formatter"],"jsHooks":[]}</script>
-<p>Or mixed subtypes. Refer to ‘subtype’ column in <code>recharts:::validChartTypes</code>. You can assign combined subtypes using ‘+’, ’_‘or’|‘, e.g., ’stack+smooth’ to simultaneously render the line chart stacked and smooth.</p>
+<p>Or mixed subtypes. Refer to ‘subtype’ column in <code>rechartsX:::validChartTypes</code>. You can assign combined subtypes using ‘+’, ’_‘or’|‘, e.g., ’stack+smooth’ to simultaneously render the line chart stacked and smooth.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">echartr</span>(d, carb, mean.mpg, gear, <span class="dt">type=</span><span class="st">&#39;line&#39;</span>, 
         <span class="dt">subtype=</span><span class="kw">c</span>(<span class="st">&#39;stack + smooth&#39;</span>, <span class="st">&#39;stack + dotted&#39;</span>, <span class="st">&#39;smooth + dashed&#39;</span>)) %&gt;%
 <span class="st">    </span><span class="kw">setSymbols</span>(<span class="st">&#39;emptycircle&#39;</span>)</code></pre></div>
@@ -654,7 +654,7 @@ d$carb &lt;-<span class="st"> </span><span class="kw">as.character</span>(d$carb
 <div id="associating-typesubtype-with-facets" class="section level5">
 <h5><span class="header-section-number">3.2.3.3.2</span> Associating Type/Subtype with Facets</h5>
 <p>The above example shows how to associate type/subtype with series. If you want to associate type/subtype with facets, you need to wrap them in a list. Within each list, the vector of type/subtypes are associated with series, ie, list[[1]], list[[2]], … are associated with facet 1, 2, …, while list[[1]][1], list[[1]][2], … are associated with series 1, 2, …</p>
-<p>If facet has 2 levels and series has 3 levels, it means type and subtype should have a structure of list(c(s1,s2,s3), c(s1,s2,s3)). recharts will try to supplement/cut the income params type and subtype to meet the mapping relationship.</p>
+<p>If facet has 2 levels and series has 3 levels, it means type and subtype should have a structure of list(c(s1,s2,s3), c(s1,s2,s3)). rechartsX will try to supplement/cut the income params type and subtype to meet the mapping relationship.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d1 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span><span class="kw">rep</span>(LETTERS[<span class="dv">1</span>:<span class="dv">6</span>], <span class="dv">4</span>), <span class="dt">y=</span><span class="kw">abs</span>(<span class="kw">rnorm</span>(<span class="dv">24</span>)), 
                  <span class="dt">f=</span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="st">&#39;i&#39;</span>, <span class="dv">12</span>), <span class="kw">rep</span>(<span class="st">&#39;ii&#39;</span>, <span class="dv">12</span>)), 
                  <span class="dt">s=</span><span class="kw">rep</span>(<span class="kw">c</span>(<span class="kw">rep</span>(<span class="st">&#39;I&#39;</span>, <span class="dv">6</span>), <span class="kw">rep</span>(<span class="st">&#39;II&#39;</span>, <span class="dv">6</span>)), <span class="dv">2</span>))
@@ -904,7 +904,7 @@ g %&gt;%<span class="st"> </span><span class="kw">setTitle</span>(<span class="s
 </div>
 <div id="finale" class="section level1">
 <h1><span class="header-section-number">5</span> Finale</h1>
-<p>Normally we do not want R users to specify a long list of options like that. As R users, you are more familiar with (and often work with) data structures like data frames, matrices, tables, and so on. Ideally we hope you can just pass a familiar data object, and we configure ECharts automatically for you whenever possible. We will be happy to know your feedback, and you are welcome to contribute code through <a href="https://github.com/madlogos/recharts">Github pull requests</a>.</p>
+<p>Normally we do not want R users to specify a long list of options like that. As R users, you are more familiar with (and often work with) data structures like data frames, matrices, tables, and so on. Ideally we hope you can just pass a familiar data object, and we configure ECharts automatically for you whenever possible. We will be happy to know your feedback, and you are welcome to contribute code through <a href="https://github.com/madlogos/rechartsX">Github pull requests</a>.</p>
 </div>
 
 <script type="text/javascript">

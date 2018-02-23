@@ -36,7 +36,7 @@ UI, and \code{renderEChart()} to render the widget on the server side.
 }
 \examples{
 # !formatR
-\donttest{library(recharts)
+\donttest{library(rechartsX)
 library(shiny)
 app = shinyApp(
   ui = fluidPage(eChartOutput('myChart')),

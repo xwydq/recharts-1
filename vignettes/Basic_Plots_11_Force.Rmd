@@ -19,9 +19,9 @@ vignette: >
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-First, you should load `recharts`:
+First, you should load `rechartsX`:
 ```{r}
-library(recharts)
+library(rechartsX)
 ```
 
 # Introduction
@@ -59,7 +59,7 @@ The keys are:
 
 - data structure:
   - matrix mode: A data.frame comprising of a column of name, and a numeric matrix. Assign the name column to x, the matrix to y.
-  - node/link mode: node data.frame [x, NA, series, weight]; link data.frame [x, x1, relation, value]. Combine them using `rbind`. If you don't provide node data.frame, recharts will build it automatically. Assign the param list [x, x1, series/relation, weight/value] accordingly.
+  - node/link mode: node data.frame [x, NA, series, weight]; link data.frame [x, x1, relation, value]. Combine them using `rbind`. If you don't provide node data.frame, rechartsX will build it automatically. Assign the param list [x, x1, series/relation, weight/value] accordingly.
 - force chart and chord chart are exchangeble by the toolbox buttons.
 
 # Function Call

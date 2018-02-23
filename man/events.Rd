@@ -21,5 +21,5 @@ data(events)
 str(events)
 }
 \references{
-\url{https://madlogos.github.io/recharts/Basic_Plots_05_eventRiver.html}
+\url{https://madlogos.github.io/rechartsX/Basic_Plots_05_eventRiver.html}
 }

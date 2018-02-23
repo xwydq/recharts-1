@@ -1,4 +1,4 @@
-\name{recharts-imports}
+\name{rechartsX-imports}
 \alias{JS}
 \alias{\%>\%}
 \docType{import}

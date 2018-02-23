@@ -21,5 +21,5 @@ data(stock)
 str(stock)
 }
 \references{
-\url{https://madlogos.github.io/recharts/Basic_Plots_04_K.html}
+\url{https://madlogos.github.io/rechartsX/Basic_Plots_04_K.html}
 }

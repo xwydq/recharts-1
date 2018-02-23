@@ -19,9 +19,9 @@ vignette: >
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-First, you should load `recharts`:
+First, you should load `rechartsX`:
 ```{r}
-library(recharts)
+library(rechartsX)
 ```
 
 # Introduction
@@ -59,7 +59,7 @@ The keys are:
 
 - data structure:
   - matrix mode: A data.frame comprising of a column of name, and a numeric matrix. Assign the name column to x, the matrix to y.
-  - node/link mode: node data.frame [x, NA, series, weight]; link data.frame [x, x1, relation, value]. Combine them using `rbind`. If you don't provide node data.frame, recharts will build it automatically. Assign the param list [x, x1, series/relation, weight/value] accordingly.
+  - node/link mode: node data.frame [x, NA, series, weight]; link data.frame [x, x1, relation, value]. Combine them using `rbind`. If you don't provide node data.frame, rechartsX will build it automatically. Assign the param list [x, x1, series/relation, weight/value] accordingly.
 
 # Function Call
 
@@ -121,7 +121,7 @@ Matrix mode can be transformed to node/link mode as well. Matrix[i, j] represent
 knitr::kable(deutsch[deutsch$year==2014,])
 ```
 
-There is not a numeric matrix structure inside the data.frame, so it is node/link mode. There are no NAs in column 1 or 2, so in this case, `recharts` will build a node data.frame based on the data.frame given, which looks like:
+There is not a numeric matrix structure inside the data.frame, so it is node/link mode. There are no NAs in column 1 or 2, so in this case, `rechartsX` will build a node data.frame based on the data.frame given, which looks like:
 
 ```{r,echo=FALSE}
 nodes <- data.frame(
@@ -169,7 +169,7 @@ What we need to do is duplicate the source and target columns to build a matrix.
 ```{r}
 deutsch14 <- deutsch[deutsch$year==2014,]
 deutsch14 <- rbind(deutsch14, deutsch14)
-deutsch14[14:26, c('player', 'club')] <- recharts:::exchange(
+deutsch14[14:26, c('player', 'club')] <- rechartsX:::exchange(
     deutsch14[14:26, 'player'], deutsch14[14:26, 'club'])
 knitr::kable(with(deutsch14, table(player, club)))
 ```

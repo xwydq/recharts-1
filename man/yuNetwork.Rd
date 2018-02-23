@@ -29,5 +29,5 @@ data(yuNetwork)
 str(yuNetwork)
 }
 \references{
-\url{https://madlogos.github.io/recharts/Basic_Plots_11_Force.html}
+\url{https://madlogos.github.io/rechartsX/Basic_Plots_11_Force.html}
 }

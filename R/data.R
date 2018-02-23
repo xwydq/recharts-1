@@ -10,7 +10,7 @@
 #'  Prov \tab chr \tab Province names (Guangdong, Beijing, Shanghai, ...) \cr
 #'  GDP \tab num \tab GDP in RMB (1103605, 1059587, 967419, ...)
 #' }
-#' @references \url{https://madlogos.github.io/recharts/Basic_Plots_31_Map.html}
+#' @references \url{https://madlogos.github.io/rechartsX/Basic_Plots_31_Map.html}
 #' @examples data(ChinaGDP)
 #' str(ChinaGDP)
 NULL
@@ -28,7 +28,7 @@ NULL
 #'  Lng \tab num \tab Longitude (121, 110, 120, 122, ...) \cr
 #'  Lat \tab num \tab Latitude (31.9, 39.6, 37.4, 30, ...)
 #' }
-#' @references \url{https://madlogos.github.io/recharts/Basic_Plots_31_Map.html}
+#' @references \url{https://madlogos.github.io/rechartsX/Basic_Plots_31_Map.html}
 #' @examples data(chinapm25)
 #' str(chinapm25)
 NULL
@@ -48,7 +48,7 @@ NULL
 #'  role \tab chr \tab Role of the players ('Fw', 'Mf', 'Gk', 'Df', ...) \cr
 #'  year \tab int \tab Year tag of the Deutsch soccer team
 #' }
-#' @references \url{https://madlogos.github.io/recharts/Basic_Plots_12_Chord.html}
+#' @references \url{https://madlogos.github.io/rechartsX/Basic_Plots_12_Chord.html}
 #' @examples data(deutsch)
 #' str(deutsch)
 NULL
@@ -67,7 +67,7 @@ NULL
 #'  time \tab Date \tab Time of the event slices \cr
 #'  value \tab int \tab Impact value of the event slices
 #' }
-#' @references \url{https://madlogos.github.io/recharts/Basic_Plots_05_eventRiver.html}
+#' @references \url{https://madlogos.github.io/rechartsX/Basic_Plots_05_eventRiver.html}
 #' @examples data(events)
 #' str(events)
 NULL
@@ -90,7 +90,7 @@ NULL
 #'  Lng \tab num \tab Longitude of the places \cr
 #'  Lat \tab num \tab Latitude of the places
 #' }
-#' @references \url{https://madlogos.github.io/recharts/Basic_Plots_31_Map.html}
+#' @references \url{https://madlogos.github.io/rechartsX/Basic_Plots_31_Map.html}
 #' @examples data(flight)
 #' str(flight)
 NULL
@@ -109,7 +109,7 @@ NULL
 #'  FKEY \tab int \tab ID of the parent node of this place \cr
 #'  LEVEL \tab int \tab 0: country; 1: province; 2: city; 3: county
 #' }
-#' @references \url{https://madlogos.github.io/recharts/Basic_Plots_31_Map.html}
+#' @references \url{https://madlogos.github.io/rechartsX/Basic_Plots_31_Map.html}
 #' @examples data(geoNameMap)
 #' str(geoNameMap)
 NULL
@@ -122,7 +122,7 @@ NULL
 #' @name mideast
 #' @format A matrix (16 * 16) \cr
 #' Mutual attitude of the political powers (for or against/weight)
-#' @references \url{https://madlogos.github.io/recharts/Basic_Plots_12_Chord.html}
+#' @references \url{https://madlogos.github.io/rechartsX/Basic_Plots_12_Chord.html}
 #' @examples data(mideast)
 #' str(mideast)
 NULL
@@ -141,7 +141,7 @@ NULL
 #'  low \tab numt \tab Low index \cr
 #'  high \tab num \tab High index
 #' }
-#' @references \url{https://madlogos.github.io/recharts/Basic_Plots_04_K.html}
+#' @references \url{https://madlogos.github.io/rechartsX/Basic_Plots_04_K.html}
 #' @examples data(stock)
 #' str(stock)
 NULL
@@ -168,7 +168,7 @@ NULL
 #'  relation \tab chr \tab Relationship (father-son, spouse, ...) \cr
 #'  weight \tab num \tab Importance of the relationship
 #' }
-#' @references \url{https://madlogos.github.io/recharts/Basic_Plots_11_Force.html}
+#' @references \url{https://madlogos.github.io/rechartsX/Basic_Plots_11_Force.html}
 #' @examples data(yuNetwork)
 #' str(yuNetwork)
 NULL

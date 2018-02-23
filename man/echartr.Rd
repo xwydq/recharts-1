@@ -29,32 +29,32 @@ of the graph elements.}
 coordinate system charts (e.g., polar coordinate system (pie, radar, ...) and
 some other charts (e.g., map, tree, ...)).}
 
-\item{t}{timeline variable. When \code{t} is defined, recharts builds a timeline
+\item{t}{timeline variable. When \code{t} is defined, rechartsX builds a timeline
 widget to show the changes along with time.}
 
 \item{lat}{latitude variable (-180 ~ 180) for map/heatmap}
 
 \item{lng}{longitude variable (-90 ~ 90) for map/heatmap}
 
-\item{type}{chart type. Now recharts supports major types of
+\item{type}{chart type. Now rechartsX supports major types of
 \itemize{
-  \item \href{http://madlogos.github.io/recharts/Basic_Plots_01_Scatterplot.html}{scatter/point/bubble}
-  \item \href{http://madlogos.github.io/recharts/Basic_Plots_02_Bar.html}{bar/column/histogram}
-  \item \href{http://madlogos.github.io/recharts/Basic_Plots_03_Line.html}{line/area/curve/wave}
-  \item \href{http://madlogos.github.io/recharts/Basic_Plots_04_K.html}{candlestick/k}
-  \item \href{http://madlogos.github.io/recharts/Basic_Plots_05_eventRiver.html}{eventRiver}
-  \item \href{http://madlogos.github.io/recharts/Basic_Plots_21_Pie.html}{pie/ring/rose}
-  \item \href{http://madlogos.github.io/recharts/Basic_Plots_22_Funnel.html}{funnel/pyramid}
-  \item \href{http://madlogos.github.io/recharts/Basic_Plots_23_Radar.html}{radar/spider/star}
-  \item \href{http://madlogos.github.io/recharts/Basic_Plots_11_Force.html}{force/force_line}
-  \item \href{http://madlogos.github.io/recharts/Basic_Plots_12_Chord.html}{chord}
-  \item \href{http://madlogos.github.io/recharts/Basic_Plots_24_Gauge.html}{gauge}
-  \item \href{http://madlogos.github.io/recharts/Basic_Plots_13_WordCloud.html}{wordCloud}
-  \item \href{http://madlogos.github.io/recharts/Basic_Plots_14_Venn.html}{venn}
-  \item \href{http://madlogos.github.io/recharts/Basic_Plots_31_Map.html}{map_world/map_china/map_world_multi/map_china_multi}
-  \item \href{http://madlogos.github.io/recharts/Basic_Plots_32_Tree.html}{tree/htree/tree_inv/htree_inv}
-  \item \href{http://madlogos.github.io/recharts/Basic_Plots_33_Treemap.html}{treemap}
-  \item \href{http://madlogos.github.io/recharts/Basic_Plots_15_Heatmap.html}{heatmap}
+  \item \href{http://madlogos.github.io/rechartsX/Basic_Plots_01_Scatterplot.html}{scatter/point/bubble}
+  \item \href{http://madlogos.github.io/rechartsX/Basic_Plots_02_Bar.html}{bar/column/histogram}
+  \item \href{http://madlogos.github.io/rechartsX/Basic_Plots_03_Line.html}{line/area/curve/wave}
+  \item \href{http://madlogos.github.io/rechartsX/Basic_Plots_04_K.html}{candlestick/k}
+  \item \href{http://madlogos.github.io/rechartsX/Basic_Plots_05_eventRiver.html}{eventRiver}
+  \item \href{http://madlogos.github.io/rechartsX/Basic_Plots_21_Pie.html}{pie/ring/rose}
+  \item \href{http://madlogos.github.io/rechartsX/Basic_Plots_22_Funnel.html}{funnel/pyramid}
+  \item \href{http://madlogos.github.io/rechartsX/Basic_Plots_23_Radar.html}{radar/spider/star}
+  \item \href{http://madlogos.github.io/rechartsX/Basic_Plots_11_Force.html}{force/force_line}
+  \item \href{http://madlogos.github.io/rechartsX/Basic_Plots_12_Chord.html}{chord}
+  \item \href{http://madlogos.github.io/rechartsX/Basic_Plots_24_Gauge.html}{gauge}
+  \item \href{http://madlogos.github.io/rechartsX/Basic_Plots_13_WordCloud.html}{wordCloud}
+  \item \href{http://madlogos.github.io/rechartsX/Basic_Plots_14_Venn.html}{venn}
+  \item \href{http://madlogos.github.io/rechartsX/Basic_Plots_31_Map.html}{map_world/map_china/map_world_multi/map_china_multi}
+  \item \href{http://madlogos.github.io/rechartsX/Basic_Plots_32_Tree.html}{tree/htree/tree_inv/htree_inv}
+  \item \href{http://madlogos.github.io/rechartsX/Basic_Plots_33_Treemap.html}{treemap}
+  \item \href{http://madlogos.github.io/rechartsX/Basic_Plots_15_Heatmap.html}{heatmap}
 }}
 
 \item{subtype}{some chart types support subtypes.
@@ -79,7 +79,7 @@ widget to show the changes along with time.}
   \item{radar/spider/star}{"fill"}
 }}
 
-\item{elementId}{htmlwidgets elementId of the chart object. If set NULL, recharts will
+\item{elementId}{htmlwidgets elementId of the chart object. If set NULL, rechartsX will
 assign a random elementId to the object.}
 
 \item{...}{Elipsis}
@@ -90,5 +90,5 @@ You can then tune the settings using <setEchartWidgets> functions, <aesthetic> f
 and others.
 }
 \references{
-Online Manual: \url{http://madlogos.github.io/recharts}
+Online Manual: \url{http://madlogos.github.io/rechartsX}
 }

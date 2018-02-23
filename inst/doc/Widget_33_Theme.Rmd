@@ -19,14 +19,14 @@ vignette: >
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-First, you should load `recharts`:
+First, you should load `rechartsX`:
 ```{r}
-library(recharts)
+library(rechartsX)
 ```
 
 # Introduction
 
-`setTheme` is the main aesthetic function in recharts. It can
+`setTheme` is the main aesthetic function in rechartsX. It can
 
 - set pre-installed themes
 - set color palette

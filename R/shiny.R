@@ -7,10 +7,10 @@
 #'   server side
 #' @param width the width of the chart
 #' @param height the height of the chart
-#' @rdname recharts-shiny
+#' @rdname rechartsX-shiny
 #' @export
 #' @examples # !formatR
-#' \donttest{library(recharts)
+#' \donttest{library(rechartsX)
 #' library(shiny)
 #' app = shinyApp(
 #'   ui = fluidPage(eChartOutput('myChart')),
@@ -22,23 +22,23 @@
 #'
 #' if (interactive()) print(app)}
 eChartOutput = function(outputId, width = '100%', height = '400px') {
-  htmlwidgets::shinyWidgetOutput(outputId, 'echarts', width, height, package = 'recharts')
+  htmlwidgets::shinyWidgetOutput(outputId, 'echarts', width, height, package = 'rechartsX')
 }
 
-#' @rdname recharts-shiny
+#' @rdname rechartsX-shiny
 #' @export
 output_echart <- eChartOutput
 
 
 #' @param expr an R expression to return an EChart widget
 #' @inheritParams htmlwidgets::shinyRenderWidget
-#' @rdname recharts-shiny
+#' @rdname rechartsX-shiny
 #' @export
 renderEChart = function(expr, env = parent.frame(), quoted = FALSE) {
   if (!quoted) expr = substitute(expr)  # force quoted
   htmlwidgets::shinyRenderWidget(expr, eChartOutput, env, quoted = TRUE)
 }
 
-#' @rdname recharts-shiny
+#' @rdname rechartsX-shiny
 #' @export
 render_echart <- renderEChart

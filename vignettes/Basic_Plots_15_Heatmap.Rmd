@@ -19,9 +19,9 @@ vignette: >
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-First, you should load `recharts`:
+First, you should load `rechartsX`:
 ```{r}
-library(recharts)
+library(rechartsX)
 ```
 
 # Introduction
@@ -64,7 +64,7 @@ echartr(data, y, lng, lat, <series>, <t>, <type>)
 +========+====================================================================+
 | **data** | source data in the form of data.frame                            |
 +--------+--------------------------------------------------------------------+
-| **y**  | numeric dependent variable. Only the first one is accepted. `y` represents the heat value which is between 0 and 1. If `y` is not within this range, `recharts` will normalize it.|
+| **y**  | numeric dependent variable. Only the first one is accepted. `y` represents the heat value which is between 0 and 1. If `y` is not within this range, `rechartsX` will normalize it.|
 +--------+--------------------------------------------------------------------+
 | series | series variable which will be coerced to factors. Only the first one is accepted if multiple variables are provided. |
 +--------+--------------------------------------------------------------------+

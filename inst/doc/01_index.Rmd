@@ -1,5 +1,5 @@
 ---
-title: "recharts: An R Interface to Baidu ECharts 2"
+title: "rechartsX: An R Interface to Baidu ECharts 2"
 author: "Yiying Wang"
 date: "`r Sys.Date()`"
 output: 
@@ -10,18 +10,18 @@ output:
     self_contained: no
     lib_dir: libs
 vignette: >
-  %\VignetteIndexEntry{An Introduction to recharts}
+  %\VignetteIndexEntry{An Introduction to rechartsX}
   %\VignetteEngine{knitr::rmarkdown_notangle}
   %\VignetteEncoding{UTF-8}
 ---
 
-<strong>Note:</strong> This package was forked from [Yihui Xie](https://github.com/yihui/recharts) and is based on the last release of Baidu Echarts2 (v2.2.7). The documentation here always reflects the latest development version of **recharts** on [Github](https://github.com/madlogos/recharts). The package [recharts2](http://github.com/madlogos/recharts2) that is based on Echarts3 is still under development.
+<strong>Note:</strong> This package was forked from [Yihui Xie](https://github.com/yihui/rechartsX) and is based on the last release of Baidu Echarts2 (v2.2.7). The documentation here always reflects the latest development version of **rechartsX** on [Github](https://github.com/madlogos/rechartsX). The package [rechartsX2](http://github.com/madlogos/rechartsX2) that is based on Echarts3 is still under development.
 
 To install the package:
 
 ```r
 if (!require(devtools)) library(devtools)
-install_github("madlogos/recharts")
+install_github("madlogos/rechartsX")
 ```
 
 # Knowledge Map of the Guidance
@@ -80,14 +80,14 @@ install_github("madlogos/recharts")
 
 # Hello World
 
-The R package **recharts** provides an interface to the JavaScript library [ECharts2](http://echarts.baidu.com/echarts2) for data visualization. The goal of this package is to make it easy to create charts with only a few lines of R code. R users should be able to get started with ECharts without having to know HTML or JavaScript, although advanced users will benefit from their knowledge of JavaScript. Here is an example of a scatterplot that shows the basic syntax of this package:
+The R package **rechartsX** provides an interface to the JavaScript library [ECharts2](http://echarts.baidu.com/echarts2) for data visualization. The goal of this package is to make it easy to create charts with only a few lines of R code. R users should be able to get started with ECharts without having to know HTML or JavaScript, although advanced users will benefit from their knowledge of JavaScript. Here is an example of a scatterplot that shows the basic syntax of this package:
 
 ```{r}
-library(recharts)
+library(rechartsX)
 echartr(iris, Sepal.Length, Sepal.Width, series = Species)
 ```
 
-The **recharts** package was built on top of [**htmlwidgets**](http://htmlwidgets.org), which can save us a lot of time on managing JavaScript dependencies and dealing with different types of output documents such as R Markdown and Shiny. You just create a chart, and we will take care of the rest of things when the chart is renderd in R Markdown, Shiny, or the R console / RStudio.
+The **rechartsX** package was built on top of [**htmlwidgets**](http://htmlwidgets.org), which can save us a lot of time on managing JavaScript dependencies and dealing with different types of output documents such as R Markdown and Shiny. You just create a chart, and we will take care of the rest of things when the chart is renderd in R Markdown, Shiny, or the R console / RStudio.
 
 The main function in this package is the `echartr()` function (an S3 generic function), and we want to make it smart enough to deal with different types of R data automatically. For example, when a data frame is passed to `echart()`, and the `x`/`y` variables are numeric, it should automatically figure out that you probably need a scatterplot, and the axes will be automatically generated. Of course, you can also override the automatic guess.
 
@@ -155,10 +155,10 @@ str(args(echartr))
 `echartr` now supports the following types (the regex patterns in 'name' column, case insensitive). The 'type' column lists chart type names supported by Echarts2.
 
 ```{r}
-knitr::kable(recharts:::validChartTypes[,c(1:3,5)])
+knitr::kable(rechartsX:::validChartTypes[,c(1:3,5)])
 ```
 
-You assign `data` and `x`, `y`, then `echartr` automatically processes the data using `recharts:::series_scatter` function.
+You assign `data` and `x`, `y`, then `echartr` automatically processes the data using `rechartsX:::series_scatter` function.
 
 If `series` is assigned, a series-specfic scatterplot is shown. 
 
@@ -191,7 +191,7 @@ When it comes to timeline (`z`), you must be very cautious. All the combination 
 
 ##### Mixed Types
 
-`recharts` supports mixed chart types in some cases, e.g., bar and line.
+`rechartsX` supports mixed chart types in some cases, e.g., bar and line.
 
 ```{r}
 d <- data.table::dcast(mtcars, carb+gear~., mean, value.var='mpg')
@@ -201,7 +201,7 @@ echartr(d, carb, "mean.mpg", gear, type=c('vbar', 'vbar', 'line')) %>%
     setSymbols('emptycircle')
 ```
 
-Or mixed subtypes. Refer to 'subtype' column in `recharts:::validChartTypes`. You can assign combined subtypes using '+', '_' or '|', e.g., 'stack+smooth' to simultaneously render the line chart stacked and smooth.
+Or mixed subtypes. Refer to 'subtype' column in `rechartsX:::validChartTypes`. You can assign combined subtypes using '+', '_' or '|', e.g., 'stack+smooth' to simultaneously render the line chart stacked and smooth.
 
 ```{r}
 echartr(d, carb, mean.mpg, gear, type='line', 
@@ -213,7 +213,7 @@ echartr(d, carb, mean.mpg, gear, type='line',
 
 The above example shows how to associate type/subtype with series. If you want to associate type/subtype with facets, you need to wrap them in a list. Within each list, the vector of type/subtypes are associated with series, ie, list[[1]], list[[2]], ... are associated with facet 1, 2, ..., while list[[1]][1], list[[1]][2], ... are associated with series 1, 2, ...
 
-If facet has 2 levels and series has 3 levels, it means type and subtype should have  a structure of list(c(s1,s2,s3), c(s1,s2,s3)). recharts will try to supplement/cut the income params type and subtype to meet the mapping relationship.
+If facet has 2 levels and series has 3 levels, it means type and subtype should have  a structure of list(c(s1,s2,s3), c(s1,s2,s3)). rechartsX will try to supplement/cut the income params type and subtype to meet the mapping relationship.
 
 ```{r}
 d1 <- data.frame(x=rep(LETTERS[1:6], 4), y=abs(rnorm(24)), 
@@ -441,4 +441,4 @@ enquote(g)
 
 # Finale
 
-Normally we do not want R users to specify a long list of options like that. As R users, you are more familiar with (and often work with) data structures like data frames, matrices, tables, and so on. Ideally we hope you can just pass a familiar data object, and we configure ECharts automatically for you whenever possible. We will be happy to know your feedback, and you are welcome to contribute code through [Github pull requests](https://github.com/madlogos/recharts).
+Normally we do not want R users to specify a long list of options like that. As R users, you are more familiar with (and often work with) data structures like data frames, matrices, tables, and so on. Ideally we hope you can just pass a familiar data object, and we configure ECharts automatically for you whenever possible. We will be happy to know your feedback, and you are welcome to contribute code through [Github pull requests](https://github.com/madlogos/rechartsX).

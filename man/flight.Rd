@@ -25,5 +25,5 @@ data(flight)
 str(flight)
 }
 \references{
-\url{https://madlogos.github.io/recharts/Basic_Plots_31_Map.html}
+\url{https://madlogos.github.io/rechartsX/Basic_Plots_31_Map.html}
 }
